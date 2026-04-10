@@ -1,1 +1,2 @@
-/* You can add global styles to this file, and also import other style files */
+/* Keep Tailwind source detection scoped to this demo app in the workspace. */
+@import 'tailwindcss' source('./');

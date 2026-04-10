@@ -1,0 +1,265 @@
+:host {
+  /* Defaults: light. Dark via prefers-color-scheme. Override on `app-toaster { ... }` if needed. */
+  --toast-width: 356px;
+  --toast-bg: oklch(100% 0 0);
+  --toast-color: oklch(23% 0 0);
+  --toast-border-color: oklch(92% 0.004 286.32 / 0.5);
+  --toast-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --toast-close-hover-bg: oklch(0% 0 0 / 0.08);
+
+  /* Semantic variants (light) — bg / text / border */
+  --toast-success-bg: oklch(97.9% 0.021 166.113);
+  --toast-success-text: oklch(69.6% 0.17 162.48);
+  --toast-success-border: oklch(69.6% 0.17 162.48 / 0.25);
+
+  --toast-error-bg: oklch(97.5% 0.012 25);
+  --toast-error-text: oklch(63.7% 0.237 25.331);
+  --toast-error-border: oklch(80.8% 0.114 19.571 / 0.25);
+
+  --toast-info-bg: oklch(97.7% 0.013 236.62);
+  --toast-info-text: oklch(68.5% 0.169 237.323);
+  --toast-info-border: oklch(82.8% 0.111 230.318 / 0.25);
+
+  --toast-warning-bg: oklch(98.7% 0.022 95.277);
+  --toast-warning-text: oklch(76.9% 0.188 70.08);
+  --toast-warning-border: oklch(87.9% 0.169 91.605 / 0.25);
+
+  --toast-loading-bg: oklch(97.5% 0.018 280);
+  --toast-loading-text: oklch(56% 0.14 280);
+  --toast-loading-border: oklch(56% 0.14 280 / 0.25);
+}
+
+@media (prefers-color-scheme: dark) {
+  :host {
+    --toast-bg: oklch(10% 0 0);
+    --toast-color: oklch(98% 0 0);
+    --toast-border-color: oklch(37% 0.013 285.805 / 0.5);
+    --toast-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.5);
+    --toast-close-hover-bg: oklch(100% 0 0 / 0.12);
+
+    --toast-success-bg: oklch(15% 0 0);
+    --toast-success-text: oklch(92.5% 0.084 155.995);
+    --toast-success-border: oklch(92.5% 0.084 155.995 / 0.15);
+
+    --toast-error-bg: oklch(15% 0 0);
+    --toast-error-text: oklch(88.5% 0.062 18.334);
+    --toast-error-border: oklch(88.5% 0.062 18.334 / 0.15);
+
+    --toast-info-bg: oklch(15% 0 0);
+    --toast-info-text: oklch(90.1% 0.058 230.902);
+    --toast-info-border: oklch(90.1% 0.058 230.902 / 0.15);
+
+    --toast-warning-bg: oklch(15% 0 0);
+    --toast-warning-text: oklch(92.4% 0.12 95.746);
+    --toast-warning-border: oklch(92.4% 0.12 95.746 / 0.15);
+  }
+}
+
+.toast-container {
+  position: fixed;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: var(--toast-width);
+  pointer-events: none;
+}
+
+.toast-container[data-position='top-left'] {
+  top: 1rem;
+  left: 1rem;
+  align-items: flex-start;
+}
+
+.toast-container[data-position='top-center'] {
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+}
+
+.toast-container[data-position='top-right'] {
+  top: 1rem;
+  right: 1rem;
+  align-items: flex-end;
+}
+
+.toast-container[data-position='bottom-left'] {
+  bottom: 1rem;
+  left: 1rem;
+  align-items: flex-start;
+}
+
+.toast-container[data-position='bottom-center'] {
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+}
+
+.toast-container[data-position='bottom-right'] {
+  bottom: 1rem;
+  right: 1rem;
+  align-items: flex-end;
+}
+
+.toast {
+  position: relative;
+  background: var(--toast-bg);
+  opacity: 1;
+  transform: translateY(0);
+  scale: 1;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease,
+    scale 0.4s ease;
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-inline: 0.75rem;
+  padding-block: 1rem;
+  border-radius: 0.5rem;
+  width: var(--toast-width);
+  box-sizing: border-box;
+  border: 1px solid var(--toast-border-color);
+  color: var(--toast-color);
+  --toast-line-height: 1.35;
+  font:
+    500 0.875rem / var(--toast-line-height) system-ui,
+    sans-serif;
+  box-shadow: var(--toast-shadow);
+}
+
+.toast[data-variant='success'] {
+  background: var(--toast-success-bg);
+  color: var(--toast-success-text);
+  border-color: var(--toast-success-border);
+}
+
+.toast[data-variant='error'] {
+  background: var(--toast-error-bg);
+  color: var(--toast-error-text);
+  border-color: var(--toast-error-border);
+}
+
+.toast[data-variant='info'] {
+  background: var(--toast-info-bg);
+  color: var(--toast-info-text);
+  border-color: var(--toast-info-border);
+}
+
+.toast[data-variant='warning'] {
+  background: var(--toast-warning-bg);
+  color: var(--toast-warning-text);
+  border-color: var(--toast-warning-border);
+}
+
+.toast[data-variant='loading'] {
+  background: var(--toast-bg);
+  color: var(--toast-color);
+  border-color: var(--toast-border-color);
+}
+
+.toast-container[data-position^='bottom'] .toast {
+  @starting-style {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+.toast-container[data-position^='top'] .toast {
+  @starting-style {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
+
+.toast-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Same box as one text line so the glyph centers with the first line (multi-line stays correct). */
+.toast-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(1em * var(--toast-line-height));
+  height: calc(1em * var(--toast-line-height));
+}
+
+.toast-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.toast-icon-loading {
+  display: block;
+  width: 85%;
+  height: 85%;
+  border-radius: 50%;
+  border: 2.25px solid currentColor;
+  border-top-color: transparent;
+  animation: spin 0.55s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.msg {
+  flex: 1;
+  min-width: 0;
+  max-width: 80%;
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: calc(1.25 / 0.875);
+}
+
+.close-btn {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  flex-shrink: 0;
+  margin: -0.15rem -0.25rem -0.15rem 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  opacity: 0.75;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0.25rem 0.25rem;
+  border-radius: 0.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn svg {
+  display: block;
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.toast.leave {
+  opacity: 0;
+  scale: 0.95;
+}
+
+.toast-container[data-position^='bottom'] .toast.leave {
+  transform: translateY(100%);
+}
+
+.toast-container[data-position^='top'] .toast.leave {
+  transform: translateY(-100%);
+}

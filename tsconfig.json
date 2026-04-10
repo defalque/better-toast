@@ -5,7 +5,7 @@
   "compilerOptions": {
     "paths": {
       "better-toast": [
-        "./dist/better-toast"
+        "./projects/better-toast/src/public-api.ts"
       ]
     },
     "strict": true,
