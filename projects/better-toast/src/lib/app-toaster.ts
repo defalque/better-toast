@@ -1,10 +1,12 @@
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
 
-import { AppToasterService } from './app-toaster.service';
+import { AppToasterService, DEFAULT_TOAST_DURATION_MS } from './app-toaster.service';
 import type { ToasterPosition } from './toaster.types';
 
 /**
  * Renders the toaster stack. Add once near the root of your app (e.g. in `App`).
+ * Variant-colored surfaces are off by default; set `[richColors]="true"` to enable them.
+ * Set `[duration]` for auto-dismiss when service helpers omit their duration argument (`0` = persist until dismissed).
  */
 @Component({
   selector: 'app-toaster',
@@ -15,26 +17,32 @@ import type { ToasterPosition } from './toaster.types';
       <ol
         class="toast-container"
         [attr.data-position]="position()"
+        [attr.data-rich-colors]="richColors()"
         aria-live="polite"
         aria-relevant="additions text"
       >
         @for (toast of toaster.toasts(); track toast.id) {
           <li class="toast" [attr.data-variant]="toast.variant" role="status" animate.leave="leave">
             <div class="toast-main">
-              <span
-                class="toast-icon"
-                [class.toast-icon--spin]="toast.variant === 'loading'"
-                aria-hidden="true"
-              >
+              <span class="toast-icon" aria-hidden="true">
                 @switch (toast.variant) {
                   @case ('success') {
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="9"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.75"
+                      />
                       <path
                         stroke="currentColor"
                         stroke-linecap="round"
                         stroke-linejoin="round"
                         stroke-width="1.75"
-                        d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                        d="M8.48 12.22 10.9 14.64 15.74 9.14"
                       />
                     </svg>
                   }
@@ -75,14 +83,23 @@ import type { ToasterPosition } from './toaster.types';
                     <div class="toast-icon-loading"></div>
                   }
                   @default {
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                       <path
+                        d="M12 2a6 6 0 00-6 6c0 7-3 7-3 9h18c0-2-3-2-3-9a6 6 0 00-6-6z"
                         stroke="currentColor"
                         stroke-linecap="round"
                         stroke-linejoin="round"
                         stroke-width="1.75"
-                        d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 0 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 0-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3.375 3.375 0 1 1-5.714 0"
-                      />
+                      ></path>
+                      <circle
+                        cx="12"
+                        cy="20"
+                        r="2"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.75"
+                      ></circle>
                     </svg>
                   }
                 }
@@ -122,4 +139,19 @@ export class AppToaster {
 
   /** Where the stack is anchored on the viewport. */
   readonly position = input<ToasterPosition>('bottom-right');
+
+  /** When true, success/error/info/warning use semantic background and border colors. */
+  readonly richColors = input(false);
+
+  /**
+   * Default auto-dismiss time in ms for `show` / `success` / `error` / `info` / `warning` when the second argument is omitted.
+   * `0` keeps toasts until dismissed. Does not apply to `loading()`. Defaults to the library default (4000ms).
+   */
+  readonly durationMs = input(DEFAULT_TOAST_DURATION_MS, { alias: 'duration' });
+
+  constructor() {
+    effect(() => {
+      this.toaster.setDefaultDurationMs(this.durationMs());
+    });
+  }
 }

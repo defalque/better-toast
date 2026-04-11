@@ -18,6 +18,7 @@ export class App {
   protected readonly title = signal('demo');
   protected readonly positions = TOASTER_POSITIONS;
   protected readonly toasterPosition = signal<ToasterPosition>('bottom-right');
+  protected readonly richColors = signal(false);
 
   protected showDefaultToast(): void {
     this.toaster.show('Default toast — neutral message. A very long message that should wrap.');
@@ -41,6 +42,10 @@ export class App {
 
   protected showLoadingToast(): void {
     this.toaster.loading('Loading…');
+  }
+
+  protected toggleRichColors(): void {
+    this.richColors.set(!this.richColors());
   }
 
   protected clearToasts(): void {

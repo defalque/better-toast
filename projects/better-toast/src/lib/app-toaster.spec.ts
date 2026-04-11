@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { vi } from 'vitest';
 
 import { AppToaster } from './app-toaster';
 import { AppToasterService } from './app-toaster.service';
@@ -27,6 +28,55 @@ describe('better-toast', () => {
 
     const container = fixture.nativeElement.querySelector('.toast-container') as HTMLElement;
     expect(container.getAttribute('data-position')).toBe('top-left');
+    expect(container.getAttribute('data-rich-colors')).toBe('false');
+  });
+
+  it('enables semantic colors when richColors is true', async () => {
+    TestBed.configureTestingModule({ imports: [AppToaster] });
+    const fixture = TestBed.createComponent(AppToaster);
+    fixture.componentRef.setInput('richColors', true);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const container = fixture.nativeElement.querySelector('.toast-container') as HTMLElement;
+    expect(container.getAttribute('data-rich-colors')).toBe('true');
+  });
+
+  it('auto-dismisses using duration from AppToaster when duration is omitted', async () => {
+    vi.useFakeTimers();
+    try {
+      TestBed.configureTestingModule({ imports: [AppToaster] });
+      const fixture = TestBed.createComponent(AppToaster);
+      fixture.componentRef.setInput('duration', 1000);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const toaster = TestBed.inject(AppToasterService);
+      toaster.show('Hello');
+      expect(toaster.toasts().length).toBe(1);
+      await vi.advanceTimersByTimeAsync(1000);
+      expect(toaster.toasts().length).toBe(0);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('does not apply AppToaster duration to loading()', async () => {
+    vi.useFakeTimers();
+    try {
+      TestBed.configureTestingModule({ imports: [AppToaster] });
+      const fixture = TestBed.createComponent(AppToaster);
+      fixture.componentRef.setInput('duration', 500);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const toaster = TestBed.inject(AppToasterService);
+      toaster.loading('Wait');
+      await vi.advanceTimersByTimeAsync(2000);
+      expect(toaster.toasts().length).toBe(1);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('sets variant on items from typed helpers', () => {

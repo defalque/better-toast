@@ -1,8 +1,7 @@
 :host {
-  /* Defaults: light. Dark via prefers-color-scheme. Override on `app-toaster { ... }` if needed. */
   --toast-width: 356px;
   --toast-bg: oklch(100% 0 0);
-  --toast-color: oklch(23% 0 0);
+  --toast-color: oklch(30% 0 0);
   --toast-border-color: oklch(92% 0.004 286.32 / 0.5);
   --toast-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --toast-close-hover-bg: oklch(0% 0 0 / 0.08);
@@ -132,28 +131,122 @@
   box-shadow: var(--toast-shadow);
 }
 
-.toast[data-variant='success'] {
+.toast-container[data-rich-colors='true'] .toast[data-variant='success'] {
   background: var(--toast-success-bg);
   color: var(--toast-success-text);
   border-color: var(--toast-success-border);
 }
 
-.toast[data-variant='error'] {
+.toast-container[data-rich-colors='false'] .toast[data-variant='success'] .toast-icon svg {
+  fill: var(--toast-color);
+  color: var(--toast-bg);
+}
+@media (prefers-color-scheme: dark) {
+  .toast-container[data-rich-colors='false'] .toast[data-variant='success'] .toast-icon svg {
+    fill: var(--toast-bg);
+    color: var(--toast-color);
+  }
+}
+.toast-container[data-rich-colors='true'] .toast[data-variant='success'] .toast-icon svg {
+  fill: var(--toast-success-text);
+  color: var(--toast-success-bg);
+}
+@media (prefers-color-scheme: dark) {
+  .toast-container[data-rich-colors='true'] .toast[data-variant='success'] .toast-icon svg {
+    fill: var(--toast-success-bg);
+    color: var(--toast-success-text);
+  }
+}
+
+.toast-container[data-rich-colors='true'] .toast[data-variant='error'] {
   background: var(--toast-error-bg);
   color: var(--toast-error-text);
   border-color: var(--toast-error-border);
 }
+.toast-container[data-rich-colors='false'] .toast[data-variant='error'] .toast-icon svg {
+  fill: var(--toast-color);
+  color: var(--toast-bg);
+}
+@media (prefers-color-scheme: dark) {
+  .toast-container[data-rich-colors='false'] .toast[data-variant='error'] .toast-icon svg {
+    fill: var(--toast-bg);
+    color: var(--toast-color);
+  }
+}
+.toast-container[data-rich-colors='true'] .toast[data-variant='error'] .toast-icon svg {
+  fill: var(--toast-error-text);
+  color: var(--toast-error-bg);
+}
+@media (prefers-color-scheme: dark) {
+  .toast-container[data-rich-colors='true'] .toast[data-variant='error'] .toast-icon svg {
+    fill: var(--toast-error-bg);
+    color: var(--toast-error-text);
+  }
+}
 
-.toast[data-variant='info'] {
+.toast-container[data-rich-colors='true'] .toast[data-variant='info'] {
   background: var(--toast-info-bg);
   color: var(--toast-info-text);
   border-color: var(--toast-info-border);
 }
+.toast-container[data-rich-colors='false'] .toast[data-variant='info'] .toast-icon svg {
+  fill: var(--toast-color);
+  color: var(--toast-bg);
+}
+@media (prefers-color-scheme: dark) {
+  .toast-container[data-rich-colors='false'] .toast[data-variant='info'] .toast-icon svg {
+    fill: var(--toast-bg);
+    color: var(--toast-color);
+  }
+}
+.toast-container[data-rich-colors='true'] .toast[data-variant='info'] .toast-icon svg {
+  fill: var(--toast-info-text);
+  color: var(--toast-info-bg);
+}
+@media (prefers-color-scheme: dark) {
+  .toast-container[data-rich-colors='true'] .toast[data-variant='info'] .toast-icon svg {
+    fill: var(--toast-info-bg);
+    color: var(--toast-info-text);
+  }
+}
 
-.toast[data-variant='warning'] {
+.toast-container[data-rich-colors='true'] .toast[data-variant='warning'] {
   background: var(--toast-warning-bg);
   color: var(--toast-warning-text);
   border-color: var(--toast-warning-border);
+}
+.toast-container[data-rich-colors='false'] .toast[data-variant='warning'] .toast-icon svg {
+  fill: var(--toast-color);
+  color: var(--toast-bg);
+}
+@media (prefers-color-scheme: dark) {
+  .toast-container[data-rich-colors='false'] .toast[data-variant='warning'] .toast-icon svg {
+    fill: var(--toast-bg);
+    color: var(--toast-color);
+  }
+}
+.toast-container[data-rich-colors='true'] .toast[data-variant='warning'] .toast-icon svg {
+  fill: var(--toast-warning-text);
+  color: var(--toast-warning-bg);
+}
+@media (prefers-color-scheme: dark) {
+  .toast-container[data-rich-colors='true'] .toast[data-variant='warning'] .toast-icon svg {
+    fill: var(--toast-warning-bg);
+    color: var(--toast-warning-text);
+  }
+}
+
+.toast[data-variant='default'] .toast-icon svg {
+  width: 85%;
+  height: 85%;
+  fill: var(--toast-color);
+  color: var(--toast-color);
+}
+@media (prefers-color-scheme: dark) {
+  .toast[data-variant='default'] .toast-icon svg {
+    fill: var(--toast-bg);
+    color: var(--toast-color);
+  }
 }
 
 .toast[data-variant='loading'] {
@@ -178,20 +271,19 @@
 
 .toast-main {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.5rem;
   flex: 1;
   min-width: 0;
 }
 
-/* Same box as one text line so the glyph centers with the first line (multi-line stays correct). */
 .toast-icon {
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: calc(1em * var(--toast-line-height));
-  height: calc(1em * var(--toast-line-height));
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .toast-icon svg {
@@ -202,10 +294,10 @@
 
 .toast-icon-loading {
   display: block;
-  width: 85%;
-  height: 85%;
+  width: 1rem;
+  height: 1rem;
   border-radius: 50%;
-  border: 2.25px solid currentColor;
+  border: 2px solid currentColor;
   border-top-color: transparent;
   animation: spin 0.55s linear infinite;
 }
