@@ -32,7 +32,7 @@
 /* data-toast-stack is set on the host by AppToaster (:host-context breaks under emulated encapsulation). */
 :host([data-position^='bottom']) {
   bottom: 0;
-  transform: translateY(calc(var(--index) * (100% + var(--toast-gap)) * -1));
+  transform: translateY(calc(-1 * var(--offset, 0px)));
 
   @starting-style {
     opacity: 0;
@@ -42,7 +42,7 @@
 
 :host([data-position^='top']) {
   top: 0;
-  transform: translateY(calc(var(--index) * (100% + var(--toast-gap)) * 1));
+  transform: translateY(calc(1 * var(--offset, 0px)));
 
   @starting-style {
     opacity: 0;

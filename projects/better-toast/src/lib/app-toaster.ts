@@ -1,6 +1,19 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  ElementRef,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import { AppToasterService, DEFAULT_TOAST_DURATION_MS } from './app-toaster.service';
 import type { ToasterItem, ToasterPosition, ToastVariant } from './toaster.types';
+
+const GAP = 16;
 
 @Component({
   selector: 'li[appToastItem]',
@@ -11,7 +24,7 @@ import type { ToasterItem, ToasterPosition, ToastVariant } from './toaster.types
     tabindex: '0',
     class: 'toast',
     '[attr.data-variant]': 'variant()',
-    '[style.--index]': 'index()',
+    '[style.--offset]': 'offset() + "px"',
     '[animate.leave]': '"leave"',
   },
   template: `
@@ -128,11 +141,30 @@ import type { ToasterItem, ToasterPosition, ToastVariant } from './toaster.types
   styleUrl: './toast-item.css',
 })
 export class AppToastItem {
+  /** Shared toaster service (e.g. dismiss from the close button). */
   protected readonly toaster = inject(AppToasterService);
 
+  /** Host element ref used to read `offsetHeight` after the first render. */
+  protected readonly host = inject(ElementRef);
+
+  /** Toast payload (message, id, variant from the service). */
   toast = input<ToasterItem>();
+
+  /** Which icon and color treatment to show for this row. */
   variant = input<ToastVariant>('default');
-  index = input<number>(0);
+
+  /** Vertical stack offset in px; bound to `--offset` on the host for layout. */
+  offset = input.required<number>();
+
+  /** Emits the measured host height in px once after the first render so the parent can stack siblings. */
+  heightChange = output<number>();
+
+  constructor() {
+    afterNextRender(() => {
+      const height = this.host.nativeElement.offsetHeight;
+      this.heightChange.emit(height);
+    });
+  }
 }
 
 /**
@@ -158,7 +190,8 @@ export class AppToastItem {
             appToastItem
             [toast]="toast"
             [variant]="toast.variant"
-            [index]="toaster.toasts().length - ($index + 1)"
+            [offset]="offsets()[toast.id]"
+            (heightChange)="onHeightChange(toast.id, $event)"
             [attr.data-position]="position()"
             [attr.data-rich-colors]="richColors()"
           ></li>
@@ -166,7 +199,7 @@ export class AppToastItem {
       </ol>
     </section>
   `,
-  styleUrl: './styles.css',
+  styleUrl: './toaster.css',
 })
 export class AppToaster {
   protected readonly toaster = inject(AppToasterService);
@@ -182,6 +215,33 @@ export class AppToaster {
    * `0` keeps toasts until dismissed. Does not apply to `loading()`. Defaults to the library default (4000ms).
    */
   readonly durationMs = input(DEFAULT_TOAST_DURATION_MS, { alias: 'duration' });
+
+  /** Measured height in px per toast id, updated when a toast item reports `heightChange`. */
+  readonly heights = signal<Record<string, number>>({} as Record<string, number>);
+
+  /**
+   * Vertical offset in px for each toast id so stacked toasts do not overlap.
+   * Walks newest-to-oldest (end of the list first): the latest toast has offset 0; each older toast sits above by the sum of heights below plus the inter-toast gap.
+   */
+  readonly offsets = computed(() => {
+    const toastsList = this.toaster.toasts();
+    const heights = this.heights();
+    const result: Record<string, number> = {};
+    let cumulative = 0;
+
+    for (let i = toastsList.length - 1; i >= 0; i--) {
+      const toast = toastsList[i];
+      result[toast.id] = cumulative;
+      cumulative += (heights[toast.id] ?? 0) + GAP;
+    }
+
+    return result;
+  });
+
+  /** Merges a toast item’s reported height into `heights` so `offsets` can recompute. */
+  onHeightChange(toastId: string, height: number) {
+    this.heights.update((h) => ({ ...h, [toastId]: height }));
+  }
 
   constructor() {
     effect(() => {
