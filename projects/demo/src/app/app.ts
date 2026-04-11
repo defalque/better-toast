@@ -25,23 +25,51 @@ export class App {
   }
 
   protected showSuccessToast(): void {
-    this.toaster.success('Saved successfully.');
+    this.toaster.success('Saved successfully');
   }
 
   protected showErrorToast(): void {
-    this.toaster.error('Something went wrong.');
+    this.toaster.error('Something went wrong');
   }
 
   protected showInfoToast(): void {
-    this.toaster.info('Tip: you can stack multiple toasts.');
+    this.toaster.info('Tip: you can stack multiple toasts');
   }
 
   protected showWarningToast(): void {
-    this.toaster.warning('Your session will expire soon.');
+    this.toaster.warning('Your session will expire soon');
   }
 
   protected showLoadingToast(): void {
     this.toaster.loading('Loading…');
+  }
+
+  protected showPromiseToast(): void {
+    const myPromise = new Promise<{ name: string }>((resolve) => {
+      setTimeout(() => {
+        resolve({ name: 'My toast' });
+      }, 3000);
+    });
+
+    this.toaster.promise(myPromise, {
+      loading: 'Loading…',
+      success: 'Promise resolved',
+      error: 'Promise rejected',
+    });
+  }
+
+  protected showErrorPromiseToast(): void {
+    const myPromise = new Promise<{ name: string }>((resolve, reject) => {
+      setTimeout(() => {
+        reject({ name: 'My toast' });
+      }, 3000);
+    });
+
+    this.toaster.promise(myPromise, {
+      loading: 'Loading…',
+      success: 'Promise resolved',
+      error: 'Promise rejected',
+    });
   }
 
   protected toggleRichColors(): void {

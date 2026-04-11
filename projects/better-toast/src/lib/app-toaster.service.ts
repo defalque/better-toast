@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 
-import type { ToastVariant, ToasterItem } from './toaster.types';
+import type { ToastPromiseLabels, ToastVariant, ToasterItem } from './toaster.types';
 
 /** Fallback when `<app-toaster [duration]>` is absent and a helper omits `durationMs`. */
 export const DEFAULT_TOAST_DURATION_MS = 4000;
@@ -52,6 +52,25 @@ export class AppToasterService {
     return this.add(message, 'loading', ms);
   }
 
+  /**
+   * Shows one toast: loading until `userPromise` settles, then the same toast updates to success or error.
+   * Returns the same promise (fulfillment/rejection preserved for callers).
+   */
+  promise<T>(userPromise: PromiseLike<T>, labels: ToastPromiseLabels): Promise<T> {
+    const loadingId = this.loading(labels.loading);
+    const settledDurationMs = this.resolveDuration(undefined);
+    return Promise.resolve(userPromise).then(
+      (value) => {
+        this.updateToast(loadingId, labels.success, 'success', settledDurationMs);
+        return value;
+      },
+      (reason: unknown) => {
+        this.updateToast(loadingId, labels.error, 'error', settledDurationMs);
+        throw reason;
+      },
+    );
+  }
+
   private add(message: string, variant: ToastVariant, durationMs: number): string {
     const id = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
     this._toasts.update((list) => [...list, { id, message, variant }]);
@@ -59,6 +78,27 @@ export class AppToasterService {
       globalThis.setTimeout(() => this.dismiss(id), durationMs);
     }
     return id;
+  }
+
+  private updateToast(
+    id: string,
+    message: string,
+    variant: ToastVariant,
+    durationMs: number,
+  ): void {
+    let found = false;
+    this._toasts.update((toasts) =>
+      toasts.map((toast) => {
+        if (toast.id !== id) {
+          return toast;
+        }
+        found = true;
+        return { id, message, variant };
+      }),
+    );
+    if (found && durationMs > 0) {
+      globalThis.setTimeout(() => this.dismiss(id), durationMs);
+    }
   }
 
   dismiss(id: string): void {

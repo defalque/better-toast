@@ -25,3 +25,10 @@ export interface ToasterItem {
   readonly message: string;
   readonly variant: ToastVariant;
 }
+
+/** Labels for `AppToasterService.promise` (loading vs settled states). */
+export interface ToastPromiseLabels {
+  readonly loading: string;
+  readonly success: string;
+  readonly error: string;
+}

@@ -1,7 +1,139 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
-
 import { AppToasterService, DEFAULT_TOAST_DURATION_MS } from './app-toaster.service';
-import type { ToasterPosition } from './toaster.types';
+import type { ToasterItem, ToasterPosition, ToastVariant } from './toaster.types';
+
+@Component({
+  selector: 'li[appToastItem]',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [],
+  host: {
+    role: 'listitem',
+    tabindex: '0',
+    class: 'toast',
+    '[attr.data-variant]': 'variant()',
+    '[style.--index]': 'index()',
+    '[animate.leave]': '"leave"',
+  },
+  template: `
+    <div class="toast-main">
+      <span class="toast-icon" aria-hidden="true">
+        @switch (variant()) {
+          @case ('success') {
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle
+                cx="12"
+                cy="12"
+                r="9"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+              />
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                d="M8.48 12.22 10.9 14.64 15.74 9.14"
+              />
+            </svg>
+          }
+          @case ('error') {
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <line x1="9" y1="9" x2="15" y2="15" />
+              <line x1="15" y1="9" x2="9" y2="15" />
+            </svg>
+          }
+          @case ('info') {
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="16" x2="12" y2="12" />
+              <line x1="12" y1="8" x2="12.01" y2="8" />
+            </svg>
+          }
+          @case ('warning') {
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
+              />
+            </svg>
+          }
+          @case ('loading') {
+            <div class="toast-icon-loading"></div>
+          }
+          @default {
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path
+                d="M12 2a6 6 0 00-6 6c0 7-3 7-3 9h18c0-2-3-2-3-9a6 6 0 00-6-6z"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+              ></path>
+              <circle
+                cx="12"
+                cy="20"
+                r="2"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+              ></circle>
+            </svg>
+          }
+        }
+      </span>
+
+      <p class="msg">{{ toast()?.message }}</p>
+    </div>
+
+    <button
+      type="button"
+      class="close-btn"
+      (click)="toaster.dismiss(toast()?.id ?? '')"
+      aria-label="Dismiss"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.75"
+          d="M6 18 18 6M6 6l12 12"
+        />
+      </svg>
+    </button>
+  `,
+  styleUrl: './toast-item.css',
+})
+export class AppToastItem {
+  protected readonly toaster = inject(AppToasterService);
+
+  toast = input<ToasterItem>();
+  variant = input<ToastVariant>('default');
+  index = input<number>(0);
+}
 
 /**
  * Renders the toaster stack. Add once near the root of your app (e.g. in `App`).
@@ -11,7 +143,7 @@ import type { ToasterPosition } from './toaster.types';
 @Component({
   selector: 'app-toaster',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
+  imports: [AppToastItem],
   template: `
     <section aria-label="Toaster" aria-live="polite" aria-relevant="additions text">
       <ol
@@ -22,120 +154,14 @@ import type { ToasterPosition } from './toaster.types';
         aria-relevant="additions text"
       >
         @for (toast of toaster.toasts(); track toast.id) {
-          <li class="toast" [attr.data-variant]="toast.variant" role="status" animate.leave="leave">
-            <div class="toast-main">
-              <span class="toast-icon" aria-hidden="true">
-                @switch (toast.variant) {
-                  @case ('success') {
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle
-                        cx="12"
-                        cy="12"
-                        r="9"
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="1.75"
-                      />
-                      <path
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="1.75"
-                        d="M8.48 12.22 10.9 14.64 15.74 9.14"
-                      />
-                    </svg>
-                  }
-                  @case ('error') {
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <circle cx="12" cy="12" r="10" />
-                      <line x1="9" y1="9" x2="15" y2="15" />
-                      <line x1="15" y1="9" x2="9" y2="15" />
-                    </svg>
-                  }
-                  @case ('info') {
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.75"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <circle cx="12" cy="12" r="10" />
-                      <line x1="12" y1="16" x2="12" y2="12" />
-                      <line x1="12" y1="8" x2="12.01" y2="8" />
-                    </svg>
-                  }
-                  @case ('warning') {
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <path
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="1.75"
-                        d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
-                      />
-                    </svg>
-                  }
-                  @case ('loading') {
-                    <div class="toast-icon-loading"></div>
-                  }
-                  @default {
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                      <path
-                        d="M12 2a6 6 0 00-6 6c0 7-3 7-3 9h18c0-2-3-2-3-9a6 6 0 00-6-6z"
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="1.75"
-                      ></path>
-                      <circle
-                        cx="12"
-                        cy="20"
-                        r="2"
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="1.75"
-                      ></circle>
-                    </svg>
-                  }
-                }
-              </span>
-              <p class="msg">{{ toast.message }}</p>
-            </div>
-            <button
-              type="button"
-              class="close-btn"
-              (click)="toaster.dismiss(toast.id)"
-              aria-label="Dismiss"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="1.75"
-                  d="M6 18 18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </li>
+          <li
+            appToastItem
+            [toast]="toast"
+            [variant]="toast.variant"
+            [index]="toaster.toasts().length - ($index + 1)"
+            [attr.data-position]="position()"
+            [attr.data-rich-colors]="richColors()"
+          ></li>
         }
       </ol>
     </section>
