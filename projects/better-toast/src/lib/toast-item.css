@@ -3,7 +3,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 0.5rem;
-  width: var(--toast-width);
+  width: 100%;
   padding-inline: 0.75rem;
   padding-block: 1rem;
   box-sizing: border-box;
@@ -27,6 +27,12 @@
     opacity 0.4s ease,
     transform 0.4s ease,
     scale 0.4s ease;
+}
+
+@media (width >= 40rem) {
+  :host {
+    width: var(--toast-width);
+  }
 }
 
 /* data-toast-stack is set on the host by AppToaster (:host-context breaks under emulated encapsulation). */
