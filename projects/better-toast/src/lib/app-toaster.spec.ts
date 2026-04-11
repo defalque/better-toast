@@ -92,4 +92,26 @@ describe('better-toast', () => {
     toaster.loading('wait');
     expect(toaster.toasts()[2].variant).toBe('loading');
   });
+
+  it('custom() stores html and omits the default icon/message branch', async () => {
+    TestBed.configureTestingModule({ imports: [AppToaster] });
+    const fixture = TestBed.createComponent(AppToaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(AppToasterService);
+    toaster.custom('<p class="x">Rich</p>', 0);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(toaster.toasts()[0].html).toBe('<p class="x">Rich</p>');
+    expect(toaster.toasts()[0].message).toBe('');
+    expect(toaster.toasts()[0].variant).toBe('default');
+
+    const host = fixture.nativeElement.querySelector('li.toast') as HTMLElement;
+    expect(host.querySelector('.toast-custom')?.innerHTML).toContain('Rich');
+    expect(host.querySelector('.toast-main')).toBeNull();
+    expect(host.querySelector('.toast-icon')).toBeNull();
+    expect(host.querySelector('.msg')).toBeNull();
+  });
 });

@@ -46,6 +46,15 @@ export class AppToasterService {
     return this.add(message, 'warning', this.resolveDuration(durationMs));
   }
 
+  /**
+   * Show a toast whose body is custom HTML inside the usual toast chrome (animations, close button).
+   * The string is bound with `[innerHTML]` and sanitized by Angular like any template HTML.
+   * Uses the `default` variant. Omit `durationMs` to use `<app-toaster [duration]>` (or {@link DEFAULT_TOAST_DURATION_MS}). `0` = stay until dismissed.
+   */
+  custom(html: string, durationMs?: number): string {
+    return this.addHtml(html, 'default', this.resolveDuration(durationMs));
+  }
+
   /** Stays until dismissed unless you pass a positive `durationMs` (does not use `[duration]` or {@link DEFAULT_TOAST_DURATION_MS}). */
   loading(message: string, durationMs?: number): string {
     const ms = durationMs !== undefined ? durationMs : 0;
@@ -74,6 +83,15 @@ export class AppToasterService {
   private add(message: string, variant: ToastVariant, durationMs: number): string {
     const id = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
     this._toasts.update((list) => [...list, { id, message, variant }]);
+    if (durationMs > 0) {
+      globalThis.setTimeout(() => this.dismiss(id), durationMs);
+    }
+    return id;
+  }
+
+  private addHtml(html: string, variant: ToastVariant, durationMs: number): string {
+    const id = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
+    this._toasts.update((list) => [...list, { id, message: '', variant, html }]);
     if (durationMs > 0) {
       globalThis.setTimeout(() => this.dismiss(id), durationMs);
     }

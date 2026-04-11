@@ -72,6 +72,16 @@ export class App {
     });
   }
 
+  protected showCustomToast(): void {
+    this.toaster.custom(`
+      <div>Go check my website:
+        <a href="https://marcodefalco.dev" target="_blank" rel="noopener noreferrer" class="hover:underline italic text-orange-600 dark:text-orange-400">
+          marcodefalco.dev
+        </a>
+      </div>
+    `);
+  }
+
   protected toggleRichColors(): void {
     this.richColors.set(!this.richColors());
   }

@@ -24,6 +24,8 @@ export interface ToasterItem {
   readonly id: string;
   readonly message: string;
   readonly variant: ToastVariant;
+  /** When set, replaces the default icon + message; body is `.toast-custom` only (no `.toast-main`), still sanitized by Angular. */
+  readonly html?: string;
 }
 
 /** Labels for `AppToasterService.promise` (loading vs settled states). */
