@@ -34,7 +34,7 @@ export type ToasterIcons = {
 
 /**
  * Second argument for `show` / `success` / `error` / `info` / `warning` / `custom` / `loading`.
- * Not used by `AppToasterService.promise()`.
+ * Not used by `AppToasterService.promise()` (that API uses {@link ToastPromiseLabels}).
  */
 export interface ToastOptions {
   /** Omit to use `<app-toaster [duration]>` (or the library default). `0` = persist until dismissed (except `loading`, which defaults to `0` when omitted). */
@@ -57,9 +57,12 @@ export interface ToasterItem {
   readonly icon?: Type<unknown> | null;
 }
 
-/** Labels for `AppToasterService.promise` (loading vs settled states). */
-export interface ToastPromiseLabels {
+/**
+ * Labels for `AppToasterService.promise` (loading vs settled states).
+ * `success` / `error` may be static strings or functions that receive the settled value / rejection reason.
+ */
+export interface ToastPromiseLabels<T = unknown> {
   readonly loading: string;
-  readonly success: string;
-  readonly error: string;
+  readonly success: string | ((data: T) => string);
+  readonly error: string | ((reason: unknown) => string);
 }

@@ -129,16 +129,20 @@ export class AppToasterService {
    * @param labels The labels for the loading, success, and error states.
    * @returns The promise (fulfillment/rejection preserved for callers).
    */
-  promise<T>(userPromise: PromiseLike<T>, labels: ToastPromiseLabels): Promise<T> {
+  promise<T>(userPromise: PromiseLike<T>, labels: ToastPromiseLabels<T>): Promise<T> {
     const loadingId = this.loading(labels.loading);
     const settledDurationMs = this.resolveDuration(undefined);
     return Promise.resolve(userPromise).then(
       (value) => {
-        this.updateToast(loadingId, labels.success, 'success', settledDurationMs);
+        const message =
+          typeof labels.success === 'function' ? labels.success(value) : labels.success;
+        this.updateToast(loadingId, message, 'success', settledDurationMs);
         return value;
       },
       (reason: unknown) => {
-        this.updateToast(loadingId, labels.error, 'error', settledDurationMs);
+        const message =
+          typeof labels.error === 'function' ? labels.error(reason) : labels.error;
+        this.updateToast(loadingId, message, 'error', settledDurationMs);
         throw reason;
       },
     );

@@ -48,30 +48,30 @@ export class App {
   }
 
   protected showPromiseToast(): void {
-    const myPromise = new Promise<{ name: string }>((resolve) => {
+    const myPromise = new Promise<{ message: string }>((resolve) => {
       setTimeout(() => {
-        resolve({ name: 'Promise resolved' });
+        resolve({ message: 'Better-toast rendered successfully' });
       }, 3000);
     });
 
     this.toaster.promise(myPromise, {
       loading: 'Loading…',
-      success: 'Promise resolved',
+      success: (data) => `${data.message}`,
       error: 'Promise rejected',
     });
   }
 
   protected showErrorPromiseToast(): void {
-    const myPromise = new Promise<{ name: string }>((reject) => {
+    const myPromise = new Promise<{ name: string }>((_resolve, reject) => {
       setTimeout(() => {
-        reject({ name: 'Promise rejected' });
+        reject({ message: 'Better-toast rendered with an error' });
       }, 3000);
     });
 
     this.toaster.promise(myPromise, {
       loading: 'Loading…',
       success: 'Promise resolved',
-      error: 'Promise rejected',
+      error: (reason: unknown) => `${(reason as { message: string }).message}`,
     });
   }
 
