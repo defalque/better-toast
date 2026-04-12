@@ -1,6 +1,10 @@
 /* Keep Tailwind source detection scoped to this demo app in the workspace. */
 @import 'tailwindcss' source('./');
 
+html {
+  scrollbar-gutter: stable;
+}
+
 /* Monochrome syntax (black / gray only) — no separate hljs theme imports */
 .toast-demo-snippet code.hljs {
   background: transparent !important;

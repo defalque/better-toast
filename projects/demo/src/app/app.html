@@ -2,14 +2,14 @@
   class="grid place-items-center min-h-screen bg-white dark:bg-zinc-950 p-6 text-zinc-900 dark:text-zinc-100"
 >
   <div class="w-full max-w-2xl space-y-12">
-    <header class="space-y-1 text-center">
+    <header class="space-y-1 text-left">
       <h1 class="text-4xl font-semibold tracking-tight">Better Toast</h1>
     </header>
 
     <div class="grid gap-4">
       <div>
         <h2 class="text-lg font-semibold tracking-tight">Types</h2>
-        <p class="text-sm text-zinc-700 dark:text-zinc-400">
+        <p class="text-sm text-zinc-700 dark:text-zinc-300">
           You can customize the type of toast you want to render, and pass an options object as the
           second argument.
         </p>
@@ -53,16 +53,16 @@
         <button
           type="button"
           class="border border-zinc-200 dark:border-zinc-800 py-2 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
-          (click)="selectedToastDemo.set('custom'); showCustomToast()"
+          (click)="selectedToastDemo.set('loading'); showLoadingToast()"
         >
-          Custom
+          Loading
         </button>
         <button
           type="button"
           class="border border-zinc-200 dark:border-zinc-800 py-2 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
-          (click)="selectedToastDemo.set('loading'); showLoadingToast()"
+          (click)="selectedToastDemo.set('custom'); showCustomToast()"
         >
-          Loading
+          Custom
         </button>
         <button
           type="button"
@@ -80,7 +80,7 @@
     <div class="grid gap-4">
       <div>
         <h2 class="text-lg font-semibold tracking-tight">Position</h2>
-        <p class="text-sm text-zinc-700 dark:text-zinc-400">
+        <p class="text-sm text-zinc-700 dark:text-zinc-300">
           Enter and exit animations change depending on the position.
         </p>
       </div>
@@ -141,16 +141,16 @@
         </button>
       </div>
       <code
-        class="text-[0.8rem] text-zinc-700 dark:text-zinc-100 p-4 bg-zinc-100 dark:bg-zinc-900 rounded-md"
+        class="text-xs text-zinc-700 dark:text-zinc-100 p-4 bg-zinc-100 dark:bg-zinc-900 rounded-md"
       >
-        &lt;app-toaster position="{{ toasterPosition() }}" /&gt;
+        &lt;<strong>app-toaster</strong> position="{{ toasterPosition() }}" /&gt;
       </code>
     </div>
 
     <div class="grid gap-4">
       <div>
         <h2 class="text-lg font-semibold tracking-tight">Rich Colors</h2>
-        <p class="text-sm text-zinc-700 dark:text-zinc-400">
+        <p class="text-sm text-zinc-700 dark:text-zinc-300">
           When true, success/error/info/warning use semantic background and border colors.
         </p>
       </div>

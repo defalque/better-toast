@@ -43,7 +43,7 @@ export class App {
   protected readonly selectedToastDemo = signal<ToastDemoKind>('default');
 
   protected readonly toastDemoSnippets: Record<ToastDemoKind, string> = {
-    default: `this.toaster.show('Default toast — neutral message. A very long message that should wrap.');`,
+    default: `this.toaster.show('Default toast. A very super long message that should wrap.');`,
     success: `this.toaster.success('Saved successfully', { icon: CustomIcon });`,
     error: `this.toaster.error('Something went wrong', { icon: null });`,
     info: `this.toaster.info('Tip: you can stack multiple toasts');`,
@@ -80,7 +80,7 @@ export class App {
   });
 
   protected showDefaultToast(): void {
-    this.toaster.show('Default toast — neutral message. A very long message that should wrap.');
+    this.toaster.show('Default toast. A very super long message that should wrap.');
   }
 
   protected showSuccessToast(): void {
@@ -88,7 +88,7 @@ export class App {
   }
 
   protected showErrorToast(): void {
-    this.toaster.error('Something went wrong');
+    this.toaster.error('Something went wrong', { icon: null });
   }
 
   protected showInfoToast(): void {
