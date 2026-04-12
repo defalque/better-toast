@@ -6,6 +6,7 @@ export { AppToaster } from './lib/app-toaster';
 export { AppToasterService, DEFAULT_TOAST_DURATION_MS } from './lib/app-toaster.service';
 export type {
   ToastPromiseLabels,
+  ToastOptions,
   ToasterIcons,
   ToastVariant,
   ToasterItem,

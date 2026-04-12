@@ -25,15 +25,27 @@ export type ToastVariant = (typeof TOAST_VARIANTS)[number];
 /**
  * Per-variant icon overrides for `<app-toaster [icons]>`.
  *
- * Each value must be an **Angular standalone component** class you import in the host
- * (e.g. `success: MySuccessIcon`). The component is rendered with `NgComponentOutlet`, so it
- * cannot rely on non-standalone dependencies unless you import them in that component.
- *
- * Pass only the keys you want to override; omitted keys keep the library defaults.
+ * Each value is either an **Angular standalone component** class (rendered with `NgComponentOutlet`),
+ * or **`null`** to show no icon for that variant. Omitted keys keep the library defaults.
  */
 export type ToasterIcons = {
-  [K in Exclude<ToastVariant, 'default'>]?: Type<unknown>;
+  [K in Exclude<ToastVariant, 'default'>]?: Type<unknown> | null;
 };
+
+/**
+ * Second argument for `show` / `success` / `error` / `info` / `warning` / `custom` / `loading`.
+ * Not used by `AppToasterService.promise()`.
+ */
+export interface ToastOptions {
+  /** Omit to use `<app-toaster [duration]>` (or the library default). `0` = persist until dismissed (except `loading`, which defaults to `0` when omitted). */
+  durationMs?: number;
+  /**
+   * `undefined` = use global `[icons]` on `<app-toaster>` or built-in SVGs.
+   * `null` = no icon for this toast.
+   * Otherwise a standalone component class rendered like `[icons]` overrides.
+   */
+  icon?: Type<unknown> | null;
+}
 
 export interface ToasterItem {
   readonly id: string;
@@ -41,6 +53,8 @@ export interface ToasterItem {
   readonly variant: ToastVariant;
   /** When set, replaces the default icon + message; body is `.toast-custom` only (no `.toast-main`), still sanitized by Angular. */
   readonly html?: string;
+  /** Per-toast override; see {@link ToastOptions.icon}. */
+  readonly icon?: Type<unknown> | null;
 }
 
 /** Labels for `AppToasterService.promise` (loading vs settled states). */

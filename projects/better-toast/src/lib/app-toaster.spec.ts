@@ -7,6 +7,7 @@ import { AppToasterService } from './app-toaster.service';
 
 @Component({
   selector: 'bt-spec-success-icon',
+  standalone: true,
   template: '<span class="bt-spec-custom-success-icon" aria-hidden="true">★</span>',
 })
 class SpecSuccessIcon {}
@@ -17,7 +18,7 @@ describe('better-toast', () => {
     const toaster = TestBed.inject(AppToasterService);
 
     expect(toaster.toasts().length).toBe(0);
-    toaster.show('Hello', 0);
+    toaster.show('Hello', { durationMs: 0 });
     expect(toaster.toasts().length).toBe(1);
     expect(toaster.toasts()[0].message).toBe('Hello');
     expect(toaster.toasts()[0].variant).toBe('default');
@@ -108,11 +109,54 @@ describe('better-toast', () => {
     await fixture.whenStable();
 
     const toaster = TestBed.inject(AppToasterService);
-    toaster.success('Custom icon', 0);
+    toaster.success('Custom icon', { durationMs: 0 });
     fixture.detectChanges();
     await fixture.whenStable();
 
     expect(fixture.nativeElement.querySelector('.bt-spec-custom-success-icon')).toBeTruthy();
+  });
+
+  it('renders a per-toast icon from options.icon without global [icons]', async () => {
+    TestBed.configureTestingModule({ imports: [AppToaster, SpecSuccessIcon] });
+    const fixture = TestBed.createComponent(AppToaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(AppToasterService);
+    toaster.success('Per-toast icon', { durationMs: 0, icon: SpecSuccessIcon });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.bt-spec-custom-success-icon')).toBeTruthy();
+  });
+
+  it('hides the icon when options.icon is null', async () => {
+    TestBed.configureTestingModule({ imports: [AppToaster] });
+    const fixture = TestBed.createComponent(AppToaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(AppToasterService);
+    toaster.success('No icon', { durationMs: 0, icon: null });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.toast-icon')).toBeNull();
+  });
+
+  it('hides the icon when [icons] sets that variant to null', async () => {
+    TestBed.configureTestingModule({ imports: [AppToaster] });
+    const fixture = TestBed.createComponent(AppToaster);
+    fixture.componentRef.setInput('icons', { success: null });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(AppToasterService);
+    toaster.success('No global icon', { durationMs: 0 });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.toast-icon')).toBeNull();
   });
 
   it('custom() stores html and omits the default icon/message branch', async () => {
@@ -122,7 +166,7 @@ describe('better-toast', () => {
     await fixture.whenStable();
 
     const toaster = TestBed.inject(AppToasterService);
-    toaster.custom('<p class="x">Rich</p>', 0);
+    toaster.custom('<p class="x">Rich</p>', { durationMs: 0 });
     fixture.detectChanges();
     await fixture.whenStable();
 

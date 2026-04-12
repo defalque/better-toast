@@ -1,6 +1,6 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, type Type } from '@angular/core';
 
-import type { ToastPromiseLabels, ToastVariant, ToasterItem } from './toaster.types';
+import type { ToastPromiseLabels, ToastOptions, ToastVariant, ToasterItem } from './toaster.types';
 
 /** Fallback when `<app-toaster [duration]>` is absent and a helper omits `durationMs`. */
 export const DEFAULT_TOAST_DURATION_MS = 4000;
@@ -24,46 +24,110 @@ export class AppToasterService {
   }
 
   /**
-   * Show a neutral toast. Omit `durationMs` to use the value from `<app-toaster [duration]>` (or {@link DEFAULT_TOAST_DURATION_MS} if the toaster is not mounted). `0` = stay until dismissed.
+   * Display a neutral (default) toast notification.
+   *
+   * If `options` or `options.durationMs` are not provided, the toast will use the duration value from `<app-toaster [duration]>`.
+   * If no `[duration]` is set in the toaster, it falls back to {@link DEFAULT_TOAST_DURATION_MS}.
+   *
+   * @param message The toast content.
+   * @param options Optional configuration (icon, custom duration, etc).
+   * @returns The toast ID, useful for programmatic dismissal.
    */
-  show(message: string, durationMs?: number): string {
-    return this.add(message, 'default', this.resolveDuration(durationMs));
+  show(message: string, options?: ToastOptions): string {
+    return this.add(message, 'default', this.resolveDuration(options?.durationMs), options?.icon);
   }
 
-  success(message: string, durationMs?: number): string {
-    return this.add(message, 'success', this.resolveDuration(durationMs));
+  /**
+   * Display a success toast notification.
+   *
+   * If `options` or `options.durationMs` are not provided, the toast will use the duration value from `<app-toaster [duration]>`.
+   * If no `[duration]` is set in the toaster, it falls back to {@link DEFAULT_TOAST_DURATION_MS}.
+   *
+   * @param message The toast content.
+   * @param options Optional configuration (icon, custom duration, etc).
+   * @returns The toast ID, useful for programmatic dismissal.
+   */
+  success(message: string, options?: ToastOptions): string {
+    return this.add(message, 'success', this.resolveDuration(options?.durationMs), options?.icon);
   }
 
-  error(message: string, durationMs?: number): string {
-    return this.add(message, 'error', this.resolveDuration(durationMs));
+  /**
+   * Display an error toast notification.
+   *
+   * If `options` or `options.durationMs` are not provided, the toast will use the duration value from `<app-toaster [duration]>`.
+   * If no `[duration]` is set in the toaster, it falls back to {@link DEFAULT_TOAST_DURATION_MS}.
+   *
+   * @param message The toast content.
+   * @param options Optional configuration (icon, custom duration, etc).
+   * @returns The toast ID, useful for programmatic dismissal.
+   */
+  error(message: string, options?: ToastOptions): string {
+    return this.add(message, 'error', this.resolveDuration(options?.durationMs), options?.icon);
   }
 
-  info(message: string, durationMs?: number): string {
-    return this.add(message, 'info', this.resolveDuration(durationMs));
+  /**
+   * Display an info toast notification.
+   *
+   * If `options` or `options.durationMs` are not provided, the toast will use the duration value from `<app-toaster [duration]>`.
+   * If no `[duration]` is set in the toaster, it falls back to {@link DEFAULT_TOAST_DURATION_MS}.
+   *
+   * @param message The toast content.
+   * @param options Optional configuration (icon, custom duration, etc).
+   * @returns The toast ID, useful for programmatic dismissal.
+   */
+  info(message: string, options?: ToastOptions): string {
+    return this.add(message, 'info', this.resolveDuration(options?.durationMs), options?.icon);
   }
 
-  warning(message: string, durationMs?: number): string {
-    return this.add(message, 'warning', this.resolveDuration(durationMs));
+  /**
+   * Display a warning toast notification.
+   *
+   * If `options` or `options.durationMs` are not provided, the toast will use the duration value from `<app-toaster [duration]>`.
+   * If no `[duration]` is set in the toaster, it falls back to {@link DEFAULT_TOAST_DURATION_MS}.
+   *
+   * @param message The toast content.
+   * @param options Optional configuration (icon, custom duration, etc).
+   * @returns The toast ID, useful for programmatic dismissal.
+   */
+  warning(message: string, options?: ToastOptions): string {
+    return this.add(message, 'warning', this.resolveDuration(options?.durationMs), options?.icon);
   }
 
   /**
    * Show a toast whose body is custom HTML inside the usual toast chrome (animations, close button).
    * The string is bound with `[innerHTML]` and sanitized by Angular like any template HTML.
-   * Uses the `default` variant. Omit `durationMs` to use `<app-toaster [duration]>` (or {@link DEFAULT_TOAST_DURATION_MS}). `0` = stay until dismissed.
+   * Uses the `default` variant. Omit `durationMs` to use `<app-toaster [duration]>` (or {@link DEFAULT_TOAST_DURATION_MS}). `durationMs: 0` = stay until dismissed.
+   *
+   * @param html The custom HTML content.
+   * @param options Optional configuration (icon, custom duration, etc).
+   * @returns The toast ID, useful for programmatic dismissal.
    */
-  custom(html: string, durationMs?: number): string {
-    return this.addHtml(html, 'default', this.resolveDuration(durationMs));
+  custom(html: string, options?: ToastOptions): string {
+    return this.addHtml(html, 'default', this.resolveDuration(options?.durationMs), options?.icon);
   }
 
-  /** Stays until dismissed unless you pass a positive `durationMs` (does not use `[duration]` or {@link DEFAULT_TOAST_DURATION_MS}). */
-  loading(message: string, durationMs?: number): string {
-    const ms = durationMs !== undefined ? durationMs : 0;
-    return this.add(message, 'loading', ms);
+  /**
+   * Display a loading toast notification.
+   *
+   * If `options` or `options.durationMs` are not provided, the toast will use the duration value from `<app-toaster [duration]>`.
+   * If no `[duration]` is set in the toaster, it falls back to {@link DEFAULT_TOAST_DURATION_MS}.
+   *
+   * @param message The toast content.
+   * @param options Optional configuration (icon, custom duration, etc).
+   * @returns The toast ID, useful for programmatic dismissal.
+   */
+  loading(message: string, options?: ToastOptions): string {
+    const ms = options?.durationMs !== undefined ? options.durationMs : 0;
+    return this.add(message, 'loading', ms, options?.icon);
   }
 
   /**
    * Shows one toast: loading until `userPromise` settles, then the same toast updates to success or error.
    * Returns the same promise (fulfillment/rejection preserved for callers).
+   *
+   * @param userPromise The promise to display.
+   * @param labels The labels for the loading, success, and error states.
+   * @returns The promise (fulfillment/rejection preserved for callers).
    */
   promise<T>(userPromise: PromiseLike<T>, labels: ToastPromiseLabels): Promise<T> {
     const loadingId = this.loading(labels.loading);
@@ -80,18 +144,32 @@ export class AppToasterService {
     );
   }
 
-  private add(message: string, variant: ToastVariant, durationMs: number): string {
+  private add(
+    message: string,
+    variant: ToastVariant,
+    durationMs: number,
+    icon?: Type<unknown> | null,
+  ): string {
     const id = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
-    this._toasts.update((list) => [...list, { id, message, variant }]);
+    const item: ToasterItem =
+      icon !== undefined ? { id, message, variant, icon } : { id, message, variant };
+    this._toasts.update((list) => [...list, item]);
     if (durationMs > 0) {
       globalThis.setTimeout(() => this.dismiss(id), durationMs);
     }
     return id;
   }
 
-  private addHtml(html: string, variant: ToastVariant, durationMs: number): string {
+  private addHtml(
+    html: string,
+    variant: ToastVariant,
+    durationMs: number,
+    icon?: Type<unknown> | null,
+  ): string {
     const id = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
-    this._toasts.update((list) => [...list, { id, message: '', variant, html }]);
+    const base: ToasterItem = { id, message: '', variant, html };
+    const item: ToasterItem = icon !== undefined ? { ...base, icon } : base;
+    this._toasts.update((list) => [...list, item]);
     if (durationMs > 0) {
       globalThis.setTimeout(() => this.dismiss(id), durationMs);
     }
@@ -119,10 +197,18 @@ export class AppToasterService {
     }
   }
 
+  /**
+   * Dismiss a toast notification.
+   *
+   * @param id The toast ID.
+   */
   dismiss(id: string): void {
     this._toasts.update((list) => list.filter((t) => t.id !== id));
   }
 
+  /**
+   * Clear all toast notifications.
+   */
   clear(): void {
     this._toasts.set([]);
   }

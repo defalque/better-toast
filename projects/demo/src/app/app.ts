@@ -8,6 +8,7 @@ import {
 } from 'better-toast';
 import { CustomIcon } from './icons/custom-icon/custom-icon';
 import { CustomWarning } from './icons/custom-warning/custom-warning';
+import { CustomLoading } from './icons/custom-loading/custom-loading';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +28,7 @@ export class App {
   }
 
   protected showSuccessToast(): void {
-    this.toaster.success('Saved successfully');
+    this.toaster.success('Saved successfully', { icon: CustomIcon });
   }
 
   protected showErrorToast(): void {
@@ -49,7 +50,7 @@ export class App {
   protected showPromiseToast(): void {
     const myPromise = new Promise<{ name: string }>((resolve) => {
       setTimeout(() => {
-        resolve({ name: 'My toast' });
+        resolve({ name: 'Promise resolved' });
       }, 3000);
     });
 
@@ -61,9 +62,9 @@ export class App {
   }
 
   protected showErrorPromiseToast(): void {
-    const myPromise = new Promise<{ name: string }>((resolve, reject) => {
+    const myPromise = new Promise<{ name: string }>((reject) => {
       setTimeout(() => {
-        reject({ name: 'My toast' });
+        reject({ name: 'Promise rejected' });
       }, 3000);
     });
 
@@ -93,8 +94,8 @@ export class App {
   }
 
   protected readonly toastIcons = {
-    success: CustomIcon,
-    warning: CustomWarning,
+    error: null,
+    loading: CustomLoading,
   };
 
   protected onPositionChange(event: Event): void {
