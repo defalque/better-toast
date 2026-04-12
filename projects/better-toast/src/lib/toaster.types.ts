@@ -1,3 +1,5 @@
+import type { Type } from '@angular/core';
+
 export const TOASTER_POSITIONS = [
   'top-left',
   'top-center',
@@ -19,6 +21,19 @@ export const TOAST_VARIANTS = [
 ] as const;
 
 export type ToastVariant = (typeof TOAST_VARIANTS)[number];
+
+/**
+ * Per-variant icon overrides for `<app-toaster [icons]>`.
+ *
+ * Each value must be an **Angular standalone component** class you import in the host
+ * (e.g. `success: MySuccessIcon`). The component is rendered with `NgComponentOutlet`, so it
+ * cannot rely on non-standalone dependencies unless you import them in that component.
+ *
+ * Pass only the keys you want to override; omitted keys keep the library defaults.
+ */
+export type ToasterIcons = {
+  [K in Exclude<ToastVariant, 'default'>]?: Type<unknown>;
+};
 
 export interface ToasterItem {
   readonly id: string;

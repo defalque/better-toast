@@ -1,8 +1,15 @@
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
 
 import { AppToaster } from './app-toaster';
 import { AppToasterService } from './app-toaster.service';
+
+@Component({
+  selector: 'bt-spec-success-icon',
+  template: '<span class="bt-spec-custom-success-icon" aria-hidden="true">★</span>',
+})
+class SpecSuccessIcon {}
 
 describe('better-toast', () => {
   it('shows and dismisses a toast via the service', () => {
@@ -91,6 +98,21 @@ describe('better-toast', () => {
 
     toaster.loading('wait');
     expect(toaster.toasts()[2].variant).toBe('loading');
+  });
+
+  it('renders a custom success icon component when icons.success is set', async () => {
+    TestBed.configureTestingModule({ imports: [AppToaster, SpecSuccessIcon] });
+    const fixture = TestBed.createComponent(AppToaster);
+    fixture.componentRef.setInput('icons', { success: SpecSuccessIcon });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(AppToasterService);
+    toaster.success('Custom icon', 0);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.bt-spec-custom-success-icon')).toBeTruthy();
   });
 
   it('custom() stores html and omits the default icon/message branch', async () => {

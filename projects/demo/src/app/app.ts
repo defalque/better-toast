@@ -6,6 +6,8 @@ import {
   TOASTER_POSITIONS,
   type ToasterPosition,
 } from 'better-toast';
+import { CustomIcon } from './icons/custom-icon/custom-icon';
+import { CustomWarning } from './icons/custom-warning/custom-warning';
 
 @Component({
   selector: 'app-root',
@@ -74,7 +76,7 @@ export class App {
 
   protected showCustomToast(): void {
     this.toaster.custom(`
-      <div>Go check my website:
+      <div class="font-medium">Go check my website:
         <a href="https://marcodefalco.dev" target="_blank" rel="noopener noreferrer" class="hover:underline italic text-orange-600 dark:text-orange-400">
           marcodefalco.dev
         </a>
@@ -89,6 +91,11 @@ export class App {
   protected clearToasts(): void {
     this.toaster.clear();
   }
+
+  protected readonly toastIcons = {
+    success: CustomIcon,
+    warning: CustomWarning,
+  };
 
   protected onPositionChange(event: Event): void {
     const select = event.target as HTMLSelectElement;
