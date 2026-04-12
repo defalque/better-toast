@@ -1,2 +1,107 @@
 /* Keep Tailwind source detection scoped to this demo app in the workspace. */
 @import 'tailwindcss' source('./');
+
+/* Monochrome syntax (black / gray only) — no separate hljs theme imports */
+.toast-demo-snippet code.hljs {
+  background: transparent !important;
+  padding: 0;
+  color: #52525b; /* zinc-600 */
+}
+
+.toast-demo-snippet .hljs-keyword,
+.toast-demo-snippet .hljs-selector-tag,
+.toast-demo-snippet .hljs-section,
+.toast-demo-snippet .hljs-name,
+.toast-demo-snippet .hljs-built_in,
+.toast-demo-snippet .hljs-type {
+  color: #18181b; /* zinc-900 */
+  font-weight: 600;
+}
+
+.toast-demo-snippet .hljs-title,
+.toast-demo-snippet .hljs-function,
+.toast-demo-snippet .hljs-title.function_ {
+  color: #27272a; /* zinc-800 */
+  font-weight: 600;
+}
+
+.toast-demo-snippet .hljs-string,
+.toast-demo-snippet .hljs-attr,
+.toast-demo-snippet .hljs-template-variable,
+.toast-demo-snippet .hljs-variable,
+.toast-demo-snippet .hljs-property,
+.toast-demo-snippet .hljs-attribute {
+  color: #3f3f46; /* zinc-700 */
+}
+
+.toast-demo-snippet .hljs-number,
+.toast-demo-snippet .hljs-literal,
+.toast-demo-snippet .hljs-regexp,
+.toast-demo-snippet .hljs-symbol {
+  color: #71717a; /* zinc-500 */
+}
+
+.toast-demo-snippet .hljs-comment,
+.toast-demo-snippet .hljs-quote,
+.toast-demo-snippet .hljs-meta,
+.toast-demo-snippet .hljs-doctag {
+  color: #a1a1aa; /* zinc-400 */
+  font-style: italic;
+}
+
+.toast-demo-snippet .hljs-subst,
+.toast-demo-snippet .hljs-params {
+  color: #52525b;
+}
+
+@media (prefers-color-scheme: dark) {
+  .toast-demo-snippet code.hljs {
+    color: #a1a1aa; /* zinc-400 */
+  }
+
+  .toast-demo-snippet .hljs-keyword,
+  .toast-demo-snippet .hljs-selector-tag,
+  .toast-demo-snippet .hljs-section,
+  .toast-demo-snippet .hljs-name,
+  .toast-demo-snippet .hljs-built_in,
+  .toast-demo-snippet .hljs-type {
+    color: #fafafa; /* zinc-50 */
+    font-weight: 600;
+  }
+
+  .toast-demo-snippet .hljs-title,
+  .toast-demo-snippet .hljs-function,
+  .toast-demo-snippet .hljs-title.function_ {
+    color: #e4e4e7; /* zinc-200 */
+    font-weight: 600;
+  }
+
+  .toast-demo-snippet .hljs-string,
+  .toast-demo-snippet .hljs-attr,
+  .toast-demo-snippet .hljs-template-variable,
+  .toast-demo-snippet .hljs-variable,
+  .toast-demo-snippet .hljs-property,
+  .toast-demo-snippet .hljs-attribute {
+    color: #d4d4d8; /* zinc-300 */
+  }
+
+  .toast-demo-snippet .hljs-number,
+  .toast-demo-snippet .hljs-literal,
+  .toast-demo-snippet .hljs-regexp,
+  .toast-demo-snippet .hljs-symbol {
+    color: #a1a1aa;
+  }
+
+  .toast-demo-snippet .hljs-comment,
+  .toast-demo-snippet .hljs-quote,
+  .toast-demo-snippet .hljs-meta,
+  .toast-demo-snippet .hljs-doctag {
+    color: #71717a; /* zinc-500 */
+    font-style: italic;
+  }
+
+  .toast-demo-snippet .hljs-subst,
+  .toast-demo-snippet .hljs-params {
+    color: #a1a1aa;
+  }
+}

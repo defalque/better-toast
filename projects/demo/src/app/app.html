@@ -1,108 +1,167 @@
 <main
-  class="grid place-items-center min-h-screen bg-white dark:bg-zinc-900 p-6 text-zinc-900 dark:text-zinc-100"
+  class="grid place-items-center min-h-screen bg-white dark:bg-zinc-950 p-6 text-zinc-900 dark:text-zinc-100"
 >
-  <div class="w-full max-w-xl space-y-6">
+  <div class="w-full max-w-2xl space-y-12">
     <header class="space-y-1 text-center">
-      <h1 class="text-xl font-semibold tracking-tight">better-toast demo</h1>
-      <p class="text-sm text-zinc-600 dark:text-zinc-400">
-        Try each variant and move the stack with the position control.
-      </p>
+      <h1 class="text-4xl font-semibold tracking-tight">Better Toast</h1>
     </header>
 
-    <div class="flex flex-wrap items-center justify-center gap-2">
-      <label class="sr-only" for="toaster-position">Toast position</label>
-      <select
-        id="toaster-position"
-        class="cursor-pointer border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 py-2 px-3 text-sm rounded-md"
-        [value]="toasterPosition()"
-        (change)="onPositionChange($event)"
-      >
-        @for (p of positions; track p) {
-          <option [value]="p">{{ p }}</option>
-        }
-      </select>
-      <button
-        type="button"
-        class="border border-zinc-300 dark:border-zinc-600 py-2 px-3 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800"
-        (click)="clearToasts()"
-      >
-        Clear all
-      </button>
+    <div class="grid gap-4">
+      <div>
+        <h2 class="text-lg font-semibold tracking-tight">Types</h2>
+        <p class="text-sm text-zinc-700 dark:text-zinc-400">
+          You can customize the type of toast you want to render, and pass an options object as the
+          second argument.
+        </p>
+      </div>
+      <div class="grid grid-cols-8 gap-2 items-center justify-center">
+        <button
+          type="button"
+          class="border border-zinc-200 dark:border-zinc-800 text-sm py-2 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          (click)="selectedToastDemo.set('default'); showDefaultToast()"
+        >
+          Default
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 dark:border-zinc-800 py-2 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          (click)="selectedToastDemo.set('success'); showSuccessToast()"
+        >
+          Success
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 dark:border-zinc-800 py-2 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          (click)="selectedToastDemo.set('error'); showErrorToast()"
+        >
+          Error
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 dark:border-zinc-800 py-2 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          (click)="selectedToastDemo.set('info'); showInfoToast()"
+        >
+          Info
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 dark:border-zinc-800 py-2 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          (click)="selectedToastDemo.set('warning'); showWarningToast()"
+        >
+          Warning
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 dark:border-zinc-800 py-2 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          (click)="selectedToastDemo.set('custom'); showCustomToast()"
+        >
+          Custom
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 dark:border-zinc-800 py-2 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          (click)="selectedToastDemo.set('loading'); showLoadingToast()"
+        >
+          Loading
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 dark:border-zinc-800 py-2 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          (click)="selectedToastDemo.set('promise'); showPromiseToast()"
+        >
+          Promise
+        </button>
+      </div>
+      <pre
+        class="toast-demo-snippet text-xs p-4 bg-zinc-100 dark:bg-zinc-900 rounded-md overflow-x-auto"
+      ><code class="hljs font-mono text-xs whitespace-pre-wrap" [innerHTML]="highlightedToastDemo()"></code></pre>
     </div>
 
-    <div class="flex justify-center">
+    <div class="grid gap-4">
+      <div>
+        <h2 class="text-lg font-semibold tracking-tight">Position</h2>
+        <p class="text-sm text-zinc-700 dark:text-zinc-400">
+          Enter and exit animations change depending on the position.
+        </p>
+      </div>
+      <div class="grid grid-cols-3 gap-2">
+        <button
+          type="button"
+          class="border border-zinc-200 dark:border-zinc-800 py-2 px-3 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+          [class.bg-zinc-100]="toasterPosition() === 'top-left'"
+          [class.dark:bg-zinc-800]="toasterPosition() === 'top-left'"
+          (click)="toasterPosition.set('top-left')"
+        >
+          Top Left
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 dark:border-zinc-800 py-2 px-3 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+          [class.bg-zinc-100]="toasterPosition() === 'top-center'"
+          [class.dark:bg-zinc-800]="toasterPosition() === 'top-center'"
+          (click)="toasterPosition.set('top-center')"
+        >
+          Top Center
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 dark:border-zinc-800 py-2 px-3 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+          [class.bg-zinc-100]="toasterPosition() === 'top-right'"
+          [class.dark:bg-zinc-800]="toasterPosition() === 'top-right'"
+          (click)="toasterPosition.set('top-right')"
+        >
+          Top Right
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 dark:border-zinc-800 py-2 px-3 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+          [class.bg-zinc-100]="toasterPosition() === 'bottom-left'"
+          [class.dark:bg-zinc-800]="toasterPosition() === 'bottom-left'"
+          (click)="toasterPosition.set('bottom-left')"
+        >
+          Bottom Left
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 dark:border-zinc-800 py-2 px-3 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+          [class.bg-zinc-100]="toasterPosition() === 'bottom-center'"
+          [class.dark:bg-zinc-800]="toasterPosition() === 'bottom-center'"
+          (click)="toasterPosition.set('bottom-center')"
+        >
+          Bottom Center
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 dark:border-zinc-800 py-2 px-3 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+          [class.bg-zinc-100]="toasterPosition() === 'bottom-right'"
+          [class.dark:bg-zinc-800]="toasterPosition() === 'bottom-right'"
+          (click)="toasterPosition.set('bottom-right')"
+        >
+          Bottom Right
+        </button>
+      </div>
+      <code
+        class="text-[0.8rem] text-zinc-700 dark:text-zinc-100 p-4 bg-zinc-100 dark:bg-zinc-900 rounded-md"
+      >
+        &lt;app-toaster position="{{ toasterPosition() }}" /&gt;
+      </code>
+    </div>
+
+    <div class="grid gap-4">
+      <div>
+        <h2 class="text-lg font-semibold tracking-tight">Rich Colors</h2>
+        <p class="text-sm text-zinc-700 dark:text-zinc-400">
+          When true, success/error/info/warning use semantic background and border colors.
+        </p>
+      </div>
       <button
         type="button"
-        class="border border-zinc-300 dark:border-zinc-600 py-2 px-3 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800"
+        class="border border-zinc-200 dark:border-zinc-800 py-2 px-3 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
+        [class.bg-zinc-100]="richColors()"
+        [class.dark:bg-zinc-800]="richColors()"
         (click)="toggleRichColors()"
       >
-        Toggle Rich Colors ({{ richColors() ? 'On' : 'Off' }})
-      </button>
-    </div>
-
-    <div class="flex flex-wrap justify-center gap-2">
-      <button
-        type="button"
-        class="bg-zinc-700 text-white py-2 px-3 text-sm rounded-md hover:bg-zinc-800"
-        (click)="showDefaultToast()"
-      >
-        Default
-      </button>
-      <button
-        type="button"
-        class="bg-emerald-600 text-white py-2 px-3 text-sm rounded-md hover:bg-emerald-700"
-        (click)="showSuccessToast()"
-      >
-        Success
-      </button>
-      <button
-        type="button"
-        class="bg-red-600 text-white py-2 px-3 text-sm rounded-md hover:bg-red-700"
-        (click)="showErrorToast()"
-      >
-        Error
-      </button>
-      <button
-        type="button"
-        class="bg-sky-600 text-white py-2 px-3 text-sm rounded-md hover:bg-sky-700"
-        (click)="showInfoToast()"
-      >
-        Info
-      </button>
-      <button
-        type="button"
-        class="bg-amber-500 text-zinc-900 py-2 px-3 text-sm rounded-md hover:bg-amber-600"
-        (click)="showWarningToast()"
-      >
-        Warning
-      </button>
-      <button
-        type="button"
-        class="bg-violet-600 text-white py-2 px-3 text-sm rounded-md hover:bg-violet-700"
-        (click)="showLoadingToast()"
-      >
-        Loading
-      </button>
-      <button
-        type="button"
-        class="bg-purple-600 text-white py-2 px-3 text-sm rounded-md hover:bg-purple-700"
-        (click)="showPromiseToast()"
-      >
-        Success Promise
-      </button>
-      <button
-        type="button"
-        class="bg-purple-600 text-white py-2 px-3 text-sm rounded-md hover:bg-purple-700"
-        (click)="showErrorPromiseToast()"
-      >
-        Error Promise
-      </button>
-      <button
-        type="button"
-        class="bg-purple-600 text-white py-2 px-3 text-sm rounded-md hover:bg-purple-700"
-        (click)="showCustomToast()"
-      >
-        Custom
+        Rich Colors is <strong>{{ richColors() ? 'ON' : 'OFF' }}</strong>
       </button>
     </div>
   </div>
