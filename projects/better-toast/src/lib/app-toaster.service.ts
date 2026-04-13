@@ -1,6 +1,12 @@
 import { Injectable, signal } from '@angular/core';
 
-import type { ToastPromiseLabels, ToastOptions, ToastVariant, ToasterItem } from './toaster.types';
+import type {
+  ToastPromiseLabels,
+  ToastOptions,
+  ToastVariant,
+  ToasterDuration,
+  ToasterItem,
+} from './toaster.types';
 
 /** Fallback when `<app-toaster [duration]>` is absent and a helper omits `durationMs`. */
 export const DEFAULT_TOAST_DURATION_MS = 4000;
@@ -10,6 +16,17 @@ export const DEFAULT_TOAST_DURATION_MS = 4000;
  * (`0` is still treated as non-auto-dismiss for backward compatibility.)
  */
 export const TOAST_DURATION_MANUAL_DISMISS = Number.POSITIVE_INFINITY;
+
+/** Coerces {@link ToasterDuration} to ms (only the literal string `"Infinity"` for manual dismiss). */
+export function parseToasterDurationMs(value: ToasterDuration): number {
+  if (value === 'Infinity') {
+    return TOAST_DURATION_MANUAL_DISMISS;
+  }
+  if (Number.isNaN(value)) {
+    return DEFAULT_TOAST_DURATION_MS;
+  }
+  return value;
+}
 
 function shouldScheduleAutoDismiss(durationMs: number): boolean {
   return Number.isFinite(durationMs) && durationMs > 0;
@@ -33,8 +50,8 @@ export class AppToasterService {
     this.defaultDurationMs = Math.max(0, ms);
   }
 
-  private resolveDuration(durationMs: number | undefined): number {
-    return durationMs !== undefined ? durationMs : this.defaultDurationMs;
+  private resolveDuration(durationMs: ToasterDuration | undefined): number {
+    return durationMs !== undefined ? parseToasterDurationMs(durationMs) : this.defaultDurationMs;
   }
 
   /**
@@ -124,7 +141,8 @@ export class AppToasterService {
    * Display a loading toast notification.
    *
    * If `options.durationMs` is omitted, the toast stays until you dismiss or replace it (same as {@link TOAST_DURATION_MANUAL_DISMISS}).
-   * Passing `durationMs` schedules auto-dismiss for loading toasts like other variants.
+   * Passing a finite positive `durationMs` schedules auto-dismiss for loading toasts like other variants.
+   * The literal **`"Infinity"`** (or {@link TOAST_DURATION_MANUAL_DISMISS} / `0`) keeps the toast until dismissed.
    *
    * @param message The toast content.
    * @param options Optional configuration (icon, custom duration, etc).
@@ -132,7 +150,9 @@ export class AppToasterService {
    */
   loading(message: string, options?: ToastOptions): string {
     const ms =
-      options?.durationMs !== undefined ? options.durationMs : TOAST_DURATION_MANUAL_DISMISS;
+      options?.durationMs !== undefined
+        ? parseToasterDurationMs(options.durationMs)
+        : TOAST_DURATION_MANUAL_DISMISS;
     return this.add(message, 'loading', ms, options);
   }
 

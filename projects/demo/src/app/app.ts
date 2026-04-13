@@ -52,6 +52,9 @@ export class App {
   }
   protected readonly richColors = signal(false);
 
+  /** When false, toast rows omit the dismiss control (auto-dismiss / `dismiss()` still work). */
+  protected readonly closeButton = signal(true);
+
   protected readonly selectedToastDemo = signal<ToastDemoKind>('default');
 
   protected readonly toastDemoSnippets: Record<ToastDemoKind, string> = {
@@ -97,6 +100,7 @@ this.toaster.promise(myPromise, {
 
   protected showSuccessToast(): void {
     this.toaster.success('Saved successfully', {
+      /* durationMs: 'Infinity', */
       icon: CustomIcon,
       /* style: { background: 'green', color: 'blue' }, */
     });
@@ -158,6 +162,10 @@ this.toaster.promise(myPromise, {
 
   protected toggleRichColors(): void {
     this.richColors.set(!this.richColors());
+  }
+
+  protected toggleCloseButton(): void {
+    this.closeButton.set(!this.closeButton());
   }
 
   protected onDurationSliderInput(event: Event): void {

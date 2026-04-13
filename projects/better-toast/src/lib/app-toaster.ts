@@ -14,7 +14,7 @@ import {
 import {
   AppToasterService,
   DEFAULT_TOAST_DURATION_MS,
-  TOAST_DURATION_MANUAL_DISMISS,
+  parseToasterDurationMs,
 } from './app-toaster.service';
 import type {
   ToasterDuration,
@@ -26,17 +26,6 @@ import type {
 } from './toaster.types';
 
 const GAP = 16;
-
-/** Coerces `<app-toaster duration="Infinity">` / `[duration]` to milliseconds (only the literal string `"Infinity"`, not arbitrary strings). */
-function parseToasterDurationMs(value: ToasterDuration): number {
-  if (value === 'Infinity') {
-    return TOAST_DURATION_MANUAL_DISMISS;
-  }
-  if (Number.isNaN(value)) {
-    return DEFAULT_TOAST_DURATION_MS;
-  }
-  return value;
-}
 
 function mergeToastHostStyles(
   base: Record<string, string | number | undefined> | undefined,
@@ -152,22 +141,24 @@ function mergeToastHostStyles(
       </div>
     }
 
-    <button
-      type="button"
-      class="close-btn"
-      (click)="toaster.dismiss(toast()?.id ?? '')"
-      aria-label="Dismiss"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-        <path
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.75"
-          d="M6 18 18 6M6 6l12 12"
-        />
-      </svg>
-    </button>
+    @if (closeButton()) {
+      <button
+        type="button"
+        class="close-btn"
+        (click)="toaster.dismiss(toast()?.id ?? '')"
+        aria-label="Dismiss"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.75"
+            d="M6 18 18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+    }
   `,
   styleUrl: './toast-item.css',
 })
@@ -235,6 +226,9 @@ export class AppToastItem {
   /** Vertical stack offset in px; bound to `--offset` on the host for layout. */
   offset = input.required<number>();
 
+  /** When false, the dismiss control is not rendered (toasts may still auto-dismiss or be cleared via the service). */
+  closeButton = input(true);
+
   /** Emits the measured host height in px once after the first render so the parent can stack siblings. */
   heightChange = output<number>();
 
@@ -253,6 +247,7 @@ export class AppToastItem {
  * Use **`duration="Infinity"`** (that exact literal) or `[duration]="…"` with a number / {@link TOAST_DURATION_MANUAL_DISMISS} for persist until dismissed; `0` still works.
  * Pass `[icons]` with optional **standalone** components for `success` / `error` / `info` / `warning` / `loading`
  * to replace the default artwork, or **`null`** for a variant to hide its icon. Each component should render an **SVG** (import its class where you configure `[icons]`).
+ * Set `[closeButton]="false"` to hide the per-toast dismiss button.
  */
 @Component({
   selector: 'app-toaster',
@@ -275,6 +270,7 @@ export class AppToastItem {
             [variant]="toast.variant"
             [customIcons]="icons()"
             [offset]="offsets()[toast.id]"
+            [closeButton]="closeButton()"
             (heightChange)="onHeightChange(toast.id, $event)"
             [attr.data-position]="position()"
             [attr.data-rich-colors]="richColors()"
@@ -317,6 +313,9 @@ export class AppToaster {
    * Per-toast options passed to the service override on a per-key basis.
    */
   readonly toastOptions = input<ToasterToastOptions | undefined>();
+
+  /** When true (default), each toast shows a dismiss button; set to false to hide it. */
+  readonly closeButton = input(true);
 
   /** Measured height in px per toast id, updated when a toast item reports `heightChange`. */
   readonly heights = signal<Record<string, number>>({} as Record<string, number>);

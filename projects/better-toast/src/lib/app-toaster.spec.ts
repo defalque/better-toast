@@ -41,6 +41,20 @@ describe('better-toast', () => {
     }
   });
 
+  it('treats per-toast durationMs literal Infinity as manual dismiss', async () => {
+    vi.useFakeTimers();
+    try {
+      TestBed.configureTestingModule({ imports: [AppToaster] });
+      const toaster = TestBed.inject(AppToasterService);
+      toaster.show('Stay', { durationMs: 'Infinity' });
+      expect(toaster.toasts().length).toBe(1);
+      await vi.advanceTimersByTimeAsync(60_000);
+      expect(toaster.toasts().length).toBe(1);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it('uses the position input on the container', async () => {
     TestBed.configureTestingModule({ imports: [AppToaster] });
     const fixture = TestBed.createComponent(AppToaster);
@@ -161,6 +175,35 @@ describe('better-toast', () => {
     await fixture.whenStable();
 
     expect(fixture.nativeElement.querySelector('.bt-spec-custom-success-icon')).toBeTruthy();
+  });
+
+  it('hides the close button when closeButton is false', async () => {
+    TestBed.configureTestingModule({ imports: [AppToaster] });
+    const fixture = TestBed.createComponent(AppToaster);
+    fixture.componentRef.setInput('closeButton', false);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(AppToasterService);
+    toaster.show('No close', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.close-btn')).toBeNull();
+  });
+
+  it('shows the close button by default', async () => {
+    TestBed.configureTestingModule({ imports: [AppToaster] });
+    const fixture = TestBed.createComponent(AppToaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(AppToasterService);
+    toaster.show('With close', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.close-btn')).toBeTruthy();
   });
 
   it('hides the icon when options.icon is null', async () => {

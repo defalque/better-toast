@@ -20,8 +20,8 @@
   --toast-info-border: oklch(82.8% 0.111 230.318 / 0.15);
 
   --toast-warning-bg: oklch(98.7% 0.022 95.277);
-  --toast-warning-text: oklch(76.9% 0.188 70.08);
-  --toast-warning-border: oklch(87.9% 0.169 91.605 / 0.15);
+  --toast-warning-text: oklch(66.6% 0.179 58.318);
+  --toast-warning-border: oklch(76.9% 0.188 70.08 / 0.15);
 }
 
 @media (prefers-color-scheme: dark) {

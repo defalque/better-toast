@@ -262,8 +262,9 @@
   max-width: 80%;
   margin: 0;
   font-size: 0.825rem;
-  font-weight: 400;
+  font-weight: 500;
   line-height: calc(1.25 / 0.875);
+  letter-spacing: 0.025em;
 }
 
 .toast-custom {
