@@ -1,6 +1,15 @@
 :host {
   --toast-width: 356px;
   --toast-gap: 1rem;
+  --toast-z-index: 99999;
+  --toast-offset-top: 24px;
+  --toast-offset-bottom: 24px;
+  --toast-offset-left: 24px;
+  --toast-offset-right: 24px;
+  --toast-offset-mobile-top: 16px;
+  --toast-offset-mobile-bottom: 16px;
+  --toast-offset-mobile-left: 16px;
+  --toast-offset-mobile-right: 16px;
 
   --toast-bg: oklch(100% 0 0);
   --toast-color: oklch(30% 0 0);
@@ -51,20 +60,20 @@
 
 .toast-container {
   position: fixed;
-  z-index: 10000;
+  z-index: var(--toast-z-index);
   width: auto;
   pointer-events: none;
 }
 
 .toast-container[data-position^='top'] {
-  top: 1rem;
-  left: 0.5rem;
-  right: 0.5rem;
+  top: var(--toast-offset-mobile-top);
+  left: var(--toast-offset-mobile-left);
+  right: var(--toast-offset-mobile-right);
 }
 .toast-container[data-position^='bottom'] {
-  bottom: 1rem;
-  left: 0.5rem;
-  right: 0.5rem;
+  bottom: var(--toast-offset-mobile-bottom);
+  left: var(--toast-offset-mobile-left);
+  right: var(--toast-offset-mobile-right);
 }
 
 @media (width >= 40rem) {
@@ -73,43 +82,43 @@
   }
 
   .toast-container[data-position='top-left'] {
-    top: 1rem;
-    left: 1rem;
+    top: var(--toast-offset-top);
+    left: var(--toast-offset-left);
     right: auto;
     align-items: flex-start;
   }
 
   .toast-container[data-position='top-center'] {
-    top: 1rem;
+    top: var(--toast-offset-top);
     left: 50%;
     transform: translateX(-50%);
     align-items: center;
   }
 
   .toast-container[data-position='top-right'] {
-    top: 1rem;
-    right: 1rem;
+    top: var(--toast-offset-top);
+    right: var(--toast-offset-right);
     left: auto;
     align-items: flex-end;
   }
 
   .toast-container[data-position='bottom-left'] {
-    bottom: 1rem;
-    left: 1rem;
+    bottom: var(--toast-offset-bottom);
+    left: var(--toast-offset-left);
     right: auto;
     align-items: flex-start;
   }
 
   .toast-container[data-position='bottom-center'] {
-    bottom: 1rem;
+    bottom: var(--toast-offset-bottom);
     left: 50%;
     transform: translateX(-50%);
     align-items: center;
   }
 
   .toast-container[data-position='bottom-right'] {
-    bottom: 1rem;
-    right: 1rem;
+    bottom: var(--toast-offset-bottom);
+    right: var(--toast-offset-right);
     left: auto;
     align-items: flex-end;
   }

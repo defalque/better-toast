@@ -13,6 +13,7 @@ export type {
   ToastOptions,
   ToasterDuration,
   ToasterIcons,
+  ToasterOffset,
   ToasterToastOptions,
   ToastVariant,
   ToasterItem,

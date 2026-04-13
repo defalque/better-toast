@@ -20,12 +20,26 @@ import type {
   ToasterDuration,
   ToasterIcons,
   ToasterItem,
+  ToasterOffset,
   ToasterPosition,
   ToasterToastOptions,
   ToastVariant,
 } from './toaster.types';
 
 const GAP = 16;
+
+function resolveToasterOffsetSide(
+  offset: ToasterOffset | undefined,
+  side: 'top' | 'right' | 'bottom' | 'left',
+): string | undefined {
+  if (offset == null) {
+    return undefined;
+  }
+  if (typeof offset === 'string') {
+    return offset;
+  }
+  return offset[side];
+}
 
 function mergeToastHostStyles(
   base: Record<string, string | number | undefined> | undefined,
@@ -255,6 +269,7 @@ export class AppToastItem {
  * replace the default artwork (or add an icon for the neutral `default` variant), or use **`null`** to hide that variant’s icon.
  * Each component should render an **SVG** (import its class where you configure `[icons]`).
  * Set `[closeButton]="false"` to hide the per-toast dismiss button.
+ * Set `[offset]` for `--toast-offset-*` and `[mobileOffset]` for `--toast-offset-mobile-*` (string all sides, or per-side object).
  */
 @Component({
   selector: 'app-toaster',
@@ -264,6 +279,14 @@ export class AppToastItem {
     <section aria-label="Toaster" aria-live="polite" aria-relevant="additions text">
       <ol
         class="toast-container"
+        [style.--toast-offset-top]="offsetTop()"
+        [style.--toast-offset-right]="offsetRight()"
+        [style.--toast-offset-bottom]="offsetBottom()"
+        [style.--toast-offset-left]="offsetLeft()"
+        [style.--toast-offset-mobile-top]="mobileOffsetTop()"
+        [style.--toast-offset-mobile-right]="mobileOffsetRight()"
+        [style.--toast-offset-mobile-bottom]="mobileOffsetBottom()"
+        [style.--toast-offset-mobile-left]="mobileOffsetLeft()"
         [attr.data-position]="position()"
         [attr.data-rich-colors]="richColors()"
         aria-live="polite"
@@ -293,6 +316,18 @@ export class AppToaster {
 
   /** Where the stack is anchored on the viewport. */
   readonly position = input<ToasterPosition>('bottom-right');
+
+  /**
+   * Viewport inset for the toast stack: a single CSS value for all sides, or an object with any of `top` / `right` / `bottom` / `left`.
+   * Binds `--toast-offset-top` / `right` / `bottom` / `left` on `.toast-container`.
+   */
+  readonly offset = input<ToasterOffset | undefined>(undefined);
+
+  /**
+   * Viewport inset for narrow layouts: binds `--toast-offset-mobile-top` / `right` / `bottom` / `left` on `.toast-container`.
+   * Same shape as {@link offset}.
+   */
+  readonly mobileOffset = input<ToasterOffset | undefined>(undefined);
 
   /** When true, success/error/info/warning use semantic background and border colors. */
   readonly richColors = input(false);
@@ -327,6 +362,26 @@ export class AppToaster {
 
   /** Measured height in px per toast id, updated when a toast item reports `heightChange`. */
   readonly heights = signal<Record<string, number>>({} as Record<string, number>);
+
+  protected readonly offsetTop = computed(() => resolveToasterOffsetSide(this.offset(), 'top'));
+  protected readonly offsetRight = computed(() => resolveToasterOffsetSide(this.offset(), 'right'));
+  protected readonly offsetBottom = computed(() =>
+    resolveToasterOffsetSide(this.offset(), 'bottom'),
+  );
+  protected readonly offsetLeft = computed(() => resolveToasterOffsetSide(this.offset(), 'left'));
+
+  protected readonly mobileOffsetTop = computed(() =>
+    resolveToasterOffsetSide(this.mobileOffset(), 'top'),
+  );
+  protected readonly mobileOffsetRight = computed(() =>
+    resolveToasterOffsetSide(this.mobileOffset(), 'right'),
+  );
+  protected readonly mobileOffsetBottom = computed(() =>
+    resolveToasterOffsetSide(this.mobileOffset(), 'bottom'),
+  );
+  protected readonly mobileOffsetLeft = computed(() =>
+    resolveToasterOffsetSide(this.mobileOffset(), 'left'),
+  );
 
   /**
    * Vertical offset in px for each toast id so stacked toasts do not overlap.

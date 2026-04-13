@@ -12,6 +12,23 @@ export const TOASTER_POSITIONS = [
 export type ToasterPosition = (typeof TOASTER_POSITIONS)[number];
 
 /**
+ * Viewport inset from `<app-toaster [offset]>` or `<app-toaster [mobileOffset]>`.
+ *
+ * Used with **`[offset]`** for `--toast-offset-*` (wide layout / shared vars) and **`[mobileOffset]`** for `--toast-offset-mobile-*` (narrow layout in `toaster.css`).
+ *
+ * - A **string** sets all four sides to the same CSS value (e.g. `"24px"`, `"1rem env(safe-area-inset-top)"`).
+ * - An **object** sets only the sides you pass; omitted sides keep the defaults from `toaster.css`.
+ */
+export type ToasterOffset =
+  | string
+  | {
+      top?: string;
+      right?: string;
+      bottom?: string;
+      left?: string;
+    };
+
+/**
  * Milliseconds as a number, or the literal string **`"Infinity"`** (manual dismiss only). No other string values are supported.
  * Used by `<app-toaster [duration]>` and {@link ToastOptions.durationMs}.
  */

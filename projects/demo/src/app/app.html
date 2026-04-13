@@ -17,56 +17,56 @@
       <div class="grid grid-cols-4 lg:grid-cols-8 gap-2 items-center justify-center">
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 text-xs font-medium uppercase py-3 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 dark:border-zinc-800 text-[0.85rem] font-medium py-3 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('default'); showDefaultToast()"
         >
           Default
         </button>
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-3 text-xs font-medium uppercase rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 dark:border-zinc-800 py-3 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('success'); showSuccessToast()"
         >
           Success
         </button>
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-3 text-xs font-medium uppercase rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 dark:border-zinc-800 py-3 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('error'); showErrorToast()"
         >
           Error
         </button>
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-3 text-xs font-medium uppercase rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 dark:border-zinc-800 py-3 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('info'); showInfoToast()"
         >
           Info
         </button>
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-3 text-xs font-medium uppercase rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 dark:border-zinc-800 py-3 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('warning'); showWarningToast()"
         >
           Warning
         </button>
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-3 text-xs font-medium uppercase rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 dark:border-zinc-800 py-3 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('loading'); showLoadingToast()"
         >
           Loading
         </button>
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-3 text-xs font-medium uppercase rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 dark:border-zinc-800 py-3 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('custom'); showCustomToast()"
         >
           Custom
         </button>
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-3 text-xs font-medium uppercase rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 dark:border-zinc-800 py-3 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('promise'); showPromiseToast()"
         >
           Promise
@@ -88,7 +88,7 @@
         @for (pos of positions; track pos) {
           <button
             type="button"
-            class="border uppercase text-xs border-zinc-200 dark:border-zinc-800 py-2 px-3 font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+            class="border uppercase text-xs border-zinc-200 dark:border-zinc-800 py-3 font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
             [class.bg-zinc-100]="toasterPosition() === pos"
             [class.dark:bg-zinc-800]="toasterPosition() === pos"
             (click)="toasterPosition.set(pos)"
@@ -169,7 +169,7 @@
               [attr.aria-checked]="richColors()"
               [attr.aria-label]="richColors() ? 'Rich colors on' : 'Rich colors off'"
               (click)="toggleRichColors()"
-              class="relative border-2 inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 dark:focus-visible:ring-zinc-500 dark:focus-visible:ring-offset-zinc-950"
+              class="relative border-2 inline-flex h-6 w-10 shrink-0 cursor-pointer rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 dark:focus-visible:ring-zinc-500 dark:focus-visible:ring-offset-zinc-950"
               [class.bg-zinc-600]="richColors()"
               [class.border-zinc-600]="richColors()"
               [class.bg-zinc-200]="!richColors()"
@@ -182,7 +182,7 @@
               <span
                 aria-hidden="true"
                 class="pointer-events-none absolute top-1/2 left-1 -translate-y-1/2 inline-block h-4 w-4 rounded-full bg-white shadow-md ring-0 transition-transform duration-200 ease-out motion-reduce:transition-none"
-                [class.translate-x-4.5]="richColors()"
+                [class.translate-x-3]="richColors()"
               ></span>
             </button>
           </div>
@@ -214,7 +214,7 @@
               [attr.aria-checked]="closeButton()"
               [attr.aria-label]="closeButton() ? 'Close button on' : 'Close button off'"
               (click)="toggleCloseButton()"
-              class="relative border-2 inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 dark:focus-visible:ring-zinc-500 dark:focus-visible:ring-offset-zinc-950"
+              class="relative border-2 inline-flex h-6 w-10 shrink-0 cursor-pointer rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 dark:focus-visible:ring-zinc-500 dark:focus-visible:ring-offset-zinc-950"
               [class.bg-zinc-600]="closeButton()"
               [class.border-zinc-600]="closeButton()"
               [class.bg-zinc-200]="!closeButton()"
@@ -227,7 +227,7 @@
               <span
                 aria-hidden="true"
                 class="pointer-events-none absolute top-1/2 left-1 -translate-y-1/2 inline-block h-4 w-4 rounded-full bg-white shadow-md ring-0 transition-transform duration-200 ease-out motion-reduce:transition-none"
-                [class.translate-x-4.5]="closeButton()"
+                [class.translate-x-3]="closeButton()"
               ></span>
             </button>
           </div>
@@ -247,6 +247,47 @@
         }
         /&gt;
       </code>
+    </div>
+
+    <div class="grid gap-4">
+      <div>
+        <h2 class="text-lg font-semibold tracking-tight">Programmatic dismiss</h2>
+        <p class="text-sm text-zinc-700 dark:text-zinc-300">
+          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md px-1">show()</code
+          >,
+          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md px-1"
+            >success()</code
+          >,
+          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md px-1">error()</code
+          >,
+          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md px-1">info()</code
+          >,
+          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md px-1"
+            >warning()</code
+          >,
+          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md px-1"
+            >custom()</code
+          >,
+          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md px-1"
+            >loading()</code
+          >
+          return a toast id. Pass it to
+          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md px-1"
+            >dismiss(id)</code
+          >
+          to remove one toast, or call
+          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md px-1"
+            >clear()</code
+          >
+          to remove all.
+        </p>
+      </div>
+      <!-- prettier-ignore -->
+      <code
+        class="text-xs text-zinc-700 dark:text-zinc-100 p-4 bg-zinc-100 dark:bg-zinc-900 rounded-md whitespace-pre-wrap font-mono"
+        >const id = this.toaster.<strong>show</strong>('Hello');
+this.toaster.<strong>dismiss</strong>(id);
+this.toaster.<strong>clear</strong>();</code>
     </div>
   </div>
 </main>

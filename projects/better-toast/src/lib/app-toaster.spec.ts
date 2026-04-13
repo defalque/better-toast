@@ -74,6 +74,62 @@ describe('better-toast', () => {
     expect(container.getAttribute('data-rich-colors')).toBe('false');
   });
 
+  it('applies string offset to all --toast-offset-* vars on the container', async () => {
+    TestBed.configureTestingModule({ imports: [AppToaster] });
+    const fixture = TestBed.createComponent(AppToaster);
+    fixture.componentRef.setInput('offset', '40px');
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const container = fixture.nativeElement.querySelector('.toast-container') as HTMLElement;
+    expect(container.style.getPropertyValue('--toast-offset-top').trim()).toBe('40px');
+    expect(container.style.getPropertyValue('--toast-offset-right').trim()).toBe('40px');
+    expect(container.style.getPropertyValue('--toast-offset-bottom').trim()).toBe('40px');
+    expect(container.style.getPropertyValue('--toast-offset-left').trim()).toBe('40px');
+  });
+
+  it('applies object offset only to specified sides', async () => {
+    TestBed.configureTestingModule({ imports: [AppToaster] });
+    const fixture = TestBed.createComponent(AppToaster);
+    fixture.componentRef.setInput('offset', { top: '8px', left: '12px' });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const container = fixture.nativeElement.querySelector('.toast-container') as HTMLElement;
+    expect(container.style.getPropertyValue('--toast-offset-top').trim()).toBe('8px');
+    expect(container.style.getPropertyValue('--toast-offset-left').trim()).toBe('12px');
+    expect(container.style.getPropertyValue('--toast-offset-right').trim()).toBe('');
+    expect(container.style.getPropertyValue('--toast-offset-bottom').trim()).toBe('');
+  });
+
+  it('applies string mobileOffset to all --toast-offset-mobile-* vars on the container', async () => {
+    TestBed.configureTestingModule({ imports: [AppToaster] });
+    const fixture = TestBed.createComponent(AppToaster);
+    fixture.componentRef.setInput('mobileOffset', '12px');
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const container = fixture.nativeElement.querySelector('.toast-container') as HTMLElement;
+    expect(container.style.getPropertyValue('--toast-offset-mobile-top').trim()).toBe('12px');
+    expect(container.style.getPropertyValue('--toast-offset-mobile-right').trim()).toBe('12px');
+    expect(container.style.getPropertyValue('--toast-offset-mobile-bottom').trim()).toBe('12px');
+    expect(container.style.getPropertyValue('--toast-offset-mobile-left').trim()).toBe('12px');
+  });
+
+  it('applies object mobileOffset only to specified sides', async () => {
+    TestBed.configureTestingModule({ imports: [AppToaster] });
+    const fixture = TestBed.createComponent(AppToaster);
+    fixture.componentRef.setInput('mobileOffset', { top: '4px', right: '8px' });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const container = fixture.nativeElement.querySelector('.toast-container') as HTMLElement;
+    expect(container.style.getPropertyValue('--toast-offset-mobile-top').trim()).toBe('4px');
+    expect(container.style.getPropertyValue('--toast-offset-mobile-right').trim()).toBe('8px');
+    expect(container.style.getPropertyValue('--toast-offset-mobile-left').trim()).toBe('');
+    expect(container.style.getPropertyValue('--toast-offset-mobile-bottom').trim()).toBe('');
+  });
+
   it('enables semantic colors when richColors is true', async () => {
     TestBed.configureTestingModule({ imports: [AppToaster] });
     const fixture = TestBed.createComponent(AppToaster);
