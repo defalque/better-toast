@@ -224,14 +224,14 @@
 .toast-icon svg,
 .toast-custom-icon ::ng-deep svg {
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 95%;
+  height: 95%;
 }
 @media (prefers-color-scheme: dark) {
   .toast-icon svg,
   .toast-custom-icon ::ng-deep svg {
-    width: 90%;
-    height: 90%;
+    width: 87.5%;
+    height: 87.5%;
   }
 }
 

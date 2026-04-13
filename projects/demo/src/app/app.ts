@@ -42,7 +42,6 @@ export class App {
   private readonly sanitizer = inject(DomSanitizer);
 
   protected readonly toaster = inject(ToasterService);
-  protected readonly title = signal('demo');
   protected readonly positions = TOASTER_POSITIONS;
   protected readonly toasterPosition = signal<ToasterPosition>('bottom-right');
   protected readonly toasterDurationMs = signal(DEFAULT_TOAST_DURATION_MS);
@@ -101,7 +100,11 @@ export class App {
     }
   }
 
-  protected onOffsetSliderInput(target: 'desktop' | 'mobile', side: OffsetSide, event: Event): void {
+  protected onOffsetSliderInput(
+    target: 'desktop' | 'mobile',
+    side: OffsetSide,
+    event: Event,
+  ): void {
     const v = (event.target as HTMLInputElement).valueAsNumber;
     const n = Number.isFinite(v) ? v : 0;
     if (target === 'desktop') {
