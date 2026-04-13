@@ -61,6 +61,7 @@ function mergeToastHostStyles(
     class: 'toast',
     '[attr.data-variant]': 'variant()',
     '[attr.data-icon]': 'shouldShowIconColumn() ? "true" : "false"',
+    '[attr.data-headless]': 'isHeadless() ? "true" : null',
     '[style.--offset]': 'offset() + "px"',
     '[style]': 'hostStyle()',
     '[animate.leave]': '"leave"',
@@ -68,6 +69,12 @@ function mergeToastHostStyles(
   template: `
     @if (toast()?.html) {
       <div class="toast-custom" [innerHTML]="toast()!.html!"></div>
+    } @else if (toast()?.component) {
+      <div class="toast-custom">
+        <ng-container
+          *ngComponentOutlet="toast()!.component!; inputs: componentOutletInputs()"
+        />
+      </div>
     } @else {
       <div class="toast-main">
         @if (shouldShowIconColumn()) {
@@ -156,7 +163,7 @@ function mergeToastHostStyles(
       </div>
     }
 
-    @if (closeButton()) {
+    @if (closeButton() && !isHeadless()) {
       <button
         type="button"
         class="close-btn"
@@ -245,6 +252,14 @@ export class AppToastItem {
 
   /** Vertical stack offset in px; bound to `--offset` on the host for layout. */
   offset = input.required<number>();
+
+  /** Bound to {@link ToasterItem.componentInputs} for headless (`NgComponentOutlet`) toasts. */
+  protected readonly componentOutletInputs = computed(
+    (): Record<string, unknown> => this.toast()?.componentInputs ?? {},
+  );
+
+  /** When true, host uses no default toast chrome (border, padding, surface) — only stack + motion. */
+  protected readonly isHeadless = computed(() => this.toast()?.component != null);
 
   /** When false, the dismiss control is not rendered (toasts may still auto-dismiss or be cleared via the service). */
   closeButton = input(true);

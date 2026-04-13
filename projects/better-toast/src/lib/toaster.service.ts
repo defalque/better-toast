@@ -1,6 +1,9 @@
 import { Injectable, signal } from '@angular/core';
 
+import type { Type } from '@angular/core';
+
 import type {
+  HeadlessToastOptions,
   ToastPromiseLabels,
   ToastOptions,
   ToastVariant,
@@ -138,6 +141,23 @@ export class ToasterService {
   }
 
   /**
+   * Show a toast whose body is a **standalone** Angular component on a **headless** host: no default border,
+   * padding, shadow, or surface color — only stack position and enter/leave motion. No close button is shown;
+   * dismiss with `durationMs` / `<app-toaster [duration]>` or call {@link dismiss} with the returned id.
+   * The default message + icon row is omitted; the component supplies all visuals.
+   *
+   * Pass {@link HeadlessToastOptions.inputs} to feed `input()` / `@Input()` on that component.
+   * Omit `durationMs` to use `<app-toaster [duration]>` (or {@link DEFAULT_TOAST_DURATION_MS}).
+   *
+   * @param component The component class (must be usable with `NgComponentOutlet`).
+   * @param options Optional duration, host `style`, and component `inputs`.
+   * @returns The toast ID, useful for programmatic dismissal.
+   */
+  headless(component: Type<unknown>, options?: HeadlessToastOptions): string {
+    return this.addComponent(component, this.resolveDuration(options?.durationMs), options);
+  }
+
+  /**
    * Display a loading toast notification.
    *
    * If `options.durationMs` is omitted, the toast stays until you dismiss or replace it (same as {@link TOAST_DURATION_MANUAL_DISMISS}).
@@ -209,6 +229,31 @@ export class ToasterService {
       message: '',
       variant,
       html,
+      ...(icon !== undefined ? { icon } : {}),
+      ...(style !== undefined ? { style } : {}),
+    };
+    this._toasts.update((list) => [...list, item]);
+    if (shouldScheduleAutoDismiss(durationMs)) {
+      globalThis.setTimeout(() => this.dismiss(id), durationMs);
+    }
+    return id;
+  }
+
+  private addComponent(
+    component: Type<unknown>,
+    durationMs: number,
+    options?: HeadlessToastOptions,
+  ): string {
+    const id = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
+    const icon = options?.icon;
+    const style = options?.style;
+    const inputs = options?.inputs;
+    const item: ToasterItem = {
+      id,
+      message: '',
+      variant: 'default',
+      component,
+      ...(inputs !== undefined ? { componentInputs: inputs } : {}),
       ...(icon !== undefined ? { icon } : {}),
       ...(style !== undefined ? { style } : {}),
     };

@@ -9,6 +9,7 @@ export {
   ToasterService,
 } from './lib/toaster.service';
 export type {
+  HeadlessToastOptions,
   ToastPromiseLabels,
   ToastOptions,
   ToasterDuration,

@@ -92,12 +92,31 @@ export interface ToastOptions {
   style?: Record<string, string | number | undefined>;
 }
 
+/**
+ * Options for {@link ToasterService.headless}.
+ * The component must be **standalone** (or otherwise valid for `NgComponentOutlet`).
+ * Headless toasts ignore `<app-toaster [closeButton]>`: no dismiss control is rendered.
+ */
+export interface HeadlessToastOptions extends ToastOptions {
+  /**
+   * Values passed to the component’s `input()` / `@Input()` bindings
+   * (same shape as `NgComponentOutlet` `inputs`).
+   */
+  inputs?: Record<string, unknown>;
+}
+
 export interface ToasterItem {
   readonly id: string;
   readonly message: string;
   readonly variant: ToastVariant;
   /** When set, replaces the default icon + message; body is `.toast-custom` only (no `.toast-main`), still sanitized by Angular. */
   readonly html?: string;
+  /**
+   * When set (without `html`), the toast body is this standalone component only — same stack and motion as other toasts, without host chrome or a close button.
+   */
+  readonly component?: Type<unknown>;
+  /** Bound to the headless component via `NgComponentOutlet`. */
+  readonly componentInputs?: Record<string, unknown>;
   /** Per-toast override; see {@link ToastOptions.icon}. */
   readonly icon?: Type<unknown> | null;
   /** Per-toast host inline styles; see {@link ToastOptions.style}. */

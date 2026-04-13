@@ -1,0 +1,28 @@
+<div class="grid gap-2">
+  <h2 class="text-lg font-semibold tracking-tight">{{ title() }}</h2>
+  <p class="text-sm text-zinc-700 dark:text-zinc-300">{{ message() }}</p>
+  <div class="flex items-center gap-2 ml-auto">
+    <button
+      class="bg-black dark:bg-white hover:opacity-80 text-sm text-white dark:text-black px-4 py-1 cursor-pointer shadow-sm transition duration-200"
+    >
+      {{ actionMessage() }}
+    </button>
+  </div>
+  <button class="absolute top-0 right-0 border-b border-l cursor-pointer">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-x"
+    >
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg>
+  </button>
+</div>

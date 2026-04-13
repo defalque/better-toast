@@ -55,6 +55,19 @@
   }
 }
 
+/* Headless: host is transparent; fading host opacity hollows out the inner card — slide only. */
+:host([data-headless='true'][data-position^='bottom']) {
+  @starting-style {
+    opacity: 1;
+  }
+}
+
+:host([data-headless='true'][data-position^='top']) {
+  @starting-style {
+    opacity: 1;
+  }
+}
+
 :host([data-variant='default']) .toast-icon svg,
 :host([data-variant='default']) .toast-custom-icon ::ng-deep svg {
   fill: var(--toast-color);
@@ -179,6 +192,119 @@
     fill: var(--toast-warning-bg);
     color: var(--toast-warning-text);
   }
+}
+
+/**
+ * `headless()`: only positioning, stacking, and enter/leave motion — inner component owns all visuals.
+ */
+:host([data-headless='true']) {
+  width: max-content;
+  max-width: calc(
+    100dvw - var(--toast-offset-mobile-left, 16px) - var(--toast-offset-mobile-right, 16px)
+  );
+  padding: 0;
+  gap: 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: normal;
+  --toast-line-height: inherit;
+}
+
+@media (width >= 40rem) {
+  :host([data-headless='true']) {
+    max-width: calc(100dvw - var(--toast-offset-left, 24px) - var(--toast-offset-right, 24px));
+  }
+}
+
+@media (width >= 40rem) {
+  /* Wider than default toast width: pin to the anchored edge so overflow extends into the page, not off-screen. */
+  :host([data-headless='true'][data-position$='-right']) {
+    left: auto;
+    right: 0;
+  }
+
+  :host([data-headless='true'][data-position$='-left']) {
+    left: 0;
+    right: auto;
+  }
+}
+
+:host([data-headless='true'][data-position='bottom-center']) {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%) translateY(calc(-1 * var(--offset, 0px)));
+
+  @starting-style {
+    opacity: 1;
+    transform: translateX(-50%) translateY(100%);
+  }
+}
+
+:host([data-headless='true'][data-position='top-center']) {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%) translateY(calc(1 * var(--offset, 0px)));
+
+  @starting-style {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-100%);
+  }
+}
+
+/* Narrow viewports: corner positions use a full-width stack; center headless toasts in the viewport. */
+@media (width < 40rem) {
+  :host([data-headless='true'][data-position^='bottom']) {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%) translateY(calc(-1 * var(--offset, 0px)));
+
+    @starting-style {
+      opacity: 1;
+      transform: translateX(-50%) translateY(100%);
+    }
+  }
+
+  :host([data-headless='true'][data-position^='top']) {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%) translateY(calc(1 * var(--offset, 0px)));
+
+    @starting-style {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-100%);
+    }
+  }
+
+  :host([data-headless='true'][data-position^='bottom'].leave) {
+    transform: translateX(-50%) translateY(100%);
+  }
+
+  :host([data-headless='true'][data-position^='top'].leave) {
+    transform: translateX(-50%) translateY(-100%);
+  }
+}
+
+:host([data-headless='true'][data-rich-colors='true']) {
+  background: transparent;
+  color: inherit;
+  border-color: transparent;
+}
+
+:host([data-headless='true']) .toast-custom {
+  flex: 0 1 auto;
+  min-width: auto;
+  width: max-content;
+  max-width: 100%;
+  font: inherit;
+  line-height: inherit;
+}
+
+:host([data-headless='true'][data-icon='false']) {
+  padding-left: 0;
 }
 
 :host([data-icon='false']) {
@@ -316,8 +442,16 @@
   transform: translateY(100%);
 }
 
+:host([data-headless='true'][data-position='bottom-center'].leave) {
+  transform: translateX(-50%) translateY(100%);
+}
+
 :host([data-position^='top'].leave) {
   transform: translateY(-100%);
+}
+
+:host([data-headless='true'][data-position='top-center'].leave) {
+  transform: translateX(-50%) translateY(-100%);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -332,10 +466,24 @@
     }
   }
 
+  :host([data-headless='true'][data-position='bottom-center']) {
+    @starting-style {
+      opacity: 1;
+      transform: translateX(-50%) translateY(calc(-1 * var(--offset, 0px)));
+    }
+  }
+
   :host([data-position^='top']) {
     @starting-style {
       opacity: 0;
       transform: translateY(calc(1 * var(--offset, 0px)));
+    }
+  }
+
+  :host([data-headless='true'][data-position='top-center']) {
+    @starting-style {
+      opacity: 1;
+      transform: translateX(-50%) translateY(calc(1 * var(--offset, 0px)));
     }
   }
 
@@ -347,8 +495,40 @@
     transform: translateY(calc(-1 * var(--offset, 0px)));
   }
 
+  :host([data-headless='true'][data-position='bottom-center'].leave) {
+    transform: translateX(-50%) translateY(calc(-1 * var(--offset, 0px)));
+  }
+
   :host([data-position^='top'].leave) {
     transform: translateY(calc(1 * var(--offset, 0px)));
+  }
+
+  :host([data-headless='true'][data-position='top-center'].leave) {
+    transform: translateX(-50%) translateY(calc(1 * var(--offset, 0px)));
+  }
+
+  @media (width < 40rem) {
+    :host([data-headless='true'][data-position^='bottom']) {
+      @starting-style {
+        opacity: 1;
+        transform: translateX(-50%) translateY(calc(-1 * var(--offset, 0px)));
+      }
+    }
+
+    :host([data-headless='true'][data-position^='top']) {
+      @starting-style {
+        opacity: 1;
+        transform: translateX(-50%) translateY(calc(1 * var(--offset, 0px)));
+      }
+    }
+
+    :host([data-headless='true'][data-position^='bottom'].leave) {
+      transform: translateX(-50%) translateY(calc(-1 * var(--offset, 0px)));
+    }
+
+    :host([data-headless='true'][data-position^='top'].leave) {
+      transform: translateX(-50%) translateY(calc(1 * var(--offset, 0px)));
+    }
   }
 
   .toast-icon-loading {

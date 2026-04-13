@@ -63,6 +63,7 @@
   z-index: var(--toast-z-index);
   width: auto;
   pointer-events: none;
+  overflow: visible;
 }
 
 .toast-container[data-position^='top'] {

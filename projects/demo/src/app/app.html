@@ -8,6 +8,36 @@
 
     <div class="grid gap-6">
       <div class="space-y-2">
+        <h2 class="text-lg font-semibold tracking-tight">Headless</h2>
+        <p class="text-sm text-zinc-700 dark:text-zinc-300">
+          Pass a standalone component as the toast body: no default chrome, border, or type styling.
+          Stacking, position, and enter/leave motion still come from the toaster; your component
+          owns the visuals.
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <button
+          type="button"
+          class="border border-zinc-200 dark:border-zinc-800 text-[0.85rem] font-medium py-2.5 px-4 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          (click)="showBoringToast()"
+        >
+          Boring toast
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 dark:border-zinc-800 text-[0.85rem] font-medium py-2.5 px-4 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          (click)="showHeadlessToast()"
+        >
+          Music Player
+        </button>
+      </div>
+      <pre
+        class="toast-demo-snippet text-xs p-4 bg-zinc-100 dark:bg-zinc-900 rounded-md overflow-x-auto"
+      ><code class="hljs font-mono text-xs whitespace-pre-wrap" [innerHTML]="highlightedHeadlessDemo()"></code></pre>
+    </div>
+
+    <div class="grid gap-6">
+      <div class="space-y-2">
         <h2 class="text-lg font-semibold tracking-tight">Types</h2>
         <p class="text-sm text-zinc-700 dark:text-zinc-300">
           You can customize the type of toast you want to render, and pass an options object as the
@@ -107,7 +137,7 @@
     <div class="grid gap-6">
       <div class="space-y-2">
         <h2 class="text-lg font-semibold tracking-tight">Offset</h2>
-        <p class="text-sm text-zinc-700 dark:text-zinc-300">
+        <p class="text-sm/6.25 text-zinc-700 dark:text-zinc-300">
           Viewport inset in pixels for the toast stack. Default desktop offset is
           <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1"> 24px</code>
           and default mobile offset is
@@ -384,7 +414,7 @@
     <div class="grid gap-6">
       <div class="space-y-2">
         <h2 class="text-lg font-semibold tracking-tight">Programmatic dismiss</h2>
-        <p class="text-sm/6.5 text-zinc-700 dark:text-zinc-300">
+        <p class="text-sm/6.25 text-zinc-700 dark:text-zinc-300">
           <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1">show()</code>,
           <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1"
             >success()</code

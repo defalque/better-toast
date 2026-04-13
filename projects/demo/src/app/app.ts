@@ -19,6 +19,8 @@ const OFFSET_SIDES: readonly OffsetSide[] = ['top', 'right', 'bottom', 'left'];
 import { CustomIcon } from './icons/custom-icon/custom-icon';
 import { CustomWarning } from './icons/custom-warning/custom-warning';
 import { CustomLoading } from './icons/custom-loading/custom-loading';
+import { CustomMusicPlayerToast } from './components/custom-music-player-toast/custom-music-player-toast';
+import { CustomToast } from './components/custom-toast/custom-toast';
 
 hljs.registerLanguage('typescript', typescript);
 
@@ -154,9 +156,9 @@ export class App {
     info: `this.toaster.info('Tip: you can stack multiple toasts');`,
     warning: `this.toaster.warning('Your session will expire soon');`,
     custom: `this.toaster.custom(\`
-      <div class="font-medium">Go check my website: 
+      <div class="font-medium">Check my website: 
         <a href="https://marcodefalco.dev" target="_blank" rel="noopener noreferrer" 
-        class="hover:underline italic text-orange-600 dark:text-orange-400">
+        class="text-orange-600 dark:text-orange-400 italic hover:underline">
           marcodefalco.dev
         </a>
       </div>
@@ -178,6 +180,23 @@ this.toaster.promise(myPromise, {
   protected readonly highlightedToastDemo = computed(() => {
     const code = this.toastDemoSnippets[this.selectedToastDemo()];
     const { value } = hljs.highlight(code, {
+      language: 'typescript',
+      ignoreIllegals: true,
+    });
+    return this.sanitizer.bypassSecurityTrustHtml(value);
+  });
+
+  protected readonly headlessDemoSnippet = `import { CustomMusicPlayerToast } from './components/custom-music-player-toast/custom-music-player-toast';
+
+this.toaster.headless(CustomMusicPlayerToast, {
+  inputs: {
+    songTitle: 'Stay',
+    songArtist: 'The Kid Laroi, Justin Bieber',
+  },
+});`;
+
+  protected readonly highlightedHeadlessDemo = computed(() => {
+    const { value } = hljs.highlight(this.headlessDemoSnippet, {
       language: 'typescript',
       ignoreIllegals: true,
     });
@@ -244,7 +263,7 @@ this.toaster.promise(myPromise, {
 
   protected showCustomToast(): void {
     this.toaster.custom(`
-      <div class="font-medium">Go check my website:
+      <div class="font-medium">Check my website:
         <a href="https://marcodefalco.dev" target="_blank" rel="noopener noreferrer" class="hover:underline italic text-orange-600 dark:text-orange-400">
           marcodefalco.dev
         </a>
@@ -291,4 +310,18 @@ this.toaster.promise(myPromise, {
   protected readonly toastOptions = {
     /* style: { background: 'red', color: 'yellow' }, */
   };
+
+  protected showBoringToast(): void {
+    this.toaster.headless(CustomToast, {
+      inputs: {},
+    });
+  }
+  protected showHeadlessToast(): void {
+    this.toaster.headless(CustomMusicPlayerToast, {
+      inputs: {
+        songTitle: 'Stay',
+        songArtist: 'The Kid Laroi, Justin Bieber',
+      },
+    });
+  }
 }
