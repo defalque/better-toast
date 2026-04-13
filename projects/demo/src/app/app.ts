@@ -38,6 +38,13 @@ export class App {
   protected readonly title = signal('demo');
   protected readonly positions = TOASTER_POSITIONS;
   protected readonly toasterPosition = signal<ToasterPosition>('bottom-right');
+
+  protected positionLabel(position: ToasterPosition): string {
+    return position
+      .split('-')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
   protected readonly richColors = signal(false);
 
   protected readonly selectedToastDemo = signal<ToastDemoKind>('default');
@@ -55,19 +62,19 @@ export class App {
           marcodefalco.dev
         </a>
       </div>
-    \`);`,
+\`);`,
     loading: `this.toaster.loading('Loading…');`,
     promise: `const myPromise = new Promise<{ message: string }>((resolve) => {
       setTimeout(() => {
         resolve({ message: 'Better-toast rendered successfully' });
       }, 3000);
-    });
+});
 
-    this.toaster.promise(myPromise, {
+this.toaster.promise(myPromise, {
       loading: 'Loading…',
       success: (data) => \`\${data.message}\`,
       error: 'Promise rejected',
-    });`,
+});`,
   };
 
   protected readonly highlightedToastDemo = computed(() => {

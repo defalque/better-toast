@@ -14,7 +14,7 @@
           second argument.
         </p>
       </div>
-      <div class="grid grid-cols-8 gap-2 items-center justify-center">
+      <div class="grid grid-cols-4 lg:grid-cols-8 gap-2 items-center justify-center">
         <button
           type="button"
           class="border border-zinc-200 dark:border-zinc-800 text-sm py-2 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
@@ -85,60 +85,17 @@
         </p>
       </div>
       <div class="grid grid-cols-3 gap-2">
-        <button
-          type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-2 px-3 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
-          [class.bg-zinc-100]="toasterPosition() === 'top-left'"
-          [class.dark:bg-zinc-800]="toasterPosition() === 'top-left'"
-          (click)="toasterPosition.set('top-left')"
-        >
-          Top Left
-        </button>
-        <button
-          type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-2 px-3 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
-          [class.bg-zinc-100]="toasterPosition() === 'top-center'"
-          [class.dark:bg-zinc-800]="toasterPosition() === 'top-center'"
-          (click)="toasterPosition.set('top-center')"
-        >
-          Top Center
-        </button>
-        <button
-          type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-2 px-3 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
-          [class.bg-zinc-100]="toasterPosition() === 'top-right'"
-          [class.dark:bg-zinc-800]="toasterPosition() === 'top-right'"
-          (click)="toasterPosition.set('top-right')"
-        >
-          Top Right
-        </button>
-        <button
-          type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-2 px-3 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
-          [class.bg-zinc-100]="toasterPosition() === 'bottom-left'"
-          [class.dark:bg-zinc-800]="toasterPosition() === 'bottom-left'"
-          (click)="toasterPosition.set('bottom-left')"
-        >
-          Bottom Left
-        </button>
-        <button
-          type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-2 px-3 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
-          [class.bg-zinc-100]="toasterPosition() === 'bottom-center'"
-          [class.dark:bg-zinc-800]="toasterPosition() === 'bottom-center'"
-          (click)="toasterPosition.set('bottom-center')"
-        >
-          Bottom Center
-        </button>
-        <button
-          type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-2 px-3 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
-          [class.bg-zinc-100]="toasterPosition() === 'bottom-right'"
-          [class.dark:bg-zinc-800]="toasterPosition() === 'bottom-right'"
-          (click)="toasterPosition.set('bottom-right')"
-        >
-          Bottom Right
-        </button>
+        @for (pos of positions; track pos) {
+          <button
+            type="button"
+            class="border border-zinc-200 dark:border-zinc-800 py-2 px-3 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+            [class.bg-zinc-100]="toasterPosition() === pos"
+            [class.dark:bg-zinc-800]="toasterPosition() === pos"
+            (click)="toasterPosition.set(pos)"
+          >
+            {{ positionLabel(pos) }}
+          </button>
+        }
       </div>
       <code
         class="text-xs text-zinc-700 dark:text-zinc-100 p-4 bg-zinc-100 dark:bg-zinc-900 rounded-md"
@@ -149,20 +106,43 @@
 
     <div class="grid gap-4">
       <div>
-        <h2 class="text-lg font-semibold tracking-tight">Rich Colors</h2>
+        <div class="flex items-center gap-3">
+          <h2 class="text-lg font-semibold tracking-tight">Rich Colors</h2>
+          <div class="flex items-center gap-3">
+            <button
+              type="button"
+              role="switch"
+              [attr.aria-checked]="richColors()"
+              [attr.aria-label]="richColors() ? 'Rich colors on' : 'Rich colors off'"
+              (click)="toggleRichColors()"
+              class="relative border-2 border-zinc-200 dark:border-zinc-800 inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 dark:focus-visible:ring-zinc-500 dark:focus-visible:ring-offset-zinc-950"
+              [class.bg-black]="richColors()"
+              [class.dark:bg-zinc-950]="!richColors()"
+              [class.bg-zinc-200]="!richColors()"
+              [class.dark:bg-zinc-800]="richColors()"
+            >
+              <span
+                aria-hidden="true"
+                class="pointer-events-none absolute top-1/2 left-1 -translate-y-1/2 inline-block h-4 w-4 rounded-full bg-white shadow-sm ring-0 transition-transform duration-200 ease-out motion-reduce:transition-none"
+                [class.translate-x-4.5]="richColors()"
+              ></span>
+            </button>
+          </div>
+        </div>
         <p class="text-sm text-zinc-700 dark:text-zinc-300">
           When true, success/error/info/warning use semantic background and border colors.
         </p>
       </div>
-      <button
-        type="button"
-        class="border border-zinc-200 dark:border-zinc-800 py-2 px-3 text-sm rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
-        [class.bg-zinc-100]="richColors()"
-        [class.dark:bg-zinc-800]="richColors()"
-        (click)="toggleRichColors()"
+
+      <code
+        class="text-xs text-zinc-700 dark:text-zinc-100 p-4 bg-zinc-100 dark:bg-zinc-900 rounded-md"
       >
-        Rich Colors is <strong>{{ richColors() ? 'ON' : 'OFF' }}</strong>
-      </button>
+        &lt;<strong>app-toaster</strong>
+        @if (richColors()) {
+          richColors="{{ richColors() }}"
+        }
+        /&gt;
+      </code>
     </div>
   </div>
 </main>

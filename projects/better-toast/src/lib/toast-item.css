@@ -178,17 +178,17 @@
 }
 
 :host([data-variant='default']) {
-  padding-left: 1rem;
+  padding-left: 0.875rem;
 }
 :host([data-variant='default']) .toast-main .msg {
-  max-width: 90%;
+  max-width: 95%;
 }
 
 :host([data-icon='false']) {
-  padding-left: 1rem;
+  padding-left: 0.875rem;
 }
 :host([data-icon='false']) .toast-main .msg {
-  max-width: 90%;
+  max-width: 95%;
 }
 
 .toast-main {
@@ -321,4 +321,40 @@
 
 :host([data-position^='top'].leave) {
   transform: translateY(-100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    transition: none;
+  }
+
+  :host([data-position^='bottom']) {
+    @starting-style {
+      opacity: 0;
+      transform: translateY(calc(-1 * var(--offset, 0px)));
+    }
+  }
+
+  :host([data-position^='top']) {
+    @starting-style {
+      opacity: 0;
+      transform: translateY(calc(1 * var(--offset, 0px)));
+    }
+  }
+
+  :host(.leave) {
+    scale: 1;
+  }
+
+  :host([data-position^='bottom'].leave) {
+    transform: translateY(calc(-1 * var(--offset, 0px)));
+  }
+
+  :host([data-position^='top'].leave) {
+    transform: translateY(calc(1 * var(--offset, 0px)));
+  }
+
+  .toast-icon-loading {
+    animation: none;
+  }
 }
