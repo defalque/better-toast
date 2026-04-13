@@ -11,8 +11,13 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { AppToasterService, DEFAULT_TOAST_DURATION_MS } from './app-toaster.service';
+import {
+  AppToasterService,
+  DEFAULT_TOAST_DURATION_MS,
+  TOAST_DURATION_MANUAL_DISMISS,
+} from './app-toaster.service';
 import type {
+  ToasterDuration,
   ToasterIcons,
   ToasterItem,
   ToasterPosition,
@@ -21,6 +26,17 @@ import type {
 } from './toaster.types';
 
 const GAP = 16;
+
+/** Coerces `<app-toaster duration="Infinity">` / `[duration]` to milliseconds (only the literal string `"Infinity"`, not arbitrary strings). */
+function parseToasterDurationMs(value: ToasterDuration): number {
+  if (value === 'Infinity') {
+    return TOAST_DURATION_MANUAL_DISMISS;
+  }
+  if (Number.isNaN(value)) {
+    return DEFAULT_TOAST_DURATION_MS;
+  }
+  return value;
+}
 
 function mergeToastHostStyles(
   base: Record<string, string | number | undefined> | undefined,
@@ -233,7 +249,8 @@ export class AppToastItem {
 /**
  * Renders the toaster stack. Add once near the root of your app (e.g. in `App`).
  * Variant-colored surfaces are off by default; set `[richColors]="true"` to enable them.
- * Set `[duration]` for auto-dismiss when service helpers omit their duration argument (`0` = persist until dismissed).
+ * Set `[duration]` for auto-dismiss when service helpers omit their duration argument.
+ * Use **`duration="Infinity"`** (that exact literal) or `[duration]="…"` with a number / {@link TOAST_DURATION_MANUAL_DISMISS} for persist until dismissed; `0` still works.
  * Pass `[icons]` with optional **standalone** components for `success` / `error` / `info` / `warning` / `loading`
  * to replace the default artwork, or **`null`** for a variant to hide its icon. Each component should render an **SVG** (import its class where you configure `[icons]`).
  */
@@ -279,9 +296,13 @@ export class AppToaster {
 
   /**
    * Default auto-dismiss time in ms for `show` / `success` / `error` / `info` / `warning` when the second argument omits `durationMs`.
-   * `0` keeps toasts until dismissed. Does not apply to `loading()`. Defaults to the library default (4000ms).
+   * Bind **`duration="Infinity"`** (literal only) or a numeric ms value via `[duration]`; {@link TOAST_DURATION_MANUAL_DISMISS} is accepted as a number.
+   * `0` still works. Does not apply to `loading()`. Defaults to the library default (4000ms).
    */
-  readonly durationMs = input(DEFAULT_TOAST_DURATION_MS, { alias: 'duration' });
+  readonly durationMs = input<number, ToasterDuration>(DEFAULT_TOAST_DURATION_MS, {
+    alias: 'duration',
+    transform: parseToasterDurationMs,
+  });
 
   /**
    * Optional per-variant **standalone** components that replace the default SVG (or loading indicator).

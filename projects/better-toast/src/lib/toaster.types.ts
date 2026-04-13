@@ -11,6 +11,11 @@ export const TOASTER_POSITIONS = [
 
 export type ToasterPosition = (typeof TOASTER_POSITIONS)[number];
 
+/**
+ * `<app-toaster>` `[duration]` / `duration` attribute: milliseconds as a number, or the literal string **`"Infinity"`** (manual dismiss only). No other string values are supported.
+ */
+export type ToasterDuration = number | 'Infinity';
+
 export const TOAST_VARIANTS = [
   'default',
   'success',
@@ -49,7 +54,11 @@ export interface ToasterToastOptions {
 }
 
 export interface ToastOptions {
-  /** Omit to use `<app-toaster [duration]>` (or the library default). `0` = persist until dismissed (except `loading`, which defaults to `0` when omitted). */
+  /**
+   * Omit to use `<app-toaster [duration]>` (or the library default).
+   * Use `Number.POSITIVE_INFINITY` (or `TOAST_DURATION_MANUAL_DISMISS` from this package) to persist until dismissed; `0` is still accepted for the same behavior.
+   * `loading()` defaults to manual dismiss when `durationMs` is omitted.
+   */
   durationMs?: number;
   /**
    * `undefined` = use global `[icons]` on `<app-toaster>` or built-in SVGs.

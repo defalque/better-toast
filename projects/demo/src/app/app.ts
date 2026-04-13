@@ -6,6 +6,8 @@ import { RouterOutlet } from '@angular/router';
 import {
   AppToaster,
   AppToasterService,
+  DEFAULT_TOAST_DURATION_MS,
+  TOAST_DURATION_MANUAL_DISMISS,
   TOASTER_POSITIONS,
   type ToasterPosition,
 } from 'better-toast';
@@ -38,6 +40,9 @@ export class App {
   protected readonly title = signal('demo');
   protected readonly positions = TOASTER_POSITIONS;
   protected readonly toasterPosition = signal<ToasterPosition>('bottom-right');
+  protected readonly toasterDurationMs = signal(DEFAULT_TOAST_DURATION_MS);
+  protected readonly durationSliderMaxMs = 10_000;
+  protected readonly durationSliderStepMs = 1000;
 
   protected positionLabel(position: ToasterPosition): string {
     return position
@@ -155,6 +160,25 @@ this.toaster.promise(myPromise, {
     this.richColors.set(!this.richColors());
   }
 
+  protected onDurationSliderInput(event: Event): void {
+    const value = (event.target as HTMLInputElement).valueAsNumber;
+    if (!Number.isFinite(value)) {
+      this.toasterDurationMs.set(DEFAULT_TOAST_DURATION_MS);
+      return;
+    }
+    this.toasterDurationMs.set(value === 0 ? TOAST_DURATION_MANUAL_DISMISS : value);
+  }
+
+  /** Maps manual-dismiss (`Infinity`) to `0` on the range input. */
+  protected readonly durationSliderDisplayMs = computed(() => {
+    const v = this.toasterDurationMs();
+    return Number.isFinite(v) ? v : 0;
+  });
+
+  protected isManualDismissDuration(): boolean {
+    return !Number.isFinite(this.toasterDurationMs());
+  }
+
   protected clearToasts(): void {
     this.toaster.clear();
   }
@@ -167,11 +191,4 @@ this.toaster.promise(myPromise, {
   protected readonly toastOptions = {
     /* style: { background: 'red', color: 'yellow' }, */
   };
-
-  protected onPositionChange(event: Event): void {
-    const select = event.target as HTMLSelectElement;
-    if ((TOASTER_POSITIONS as readonly string[]).includes(select.value)) {
-      this.toasterPosition.set(select.value as ToasterPosition);
-    }
-  }
 }

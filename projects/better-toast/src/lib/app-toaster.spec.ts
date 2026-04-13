@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
 
 import { AppToaster } from './app-toaster';
-import { AppToasterService } from './app-toaster.service';
+import { AppToasterService, TOAST_DURATION_MANUAL_DISMISS } from './app-toaster.service';
 
 @Component({
   selector: 'bt-spec-success-icon',
@@ -18,13 +18,27 @@ describe('better-toast', () => {
     const toaster = TestBed.inject(AppToasterService);
 
     expect(toaster.toasts().length).toBe(0);
-    toaster.show('Hello', { durationMs: 0 });
+    toaster.show('Hello', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
     expect(toaster.toasts().length).toBe(1);
     expect(toaster.toasts()[0].message).toBe('Hello');
     expect(toaster.toasts()[0].variant).toBe('default');
 
     toaster.dismiss(toaster.toasts()[0].id);
     expect(toaster.toasts().length).toBe(0);
+  });
+
+  it('treats durationMs 0 as manual dismiss (backward compatible)', async () => {
+    vi.useFakeTimers();
+    try {
+      TestBed.configureTestingModule({ imports: [AppToaster] });
+      const toaster = TestBed.inject(AppToasterService);
+      toaster.show('Stay', { durationMs: 0 });
+      expect(toaster.toasts().length).toBe(1);
+      await vi.advanceTimersByTimeAsync(60_000);
+      expect(toaster.toasts().length).toBe(1);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('uses the position input on the container', async () => {
@@ -64,6 +78,25 @@ describe('better-toast', () => {
       expect(toaster.toasts().length).toBe(1);
       await vi.advanceTimersByTimeAsync(1000);
       expect(toaster.toasts().length).toBe(0);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('treats duration literal string Infinity as manual dismiss', async () => {
+    vi.useFakeTimers();
+    try {
+      TestBed.configureTestingModule({ imports: [AppToaster] });
+      const fixture = TestBed.createComponent(AppToaster);
+      fixture.componentRef.setInput('duration', 'Infinity');
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const toaster = TestBed.inject(AppToasterService);
+      toaster.show('Stay');
+      expect(toaster.toasts().length).toBe(1);
+      await vi.advanceTimersByTimeAsync(60_000);
+      expect(toaster.toasts().length).toBe(1);
     } finally {
       vi.useRealTimers();
     }
@@ -109,7 +142,7 @@ describe('better-toast', () => {
     await fixture.whenStable();
 
     const toaster = TestBed.inject(AppToasterService);
-    toaster.success('Custom icon', { durationMs: 0 });
+    toaster.success('Custom icon', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
     fixture.detectChanges();
     await fixture.whenStable();
 
@@ -123,7 +156,7 @@ describe('better-toast', () => {
     await fixture.whenStable();
 
     const toaster = TestBed.inject(AppToasterService);
-    toaster.success('Per-toast icon', { durationMs: 0, icon: SpecSuccessIcon });
+    toaster.success('Per-toast icon', { durationMs: TOAST_DURATION_MANUAL_DISMISS, icon: SpecSuccessIcon });
     fixture.detectChanges();
     await fixture.whenStable();
 
@@ -137,7 +170,7 @@ describe('better-toast', () => {
     await fixture.whenStable();
 
     const toaster = TestBed.inject(AppToasterService);
-    toaster.success('No icon', { durationMs: 0, icon: null });
+    toaster.success('No icon', { durationMs: TOAST_DURATION_MANUAL_DISMISS, icon: null });
     fixture.detectChanges();
     await fixture.whenStable();
 
@@ -152,7 +185,7 @@ describe('better-toast', () => {
     await fixture.whenStable();
 
     const toaster = TestBed.inject(AppToasterService);
-    toaster.success('No global icon', { durationMs: 0 });
+    toaster.success('No global icon', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
     fixture.detectChanges();
     await fixture.whenStable();
 
@@ -166,7 +199,7 @@ describe('better-toast', () => {
     await fixture.whenStable();
 
     const toaster = TestBed.inject(AppToasterService);
-    toaster.custom('<p class="x">Rich</p>', { durationMs: 0 });
+    toaster.custom('<p class="x">Rich</p>', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
     fixture.detectChanges();
     await fixture.whenStable();
 

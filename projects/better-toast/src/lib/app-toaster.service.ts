@@ -5,6 +5,16 @@ import type { ToastPromiseLabels, ToastOptions, ToastVariant, ToasterItem } from
 /** Fallback when `<app-toaster [duration]>` is absent and a helper omits `durationMs`. */
 export const DEFAULT_TOAST_DURATION_MS = 4000;
 
+/**
+ * Use with `[duration]` or `options.durationMs` so a toast stays until manually dismissed.
+ * (`0` is still treated as non-auto-dismiss for backward compatibility.)
+ */
+export const TOAST_DURATION_MANUAL_DISMISS = Number.POSITIVE_INFINITY;
+
+function shouldScheduleAutoDismiss(durationMs: number): boolean {
+  return Number.isFinite(durationMs) && durationMs > 0;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AppToasterService {
   private readonly _toasts = signal<readonly ToasterItem[]>([]);
@@ -16,6 +26,10 @@ export class AppToasterService {
 
   /** Synced from `AppToaster` `[duration]`; used when a helper omits its `durationMs` argument. */
   setDefaultDurationMs(ms: number): void {
+    if (Number.isNaN(ms)) {
+      this.defaultDurationMs = DEFAULT_TOAST_DURATION_MS;
+      return;
+    }
     this.defaultDurationMs = Math.max(0, ms);
   }
 
@@ -96,7 +110,7 @@ export class AppToasterService {
   /**
    * Show a toast whose body is custom HTML inside the usual toast chrome (animations, close button).
    * The string is bound with `[innerHTML]` and sanitized by Angular like any template HTML.
-   * Uses the `default` variant. Omit `durationMs` to use `<app-toaster [duration]>` (or {@link DEFAULT_TOAST_DURATION_MS}). `durationMs: 0` = stay until dismissed.
+   * Uses the `default` variant. Omit `durationMs` to use `<app-toaster [duration]>` (or {@link DEFAULT_TOAST_DURATION_MS}). Use {@link TOAST_DURATION_MANUAL_DISMISS} (or `0`) to stay until dismissed.
    *
    * @param html The custom HTML content.
    * @param options Optional configuration (icon, custom duration, etc).
@@ -109,15 +123,16 @@ export class AppToasterService {
   /**
    * Display a loading toast notification.
    *
-   * If `options.durationMs` is not provided, the toast will use the duration value from `<app-toaster [duration]>`.
-   * If no `[duration]` is set in the toaster, it falls back to {@link DEFAULT_TOAST_DURATION_MS}.
+   * If `options.durationMs` is omitted, the toast stays until you dismiss or replace it (same as {@link TOAST_DURATION_MANUAL_DISMISS}).
+   * Passing `durationMs` schedules auto-dismiss for loading toasts like other variants.
    *
    * @param message The toast content.
    * @param options Optional configuration (icon, custom duration, etc).
    * @returns The toast ID, useful for programmatic dismissal.
    */
   loading(message: string, options?: ToastOptions): string {
-    const ms = options?.durationMs !== undefined ? options.durationMs : 0;
+    const ms =
+      options?.durationMs !== undefined ? options.durationMs : TOAST_DURATION_MANUAL_DISMISS;
     return this.add(message, 'loading', ms, options);
   }
 
@@ -159,7 +174,7 @@ export class AppToasterService {
       ...(style !== undefined ? { style } : {}),
     };
     this._toasts.update((list) => [...list, item]);
-    if (durationMs > 0) {
+    if (shouldScheduleAutoDismiss(durationMs)) {
       globalThis.setTimeout(() => this.dismiss(id), durationMs);
     }
     return id;
@@ -178,7 +193,7 @@ export class AppToasterService {
       ...(style !== undefined ? { style } : {}),
     };
     this._toasts.update((list) => [...list, item]);
-    if (durationMs > 0) {
+    if (shouldScheduleAutoDismiss(durationMs)) {
       globalThis.setTimeout(() => this.dismiss(id), durationMs);
     }
     return id;
@@ -200,7 +215,7 @@ export class AppToasterService {
         return { ...toast, message, variant };
       }),
     );
-    if (found && durationMs > 0) {
+    if (found && shouldScheduleAutoDismiss(durationMs)) {
       globalThis.setTimeout(() => this.dismiss(id), durationMs);
     }
   }
