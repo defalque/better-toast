@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
 
-import { AppToaster } from './app-toaster';
-import { AppToasterService, TOAST_DURATION_MANUAL_DISMISS } from './app-toaster.service';
+import { Toaster } from './toaster';
+import { ToasterService, TOAST_DURATION_MANUAL_DISMISS } from './toaster.service';
 
 @Component({
   selector: 'bt-spec-success-icon',
@@ -21,8 +21,8 @@ class SpecDefaultIcon {}
 
 describe('better-toast', () => {
   it('shows and dismisses a toast via the service', () => {
-    TestBed.configureTestingModule({ imports: [AppToaster] });
-    const toaster = TestBed.inject(AppToasterService);
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const toaster = TestBed.inject(ToasterService);
 
     expect(toaster.toasts().length).toBe(0);
     toaster.show('Hello', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
@@ -37,8 +37,8 @@ describe('better-toast', () => {
   it('treats durationMs 0 as manual dismiss (backward compatible)', async () => {
     vi.useFakeTimers();
     try {
-      TestBed.configureTestingModule({ imports: [AppToaster] });
-      const toaster = TestBed.inject(AppToasterService);
+      TestBed.configureTestingModule({ imports: [Toaster] });
+      const toaster = TestBed.inject(ToasterService);
       toaster.show('Stay', { durationMs: 0 });
       expect(toaster.toasts().length).toBe(1);
       await vi.advanceTimersByTimeAsync(60_000);
@@ -51,8 +51,8 @@ describe('better-toast', () => {
   it('treats per-toast durationMs literal Infinity as manual dismiss', async () => {
     vi.useFakeTimers();
     try {
-      TestBed.configureTestingModule({ imports: [AppToaster] });
-      const toaster = TestBed.inject(AppToasterService);
+      TestBed.configureTestingModule({ imports: [Toaster] });
+      const toaster = TestBed.inject(ToasterService);
       toaster.show('Stay', { durationMs: 'Infinity' });
       expect(toaster.toasts().length).toBe(1);
       await vi.advanceTimersByTimeAsync(60_000);
@@ -63,8 +63,8 @@ describe('better-toast', () => {
   });
 
   it('uses the position input on the container', async () => {
-    TestBed.configureTestingModule({ imports: [AppToaster] });
-    const fixture = TestBed.createComponent(AppToaster);
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
     fixture.componentRef.setInput('position', 'top-left');
     fixture.detectChanges();
     await fixture.whenStable();
@@ -75,8 +75,8 @@ describe('better-toast', () => {
   });
 
   it('applies string offset to all --toast-offset-* vars on the container', async () => {
-    TestBed.configureTestingModule({ imports: [AppToaster] });
-    const fixture = TestBed.createComponent(AppToaster);
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
     fixture.componentRef.setInput('offset', '40px');
     fixture.detectChanges();
     await fixture.whenStable();
@@ -89,8 +89,8 @@ describe('better-toast', () => {
   });
 
   it('applies object offset only to specified sides', async () => {
-    TestBed.configureTestingModule({ imports: [AppToaster] });
-    const fixture = TestBed.createComponent(AppToaster);
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
     fixture.componentRef.setInput('offset', { top: '8px', left: '12px' });
     fixture.detectChanges();
     await fixture.whenStable();
@@ -103,8 +103,8 @@ describe('better-toast', () => {
   });
 
   it('applies string mobileOffset to all --toast-offset-mobile-* vars on the container', async () => {
-    TestBed.configureTestingModule({ imports: [AppToaster] });
-    const fixture = TestBed.createComponent(AppToaster);
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
     fixture.componentRef.setInput('mobileOffset', '12px');
     fixture.detectChanges();
     await fixture.whenStable();
@@ -117,8 +117,8 @@ describe('better-toast', () => {
   });
 
   it('applies object mobileOffset only to specified sides', async () => {
-    TestBed.configureTestingModule({ imports: [AppToaster] });
-    const fixture = TestBed.createComponent(AppToaster);
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
     fixture.componentRef.setInput('mobileOffset', { top: '4px', right: '8px' });
     fixture.detectChanges();
     await fixture.whenStable();
@@ -131,8 +131,8 @@ describe('better-toast', () => {
   });
 
   it('enables semantic colors when richColors is true', async () => {
-    TestBed.configureTestingModule({ imports: [AppToaster] });
-    const fixture = TestBed.createComponent(AppToaster);
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
     fixture.componentRef.setInput('richColors', true);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -141,16 +141,16 @@ describe('better-toast', () => {
     expect(container.getAttribute('data-rich-colors')).toBe('true');
   });
 
-  it('auto-dismisses using duration from AppToaster when duration is omitted', async () => {
+  it('auto-dismisses using duration from Toaster when duration is omitted', async () => {
     vi.useFakeTimers();
     try {
-      TestBed.configureTestingModule({ imports: [AppToaster] });
-      const fixture = TestBed.createComponent(AppToaster);
+      TestBed.configureTestingModule({ imports: [Toaster] });
+      const fixture = TestBed.createComponent(Toaster);
       fixture.componentRef.setInput('duration', 1000);
       fixture.detectChanges();
       await fixture.whenStable();
 
-      const toaster = TestBed.inject(AppToasterService);
+      const toaster = TestBed.inject(ToasterService);
       toaster.show('Hello');
       expect(toaster.toasts().length).toBe(1);
       await vi.advanceTimersByTimeAsync(1000);
@@ -163,13 +163,13 @@ describe('better-toast', () => {
   it('treats duration literal string Infinity as manual dismiss', async () => {
     vi.useFakeTimers();
     try {
-      TestBed.configureTestingModule({ imports: [AppToaster] });
-      const fixture = TestBed.createComponent(AppToaster);
+      TestBed.configureTestingModule({ imports: [Toaster] });
+      const fixture = TestBed.createComponent(Toaster);
       fixture.componentRef.setInput('duration', 'Infinity');
       fixture.detectChanges();
       await fixture.whenStable();
 
-      const toaster = TestBed.inject(AppToasterService);
+      const toaster = TestBed.inject(ToasterService);
       toaster.show('Stay');
       expect(toaster.toasts().length).toBe(1);
       await vi.advanceTimersByTimeAsync(60_000);
@@ -179,16 +179,16 @@ describe('better-toast', () => {
     }
   });
 
-  it('does not apply AppToaster duration to loading()', async () => {
+  it('does not apply Toaster duration to loading()', async () => {
     vi.useFakeTimers();
     try {
-      TestBed.configureTestingModule({ imports: [AppToaster] });
-      const fixture = TestBed.createComponent(AppToaster);
+      TestBed.configureTestingModule({ imports: [Toaster] });
+      const fixture = TestBed.createComponent(Toaster);
       fixture.componentRef.setInput('duration', 500);
       fixture.detectChanges();
       await fixture.whenStable();
 
-      const toaster = TestBed.inject(AppToasterService);
+      const toaster = TestBed.inject(ToasterService);
       toaster.loading('Wait');
       await vi.advanceTimersByTimeAsync(2000);
       expect(toaster.toasts().length).toBe(1);
@@ -198,8 +198,8 @@ describe('better-toast', () => {
   });
 
   it('sets variant on items from typed helpers', () => {
-    TestBed.configureTestingModule({ imports: [AppToaster] });
-    const toaster = TestBed.inject(AppToasterService);
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const toaster = TestBed.inject(ToasterService);
 
     toaster.success('ok');
     expect(toaster.toasts()[0].variant).toBe('success');
@@ -212,13 +212,13 @@ describe('better-toast', () => {
   });
 
   it('renders a custom success icon component when icons.success is set', async () => {
-    TestBed.configureTestingModule({ imports: [AppToaster, SpecSuccessIcon] });
-    const fixture = TestBed.createComponent(AppToaster);
+    TestBed.configureTestingModule({ imports: [Toaster, SpecSuccessIcon] });
+    const fixture = TestBed.createComponent(Toaster);
     fixture.componentRef.setInput('icons', { success: SpecSuccessIcon });
     fixture.detectChanges();
     await fixture.whenStable();
 
-    const toaster = TestBed.inject(AppToasterService);
+    const toaster = TestBed.inject(ToasterService);
     toaster.success('Custom icon', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
     fixture.detectChanges();
     await fixture.whenStable();
@@ -227,12 +227,12 @@ describe('better-toast', () => {
   });
 
   it('renders a per-toast icon from options.icon without global [icons]', async () => {
-    TestBed.configureTestingModule({ imports: [AppToaster, SpecSuccessIcon] });
-    const fixture = TestBed.createComponent(AppToaster);
+    TestBed.configureTestingModule({ imports: [Toaster, SpecSuccessIcon] });
+    const fixture = TestBed.createComponent(Toaster);
     fixture.detectChanges();
     await fixture.whenStable();
 
-    const toaster = TestBed.inject(AppToasterService);
+    const toaster = TestBed.inject(ToasterService);
     toaster.success('Per-toast icon', { durationMs: TOAST_DURATION_MANUAL_DISMISS, icon: SpecSuccessIcon });
     fixture.detectChanges();
     await fixture.whenStable();
@@ -241,12 +241,12 @@ describe('better-toast', () => {
   });
 
   it('does not render an icon column for default toasts without [icons].default or per-toast icon', async () => {
-    TestBed.configureTestingModule({ imports: [AppToaster] });
-    const fixture = TestBed.createComponent(AppToaster);
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
     fixture.detectChanges();
     await fixture.whenStable();
 
-    const toaster = TestBed.inject(AppToasterService);
+    const toaster = TestBed.inject(ToasterService);
     toaster.show('Neutral', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
     fixture.detectChanges();
     await fixture.whenStable();
@@ -255,13 +255,13 @@ describe('better-toast', () => {
   });
 
   it('renders a custom default icon when [icons].default is set', async () => {
-    TestBed.configureTestingModule({ imports: [AppToaster, SpecDefaultIcon] });
-    const fixture = TestBed.createComponent(AppToaster);
+    TestBed.configureTestingModule({ imports: [Toaster, SpecDefaultIcon] });
+    const fixture = TestBed.createComponent(Toaster);
     fixture.componentRef.setInput('icons', { default: SpecDefaultIcon });
     fixture.detectChanges();
     await fixture.whenStable();
 
-    const toaster = TestBed.inject(AppToasterService);
+    const toaster = TestBed.inject(ToasterService);
     toaster.show('With default icon', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
     fixture.detectChanges();
     await fixture.whenStable();
@@ -270,12 +270,12 @@ describe('better-toast', () => {
   });
 
   it('renders a per-toast icon on show() when options.icon is set', async () => {
-    TestBed.configureTestingModule({ imports: [AppToaster, SpecDefaultIcon] });
-    const fixture = TestBed.createComponent(AppToaster);
+    TestBed.configureTestingModule({ imports: [Toaster, SpecDefaultIcon] });
+    const fixture = TestBed.createComponent(Toaster);
     fixture.detectChanges();
     await fixture.whenStable();
 
-    const toaster = TestBed.inject(AppToasterService);
+    const toaster = TestBed.inject(ToasterService);
     toaster.show('Per-toast default', { durationMs: TOAST_DURATION_MANUAL_DISMISS, icon: SpecDefaultIcon });
     fixture.detectChanges();
     await fixture.whenStable();
@@ -284,13 +284,13 @@ describe('better-toast', () => {
   });
 
   it('hides the default icon when [icons].default is null', async () => {
-    TestBed.configureTestingModule({ imports: [AppToaster] });
-    const fixture = TestBed.createComponent(AppToaster);
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
     fixture.componentRef.setInput('icons', { default: null });
     fixture.detectChanges();
     await fixture.whenStable();
 
-    const toaster = TestBed.inject(AppToasterService);
+    const toaster = TestBed.inject(ToasterService);
     toaster.show('No default icon', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
     fixture.detectChanges();
     await fixture.whenStable();
@@ -299,13 +299,13 @@ describe('better-toast', () => {
   });
 
   it('per-toast icon: null overrides [icons].default', async () => {
-    TestBed.configureTestingModule({ imports: [AppToaster, SpecDefaultIcon] });
-    const fixture = TestBed.createComponent(AppToaster);
+    TestBed.configureTestingModule({ imports: [Toaster, SpecDefaultIcon] });
+    const fixture = TestBed.createComponent(Toaster);
     fixture.componentRef.setInput('icons', { default: SpecDefaultIcon });
     fixture.detectChanges();
     await fixture.whenStable();
 
-    const toaster = TestBed.inject(AppToasterService);
+    const toaster = TestBed.inject(ToasterService);
     toaster.show('Hidden', { durationMs: TOAST_DURATION_MANUAL_DISMISS, icon: null });
     fixture.detectChanges();
     await fixture.whenStable();
@@ -314,13 +314,13 @@ describe('better-toast', () => {
   });
 
   it('hides the close button when closeButton is false', async () => {
-    TestBed.configureTestingModule({ imports: [AppToaster] });
-    const fixture = TestBed.createComponent(AppToaster);
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
     fixture.componentRef.setInput('closeButton', false);
     fixture.detectChanges();
     await fixture.whenStable();
 
-    const toaster = TestBed.inject(AppToasterService);
+    const toaster = TestBed.inject(ToasterService);
     toaster.show('No close', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
     fixture.detectChanges();
     await fixture.whenStable();
@@ -329,12 +329,12 @@ describe('better-toast', () => {
   });
 
   it('shows the close button by default', async () => {
-    TestBed.configureTestingModule({ imports: [AppToaster] });
-    const fixture = TestBed.createComponent(AppToaster);
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
     fixture.detectChanges();
     await fixture.whenStable();
 
-    const toaster = TestBed.inject(AppToasterService);
+    const toaster = TestBed.inject(ToasterService);
     toaster.show('With close', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
     fixture.detectChanges();
     await fixture.whenStable();
@@ -343,12 +343,12 @@ describe('better-toast', () => {
   });
 
   it('hides the icon when options.icon is null', async () => {
-    TestBed.configureTestingModule({ imports: [AppToaster] });
-    const fixture = TestBed.createComponent(AppToaster);
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
     fixture.detectChanges();
     await fixture.whenStable();
 
-    const toaster = TestBed.inject(AppToasterService);
+    const toaster = TestBed.inject(ToasterService);
     toaster.success('No icon', { durationMs: TOAST_DURATION_MANUAL_DISMISS, icon: null });
     fixture.detectChanges();
     await fixture.whenStable();
@@ -357,13 +357,13 @@ describe('better-toast', () => {
   });
 
   it('hides the icon when [icons] sets that variant to null', async () => {
-    TestBed.configureTestingModule({ imports: [AppToaster] });
-    const fixture = TestBed.createComponent(AppToaster);
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
     fixture.componentRef.setInput('icons', { success: null });
     fixture.detectChanges();
     await fixture.whenStable();
 
-    const toaster = TestBed.inject(AppToasterService);
+    const toaster = TestBed.inject(ToasterService);
     toaster.success('No global icon', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
     fixture.detectChanges();
     await fixture.whenStable();
@@ -372,12 +372,12 @@ describe('better-toast', () => {
   });
 
   it('custom() stores html and omits the default icon/message branch', async () => {
-    TestBed.configureTestingModule({ imports: [AppToaster] });
-    const fixture = TestBed.createComponent(AppToaster);
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
     fixture.detectChanges();
     await fixture.whenStable();
 
-    const toaster = TestBed.inject(AppToasterService);
+    const toaster = TestBed.inject(ToasterService);
     toaster.custom('<p class="x">Rich</p>', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
     fixture.detectChanges();
     await fixture.whenStable();

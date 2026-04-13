@@ -1,13 +1,13 @@
 <main
   class="flex justify-center min-h-screen bg-white dark:bg-zinc-950 p-6 text-zinc-900 dark:text-zinc-100"
 >
-  <div class="w-full max-w-2xl space-y-12">
+  <div class="w-full max-w-2xl space-y-22">
     <header class="space-y-1 text-left">
       <h1 class="text-4xl font-semibold tracking-tight">Better Toast</h1>
     </header>
 
-    <div class="grid gap-4">
-      <div>
+    <div class="grid gap-6">
+      <div class="space-y-2">
         <h2 class="text-lg font-semibold tracking-tight">Types</h2>
         <p class="text-sm text-zinc-700 dark:text-zinc-300">
           You can customize the type of toast you want to render, and pass an options object as the
@@ -17,56 +17,56 @@
       <div class="grid grid-cols-4 lg:grid-cols-8 gap-2 items-center justify-center">
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 text-[0.85rem] font-medium py-3 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 dark:border-zinc-800 text-[0.85rem] font-medium py-2.5 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('default'); showDefaultToast()"
         >
           Default
         </button>
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-3 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 dark:border-zinc-800 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('success'); showSuccessToast()"
         >
           Success
         </button>
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-3 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 dark:border-zinc-800 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('error'); showErrorToast()"
         >
           Error
         </button>
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-3 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 dark:border-zinc-800 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('info'); showInfoToast()"
         >
           Info
         </button>
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-3 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 dark:border-zinc-800 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('warning'); showWarningToast()"
         >
           Warning
         </button>
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-3 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 dark:border-zinc-800 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('loading'); showLoadingToast()"
         >
           Loading
         </button>
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-3 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 dark:border-zinc-800 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('custom'); showCustomToast()"
         >
           Custom
         </button>
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-3 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 dark:border-zinc-800 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('promise'); showPromiseToast()"
         >
           Promise
@@ -77,14 +77,14 @@
       ><code class="hljs font-mono text-xs whitespace-pre-wrap" [innerHTML]="highlightedToastDemo()"></code></pre>
     </div>
 
-    <div class="grid gap-4">
-      <div>
+    <div class="grid gap-6">
+      <div class="space-y-2">
         <h2 class="text-lg font-semibold tracking-tight">Position</h2>
         <p class="text-sm text-zinc-700 dark:text-zinc-300">
           Enter and exit animations change depending on the position.
         </p>
       </div>
-      <div class="grid grid-cols-3 gap-2">
+      <div class="grid grid-cols-2 lg:grid-cols-3 gap-2">
         @for (pos of positions; track pos) {
           <button
             type="button"
@@ -104,8 +104,140 @@
       </code>
     </div>
 
-    <div class="grid gap-4">
-      <div>
+    <div class="grid gap-6">
+      <div class="space-y-2">
+        <h2 class="text-lg font-semibold tracking-tight">Offset</h2>
+        <p class="text-sm text-zinc-700 dark:text-zinc-300">
+          Viewport inset in pixels for the toast stack. Default desktop offset is
+          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1"> 24px</code>
+          and default mobile offset is
+          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1">16px</code>.
+          You can customize offsets through
+          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1">offset</code>
+          and
+          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1"
+            >mobileOffset</code
+          >
+          inputs.
+        </p>
+      </div>
+      <div class="space-y-6">
+        <div class="space-y-3">
+          <h3 class="text-sm font-semibold text-zinc-800 dark:text-zinc-200">Desktop offset</h3>
+          <div class="grid gap-3 sm:grid-cols-2">
+            @for (side of offsetSides; track side) {
+              <div class="space-y-1">
+                <div class="flex items-center justify-between gap-2 text-sm">
+                  <label class="text-zinc-700 dark:text-zinc-300" [attr.for]="'offset-' + side">
+                    {{ offsetSideLabel(side) }}
+                  </label>
+                  <span class="tabular-nums text-zinc-500 dark:text-zinc-400">
+                    @switch (side) {
+                      @case ('top') {
+                        {{ offsetTopPx() }} px
+                      }
+                      @case ('right') {
+                        {{ offsetRightPx() }} px
+                      }
+                      @case ('bottom') {
+                        {{ offsetBottomPx() }} px
+                      }
+                      @case ('left') {
+                        {{ offsetLeftPx() }} px
+                      }
+                    }
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  class="w-full h-2 accent-zinc-600 dark:accent-zinc-100 bg-zinc-100 dark:bg-zinc-900 rounded-lg appearance-none cursor-pointer"
+                  [id]="'offset-' + side"
+                  [min]="offsetPxMin"
+                  [max]="offsetPxMax"
+                  [step]="offsetPxStep"
+                  [value]="
+                    side === 'top'
+                      ? offsetTopPx()
+                      : side === 'right'
+                        ? offsetRightPx()
+                        : side === 'bottom'
+                          ? offsetBottomPx()
+                          : offsetLeftPx()
+                  "
+                  (input)="onOffsetSliderInput('desktop', side, $event)"
+                  [attr.aria-label]="'Toast offset ' + side"
+                />
+              </div>
+            }
+          </div>
+        </div>
+        <div class="space-y-3">
+          <h3 class="text-sm font-semibold text-zinc-800 dark:text-zinc-200">Mobile offset</h3>
+          <div class="grid gap-3 sm:grid-cols-2">
+            @for (side of offsetSides; track side) {
+              <div class="space-y-1">
+                <div class="flex items-center justify-between gap-2 text-sm">
+                  <label
+                    class="text-zinc-700 dark:text-zinc-300"
+                    [attr.for]="'mobile-offset-' + side"
+                  >
+                    {{ offsetSideLabel(side) }}
+                  </label>
+                  <span class="tabular-nums text-zinc-500 dark:text-zinc-400">
+                    @switch (side) {
+                      @case ('top') {
+                        {{ mobileOffsetTopPx() }} px
+                      }
+                      @case ('right') {
+                        {{ mobileOffsetRightPx() }} px
+                      }
+                      @case ('bottom') {
+                        {{ mobileOffsetBottomPx() }} px
+                      }
+                      @case ('left') {
+                        {{ mobileOffsetLeftPx() }} px
+                      }
+                    }
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  class="w-full h-2 accent-zinc-600 dark:accent-zinc-100 bg-zinc-100 dark:bg-zinc-900 rounded-lg appearance-none cursor-pointer"
+                  [id]="'mobile-offset-' + side"
+                  [min]="offsetPxMin"
+                  [max]="offsetPxMax"
+                  [step]="offsetPxStep"
+                  [value]="
+                    side === 'top'
+                      ? mobileOffsetTopPx()
+                      : side === 'right'
+                        ? mobileOffsetRightPx()
+                        : side === 'bottom'
+                          ? mobileOffsetBottomPx()
+                          : mobileOffsetLeftPx()
+                  "
+                  (input)="onOffsetSliderInput('mobile', side, $event)"
+                  [attr.aria-label]="'Toast mobile offset ' + side"
+                />
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+      <code
+        class="text-xs text-zinc-700 dark:text-zinc-100 p-4 bg-zinc-100 dark:bg-zinc-900 rounded-md whitespace-pre-wrap font-mono"
+        >&lt;<strong>app-toaster</strong> [offset]="&#123; top: '{{ offsetTopPx() }}px', right: '{{
+          offsetRightPx()
+        }}px', bottom: '{{ offsetBottomPx() }}px', left: '{{ offsetLeftPx() }}px' &#125;"
+        [mobileOffset]="&#123; top: '{{ mobileOffsetTopPx() }}px', right: '{{
+          mobileOffsetRightPx()
+        }}px', bottom: '{{ mobileOffsetBottomPx() }}px', left: '{{ mobileOffsetLeftPx() }}px'
+        &#125;" /&gt;</code
+      >
+    </div>
+
+    <div class="grid gap-6">
+      <div class="space-y-2">
         <h2 class="text-lg font-semibold tracking-tight">Duration</h2>
         <p class="text-sm text-zinc-700 dark:text-zinc-300">
           Sets the auto-dismiss duration for toasts. The default is
@@ -158,8 +290,8 @@
       </code>
     </div>
 
-    <div class="grid gap-4">
-      <div>
+    <div class="grid gap-6">
+      <div class="space-y-2">
         <div class="flex items-center gap-3">
           <h2 class="text-lg font-semibold tracking-tight">Rich Colors</h2>
           <div class="flex items-center gap-3">
@@ -203,8 +335,8 @@
       </code>
     </div>
 
-    <div class="grid gap-4">
-      <div>
+    <div class="grid gap-6">
+      <div class="space-y-2">
         <div class="flex items-center gap-3">
           <h2 class="text-lg font-semibold tracking-tight">Close button</h2>
           <div class="flex items-center gap-3">
@@ -249,36 +381,31 @@
       </code>
     </div>
 
-    <div class="grid gap-4">
-      <div>
+    <div class="grid gap-6">
+      <div class="space-y-2">
         <h2 class="text-lg font-semibold tracking-tight">Programmatic dismiss</h2>
-        <p class="text-sm text-zinc-700 dark:text-zinc-300">
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md px-1">show()</code
-          >,
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md px-1"
+        <p class="text-sm/6.5 text-zinc-700 dark:text-zinc-300">
+          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1">show()</code>,
+          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1"
             >success()</code
           >,
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md px-1">error()</code
+          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1">error()</code
           >,
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md px-1">info()</code
-          >,
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md px-1"
+          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1">info()</code>,
+          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1"
             >warning()</code
           >,
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md px-1"
-            >custom()</code
+          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1">custom()</code
           >,
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md px-1"
+          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1"
             >loading()</code
           >
           return a toast id. Pass it to
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md px-1"
+          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1"
             >dismiss(id)</code
           >
           to remove one toast, or call
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md px-1"
-            >clear()</code
-          >
+          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1">clear()</code>
           to remove all.
         </p>
       </div>
@@ -296,6 +423,8 @@ this.toaster.<strong>clear</strong>();</code>
 
 <app-toaster
   [position]="toasterPosition()"
+  [offset]="toasterOffset()"
+  [mobileOffset]="toasterMobileOffset()"
   [richColors]="richColors()"
   [closeButton]="closeButton()"
   [toastOptions]="toastOptions"

@@ -12,10 +12,10 @@ import {
   signal,
 } from '@angular/core';
 import {
-  AppToasterService,
   DEFAULT_TOAST_DURATION_MS,
   parseToasterDurationMs,
-} from './app-toaster.service';
+  ToasterService,
+} from './toaster.service';
 import type {
   ToasterDuration,
   ToasterIcons,
@@ -179,7 +179,7 @@ function mergeToastHostStyles(
 })
 export class AppToastItem {
   /** Shared toaster service (e.g. dismiss from the close button). */
-  protected readonly toaster = inject(AppToasterService);
+  protected readonly toaster = inject(ToasterService);
 
   /** Host element ref used to read `offsetHeight` after the first render. */
   protected readonly host = inject(ElementRef);
@@ -311,8 +311,8 @@ export class AppToastItem {
   `,
   styleUrl: './toaster.css',
 })
-export class AppToaster {
-  protected readonly toaster = inject(AppToasterService);
+export class Toaster {
+  protected readonly toaster = inject(ToasterService);
 
   /** Where the stack is anchored on the viewport. */
   readonly position = input<ToasterPosition>('bottom-right');

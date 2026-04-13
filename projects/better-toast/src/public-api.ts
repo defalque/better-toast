@@ -2,12 +2,12 @@
  * Public API Surface of better-toast
  */
 
-export { AppToaster } from './lib/app-toaster';
+export { Toaster } from './lib/toaster';
 export {
-  AppToasterService,
   DEFAULT_TOAST_DURATION_MS,
   TOAST_DURATION_MANUAL_DISMISS,
-} from './lib/app-toaster.service';
+  ToasterService,
+} from './lib/toaster.service';
 export type {
   ToastPromiseLabels,
   ToastOptions,

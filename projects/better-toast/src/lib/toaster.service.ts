@@ -33,7 +33,7 @@ function shouldScheduleAutoDismiss(durationMs: number): boolean {
 }
 
 @Injectable({ providedIn: 'root' })
-export class AppToasterService {
+export class ToasterService {
   private readonly _toasts = signal<readonly ToasterItem[]>([]);
 
   private defaultDurationMs = DEFAULT_TOAST_DURATION_MS;
@@ -41,7 +41,7 @@ export class AppToasterService {
   /** Active messages, oldest first. */
   readonly toasts = this._toasts.asReadonly();
 
-  /** Synced from `AppToaster` `[duration]`; used when a helper omits its `durationMs` argument. */
+  /** Synced from `Toaster` `[duration]`; used when a helper omits its `durationMs` argument. */
   setDefaultDurationMs(ms: number): void {
     if (Number.isNaN(ms)) {
       this.defaultDurationMs = DEFAULT_TOAST_DURATION_MS;

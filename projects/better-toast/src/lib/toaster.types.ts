@@ -58,7 +58,7 @@ export type ToasterIcons = Partial<Record<ToastVariant, Type<unknown> | null>>;
 
 /**
  * Second argument for `show` / `success` / `error` / `info` / `warning` / `custom` / `loading`.
- * Not used by `AppToasterService.promise()` (that API uses {@link ToastPromiseLabels}).
+ * Not used by `ToasterService.promise()` (that API uses {@link ToastPromiseLabels}).
  */
 /**
  * Defaults for every toast from `<app-toaster [toastOptions]>`.
@@ -105,7 +105,7 @@ export interface ToasterItem {
 }
 
 /**
- * Labels for `AppToasterService.promise` (loading vs settled states).
+ * Labels for `ToasterService.promise` (loading vs settled states).
  * `success` / `error` may be static strings or functions that receive the settled value / rejection reason.
  */
 export interface ToastPromiseLabels<T = unknown> {

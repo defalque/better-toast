@@ -4,13 +4,18 @@ import hljs from 'highlight.js/lib/core';
 import typescript from 'highlight.js/lib/languages/typescript';
 import { RouterOutlet } from '@angular/router';
 import {
-  AppToaster,
-  AppToasterService,
+  Toaster,
+  ToasterService,
   DEFAULT_TOAST_DURATION_MS,
   TOAST_DURATION_MANUAL_DISMISS,
   TOASTER_POSITIONS,
+  type ToasterOffset,
   type ToasterPosition,
 } from 'better-toast';
+
+type OffsetSide = 'top' | 'right' | 'bottom' | 'left';
+
+const OFFSET_SIDES: readonly OffsetSide[] = ['top', 'right', 'bottom', 'left'];
 import { CustomIcon } from './icons/custom-icon/custom-icon';
 import { CustomWarning } from './icons/custom-warning/custom-warning';
 import { CustomLoading } from './icons/custom-loading/custom-loading';
@@ -29,14 +34,14 @@ type ToastDemoKind =
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, AppToaster],
+  imports: [RouterOutlet, Toaster],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App {
   private readonly sanitizer = inject(DomSanitizer);
 
-  protected readonly toaster = inject(AppToasterService);
+  protected readonly toaster = inject(ToasterService);
   protected readonly title = signal('demo');
   protected readonly positions = TOASTER_POSITIONS;
   protected readonly toasterPosition = signal<ToasterPosition>('bottom-right');
@@ -50,6 +55,88 @@ export class App {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
   }
+
+  /** Sliders: 0–100px, step 2. Defaults match `toaster.css` insets. */
+  protected readonly offsetSides = OFFSET_SIDES;
+  protected readonly offsetPxMin = 0;
+  protected readonly offsetPxMax = 100;
+  protected readonly offsetPxStep = 2;
+  protected readonly offsetTopPx = signal(24);
+  protected readonly offsetRightPx = signal(24);
+  protected readonly offsetBottomPx = signal(24);
+  protected readonly offsetLeftPx = signal(24);
+  protected readonly mobileOffsetTopPx = signal(16);
+  protected readonly mobileOffsetRightPx = signal(16);
+  protected readonly mobileOffsetBottomPx = signal(16);
+  protected readonly mobileOffsetLeftPx = signal(16);
+
+  protected readonly toasterOffset = computed(
+    (): ToasterOffset => ({
+      top: `${this.offsetTopPx()}px`,
+      right: `${this.offsetRightPx()}px`,
+      bottom: `${this.offsetBottomPx()}px`,
+      left: `${this.offsetLeftPx()}px`,
+    }),
+  );
+
+  protected readonly toasterMobileOffset = computed(
+    (): ToasterOffset => ({
+      top: `${this.mobileOffsetTopPx()}px`,
+      right: `${this.mobileOffsetRightPx()}px`,
+      bottom: `${this.mobileOffsetBottomPx()}px`,
+      left: `${this.mobileOffsetLeftPx()}px`,
+    }),
+  );
+
+  protected offsetSideLabel(side: OffsetSide): string {
+    switch (side) {
+      case 'top':
+        return 'Top';
+      case 'right':
+        return 'Right';
+      case 'bottom':
+        return 'Bottom';
+      case 'left':
+        return 'Left';
+    }
+  }
+
+  protected onOffsetSliderInput(target: 'desktop' | 'mobile', side: OffsetSide, event: Event): void {
+    const v = (event.target as HTMLInputElement).valueAsNumber;
+    const n = Number.isFinite(v) ? v : 0;
+    if (target === 'desktop') {
+      switch (side) {
+        case 'top':
+          this.offsetTopPx.set(n);
+          break;
+        case 'right':
+          this.offsetRightPx.set(n);
+          break;
+        case 'bottom':
+          this.offsetBottomPx.set(n);
+          break;
+        case 'left':
+          this.offsetLeftPx.set(n);
+          break;
+      }
+    } else {
+      switch (side) {
+        case 'top':
+          this.mobileOffsetTopPx.set(n);
+          break;
+        case 'right':
+          this.mobileOffsetRightPx.set(n);
+          break;
+        case 'bottom':
+          this.mobileOffsetBottomPx.set(n);
+          break;
+        case 'left':
+          this.mobileOffsetLeftPx.set(n);
+          break;
+      }
+    }
+  }
+
   protected readonly richColors = signal(false);
 
   /** When false, toast rows omit the dismiss control (auto-dismiss / `dismiss()` still work). */

@@ -35,7 +35,6 @@
   }
 }
 
-/* data-toast-stack is set on the host by AppToaster (:host-context breaks under emulated encapsulation). */
 :host([data-position^='bottom']) {
   bottom: 0;
   transform: translateY(calc(-1 * var(--offset, 0px)));
@@ -181,13 +180,6 @@
     color: var(--toast-warning-text);
   }
 }
-/* 
-:host([data-variant='default']) {
-  padding-left: 0.875rem;
-}
-:host([data-variant='default']) .toast-main .msg {
-  max-width: 90%;
-} */
 
 :host([data-icon='false']) {
   padding-left: 0.875rem;
