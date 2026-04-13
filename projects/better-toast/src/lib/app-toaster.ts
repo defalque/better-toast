@@ -12,9 +12,25 @@ import {
   signal,
 } from '@angular/core';
 import { AppToasterService, DEFAULT_TOAST_DURATION_MS } from './app-toaster.service';
-import type { ToasterIcons, ToasterItem, ToasterPosition, ToastVariant } from './toaster.types';
+import type {
+  ToasterIcons,
+  ToasterItem,
+  ToasterPosition,
+  ToasterToastOptions,
+  ToastVariant,
+} from './toaster.types';
 
 const GAP = 16;
+
+function mergeToastHostStyles(
+  base: Record<string, string | number | undefined> | undefined,
+  override: Record<string, string | number | undefined> | undefined,
+): Record<string, string | number | undefined> | undefined {
+  if (!base && !override) return undefined;
+  if (!base) return override;
+  if (!override) return base;
+  return { ...base, ...override };
+}
 
 @Component({
   selector: 'li[appToastItem]',
@@ -27,6 +43,7 @@ const GAP = 16;
     '[attr.data-variant]': 'variant()',
     '[attr.data-icon]': 'shouldShowIconColumn() ? "true" : "false"',
     '[style.--offset]': 'offset() + "px"',
+    '[style]': 'hostStyle()',
     '[animate.leave]': '"leave"',
   },
   template: `
@@ -148,8 +165,18 @@ export class AppToastItem {
   /** Toast payload (message, id, variant from the service). */
   toast = input<ToasterItem>();
 
+  /**
+   * Styles from `<app-toaster [toastOptions]>`; merged with {@link ToasterItem.style} so per-toast keys win.
+   */
+  toasterStyle = input<Record<string, string | number | undefined> | undefined>();
+
   /** Which icon and color treatment to show for this row. */
   variant = input<ToastVariant>('default');
+
+  /** Merged inline styles for the toast (`[toastOptions].style` then per-toast `style`). */
+  protected readonly hostStyle = computed(() =>
+    mergeToastHostStyles(this.toasterStyle(), this.toast()?.style),
+  );
 
   /**
    * Per-variant icon overrides from `<app-toaster [icons]>`.
@@ -227,6 +254,7 @@ export class AppToastItem {
           <li
             appToastItem
             [toast]="toast"
+            [toasterStyle]="toastOptions()?.style"
             [variant]="toast.variant"
             [customIcons]="icons()"
             [offset]="offsets()[toast.id]"
@@ -262,6 +290,12 @@ export class AppToaster {
    * Omitted keys keep the built-in icons; **`null`** for a variant hides that variant’s icon.
    */
   readonly icons = input<ToasterIcons | undefined>();
+
+  /**
+   * Defaults applied to every toast (e.g. `style` on the toast host).
+   * Per-toast options passed to the service override on a per-key basis.
+   */
+  readonly toastOptions = input<ToasterToastOptions | undefined>();
 
   /** Measured height in px per toast id, updated when a toast item reports `heightChange`. */
   readonly heights = signal<Record<string, number>>({} as Record<string, number>);

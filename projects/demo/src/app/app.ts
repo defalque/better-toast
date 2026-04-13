@@ -91,7 +91,10 @@ this.toaster.promise(myPromise, {
   }
 
   protected showSuccessToast(): void {
-    this.toaster.success('Saved successfully', { icon: CustomIcon });
+    this.toaster.success('Saved successfully', {
+      icon: CustomIcon,
+      /* style: { background: 'green', color: 'blue' }, */
+    });
   }
 
   protected showErrorToast(): void {
@@ -159,6 +162,10 @@ this.toaster.promise(myPromise, {
   protected readonly toastIcons = {
     // error: null,
     // loading: CustomLoading,
+  };
+
+  protected readonly toastOptions = {
+    /* style: { background: 'red', color: 'yellow' }, */
   };
 
   protected onPositionChange(event: Event): void {

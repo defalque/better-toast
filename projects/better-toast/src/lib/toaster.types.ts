@@ -36,6 +36,18 @@ export type ToasterIcons = {
  * Second argument for `show` / `success` / `error` / `info` / `warning` / `custom` / `loading`.
  * Not used by `AppToasterService.promise()` (that API uses {@link ToastPromiseLabels}).
  */
+/**
+ * Defaults for every toast from `<app-toaster [toastOptions]>`.
+ * Per-toast {@link ToastOptions} override these (e.g. `style` keys on a single toast win over the same keys here).
+ */
+export interface ToasterToastOptions {
+  /**
+   * Inline CSS on each toast host (`li.toast` / `AppToastItem`).
+   * Merged with per-toast {@link ToastOptions.style}; toast-specific values override.
+   */
+  style?: Record<string, string | number | undefined>;
+}
+
 export interface ToastOptions {
   /** Omit to use `<app-toaster [duration]>` (or the library default). `0` = persist until dismissed (except `loading`, which defaults to `0` when omitted). */
   durationMs?: number;
@@ -45,6 +57,11 @@ export interface ToastOptions {
    * Otherwise a standalone component class rendered like `[icons]` overrides.
    */
   icon?: Type<unknown> | null;
+  /**
+   * Inline CSS on the toast host (`li.toast` / `AppToastItem`).
+   * Merged after `<app-toaster [toastOptions]>` `style` (if any); per-toast keys override the same keys from the toaster.
+   */
+  style?: Record<string, string | number | undefined>;
 }
 
 export interface ToasterItem {
@@ -55,6 +72,8 @@ export interface ToasterItem {
   readonly html?: string;
   /** Per-toast override; see {@link ToastOptions.icon}. */
   readonly icon?: Type<unknown> | null;
+  /** Per-toast host inline styles; see {@link ToastOptions.style}. */
+  readonly style?: Record<string, string | number | undefined>;
 }
 
 /**

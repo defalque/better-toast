@@ -1,4 +1,4 @@
-import { Injectable, signal, type Type } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 import type { ToastPromiseLabels, ToastOptions, ToastVariant, ToasterItem } from './toaster.types';
 
@@ -34,7 +34,7 @@ export class AppToasterService {
    * @returns The toast ID, useful for programmatic dismissal.
    */
   show(message: string, options?: ToastOptions): string {
-    return this.add(message, 'default', this.resolveDuration(options?.durationMs), options?.icon);
+    return this.add(message, 'default', this.resolveDuration(options?.durationMs), options);
   }
 
   /**
@@ -48,7 +48,7 @@ export class AppToasterService {
    * @returns The toast ID, useful for programmatic dismissal.
    */
   success(message: string, options?: ToastOptions): string {
-    return this.add(message, 'success', this.resolveDuration(options?.durationMs), options?.icon);
+    return this.add(message, 'success', this.resolveDuration(options?.durationMs), options);
   }
 
   /**
@@ -62,7 +62,7 @@ export class AppToasterService {
    * @returns The toast ID, useful for programmatic dismissal.
    */
   error(message: string, options?: ToastOptions): string {
-    return this.add(message, 'error', this.resolveDuration(options?.durationMs), options?.icon);
+    return this.add(message, 'error', this.resolveDuration(options?.durationMs), options);
   }
 
   /**
@@ -76,7 +76,7 @@ export class AppToasterService {
    * @returns The toast ID, useful for programmatic dismissal.
    */
   info(message: string, options?: ToastOptions): string {
-    return this.add(message, 'info', this.resolveDuration(options?.durationMs), options?.icon);
+    return this.add(message, 'info', this.resolveDuration(options?.durationMs), options);
   }
 
   /**
@@ -90,7 +90,7 @@ export class AppToasterService {
    * @returns The toast ID, useful for programmatic dismissal.
    */
   warning(message: string, options?: ToastOptions): string {
-    return this.add(message, 'warning', this.resolveDuration(options?.durationMs), options?.icon);
+    return this.add(message, 'warning', this.resolveDuration(options?.durationMs), options);
   }
 
   /**
@@ -103,13 +103,13 @@ export class AppToasterService {
    * @returns The toast ID, useful for programmatic dismissal.
    */
   custom(html: string, options?: ToastOptions): string {
-    return this.addHtml(html, 'default', this.resolveDuration(options?.durationMs), options?.icon);
+    return this.addHtml(html, 'default', this.resolveDuration(options?.durationMs), options);
   }
 
   /**
    * Display a loading toast notification.
    *
-   * If `options` or `options.durationMs` are not provided, the toast will use the duration value from `<app-toaster [duration]>`.
+   * If `options.durationMs` is not provided, the toast will use the duration value from `<app-toaster [duration]>`.
    * If no `[duration]` is set in the toaster, it falls back to {@link DEFAULT_TOAST_DURATION_MS}.
    *
    * @param message The toast content.
@@ -118,7 +118,7 @@ export class AppToasterService {
    */
   loading(message: string, options?: ToastOptions): string {
     const ms = options?.durationMs !== undefined ? options.durationMs : 0;
-    return this.add(message, 'loading', ms, options?.icon);
+    return this.add(message, 'loading', ms, options);
   }
 
   /**
@@ -140,23 +140,24 @@ export class AppToasterService {
         return value;
       },
       (reason: unknown) => {
-        const message =
-          typeof labels.error === 'function' ? labels.error(reason) : labels.error;
+        const message = typeof labels.error === 'function' ? labels.error(reason) : labels.error;
         this.updateToast(loadingId, message, 'error', settledDurationMs);
         throw reason;
       },
     );
   }
 
-  private add(
-    message: string,
-    variant: ToastVariant,
-    durationMs: number,
-    icon?: Type<unknown> | null,
-  ): string {
+  private add(message: string, variant: ToastVariant, durationMs: number, options?: ToastOptions): string {
     const id = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
-    const item: ToasterItem =
-      icon !== undefined ? { id, message, variant, icon } : { id, message, variant };
+    const icon = options?.icon;
+    const style = options?.style;
+    const item: ToasterItem = {
+      id,
+      message,
+      variant,
+      ...(icon !== undefined ? { icon } : {}),
+      ...(style !== undefined ? { style } : {}),
+    };
     this._toasts.update((list) => [...list, item]);
     if (durationMs > 0) {
       globalThis.setTimeout(() => this.dismiss(id), durationMs);
@@ -164,15 +165,18 @@ export class AppToasterService {
     return id;
   }
 
-  private addHtml(
-    html: string,
-    variant: ToastVariant,
-    durationMs: number,
-    icon?: Type<unknown> | null,
-  ): string {
+  private addHtml(html: string, variant: ToastVariant, durationMs: number, options?: ToastOptions): string {
     const id = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
-    const base: ToasterItem = { id, message: '', variant, html };
-    const item: ToasterItem = icon !== undefined ? { ...base, icon } : base;
+    const icon = options?.icon;
+    const style = options?.style;
+    const item: ToasterItem = {
+      id,
+      message: '',
+      variant,
+      html,
+      ...(icon !== undefined ? { icon } : {}),
+      ...(style !== undefined ? { style } : {}),
+    };
     this._toasts.update((list) => [...list, item]);
     if (durationMs > 0) {
       globalThis.setTimeout(() => this.dismiss(id), durationMs);
@@ -192,8 +196,8 @@ export class AppToasterService {
         if (toast.id !== id) {
           return toast;
         }
-        found = true;
-        return { id, message, variant };
+               found = true;
+        return { ...toast, message, variant };
       }),
     );
     if (found && durationMs > 0) {

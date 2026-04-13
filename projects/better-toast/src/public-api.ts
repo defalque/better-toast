@@ -8,6 +8,7 @@ export type {
   ToastPromiseLabels,
   ToastOptions,
   ToasterIcons,
+  ToasterToastOptions,
   ToastVariant,
   ToasterItem,
   ToasterPosition,

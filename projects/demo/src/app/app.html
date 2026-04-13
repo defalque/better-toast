@@ -1,5 +1,5 @@
 <main
-  class="grid place-items-center min-h-screen bg-white dark:bg-zinc-950 p-6 text-zinc-900 dark:text-zinc-100"
+  class="flex justify-center min-h-screen bg-white dark:bg-zinc-950 p-6 text-zinc-900 dark:text-zinc-100"
 >
   <div class="w-full max-w-2xl space-y-12">
     <header class="space-y-1 text-left">
@@ -152,6 +152,7 @@
 <app-toaster
   [position]="toasterPosition()"
   [richColors]="richColors()"
+  [toastOptions]="toastOptions"
   [duration]="0"
   [icons]="toastIcons"
 />
