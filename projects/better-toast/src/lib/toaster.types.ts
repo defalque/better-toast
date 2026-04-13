@@ -33,10 +33,11 @@ export type ToastVariant = (typeof TOAST_VARIANTS)[number];
  *
  * Each value is either an **Angular standalone component** class (rendered with `NgComponentOutlet`),
  * or **`null`** to show no icon for that variant. Omitted keys keep the library defaults.
+ *
+ * The **`default`** variant has no built-in icon; set `default` here (or pass {@link ToastOptions.icon}
+ * on a single toast) to show one. Omitting `default` keeps default toasts text-only.
  */
-export type ToasterIcons = {
-  [K in Exclude<ToastVariant, 'default'>]?: Type<unknown> | null;
-};
+export type ToasterIcons = Partial<Record<ToastVariant, Type<unknown> | null>>;
 
 /**
  * Second argument for `show` / `success` / `error` / `info` / `warning` / `custom` / `loading`.

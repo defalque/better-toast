@@ -132,6 +132,7 @@ function mergeToastHostStyles(
                 @case ('loading') {
                   <div class="toast-icon-loading"></div>
                 }
+                @case ('default') {}
               }
             }
           </span>
@@ -193,18 +194,16 @@ export class AppToastItem {
 
   /** Resolved standalone SVG icon component from `[icons]`, if any (not `null`). */
   protected readonly iconComponent = computed(() => {
-    const v = this.variant();
-    if (v === 'default') {
+    const g = this.customIcons()?.[this.variant()];
+    if (g === null) {
       return undefined;
     }
-    const g = this.customIcons()?.[v];
-    return g === null ? undefined : g;
+    return g;
   });
 
   /**
-   * Renders the icon column unless the toast or `[icons]` opts out with `icon: null` / `success:
-   * null` (etc.), or it is the `default` variant with no per-toast `icon` (neutral toasts stay
-   * text-only).
+   * Renders the icon column unless the toast or `[icons]` opts out with `icon: null` / a `null` entry for that variant.
+   * The `default` variant has no built-in icon: the column appears only with a per-toast `icon` or `[icons].default`.
    */
   protected readonly shouldShowIconColumn = computed(() => {
     const t = this.toast();
@@ -212,7 +211,14 @@ export class AppToastItem {
     if (t.icon === null) return false;
     const v = t.variant;
     if (v === 'default') {
-      return t.icon != null;
+      if (t.icon != null) {
+        return true;
+      }
+      const g = this.customIcons()?.default;
+      if (g === null) {
+        return false;
+      }
+      return g !== undefined;
     }
     if (t.icon != null) {
       return true;
@@ -245,8 +251,9 @@ export class AppToastItem {
  * Variant-colored surfaces are off by default; set `[richColors]="true"` to enable them.
  * Set `[duration]` for auto-dismiss when service helpers omit their duration argument.
  * Use **`duration="Infinity"`** (that exact literal) or `[duration]="…"` with a number / {@link TOAST_DURATION_MANUAL_DISMISS} for persist until dismissed; `0` still works.
- * Pass `[icons]` with optional **standalone** components for `success` / `error` / `info` / `warning` / `loading`
- * to replace the default artwork, or **`null`** for a variant to hide its icon. Each component should render an **SVG** (import its class where you configure `[icons]`).
+ * Pass `[icons]` with optional **standalone** components for `default` / `success` / `error` / `info` / `warning` / `loading`:
+ * replace the default artwork (or add an icon for the neutral `default` variant), or use **`null`** to hide that variant’s icon.
+ * Each component should render an **SVG** (import its class where you configure `[icons]`).
  * Set `[closeButton]="false"` to hide the per-toast dismiss button.
  */
 @Component({
@@ -304,7 +311,8 @@ export class AppToaster {
    * Optional per-variant **standalone** components that replace the default SVG (or loading indicator).
    * Import each icon component in the host and pass its class here; each one should render an SVG
    * (e.g. root `<svg>` with `stroke="currentColor"` / `fill="currentColor"` where appropriate).
-   * Omitted keys keep the built-in icons; **`null`** for a variant hides that variant’s icon.
+   * Omitted keys keep the built-in icons (the `default` variant has none unless you set `default` here).
+   * **`null`** for a variant hides that variant’s icon.
    */
   readonly icons = input<ToasterIcons | undefined>();
 

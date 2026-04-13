@@ -56,6 +56,11 @@
   }
 }
 
+:host([data-variant='default']) .toast-icon svg,
+:host([data-variant='default']) .toast-custom-icon ::ng-deep svg {
+  fill: var(--toast-color);
+  color: var(--toast-bg);
+}
 :host([data-rich-colors='true'][data-variant='success']) {
   background: var(--toast-success-bg);
   color: var(--toast-success-text);
@@ -176,19 +181,19 @@
     color: var(--toast-warning-text);
   }
 }
-
+/* 
 :host([data-variant='default']) {
   padding-left: 0.875rem;
 }
 :host([data-variant='default']) .toast-main .msg {
-  max-width: 95%;
-}
+  max-width: 90%;
+} */
 
 :host([data-icon='false']) {
   padding-left: 0.875rem;
 }
 :host([data-icon='false']) .toast-main .msg {
-  max-width: 95%;
+  max-width: 90%;
 }
 
 .toast-main {
@@ -208,7 +213,6 @@
   height: 1.425rem;
 }
 
-/* Wrapper is in this template; inner nodes come from `NgComponentOutlet` — ::ng-deep reaches the inner svg. */
 .toast-custom-icon {
   display: flex;
   width: 100%;

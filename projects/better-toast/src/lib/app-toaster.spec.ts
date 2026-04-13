@@ -12,6 +12,13 @@ import { AppToasterService, TOAST_DURATION_MANUAL_DISMISS } from './app-toaster.
 })
 class SpecSuccessIcon {}
 
+@Component({
+  selector: 'bt-spec-default-icon',
+  standalone: true,
+  template: '<span class="bt-spec-custom-default-icon" aria-hidden="true">D</span>',
+})
+class SpecDefaultIcon {}
+
 describe('better-toast', () => {
   it('shows and dismisses a toast via the service', () => {
     TestBed.configureTestingModule({ imports: [AppToaster] });
@@ -175,6 +182,79 @@ describe('better-toast', () => {
     await fixture.whenStable();
 
     expect(fixture.nativeElement.querySelector('.bt-spec-custom-success-icon')).toBeTruthy();
+  });
+
+  it('does not render an icon column for default toasts without [icons].default or per-toast icon', async () => {
+    TestBed.configureTestingModule({ imports: [AppToaster] });
+    const fixture = TestBed.createComponent(AppToaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(AppToasterService);
+    toaster.show('Neutral', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.toast-icon')).toBeNull();
+  });
+
+  it('renders a custom default icon when [icons].default is set', async () => {
+    TestBed.configureTestingModule({ imports: [AppToaster, SpecDefaultIcon] });
+    const fixture = TestBed.createComponent(AppToaster);
+    fixture.componentRef.setInput('icons', { default: SpecDefaultIcon });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(AppToasterService);
+    toaster.show('With default icon', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.bt-spec-custom-default-icon')).toBeTruthy();
+  });
+
+  it('renders a per-toast icon on show() when options.icon is set', async () => {
+    TestBed.configureTestingModule({ imports: [AppToaster, SpecDefaultIcon] });
+    const fixture = TestBed.createComponent(AppToaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(AppToasterService);
+    toaster.show('Per-toast default', { durationMs: TOAST_DURATION_MANUAL_DISMISS, icon: SpecDefaultIcon });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.bt-spec-custom-default-icon')).toBeTruthy();
+  });
+
+  it('hides the default icon when [icons].default is null', async () => {
+    TestBed.configureTestingModule({ imports: [AppToaster] });
+    const fixture = TestBed.createComponent(AppToaster);
+    fixture.componentRef.setInput('icons', { default: null });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(AppToasterService);
+    toaster.show('No default icon', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.toast-icon')).toBeNull();
+  });
+
+  it('per-toast icon: null overrides [icons].default', async () => {
+    TestBed.configureTestingModule({ imports: [AppToaster, SpecDefaultIcon] });
+    const fixture = TestBed.createComponent(AppToaster);
+    fixture.componentRef.setInput('icons', { default: SpecDefaultIcon });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(AppToasterService);
+    toaster.show('Hidden', { durationMs: TOAST_DURATION_MANUAL_DISMISS, icon: null });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.toast-icon')).toBeNull();
   });
 
   it('hides the close button when closeButton is false', async () => {

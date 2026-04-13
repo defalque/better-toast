@@ -95,7 +95,9 @@ this.toaster.promise(myPromise, {
   });
 
   protected showDefaultToast(): void {
-    this.toaster.show('Default toast. A very super long message that should wrap.');
+    this.toaster.show('Default toast. A very super long message that should wrap.', {
+      /* icon: CustomWarning, */
+    });
   }
 
   protected showSuccessToast(): void {
