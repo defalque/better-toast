@@ -1,5 +1,5 @@
 <main
-  class="flex justify-center min-h-screen bg-white dark:bg-zinc-950 p-3 sm:p-6 text-zinc-900 dark:text-zinc-100"
+  class="flex justify-center min-h-screen bg-white dark:bg-stone-950/94 p-3 sm:p-6 text-zinc-900 dark:text-zinc-100"
 >
   <div class="w-full sm:max-w-2xl space-y-22">
     <header class="space-y-1 text-left">
@@ -17,72 +17,73 @@
       <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2 items-center justify-center">
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 text-[0.85rem] font-medium py-2.5 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 dark:border-zinc-800/80 text-[0.85rem] font-medium py-2.5 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:bg-zinc-950/50 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('default'); showDefaultToast()"
         >
           Default
         </button>
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 dark:border-zinc-800/80 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:bg-zinc-950/50 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('success'); showSuccessToast()"
         >
           Success
         </button>
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 dark:border-zinc-800/80 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:bg-zinc-950/50 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('error'); showErrorToast()"
         >
           Error
         </button>
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 dark:border-zinc-800/80 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:bg-zinc-950/50 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('info'); showInfoToast()"
         >
           Info
         </button>
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 dark:border-zinc-800/80 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:bg-zinc-950/50 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('warning'); showWarningToast()"
         >
           Warning
         </button>
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 dark:border-zinc-800/80 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:bg-zinc-950/50 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('loading'); showLoadingToast()"
         >
           Loading
         </button>
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 dark:border-zinc-800/80 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:bg-zinc-950/50 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('custom'); showCustomToast()"
         >
           Custom
         </button>
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 dark:border-zinc-800/80 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:bg-zinc-950/50 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('promise'); showPromiseToast()"
         >
           Promise
         </button>
       </div>
       <pre
-        class="toast-demo-snippet text-xs p-4 bg-zinc-100 dark:bg-zinc-900 rounded-md overflow-x-auto"
+        class="toast-demo-snippet text-xs p-4 bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800/80 rounded-md overflow-x-auto"
       ><code class="hljs font-mono text-xs whitespace-pre-wrap" [innerHTML]="highlightedToastDemo()"></code></pre>
     </div>
 
     <div class="grid gap-6">
       <div class="space-y-2">
         <h2 class="text-lg font-semibold tracking-tight">Headless</h2>
-        <p class="text-sm text-zinc-700 dark:text-zinc-300">
+        <p class="text-sm/6.25 text-zinc-700 dark:text-zinc-300">
           Go fully custom by passing a standalone component to the
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1"
+          <code
+            class="font-mono text-xs bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800/80 rounded-md p-1"
             >headless()</code
           >
           method.<br />
@@ -93,35 +94,35 @@
       <div class="grid sm:grid-cols-2 lg:flex flex-wrap gap-2">
         <button
           type="button"
-          class="border grow border-zinc-200 dark:border-zinc-800 text-[0.85rem] font-medium py-2.5 px-4 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border grow dark:bg-zinc-950/50 border-zinc-200 dark:border-zinc-800/80 text-[0.85rem] font-medium py-2.5 px-4 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedHeadlessDemo.set('boring'); showBoringToast()"
         >
           Boring toast
         </button>
         <button
           type="button"
-          class="border grow border-zinc-200 dark:border-zinc-800 text-[0.85rem] font-medium py-2.5 px-4 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border grow dark:bg-zinc-950/50 border-zinc-200 dark:border-zinc-800/80 text-[0.85rem] font-medium py-2.5 px-4 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedHeadlessDemo.set('music'); showMusicPlayerToast()"
         >
           Music Player toast
         </button>
         <button
           type="button"
-          class="border grow border-zinc-200 dark:border-zinc-800 text-[0.85rem] font-medium py-2.5 px-4 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border grow border-zinc-200 dark:bg-zinc-950/50 dark:border-zinc-800/80 text-[0.85rem] font-medium py-2.5 px-4 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedHeadlessDemo.set('cookie'); showCookieToast()"
         >
           Cookie banner toast
         </button>
         <button
           type="button"
-          class="border grow border-zinc-200 dark:border-zinc-800 text-[0.85rem] font-medium py-2.5 px-4 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border grow border-zinc-200 dark:bg-zinc-950/50 dark:border-zinc-800/80 text-[0.85rem] font-medium py-2.5 px-4 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedHeadlessDemo.set('upload'); showUploadProgressToast()"
         >
           Upload progress toast
         </button>
       </div>
       <pre
-        class="toast-demo-snippet max-h-96 overflow-auto text-xs p-4 bg-zinc-100 dark:bg-zinc-900 rounded-md"
+        class="toast-demo-snippet max-h-96 overflow-auto text-xs p-4 bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800/80 rounded-md"
       ><code class="hljs font-mono text-xs whitespace-pre-wrap" [innerHTML]="highlightedHeadlessDemo()"></code></pre>
     </div>
 
@@ -136,7 +137,7 @@
         @for (pos of positions; track pos) {
           <button
             type="button"
-            class="border uppercase text-xs border-zinc-200 dark:border-zinc-800 py-3 font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+            class="border uppercase text-xs border-zinc-200 dark:bg-zinc-950/50 dark:border-zinc-800/80 py-3 font-medium rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
             [class.bg-zinc-100]="toasterPosition() === pos"
             [class.dark:bg-zinc-800]="toasterPosition() === pos"
             (click)="toasterPosition.set(pos)"
@@ -146,7 +147,7 @@
         }
       </div>
       <code
-        class="text-xs text-zinc-700 dark:text-zinc-100 p-4 bg-zinc-100 dark:bg-zinc-900 rounded-md"
+        class="text-xs text-zinc-700 dark:text-zinc-100 p-4 bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800/80 rounded-md"
       >
         &lt;<strong>app-toaster</strong> position="{{ toasterPosition() }}" /&gt;
       </code>
@@ -155,23 +156,37 @@
     <div class="grid gap-6">
       <div class="space-y-2">
         <h2 class="text-lg font-semibold tracking-tight">Offset</h2>
-        <p class="text-sm/6.25 text-zinc-700 dark:text-zinc-300">
+        <p class="text-sm/6.75 text-zinc-700 dark:text-zinc-300">
           Viewport inset in pixels for the toast stack. Default desktop offset is
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1"> 24px</code>
+          <code
+            class="font-mono text-xs bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800/80 rounded-md p-1"
+          >
+            24px</code
+          >
           and default mobile offset is
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1">16px</code>.
-          You can customize offsets through
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1">offset</code>
+          <code
+            class="font-mono text-xs bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800/80 rounded-md p-1"
+            >16px</code
+          >. You can customize offsets through
+          <code
+            class="font-mono text-xs bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800/80 rounded-md p-1"
+            >offset</code
+          >
           and
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1"
+          <code
+            class="font-mono text-xs bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800/80 rounded-md p-1"
             >mobileOffset</code
           >
           inputs.<br />
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1"
+          <code
+            class="font-mono text-xs bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800/80 rounded-md p-1"
             >mobileOffset</code
           >
           will be applied when the screen width is less than
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1">640px</code>.
+          <code
+            class="font-mono text-xs bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800/80 rounded-md p-1"
+            >640px</code
+          >.
         </p>
       </div>
       <div class="space-y-6">
@@ -203,7 +218,7 @@
                 </div>
                 <input
                   type="range"
-                  class="w-full h-2 accent-zinc-600 dark:accent-zinc-100 bg-zinc-100 dark:bg-zinc-900 rounded-lg appearance-none cursor-pointer"
+                  class="w-full h-2.25 accent-zinc-600 dark:accent-zinc-200 bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800/80 rounded-lg appearance-none cursor-pointer"
                   [id]="'offset-' + side"
                   [min]="offsetPxMin"
                   [max]="offsetPxMax"
@@ -255,7 +270,7 @@
                 </div>
                 <input
                   type="range"
-                  class="w-full h-2 accent-zinc-600 dark:accent-zinc-100 bg-zinc-100 dark:bg-zinc-900 rounded-lg appearance-none cursor-pointer"
+                  class="w-full h-2.25 accent-zinc-600 dark:accent-zinc-200 bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800/80 rounded-lg appearance-none cursor-pointer"
                   [id]="'mobile-offset-' + side"
                   [min]="offsetPxMin"
                   [max]="offsetPxMax"
@@ -278,7 +293,7 @@
         </div>
       </div>
       <code
-        class="text-xs text-zinc-700 dark:text-zinc-100 p-4 bg-zinc-100 dark:bg-zinc-900 rounded-md whitespace-pre-wrap font-mono"
+        class="text-xs text-zinc-700 dark:text-zinc-100 p-4 bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800/80 rounded-md whitespace-pre-wrap font-mono"
         >&lt;<strong>app-toaster</strong> [offset]="&#123; top: '{{ offsetTopPx() }}px', right: '{{
           offsetRightPx()
         }}px', bottom: '{{ offsetBottomPx() }}px', left: '{{ offsetLeftPx() }}px' &#125;"
@@ -294,9 +309,12 @@
         <h2 class="text-lg font-semibold tracking-tight">Duration</h2>
         <p class="text-sm text-zinc-700 dark:text-zinc-300">
           Sets the auto-dismiss duration for toasts. The default is
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1">4000ms</code>.
-          Use
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1"
+          <code
+            class="font-mono text-xs bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800/80 rounded-md p-1"
+            >4000ms</code
+          >. Use
+          <code
+            class="font-mono text-xs bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800/80 rounded-md p-1"
             >Infinity</code
           >
           to keep toasts until manually dismissed.
@@ -318,7 +336,7 @@
         <input
           id="toaster-duration-slider"
           type="range"
-          class="w-full h-2 accent-zinc-600 dark:accent-zinc-100 bg-zinc-100 dark:bg-zinc-900 rounded-lg appearance-none cursor-pointer"
+          class="w-full h-2.25 accent-zinc-600 dark:accent-zinc-200 bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800/80 rounded-lg appearance-none cursor-pointer"
           [min]="0"
           [max]="durationSliderMaxMs"
           [step]="durationSliderStepMs"
@@ -331,7 +349,7 @@
         />
       </div>
       <code
-        class="text-xs text-zinc-700 dark:text-zinc-100 p-4 bg-zinc-100 dark:bg-zinc-900 rounded-md"
+        class="text-xs text-zinc-700 dark:text-zinc-100 p-4 bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800/80 rounded-md"
       >
         &lt;<strong>app-toaster</strong>
         @if (isManualDismissDuration()) {
@@ -354,15 +372,11 @@
               [attr.aria-checked]="richColors()"
               [attr.aria-label]="richColors() ? 'Rich colors on' : 'Rich colors off'"
               (click)="toggleRichColors()"
-              class="relative border-2 inline-flex h-6 w-10 shrink-0 cursor-pointer rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 dark:focus-visible:ring-zinc-500 dark:focus-visible:ring-offset-zinc-950"
-              [class.bg-zinc-600]="richColors()"
-              [class.border-zinc-600]="richColors()"
-              [class.bg-zinc-200]="!richColors()"
-              [class.border-zinc-200]="!richColors()"
-              [class.dark:bg-zinc-600]="richColors()"
-              [class.dark:border-zinc-600]="richColors()"
-              [class.dark:bg-zinc-800]="!richColors()"
-              [class.dark:border-zinc-800]="!richColors()"
+              class="relative border-2 inline-flex h-6 w-10 shrink-0 cursor-pointer rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 dark:focus-visible:ring-zinc-500 dark:focus-visible:ring-offset-zinc-950 {{
+                richColors()
+                  ? 'bg-zinc-600 dark:bg-zinc-600 border-zinc-600 dark:border-zinc-600'
+                  : 'bg-zinc-200 dark:bg-zinc-950/50 border-zinc-200 dark:border-zinc-950/50'
+              }}"
             >
               <span
                 aria-hidden="true"
@@ -378,7 +392,7 @@
       </div>
 
       <code
-        class="text-xs text-zinc-700 dark:text-zinc-100 p-4 bg-zinc-100 dark:bg-zinc-900 rounded-md"
+        class="text-xs text-zinc-700 dark:text-zinc-100 p-4 bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800/80 rounded-md"
       >
         &lt;<strong>app-toaster</strong>
         @if (richColors()) {
@@ -399,15 +413,11 @@
               [attr.aria-checked]="closeButton()"
               [attr.aria-label]="closeButton() ? 'Close button on' : 'Close button off'"
               (click)="toggleCloseButton()"
-              class="relative border-2 inline-flex h-6 w-10 shrink-0 cursor-pointer rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 dark:focus-visible:ring-zinc-500 dark:focus-visible:ring-offset-zinc-950"
-              [class.bg-zinc-600]="closeButton()"
-              [class.border-zinc-600]="closeButton()"
-              [class.bg-zinc-200]="!closeButton()"
-              [class.border-zinc-200]="!closeButton()"
-              [class.dark:bg-zinc-600]="closeButton()"
-              [class.dark:border-zinc-600]="closeButton()"
-              [class.dark:bg-zinc-800]="!closeButton()"
-              [class.dark:border-zinc-800]="!closeButton()"
+              class="relative border-2 inline-flex h-6 w-10 shrink-0 cursor-pointer rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 dark:focus-visible:ring-zinc-500 dark:focus-visible:ring-offset-zinc-950 {{
+                closeButton()
+                  ? 'bg-zinc-600 dark:bg-zinc-600 border-zinc-600 dark:border-zinc-600'
+                  : 'bg-zinc-200 dark:bg-zinc-950/50 border-zinc-200 dark:border-zinc-950/50'
+              }}"
             >
               <span
                 aria-hidden="true"
@@ -424,7 +434,7 @@
       </div>
 
       <code
-        class="text-xs text-zinc-700 dark:text-zinc-100 p-4 bg-zinc-100 dark:bg-zinc-900 rounded-md"
+        class="text-xs text-zinc-700 dark:text-zinc-100 p-4 bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800/80 rounded-md"
       >
         &lt;<strong>app-toaster</strong>
         @if (closeButton()) {

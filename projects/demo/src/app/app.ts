@@ -55,10 +55,21 @@ export class App {
   protected readonly durationSliderStepMs = 1000;
 
   protected positionLabel(position: ToasterPosition): string {
-    return position
-      .split('-')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
+    switch (position) {
+      case 'top-left':
+        return 'Top Left';
+      case 'top-center':
+        return 'Top Center';
+      case 'top-right':
+        return 'Top Right';
+      case 'bottom-left':
+        return 'Bottom Left';
+      case 'bottom-center':
+        return 'Bottom Center';
+      case 'bottom-right':
+      default:
+        return 'Bottom-right';
+    }
   }
 
   /** Sliders: 0–100px, step 2. Defaults match `toaster.css` insets. */
