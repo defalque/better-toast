@@ -97,11 +97,14 @@ export interface ToastOptions {
  * The component must be **standalone** (or otherwise valid for `NgComponentOutlet`).
  * Headless toasts ignore `<app-toaster [closeButton]>`: no dismiss control is rendered.
  *
+ * Per-toast **`icon`** and **`style`** are omitted: the inner component owns visuals; use
+ * `<app-toaster [toastOptions]>` for shared host styling if needed.
+ *
  * The host always passes a **`toastId`** input (same value as the id returned from `headless()`)
  * so the component can call {@link ToasterService.dismiss} or read its own id. User `inputs` are
  * merged first; **`toastId` always wins** if also present in `inputs`.
  */
-export interface HeadlessToastOptions extends ToastOptions {
+export interface HeadlessToastOptions extends Omit<ToastOptions, 'icon' | 'style'> {
   /**
    * Values passed to the component’s `input()` / `@Input()` bindings
    * (same shape as `NgComponentOutlet` `inputs`).

@@ -28,6 +28,7 @@ import { ToasterService } from 'better-toast';
         <div class="flex items-center gap-2">
           <div class="px-4">
             <svg
+              aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="none"
@@ -45,6 +46,7 @@ import { ToasterService } from 'better-toast';
 
           <div class="flex items-center gap-2">
             <svg
+              aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
@@ -55,6 +57,7 @@ import { ToasterService } from 'better-toast';
             </svg>
 
             <svg
+              aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
@@ -65,6 +68,7 @@ import { ToasterService } from 'better-toast';
             </svg>
 
             <svg
+              aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
@@ -78,7 +82,6 @@ import { ToasterService } from 'better-toast';
       </div>
     </div>
   `,
-  styleUrl: './custom-music-player-toast.css',
 })
 export class CustomMusicPlayerToast {
   protected readonly toaster = inject(ToasterService);

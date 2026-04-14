@@ -21,6 +21,8 @@ import { CustomWarning } from './icons/custom-warning/custom-warning';
 import { CustomLoading } from './icons/custom-loading/custom-loading';
 import { CustomMusicPlayerToast } from './components/custom-music-player-toast/custom-music-player-toast';
 import { CustomToast } from './components/custom-toast/custom-toast';
+import { CookieToast } from './components/cookie-toast/cookie-toast';
+import { UploadProgressToast } from './components/upload-progress-toast/upload-progress-toast';
 
 hljs.registerLanguage('typescript', typescript);
 
@@ -34,7 +36,7 @@ type ToastDemoKind =
   | 'loading'
   | 'promise';
 
-type HeadlessDemoKind = 'boring' | 'music';
+type HeadlessDemoKind = 'boring' | 'music' | 'cookie' | 'upload';
 
 @Component({
   selector: 'app-root',
@@ -273,6 +275,65 @@ this.toaster.headless(CustomMusicPlayerToast, {
     songArtist: 'The Kid Laroi, Justin Bieber',
   },
 });`,
+    cookie: `import { ToasterService } from 'better-toast';
+...
+
+@Component({
+  ...
+  template: '
+    <div class="w-fit relative border border-zinc-300 p-5 shadow-xl bg-white rounded-2xl">
+      ...
+    </div>
+  '
+})
+export class CookieToast {
+  protected readonly toaster = inject(ToasterService);
+
+  /** Same id returned from 'ToasterService.headless()'; use with 'dismiss()'. */
+  protected readonly toastId = input<string>('');
+
+  protected readonly title = input<string>('');
+  protected readonly message = input<string>('');
+  protected readonly subMessage = input<string>('');
+  ...
+}
+
+this.toaster.headless(CookieToast, {
+  durationMs: 'Infinity',
+  inputs: {
+    title: 'Legally required cookie banner',
+    message: "We don't use third-party cookies to track you.",
+    subMessage: 'No data is sent to third-party servers. Ursula von der Leyen would be proud!',
+  },
+});`,
+    upload: `import { ToasterService } from 'better-toast';
+...
+
+@Component({
+  ...
+  template: '
+    <div class="... rounded-xl border ... p-4" role="status">
+      ...
+      <button type="button" aria-label="Dismiss" (click)="toaster.dismiss(toastId())">
+        ...
+      </button>
+    </div>
+  '
+})
+export class UploadProgressToast {
+  protected readonly toaster = inject(ToasterService);
+
+  protected readonly toastId = input<string>('');
+  protected readonly fileName = input<string>('');
+
+  /** Simulates upload progress; dismisses shortly after reaching 100%. */
+  ...
+}
+
+this.toaster.headless(UploadProgressToast, {
+  durationMs: 'Infinity',
+  inputs: { fileName: 'quarterly-report.pdf' },
+});`,
   };
 
   protected readonly highlightedHeadlessDemo = computed(() => {
@@ -410,6 +471,23 @@ this.toaster.headless(CustomMusicPlayerToast, {
           'https://cdn-images.dzcdn.net/images/cover/dd6fe7fa9267185c4b835bd4f155d1d2/0x1900-000000-80-0-0.jpg',
         songArtist: 'The Kid Laroi, Justin Bieber',
       },
+    });
+  }
+  protected showCookieToast(): void {
+    this.toaster.headless(CookieToast, {
+      durationMs: 'Infinity',
+      inputs: {
+        title: 'Legally required cookie banner',
+        message: "We don't use third-party cookies to track you.",
+        subMessage: 'No data is sent to third-party servers. Ursula von der Leyen would be proud!',
+      },
+    });
+  }
+
+  protected showUploadProgressToast(): void {
+    this.toaster.headless(UploadProgressToast, {
+      durationMs: 'Infinity',
+      inputs: { fileName: 'quarterly-report.pdf' },
     });
   }
 }

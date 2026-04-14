@@ -53,7 +53,6 @@ type CustomToastActionState = 'idle' | 'loading' | 'done';
       </div>
     </div>
   `,
-  styleUrl: './custom-toast.css',
 })
 export class CustomToast {
   protected readonly toaster = inject(ToasterService);

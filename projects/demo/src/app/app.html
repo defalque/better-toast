@@ -102,7 +102,21 @@
           class="border border-zinc-200 dark:border-zinc-800 text-[0.85rem] font-medium py-2.5 px-4 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedHeadlessDemo.set('music'); showMusicPlayerToast()"
         >
-          Music Player
+          Music Player toast
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 dark:border-zinc-800 text-[0.85rem] font-medium py-2.5 px-4 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          (click)="selectedHeadlessDemo.set('cookie'); showCookieToast()"
+        >
+          Cookie banner toast
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 dark:border-zinc-800 text-[0.85rem] font-medium py-2.5 px-4 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          (click)="selectedHeadlessDemo.set('upload'); showUploadProgressToast()"
+        >
+          Upload progress toast
         </button>
       </div>
       <pre

@@ -1,0 +1,45 @@
+<div class="w-fit relative border border-zinc-300 p-5 shadow-xl bg-white rounded-2xl">
+  <div class="grid gap-3 relative">
+    <h2 class="text-xl font-semibold tracking-tight text-zinc-800 font-serif text-balance">
+      {{ title() }}
+    </h2>
+    <div class="flex md:flex-row flex-col md:justify-between justify-center gap-4 gap-y-6">
+      <div class="space-y-2">
+        <p class="text-base text-zinc-700 font-serif">
+          {{ message() }}
+        </p>
+        <p class="text-base text-zinc-700 max-w-sm text-balance font-serif">
+          {{ subMessage() }}
+        </p>
+      </div>
+
+      <div class="self-center">
+        <img
+          src="https://m.media-amazon.com/images/I/71+vaPvOiTL.jpg"
+          alt=""
+          class="rounded-md size-22"
+        />
+      </div>
+    </div>
+  </div>
+
+  <button
+    class="absolute top-2 right-2 cursor-pointer text-zinc-800"
+    (click)="toaster.dismiss(toastId())"
+  >
+    <svg
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="size-5"
+    >
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg>
+  </button>
+</div>

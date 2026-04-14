@@ -151,7 +151,7 @@ export class ToasterService {
    * Omit `durationMs` to use `<app-toaster [duration]>` (or {@link DEFAULT_TOAST_DURATION_MS}).
    *
    * @param component The component class (must be usable with `NgComponentOutlet`).
-   * @param options Optional duration, host `style`, and component `inputs`.
+   * @param options Optional duration and component `inputs`.
    * @returns The toast ID, useful for programmatic dismissal.
    */
   headless(component: Type<unknown>, options?: HeadlessToastOptions): string {
@@ -203,7 +203,12 @@ export class ToasterService {
     );
   }
 
-  private add(message: string, variant: ToastVariant, durationMs: number, options?: ToastOptions): string {
+  private add(
+    message: string,
+    variant: ToastVariant,
+    durationMs: number,
+    options?: ToastOptions,
+  ): string {
     const id = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
     const icon = options?.icon;
     const style = options?.style;
@@ -221,7 +226,12 @@ export class ToasterService {
     return id;
   }
 
-  private addHtml(html: string, variant: ToastVariant, durationMs: number, options?: ToastOptions): string {
+  private addHtml(
+    html: string,
+    variant: ToastVariant,
+    durationMs: number,
+    options?: ToastOptions,
+  ): string {
     const id = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
     const icon = options?.icon;
     const style = options?.style;
@@ -246,8 +256,6 @@ export class ToasterService {
     options?: HeadlessToastOptions,
   ): string {
     const id = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
-    const icon = options?.icon;
-    const style = options?.style;
     const componentInputs: Record<string, unknown> = {
       ...(options?.inputs ?? {}),
       toastId: id,
@@ -258,8 +266,6 @@ export class ToasterService {
       variant: 'default',
       component,
       componentInputs,
-      ...(icon !== undefined ? { icon } : {}),
-      ...(style !== undefined ? { style } : {}),
     };
     this._toasts.update((list) => [...list, item]);
     if (shouldScheduleAutoDismiss(durationMs)) {
@@ -280,7 +286,7 @@ export class ToasterService {
         if (toast.id !== id) {
           return toast;
         }
-               found = true;
+        found = true;
         return { ...toast, message, variant };
       }),
     );

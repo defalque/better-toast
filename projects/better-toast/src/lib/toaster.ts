@@ -63,7 +63,7 @@ function mergeToastHostStyles(
     '[attr.data-icon]': 'shouldShowIconColumn() ? "true" : "false"',
     '[attr.data-headless]': 'isHeadless() ? "true" : null',
     '[style.--offset]': 'offset() + "px"',
-    '[style]': 'hostStyle()',
+    '[style]': 'isHeadless() ? undefined : hostStyle()',
     '[animate.leave]': '"leave"',
   },
   template: `
@@ -71,9 +71,7 @@ function mergeToastHostStyles(
       <div class="toast-custom" [innerHTML]="toast()!.html!"></div>
     } @else if (toast()?.component) {
       <div class="toast-custom">
-        <ng-container
-          *ngComponentOutlet="toast()!.component!; inputs: componentOutletInputs()"
-        />
+        <ng-container *ngComponentOutlet="toast()!.component!; inputs: componentOutletInputs()" />
       </div>
     } @else {
       <div class="toast-main">
@@ -90,7 +88,12 @@ function mergeToastHostStyles(
             } @else {
               @switch (variant()) {
                 @case ('success') {
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
                     <circle
                       cx="12"
                       cy="12"
@@ -111,6 +114,7 @@ function mergeToastHostStyles(
                 }
                 @case ('error') {
                   <svg
+                    aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="none"
@@ -126,6 +130,7 @@ function mergeToastHostStyles(
                 }
                 @case ('info') {
                   <svg
+                    aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="none"
@@ -140,7 +145,12 @@ function mergeToastHostStyles(
                   </svg>
                 }
                 @case ('warning') {
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <svg
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
                     <path
                       stroke="currentColor"
                       stroke-linecap="round"
@@ -151,7 +161,7 @@ function mergeToastHostStyles(
                   </svg>
                 }
                 @case ('loading') {
-                  <div class="toast-icon-loading"></div>
+                  <div class="toast-icon-loading" aria-hidden="true"></div>
                 }
                 @case ('default') {}
               }
@@ -170,7 +180,7 @@ function mergeToastHostStyles(
         (click)="toaster.dismiss(toast()?.id ?? '')"
         aria-label="Dismiss"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <path
             stroke="currentColor"
             stroke-linecap="round"
