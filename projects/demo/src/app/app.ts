@@ -34,6 +34,8 @@ type ToastDemoKind =
   | 'loading'
   | 'promise';
 
+type HeadlessDemoKind = 'boring' | 'music';
+
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, Toaster],
@@ -148,6 +150,7 @@ export class App {
   protected readonly closeButton = signal(true);
 
   protected readonly selectedToastDemo = signal<ToastDemoKind>('default');
+  protected readonly selectedHeadlessDemo = signal<HeadlessDemoKind>('boring');
 
   protected readonly toastDemoSnippets: Record<ToastDemoKind, string> = {
     default: `this.toaster.show('Default toast. A very super long message that should wrap.');`,
@@ -186,17 +189,95 @@ this.toaster.promise(myPromise, {
     return this.sanitizer.bypassSecurityTrustHtml(value);
   });
 
-  protected readonly headlessDemoSnippet = `import { CustomMusicPlayerToast } from './components/custom-music-player-toast/custom-music-player-toast';
+  protected readonly headlessDemoSnippets: Record<HeadlessDemoKind, string> = {
+    boring: `import { ToasterService } from 'better-toast';
+...
+
+@Component({
+  ...
+  template: '
+    <div class="w-fit md:w-120 relative border p-4 shadow-xl bg-sky-50 dark:bg-sky-950">
+      <div class="grid gap-2">
+        <h2 class="text-lg font-semibold tracking-tight text-zinc-800 dark:text-zinc-100">
+          {{ title() }}
+        </h2>
+        <p class="text-sm text-zinc-700 dark:text-zinc-300 max-w-92 md:max-w-none">
+          {{ message() }}
+        </p>
+        ...
+        <button
+          type="button"
+          aria-label="Dismiss"
+          aria-hidden="true"
+          class="absolute top-2 right-2 cursor-pointer text-zinc-800 dark:text-zinc-100"
+          (click)="toaster.dismiss(toastId())"
+        >
+          ...
+        </button>
+      </div>
+    </div>
+  '
+})
+export class BoringToast {
+  protected readonly toaster = inject(ToasterService);
+
+  /** Set automatically by 'ToasterService.headless()'; use with 'dismiss()'. */
+  protected readonly toastId = input<string>('');
+
+  protected readonly title = input<string>('');
+  protected readonly message = input<string>('');
+  protected readonly actionMessage = input<string>('');
+
+  ...
+}
+
+this.toaster.headless(BoringToast, {
+  inputs: {
+    title: 'Boring Toast',
+    message:
+      'You have full control over the toast content and appearance, while keeping the animations and positioning.',
+    actionMessage: 'Action',
+  },
+});`,
+    music: `import { ToasterService } from 'better-toast';
+...
+
+@Component({
+  ...
+  template: '
+    <div
+      class="w-fit shadow-lg shadow-black/10 ring-1 ring-black/10 dark:ring-zinc-800 px-4 py-2 rounded-xl bg-zinc-50/10 backdrop-blur-sm dark:bg-zinc-800/50"
+    >
+      ...
+    </div>
+  '
+})
+export class CustomMusicPlayerToast {
+  protected readonly toaster = inject(ToasterService);
+
+  /** Same id returned from 'ToasterService.headless()'; use with 'dismiss()'. */
+  protected readonly toastId = input<string>('');
+
+  protected readonly songTitle = input<string>('');
+  protected readonly songImage = input<string>('');
+  protected readonly songArtist = input<string>('');
+
+  ...
+}
 
 this.toaster.headless(CustomMusicPlayerToast, {
   inputs: {
     songTitle: 'Stay',
+    songImage:
+      'https://cdn-images.dzcdn.net/images/cover/dd6fe7fa9267185c4b835bd4f155d1d2/0x1900-000000-80-0-0.jpg',
     songArtist: 'The Kid Laroi, Justin Bieber',
   },
-});`;
+});`,
+  };
 
   protected readonly highlightedHeadlessDemo = computed(() => {
-    const { value } = hljs.highlight(this.headlessDemoSnippet, {
+    const code = this.headlessDemoSnippets[this.selectedHeadlessDemo()];
+    const { value } = hljs.highlight(code, {
       language: 'typescript',
       ignoreIllegals: true,
     });
@@ -313,13 +394,20 @@ this.toaster.headless(CustomMusicPlayerToast, {
 
   protected showBoringToast(): void {
     this.toaster.headless(CustomToast, {
-      inputs: {},
+      inputs: {
+        title: 'Boring Toast',
+        message:
+          'You have full control over the toast content and appearance, while keeping the animations and positioning.',
+        actionMessage: 'Action',
+      },
     });
   }
-  protected showHeadlessToast(): void {
+  protected showMusicPlayerToast(): void {
     this.toaster.headless(CustomMusicPlayerToast, {
       inputs: {
         songTitle: 'Stay',
+        songImage:
+          'https://cdn-images.dzcdn.net/images/cover/dd6fe7fa9267185c4b835bd4f155d1d2/0x1900-000000-80-0-0.jpg',
         songArtist: 'The Kid Laroi, Justin Bieber',
       },
     });

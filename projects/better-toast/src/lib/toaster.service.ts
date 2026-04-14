@@ -147,6 +147,7 @@ export class ToasterService {
    * The default message + icon row is omitted; the component supplies all visuals.
    *
    * Pass {@link HeadlessToastOptions.inputs} to feed `input()` / `@Input()` on that component.
+   * The component also receives **`toastId`** (matches the returned id) for programmatic dismiss.
    * Omit `durationMs` to use `<app-toaster [duration]>` (or {@link DEFAULT_TOAST_DURATION_MS}).
    *
    * @param component The component class (must be usable with `NgComponentOutlet`).
@@ -247,13 +248,16 @@ export class ToasterService {
     const id = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
     const icon = options?.icon;
     const style = options?.style;
-    const inputs = options?.inputs;
+    const componentInputs: Record<string, unknown> = {
+      ...(options?.inputs ?? {}),
+      toastId: id,
+    };
     const item: ToasterItem = {
       id,
       message: '',
       variant: 'default',
       component,
-      ...(inputs !== undefined ? { componentInputs: inputs } : {}),
+      componentInputs,
       ...(icon !== undefined ? { icon } : {}),
       ...(style !== undefined ? { style } : {}),
     };
