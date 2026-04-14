@@ -70,9 +70,7 @@ function mergeToastHostStyles(
     @if (toast()?.html) {
       <div class="toast-custom" [innerHTML]="toast()!.html!"></div>
     } @else if (toast()?.component) {
-      <div class="toast-custom">
-        <ng-container *ngComponentOutlet="toast()!.component!; inputs: componentOutletInputs()" />
-      </div>
+      <ng-container *ngComponentOutlet="toast()!.component!; inputs: componentOutletInputs()" />
     } @else {
       @if (shouldShowIconColumn()) {
         <span class="toast-icon" aria-hidden="true">
@@ -295,7 +293,13 @@ export class AppToastItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AppToastItem],
   template: `
-    <section aria-label="Toaster" aria-live="polite" aria-relevant="additions text">
+    <section
+      aria-label="Notifications"
+      tabindex="-1"
+      aria-live="polite"
+      aria-relevant="additions text"
+      aria-atomic="false"
+    >
       <ol
         class="toast-container"
         [style.--toast-offset-top]="offsetTop()"
@@ -308,8 +312,7 @@ export class AppToastItem {
         [style.--toast-offset-mobile-left]="mobileOffsetLeft()"
         [attr.data-position]="position()"
         [attr.data-rich-colors]="richColors()"
-        aria-live="polite"
-        aria-relevant="additions text"
+        tabindex="-1"
       >
         @for (toast of toaster.toasts(); track toast.id) {
           <li

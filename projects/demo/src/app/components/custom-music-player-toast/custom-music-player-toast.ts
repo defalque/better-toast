@@ -6,7 +6,7 @@ import { ToasterService } from 'better-toast';
   imports: [],
   template: `
     <div
-      class="w-fit shadow-lg shadow-black/10 ring-1 ring-black/10 dark:ring-zinc-800 px-4 py-2 rounded-xl bg-zinc-50/10 backdrop-blur-sm dark:bg-zinc-800/50"
+      class="w-fit inset-shadow-md shadow-lg shadow-black/10 ring-1 ring-black/10 dark:ring-zinc-800 px-4 py-2 rounded-xl bg-zinc-50/10 backdrop-blur-sm dark:bg-zinc-800/10"
     >
       <div class="grid  gap-2">
         <p class="text-[0.65rem] uppercase font-semibold text-zinc-500 dark:text-zinc-400">

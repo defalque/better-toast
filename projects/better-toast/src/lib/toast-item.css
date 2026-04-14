@@ -288,15 +288,6 @@
   border-color: transparent;
 }
 
-:host([data-headless='true']) .toast-custom {
-  flex: 0 1 auto;
-  min-width: auto;
-  width: max-content;
-  max-width: 100%;
-  font: inherit;
-  line-height: inherit;
-}
-
 :host([data-headless='true'][data-icon='false']) {
   padding-left: 0;
 }
@@ -363,16 +354,14 @@
 .toast-custom {
   flex: 1;
   min-width: 0;
-  max-width: 80%;
+  width: 100%;
   font-size: 0.825rem;
   font-weight: 400;
   line-height: calc(1.25 / 0.875);
 }
-
 .toast-custom :first-child {
   margin-top: 0;
 }
-
 .toast-custom :last-child {
   margin-bottom: 0;
 }

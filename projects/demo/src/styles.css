@@ -1,6 +1,15 @@
 /* Keep Tailwind source detection scoped to this demo app in the workspace. */
 @import 'tailwindcss' source('./');
 
+@theme {
+  --inset-shadow-md: inset 0 2px 3px rgba(200, 200, 200, 0.05);
+}
+@media (prefers-color-scheme: dark) {
+  @theme {
+    --inset-shadow-md: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+}
+
 html {
   scrollbar-gutter: stable;
 }
