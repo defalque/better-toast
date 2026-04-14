@@ -216,6 +216,14 @@ this.toaster.promise(myPromise, {
         >
           ...
         </button>
+
+        <button
+          type="button"
+          ...
+          (click)="runFakeAction()"
+        >
+          {{ actionLabel() }}
+        </button>
       </div>
     </div>
   '
@@ -228,8 +236,15 @@ export class BoringToast {
 
   protected readonly title = input<string>('');
   protected readonly message = input<string>('');
-  protected readonly actionMessage = input<string>('');
+  protected readonly actionLabel = input<string>('');
+  protected readonly onActionDone = input<() => void>();
 
+  ...
+  private async runFakeAction(): Promise<void> {
+    ...
+    this.onActionDone()?.();
+    ...
+  }
   ...
 }
 
@@ -239,6 +254,7 @@ this.toaster.headless(BoringToast, {
     message:
       'You have full control over the toast content and appearance, while keeping the animations and positioning.',
     actionMessage: 'Action',
+    onActionDone: () => console.log('Boring toast action finished'),
   },
 });`,
     music: `import { ToasterService } from 'better-toast';
@@ -459,7 +475,8 @@ this.toaster.headless(UploadProgressToast, {
         title: 'Boring Toast',
         message:
           'You have full control over the toast content and appearance, while keeping the animations and positioning.',
-        actionMessage: 'Action',
+        actionLabel: 'Action',
+        onActionDone: () => console.log('Boring toast action finished'),
       },
     });
   }
@@ -483,7 +500,6 @@ this.toaster.headless(UploadProgressToast, {
       },
     });
   }
-
   protected showUploadProgressToast(): void {
     this.toaster.headless(UploadProgressToast, {
       durationMs: 'Infinity',

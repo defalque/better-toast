@@ -74,103 +74,97 @@ function mergeToastHostStyles(
         <ng-container *ngComponentOutlet="toast()!.component!; inputs: componentOutletInputs()" />
       </div>
     } @else {
-      <div class="toast-main">
-        @if (shouldShowIconColumn()) {
-          <span class="toast-icon" aria-hidden="true">
-            @if (toast()?.icon) {
-              <span class="toast-custom-icon">
-                <ng-container *ngComponentOutlet="toast()!.icon!" />
-              </span>
-            } @else if (iconComponent(); as IconCmp) {
-              <span class="toast-custom-icon">
-                <ng-container *ngComponentOutlet="IconCmp" />
-              </span>
-            } @else {
-              @switch (variant()) {
-                @case ('success') {
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <circle
-                      cx="12"
-                      cy="12"
-                      r="9"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.75"
-                    />
-                    <path
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.75"
-                      d="M8.48 12.22 10.9 14.64 15.74 9.14"
-                    />
-                  </svg>
-                }
-                @case ('error') {
-                  <svg
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
+      @if (shouldShowIconColumn()) {
+        <span class="toast-icon" aria-hidden="true">
+          @if (toast()?.icon) {
+            <ng-container *ngComponentOutlet="toast()!.icon!" />
+          } @else if (iconComponent(); as IconCmp) {
+            <ng-container *ngComponentOutlet="IconCmp" />
+          } @else {
+            @switch (variant()) {
+              @case ('success') {
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="9"
                     stroke="currentColor"
-                    stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                  >
-                    <circle cx="12" cy="12" r="10" />
-                    <line x1="9" y1="9" x2="15" y2="15" />
-                    <line x1="15" y1="9" x2="9" y2="15" />
-                  </svg>
-                }
-                @case ('info') {
-                  <svg
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
                     stroke-width="1.75"
+                  />
+                  <path
+                    stroke="currentColor"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                  >
-                    <circle cx="12" cy="12" r="10" />
-                    <line x1="12" y1="16" x2="12" y2="12" />
-                    <line x1="12" y1="8" x2="12.01" y2="8" />
-                  </svg>
-                }
-                @case ('warning') {
-                  <svg
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.75"
-                      d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
-                    />
-                  </svg>
-                }
-                @case ('loading') {
-                  <div class="toast-icon-loading" aria-hidden="true"></div>
-                }
-                @case ('default') {}
+                    stroke-width="1.75"
+                    d="M8.48 12.22 10.9 14.64 15.74 9.14"
+                  />
+                </svg>
               }
+              @case ('error') {
+                <svg
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="9" y1="9" x2="15" y2="15" />
+                  <line x1="15" y1="9" x2="9" y2="15" />
+                </svg>
+              }
+              @case ('info') {
+                <svg
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="16" x2="12" y2="12" />
+                  <line x1="12" y1="8" x2="12.01" y2="8" />
+                </svg>
+              }
+              @case ('warning') {
+                <svg
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.75"
+                    d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
+                  />
+                </svg>
+              }
+              @case ('loading') {
+                <div class="toast-icon-loading" aria-hidden="true"></div>
+              }
+              @case ('default') {}
             }
-          </span>
-        }
+          }
+        </span>
+      }
 
-        <p class="msg">{{ toast()?.message }}</p>
-      </div>
+      <p class="msg">{{ toast()?.message }}</p>
     }
 
     @if (closeButton() && !isHeadless()) {

@@ -112,7 +112,7 @@ export class UploadProgressToast {
   });
 
   constructor() {
-    const tickMs = 220;
+    const tickMs = 320;
     const handle = globalThis.setInterval(() => {
       const bump = 4 + Math.floor(Math.random() * 12);
       const next = Math.min(100, this.progress() + bump);

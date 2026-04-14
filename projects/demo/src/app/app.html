@@ -1,7 +1,7 @@
 <main
-  class="flex justify-center min-h-screen bg-white dark:bg-zinc-950 p-6 text-zinc-900 dark:text-zinc-100"
+  class="flex justify-center min-h-screen bg-white dark:bg-zinc-950 p-3 sm:p-6 text-zinc-900 dark:text-zinc-100"
 >
-  <div class="w-full max-w-2xl space-y-22">
+  <div class="w-full sm:max-w-2xl space-y-22">
     <header class="space-y-1 text-left">
       <h1 class="text-4xl font-bold tracking-tight">Better Toast</h1>
     </header>
@@ -14,7 +14,7 @@
           second argument.
         </p>
       </div>
-      <div class="grid grid-cols-4 lg:grid-cols-8 gap-2 items-center justify-center">
+      <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2 items-center justify-center">
         <button
           type="button"
           class="border border-zinc-200 dark:border-zinc-800 text-[0.85rem] font-medium py-2.5 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
@@ -85,35 +85,36 @@
           <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1"
             >headless()</code
           >
-          method. Your component owns the visuals: no default styles, but stacking, positioning, and
-          enter/leave animations still come from the toaster.
+          method.<br />
+          Your component owns the visuals while maintaining the toaster's stacking, positioning,
+          animations and functionality.
         </p>
       </div>
-      <div class="flex flex-wrap gap-2">
+      <div class="grid sm:grid-cols-2 lg:flex flex-wrap gap-2">
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 text-[0.85rem] font-medium py-2.5 px-4 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border grow border-zinc-200 dark:border-zinc-800 text-[0.85rem] font-medium py-2.5 px-4 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedHeadlessDemo.set('boring'); showBoringToast()"
         >
           Boring toast
         </button>
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 text-[0.85rem] font-medium py-2.5 px-4 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border grow border-zinc-200 dark:border-zinc-800 text-[0.85rem] font-medium py-2.5 px-4 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedHeadlessDemo.set('music'); showMusicPlayerToast()"
         >
           Music Player toast
         </button>
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 text-[0.85rem] font-medium py-2.5 px-4 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border grow border-zinc-200 dark:border-zinc-800 text-[0.85rem] font-medium py-2.5 px-4 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedHeadlessDemo.set('cookie'); showCookieToast()"
         >
           Cookie banner toast
         </button>
         <button
           type="button"
-          class="border border-zinc-200 dark:border-zinc-800 text-[0.85rem] font-medium py-2.5 px-4 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+          class="border grow border-zinc-200 dark:border-zinc-800 text-[0.85rem] font-medium py-2.5 px-4 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
           (click)="selectedHeadlessDemo.set('upload'); showUploadProgressToast()"
         >
           Upload progress toast
@@ -165,7 +166,12 @@
           <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1"
             >mobileOffset</code
           >
-          inputs.
+          inputs.<br />
+          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1"
+            >mobileOffset</code
+          >
+          will be applied when the screen width is less than
+          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1">640px</code>.
         </p>
       </div>
       <div class="space-y-6">
@@ -426,42 +432,6 @@
         }
         /&gt;
       </code>
-    </div>
-
-    <div class="grid gap-6">
-      <div class="space-y-2">
-        <h2 class="text-lg font-semibold tracking-tight">Programmatic dismiss</h2>
-        <p class="text-sm/6.25 text-zinc-700 dark:text-zinc-300">
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1">show()</code>,
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1"
-            >success()</code
-          >,
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1">error()</code
-          >,
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1">info()</code>,
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1"
-            >warning()</code
-          >,
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1">custom()</code
-          >,
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1"
-            >loading()</code
-          >
-          return a toast id. Pass it to
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1"
-            >dismiss(id)</code
-          >
-          to remove one toast, or call
-          <code class="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 rounded-md p-1">clear()</code>
-          to remove all.
-        </p>
-      </div>
-      <!-- prettier-ignore -->
-      <code
-        class="text-xs text-zinc-700 dark:text-zinc-100 p-4 bg-zinc-100 dark:bg-zinc-900 rounded-md whitespace-pre-wrap font-mono"
-        >const id = this.toaster.<strong>show</strong>('Hello');
-this.toaster.<strong>dismiss</strong>(id);
-this.toaster.<strong>clear</strong>();</code>
     </div>
   </div>
 </main>

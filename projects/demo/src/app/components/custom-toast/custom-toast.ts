@@ -24,7 +24,7 @@ type CustomToastActionState = 'idle' | 'loading' | 'done';
             [class.opacity-50]="actionState() === 'loading'"
             (click)="onAction()"
           >
-            {{ actionLabel() }}
+            {{ actionLabelComputed() }}
           </button>
         </div>
         <button
@@ -61,15 +61,16 @@ export class CustomToast {
   protected readonly toastId = input<string>('');
   protected readonly title = input<string>('');
   protected readonly message = input<string>('');
-  protected readonly actionMessage = input<string>('');
+  protected readonly actionLabel = input<string>('');
+  protected readonly onActionDone = input<() => void>();
 
   protected readonly actionState = signal<CustomToastActionState>('idle');
 
-  protected readonly actionLabel = computed(() => {
+  protected readonly actionLabelComputed = computed(() => {
     const state = this.actionState();
     switch (state) {
       case 'idle':
-        return this.actionMessage() || 'Action';
+        return this.actionLabel();
       case 'loading':
         return 'Loading…';
       case 'done':
@@ -92,6 +93,7 @@ export class CustomToast {
     this.actionState.set('loading');
     await new Promise<void>((resolve) => globalThis.setTimeout(resolve, 1500));
     this.actionState.set('done');
+    this.onActionDone()?.();
     globalThis.setTimeout(() => this.toaster.dismiss(this.toastId()), 1000);
   }
 }
