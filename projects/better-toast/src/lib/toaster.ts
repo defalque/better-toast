@@ -28,6 +28,10 @@ import type {
   ToastVariant,
 } from './toaster.types';
 
+function swipeDirectionForPosition(position: ToasterPosition): 'down' | 'up' {
+  return position.startsWith('bottom') ? 'down' : 'up';
+}
+
 const GAP = 16;
 
 function resolveToasterOffsetSide(
@@ -75,9 +79,14 @@ function mergeToastClassNames(
     '[attr.data-variant]': 'variant()',
     '[attr.data-icon]': 'shouldShowIconColumn() ? "true" : "false"',
     '[attr.data-headless]': 'isHeadless() ? "true" : null',
+    '[attr.data-swipe-direction]': 'swipeDirection()',
     '[style.--offset]': 'offset() + "px"',
     '[style]': 'isHeadless() ? undefined : hostStyle()',
     '[animate.leave]': '"leave"',
+    '(pointerdown)': 'onPointerDown($event)',
+    '(pointermove)': 'onPointerMove($event)',
+    '(pointerup)': 'onPointerUp()',
+    '(pointercancel)': 'onPointerCancel()',
   },
   template: `
     @if (toast()?.html) {
@@ -297,6 +306,12 @@ export class BetterToastItem {
   /** When false, the dismiss control is not rendered (toasts may still auto-dismiss or be cleared via the service). */
   closeButton = input(true);
 
+  /** Stack anchor from `<better-toaster [position]>` — drives swipe axis and `data-swipe-direction`. */
+  stackPosition = input<ToasterPosition>('bottom-right');
+
+  /** `down` when anchored to the bottom (dismiss by swiping down), `up` when anchored to the top. */
+  protected readonly swipeDirection = computed(() => swipeDirectionForPosition(this.stackPosition()));
+
   /** Emits the measured host height in px once after the first render so the parent can stack siblings. */
   heightChange = output<number>();
 
@@ -305,6 +320,109 @@ export class BetterToastItem {
       const height = this.host.nativeElement.offsetHeight;
       this.heightChange.emit(height);
     });
+  }
+
+  /** True once the user has passed the drag threshold and is actively swiping. */
+  isDragging = signal(false);
+  private tracking = false;
+  private startY = 0;
+  private pointerId = -1;
+  private readonly dragStartThreshold = 0;
+  private readonly swipeCloseThreshold = 30;
+
+  /** Transform applied when swipe-dismiss completes (matches leave direction / headless centering). */
+  protected readonly swipeDismissTransform = computed(() => {
+    const pos = this.stackPosition();
+    const down = this.swipeDirection() === 'down';
+    const y = down ? '130%' : '-130%';
+    if (this.isHeadless() && (pos === 'bottom-center' || pos === 'top-center')) {
+      return `translateX(-50%) translateY(${y})`;
+    }
+    return `translateY(${y})`;
+  });
+
+  onPointerDown(event: PointerEvent) {
+    this.tracking = true;
+    this.startY = event.clientY;
+    this.pointerId = event.pointerId;
+  }
+
+  onPointerMove(event: PointerEvent) {
+    if (!this.tracking && !this.isDragging()) return;
+
+    const el = this.host.nativeElement;
+    const rawDy = event.clientY - this.startY;
+    const down = this.swipeDirection() === 'down';
+    const dragDy = down ? Math.max(0, rawDy) : Math.min(0, rawDy);
+
+    if (!this.isDragging()) {
+      const passed =
+        this.dragStartThreshold > 0
+          ? down
+            ? rawDy >= this.dragStartThreshold
+            : rawDy <= -this.dragStartThreshold
+          : down
+            ? rawDy > 0
+            : rawDy < 0;
+      if (passed) {
+        this.isDragging.set(true);
+        el.setPointerCapture(this.pointerId);
+      }
+      return;
+    }
+
+    el.style.translate = `0 ${dragDy}px`;
+  }
+
+  onPointerUp() {
+    this.tracking = false;
+
+    if (!this.isDragging()) return;
+    this.isDragging.set(false);
+
+    const el = this.host.nativeElement;
+    const id = this.toast()?.id ?? '';
+
+    const dy = parseFloat(el.style.translate?.split(' ')[1]) || 0;
+
+    try {
+      el.releasePointerCapture(this.pointerId);
+    } catch {
+      /* pointer already released */
+    }
+
+    const down = this.swipeDirection() === 'down';
+    const shouldDismiss = down ? dy >= this.swipeCloseThreshold : dy <= -this.swipeCloseThreshold;
+
+    if (shouldDismiss) {
+      el.style.transform = this.swipeDismissTransform();
+      this.toaster.dismiss(id);
+    } else {
+      el.style.transition = 'translate 400ms ease';
+      el.style.translate = '0 0';
+      const cleanup = () => {
+        el.style.transition = '';
+        el.style.translate = '';
+      };
+      el.addEventListener('transitionend', cleanup, { once: true });
+      setTimeout(cleanup, 450);
+    }
+  }
+
+  onPointerCancel() {
+    this.tracking = false;
+
+    if (!this.isDragging()) return;
+    this.isDragging.set(false);
+
+    const el = this.host.nativeElement;
+    el.style.translate = '';
+
+    try {
+      el.releasePointerCapture(this.pointerId);
+    } catch {
+      /* pointer already released */
+    }
   }
 }
 
@@ -355,6 +473,7 @@ export class BetterToastItem {
             [customIcons]="icons()"
             [offset]="offsets()[toast.id]"
             [closeButton]="closeButton()"
+            [stackPosition]="position()"
             (heightChange)="onHeightChange(toast.id, $event)"
             [attr.data-position]="position()"
             [attr.data-rich-colors]="richColors()"
