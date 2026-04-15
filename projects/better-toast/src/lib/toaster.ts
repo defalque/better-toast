@@ -194,7 +194,7 @@ function mergeToastClassNames(
           class="toast-row-btn"
           [attr.data-row-btn]="toast()!.toastAction!.role"
           (pointerdown)="onRowButtonPointerDown($event)"
-          (click)="toast()!.toastAction!.onClick()"
+          (click)="onToastRowActionClick($event)"
         >
           {{ toast()!.toastAction!.label }}
         </button>
@@ -324,7 +324,9 @@ export class BetterToastItem {
   stackPosition = input<ToasterPosition>('bottom-right');
 
   /** `down` when anchored to the bottom (dismiss by swiping down), `up` when anchored to the top. */
-  protected readonly swipeDirection = computed(() => swipeDirectionForPosition(this.stackPosition()));
+  protected readonly swipeDirection = computed(() =>
+    swipeDirectionForPosition(this.stackPosition()),
+  );
 
   /** Emits the measured host height in px once after the first render so the parent can stack siblings. */
   heightChange = output<number>();
@@ -358,6 +360,13 @@ export class BetterToastItem {
   /** Prevents swipe-to-dismiss from starting when pressing the row action / cancel control. */
   onRowButtonPointerDown(event: PointerEvent): void {
     event.stopPropagation();
+  }
+
+  onToastRowActionClick(event: Event): void {
+    const item = this.toast();
+    item?.toastAction?.onClick(event);
+    if (event.defaultPrevented) return;
+    this.toaster.dismiss(item?.id ?? '');
   }
 
   onPointerEnter() {

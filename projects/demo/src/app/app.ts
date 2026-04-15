@@ -193,18 +193,18 @@ this.toaster.promise(myPromise, {
       success: (data) => \`\${data.message}\`,
       error: 'Promise rejected',
 });`,
-    action: `const id = this.toaster.action('Item removed from your cart.', {
+    action: `this.toaster.action('Item removed from your cart.', {
   action: {
     label: 'Undo',
     onClick: () => {
-      this.toaster.dismiss(id);
+      console.log('Undo clicked');
     },
   },
 });`,
-    cancel: `const id = this.toaster.cancel('Upload will continue in the background.', {
+    cancel: `this.toaster.cancel('Upload will continue in the background.', {
   cancel: {
     onClick: () => {
-      this.toaster.dismiss(id);
+      console.log('Cancel clicked');
     },
   },
 });`,
@@ -448,12 +448,12 @@ this.toaster.headless(UploadProgressToast, {
   }
 
   protected showActionToast(): void {
-    const id = this.toaster.action('Item removed from your cart', {
+    this.toaster.action('Item removed from your cart', {
       action: {
         label: 'Undo',
-        onClick: () => {
+        onClick: (event: Event) => {
+          event.preventDefault();
           console.log('Undo clicked');
-          this.toaster.dismiss(id);
         },
       },
     });
@@ -464,7 +464,6 @@ this.toaster.headless(UploadProgressToast, {
       cancel: {
         onClick: () => {
           console.log('Stop clicked');
-          this.toaster.dismiss(id);
         },
       },
     });

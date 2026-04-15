@@ -20,6 +20,7 @@
 
   pointer-events: auto;
   touch-action: none;
+  user-select: none;
   position: absolute;
   opacity: 1;
 
@@ -365,16 +366,12 @@
   background: var(--toast-color);
   color: var(--toast-bg);
   font: inherit;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   line-height: 1.2;
   cursor: pointer;
   white-space: nowrap;
-}
-
-.toast-row-btn:hover {
-  opacity: 0.9;
 }
 
 .toast-row-btn:focus-visible {
@@ -399,8 +396,8 @@
 
 .close-btn {
   position: absolute;
-  top: -0.25rem;
-  right: -0.25rem;
+  top: -0.3875rem;
+  right: -0.3875rem;
   flex-shrink: 0;
   margin: -0.15rem -0.25rem -0.15rem 0;
   border: 1px solid var(--toast-border-color);

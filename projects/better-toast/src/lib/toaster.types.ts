@@ -95,7 +95,11 @@ export interface ToasterToastOptions {
 export interface ToastMethodButtonConfig {
   /** Visible button text; defaults to `"Action"` or `"Cancel"` depending on the method. */
   label?: string;
-  onClick: () => void;
+  /**
+   * Receives the row button click event. Call {@link Event.preventDefault} to keep the toast open
+   * (the library skips {@link ToasterService.dismiss} when `defaultPrevented` is true).
+   */
+  onClick: (event: Event) => void;
 }
 
 /**
@@ -201,7 +205,8 @@ export interface ToasterItem {
   readonly toastAction?: {
     readonly role: 'action' | 'cancel';
     readonly label: string;
-    readonly onClick: () => void;
+    /** Same contract as {@link ToastMethodButtonConfig.onClick}. */
+    readonly onClick: (event: Event) => void;
   };
 }
 

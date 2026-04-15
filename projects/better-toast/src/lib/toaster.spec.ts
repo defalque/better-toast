@@ -498,6 +498,33 @@ describe('better-toast', () => {
 
     btn.click();
     expect(onClick).toHaveBeenCalledTimes(1);
+    expect(onClick.mock.calls[0][0]).toBeInstanceOf(Event);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(toaster.toasts().length).toBe(0);
+  });
+
+  it('action() row button does not dismiss when onClick calls preventDefault', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    const onClick = vi.fn((e: Event) => e.preventDefault());
+    toaster.action('Saved', {
+      durationMs: TOAST_DURATION_MANUAL_DISMISS,
+      action: { label: 'Undo', onClick },
+    });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const btn = fixture.nativeElement.querySelector('.toast-row-btn') as HTMLButtonElement;
+    btn.click();
+    expect(onClick).toHaveBeenCalledTimes(1);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(toaster.toasts().length).toBe(1);
   });
 
   it('action() uses default label when action.label is omitted', async () => {
