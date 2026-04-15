@@ -34,7 +34,9 @@ type ToastDemoKind =
   | 'warning'
   | 'custom'
   | 'loading'
-  | 'promise';
+  | 'promise'
+  | 'action'
+  | 'cancel';
 
 type HeadlessDemoKind = 'boring' | 'music' | 'cookie' | 'upload';
 
@@ -50,7 +52,7 @@ export class App {
   protected readonly toaster = inject(ToasterService);
   protected readonly positions = TOASTER_POSITIONS;
   protected readonly toasterPosition = signal<ToasterPosition>('bottom-right');
-  protected readonly toasterDurationMs = signal(DEFAULT_TOAST_DURATION_MS);
+  protected readonly toasterDurationMs = signal(TOAST_DURATION_MANUAL_DISMISS);
   protected readonly durationSliderMaxMs = 10_000;
   protected readonly durationSliderStepMs = 1000;
 
@@ -190,6 +192,21 @@ this.toaster.promise(myPromise, {
       loading: 'Loading…',
       success: (data) => \`\${data.message}\`,
       error: 'Promise rejected',
+});`,
+    action: `const id = this.toaster.action('Item removed from your cart.', {
+  action: {
+    label: 'Undo',
+    onClick: () => {
+      this.toaster.dismiss(id);
+    },
+  },
+});`,
+    cancel: `const id = this.toaster.cancel('Upload will continue in the background.', {
+  cancel: {
+    onClick: () => {
+      this.toaster.dismiss(id);
+    },
+  },
 });`,
   };
 
@@ -384,6 +401,8 @@ this.toaster.headless(UploadProgressToast, {
   protected showDefaultToast(): void {
     this.toaster.show('Default toast. A very super long message that should wrap.', {
       /* icon: CustomWarning, */
+      /* onAutoClose: () => console.log('Default toast auto-closed'),
+      onDismiss: () => console.log('Default toast dismissed'), */
     });
   }
 
@@ -428,6 +447,29 @@ this.toaster.headless(UploadProgressToast, {
     });
   }
 
+  protected showActionToast(): void {
+    const id = this.toaster.action('Item removed from your cart', {
+      action: {
+        label: 'Undo',
+        onClick: () => {
+          console.log('Undo clicked');
+          this.toaster.dismiss(id);
+        },
+      },
+    });
+  }
+
+  protected showCancelToast(): void {
+    const id = this.toaster.cancel('Upload will continue in the background', {
+      cancel: {
+        onClick: () => {
+          console.log('Stop clicked');
+          this.toaster.dismiss(id);
+        },
+      },
+    });
+  }
+
   protected showErrorPromiseToast(): void {
     const myPromise = new Promise<{ name: string }>((_resolve, reject) => {
       setTimeout(() => {
@@ -444,11 +486,11 @@ this.toaster.headless(UploadProgressToast, {
 
   protected showCustomToast(): void {
     this.toaster.custom(`
-      <div class="font-medium">Check my website:
-        <a href="https://marcodefalco.dev" target="_blank" rel="noopener noreferrer" class="hover:underline italic text-orange-600 dark:text-orange-400">
-          marcodefalco.dev
-        </a>
-      </div>
+        <div class="font-medium">Check my website:
+          <a href="https://marcodefalco.dev" target="_blank" rel="noopener noreferrer" class="hover:underline italic text-orange-600 dark:text-orange-400">
+            marcodefalco.dev
+          </a>
+        </div>
     `);
   }
 

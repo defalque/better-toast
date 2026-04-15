@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
 
-import { Toaster } from './toaster';
+import { BetterToaster as Toaster } from './toaster';
 import { ToasterService, TOAST_DURATION_MANUAL_DISMISS } from './toaster.service';
 
 @Component({
@@ -155,6 +155,40 @@ describe('better-toast', () => {
       expect(toaster.toasts().length).toBe(1);
       await vi.advanceTimersByTimeAsync(1000);
       expect(toaster.toasts().length).toBe(0);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('pauses auto-dismiss while the pointer hovers the toast', async () => {
+    vi.useFakeTimers();
+    try {
+      TestBed.configureTestingModule({ imports: [Toaster] });
+      const fixture = TestBed.createComponent(Toaster);
+      fixture.componentRef.setInput('duration', 10_000);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const svc = TestBed.inject(ToasterService);
+      svc.show('Hover me');
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const toastHost = fixture.nativeElement.querySelector('li.toast') as HTMLElement;
+      expect(toastHost).toBeTruthy();
+
+      await vi.advanceTimersByTimeAsync(7000);
+      expect(svc.toasts().length).toBe(1);
+
+      toastHost.dispatchEvent(new PointerEvent('pointerenter', { bubbles: true }));
+      await vi.advanceTimersByTimeAsync(20_000);
+      expect(svc.toasts().length).toBe(1);
+
+      toastHost.dispatchEvent(new PointerEvent('pointerleave', { bubbles: true }));
+      await vi.advanceTimersByTimeAsync(2999);
+      expect(svc.toasts().length).toBe(1);
+      await vi.advanceTimersByTimeAsync(1);
+      expect(svc.toasts().length).toBe(0);
     } finally {
       vi.useRealTimers();
     }
@@ -391,5 +425,137 @@ describe('better-toast', () => {
     expect(host.querySelector('.toast-main')).toBeNull();
     expect(host.querySelector('.toast-icon')).toBeNull();
     expect(host.querySelector('.msg')).toBeNull();
+  });
+
+  it('calls onAutoClose when the toast auto-dismisses', async () => {
+    vi.useFakeTimers();
+    try {
+      TestBed.configureTestingModule({ imports: [Toaster] });
+      const toaster = TestBed.inject(ToasterService);
+      const onAutoClose = vi.fn();
+      const onDismiss = vi.fn();
+      toaster.show('Bye', { durationMs: 1000, onAutoClose, onDismiss });
+      await vi.advanceTimersByTimeAsync(1000);
+      expect(toaster.toasts().length).toBe(0);
+      expect(onAutoClose).toHaveBeenCalledTimes(1);
+      expect(onDismiss).not.toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('calls onDismiss when the toast is dismissed manually', () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const toaster = TestBed.inject(ToasterService);
+    const onAutoClose = vi.fn();
+    const onDismiss = vi.fn();
+    const id = toaster.show('Hi', {
+      durationMs: TOAST_DURATION_MANUAL_DISMISS,
+      onAutoClose,
+      onDismiss,
+    });
+    toaster.dismiss(id);
+    expect(onDismiss).toHaveBeenCalledTimes(1);
+    expect(onAutoClose).not.toHaveBeenCalled();
+  });
+
+  it('calls onDismiss for each toast when clear() runs', () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const toaster = TestBed.inject(ToasterService);
+    const a = vi.fn();
+    const b = vi.fn();
+    toaster.show('1', { durationMs: TOAST_DURATION_MANUAL_DISMISS, onDismiss: a });
+    toaster.show('2', { durationMs: TOAST_DURATION_MANUAL_DISMISS, onDismiss: b });
+    toaster.clear();
+    expect(a).toHaveBeenCalledTimes(1);
+    expect(b).toHaveBeenCalledTimes(1);
+  });
+
+  it('action() renders no icon, an action row button, and invokes onClick', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    const onClick = vi.fn();
+    toaster.action('Saved', {
+      durationMs: TOAST_DURATION_MANUAL_DISMISS,
+      action: { label: 'Undo', onClick },
+    });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(toaster.toasts()[0].icon).toBeNull();
+    expect(toaster.toasts()[0].toastAction?.role).toBe('action');
+    expect(toaster.toasts()[0].toastAction?.label).toBe('Undo');
+
+    expect(fixture.nativeElement.querySelector('.toast-icon')).toBeNull();
+    const btn = fixture.nativeElement.querySelector('.toast-row-btn') as HTMLButtonElement;
+    expect(btn).toBeTruthy();
+    expect(btn.textContent?.trim()).toBe('Undo');
+    expect(btn.getAttribute('data-row-btn')).toBe('action');
+
+    btn.click();
+    expect(onClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('action() uses default label when action.label is omitted', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    toaster.action('Prompt', {
+      durationMs: TOAST_DURATION_MANUAL_DISMISS,
+      action: { onClick: () => {} },
+    });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const btn = fixture.nativeElement.querySelector('.toast-row-btn') as HTMLButtonElement;
+    expect(btn.textContent?.trim()).toBe('Action');
+  });
+
+  it('cancel() renders a cancel row button with default label', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    const onClick = vi.fn();
+    toaster.cancel('Nothing to see', {
+      durationMs: TOAST_DURATION_MANUAL_DISMISS,
+      cancel: { label: 'Dismiss', onClick },
+    });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(toaster.toasts()[0].icon).toBeNull();
+    expect(toaster.toasts()[0].toastAction?.role).toBe('cancel');
+
+    const btn = fixture.nativeElement.querySelector('.toast-row-btn') as HTMLButtonElement;
+    expect(btn.textContent?.trim()).toBe('Dismiss');
+    expect(btn.getAttribute('data-row-btn')).toBe('cancel');
+  });
+
+  it('cancel() uses default label when cancel.label is omitted', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    toaster.cancel('Stopped', {
+      durationMs: TOAST_DURATION_MANUAL_DISMISS,
+      cancel: { onClick: () => {} },
+    });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const btn = fixture.nativeElement.querySelector('.toast-row-btn') as HTMLButtonElement;
+    expect(btn.textContent?.trim()).toBe('Cancel');
   });
 });

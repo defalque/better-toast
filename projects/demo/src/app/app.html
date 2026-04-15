@@ -14,7 +14,7 @@
           second argument.
         </p>
       </div>
-      <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2 items-center justify-center">
+      <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-2 items-center justify-center">
         <button
           type="button"
           class="border border-zinc-200 dark:border-zinc-800/80 text-[0.85rem] font-medium py-2.5 rounded-md hover:bg-zinc-200/70 dark:hover:bg-zinc-800 bg-zinc-50 dark:bg-zinc-950/50 transition-all active:scale-95 cursor-pointer"
@@ -60,6 +60,20 @@
         <button
           type="button"
           class="border border-zinc-200 dark:border-zinc-800/80 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-200/70 dark:hover:bg-zinc-800 bg-zinc-50 dark:bg-zinc-950/50 transition-all active:scale-95 cursor-pointer"
+          (click)="selectedToastDemo.set('action'); showActionToast()"
+        >
+          Action
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 dark:border-zinc-800/80 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-200/70 dark:hover:bg-zinc-800 bg-zinc-50 dark:bg-zinc-950/50 transition-all active:scale-95 cursor-pointer"
+          (click)="selectedToastDemo.set('cancel'); showCancelToast()"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 dark:border-zinc-800/80 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-200/70 dark:hover:bg-zinc-800 bg-zinc-50 dark:bg-zinc-950/50 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('custom'); showCustomToast()"
         >
           Custom
@@ -83,7 +97,7 @@
         <p class="text-sm/6.25 text-zinc-700 dark:text-zinc-300">
           Go fully custom by passing a standalone component to the
           <code
-            class="font-mono text-xs bg-zinc-100 dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-1"
+            class="font-mono text-[13px] bg-zinc-100 dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-1"
             >headless()</code
           >
           method.<br />
@@ -161,32 +175,32 @@
         <p class="text-sm/6.75 text-zinc-700 dark:text-zinc-300">
           Viewport inset in pixels for the toast stack. Default desktop offset is
           <code
-            class="font-mono text-xs bg-zinc-100 dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-1"
+            class="font-mono text-[13px] bg-zinc-100 dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-1"
           >
             24px</code
           >
-          and default mobile offset is
+          , default mobile offset is
           <code
-            class="font-mono text-xs bg-zinc-100 dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-1"
+            class="font-mono text-[13px] bg-zinc-100 dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-1"
             >16px</code
           >. You can customize offsets through
           <code
-            class="font-mono text-xs bg-zinc-100 dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-1"
+            class="font-mono text-[13px] bg-zinc-100 dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-1"
             >offset</code
           >
           and
           <code
-            class="font-mono text-xs bg-zinc-100 dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-1"
+            class="font-mono text-[13px] bg-zinc-100 dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-1"
             >mobileOffset</code
           >
           inputs.<br />
           <code
-            class="font-mono text-xs bg-zinc-100 dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-1"
+            class="font-mono text-[13px] bg-zinc-100 dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-1"
             >mobileOffset</code
           >
           will be applied when the screen width is less than
           <code
-            class="font-mono text-xs bg-zinc-100 dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-1"
+            class="font-mono text-[13px] bg-zinc-100 dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-1"
             >640px</code
           >.
         </p>
@@ -310,16 +324,21 @@
       <div class="space-y-2">
         <h2 class="text-lg font-semibold tracking-tight">Duration</h2>
         <p class="text-sm text-zinc-700 dark:text-zinc-300">
-          Sets the auto-dismiss duration for toasts. The default is
+          Sets the auto-dismiss duration for toasts. This playground starts at
           <code
-            class="font-mono text-xs bg-zinc-100 dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-1"
-            >4000ms</code
-          >. Use
-          <code
-            class="font-mono text-xs bg-zinc-100 dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-1"
+            class="font-mono text-[13px] bg-zinc-100 dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-1"
             >Infinity</code
           >
-          to keep toasts until manually dismissed.
+          (manual dismiss). The library default when you omit
+          <code
+            class="font-mono text-[13px] bg-zinc-100 dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-1"
+            >[duration]</code
+          >
+          is
+          <code
+            class="font-mono text-[13px] bg-zinc-100 dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-1"
+            >4000ms</code
+          >.
         </p>
       </div>
       <div class="space-y-2">
@@ -391,7 +410,7 @@
         <p class="text-sm text-zinc-700 dark:text-zinc-300">
           When set to
           <code
-            class="font-mono text-xs bg-zinc-100 dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-1"
+            class="font-mono text-[13px] bg-zinc-100 dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-1"
             >true</code
           >, success, error, info, and warning variants adopt semantic background and border colors.
         </p>
@@ -434,8 +453,12 @@
           </div>
         </div>
         <p class="text-sm text-zinc-700 dark:text-zinc-300">
-          When off, the per-toast dismiss control is hidden. Toasts still auto-dismiss or can be
-          cleared with the service.
+          When
+          <code
+            class="font-mono text-[13px] bg-zinc-100 dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-1"
+            >true</code
+          >, the per-toast dismiss control is hidden. Toasts still auto-dismiss or can be cleared
+          swiping or with the service.
         </p>
       </div>
 

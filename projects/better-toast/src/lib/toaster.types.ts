@@ -91,6 +91,27 @@ export interface ToasterToastOptions {
   classNames?: ToastChromeClassNames;
 }
 
+/** Label + handler for {@link ToasterService.action} / {@link ToasterService.cancel}. */
+export interface ToastMethodButtonConfig {
+  /** Visible button text; defaults to `"Action"` or `"Cancel"` depending on the method. */
+  label?: string;
+  onClick: () => void;
+}
+
+/**
+ * Options for {@link ToasterService.action} only. Use the `action` field (not available on {@link ToastOptions}).
+ */
+export type ToastActionMethodOptions = Omit<ToastOptions, 'icon'> & {
+  action: ToastMethodButtonConfig;
+};
+
+/**
+ * Options for {@link ToasterService.cancel} only. Use the `cancel` field (not available on {@link ToastOptions}).
+ */
+export type ToastCancelMethodOptions = Omit<ToastOptions, 'icon'> & {
+  cancel: ToastMethodButtonConfig;
+};
+
 /**
  * Second argument for `show` / `success` / `error` / `info` / `warning` / `custom` / `loading`.
  * Not used by `ToasterService.promise()` (that API uses {@link ToastPromiseLabels}).
@@ -118,6 +139,16 @@ export interface ToastOptions {
    * Merged with `<app-toaster [toastOptions]>` `classNames` (if any); per-toast keys replace the same keys from the toaster.
    */
   classNames?: ToastChromeClassNames;
+  /**
+   * Called when the toast is removed for any reason other than auto-dismiss: close control, swipe,
+   * {@link ToasterService.dismiss}, or {@link ToasterService.clear}.
+   */
+  onDismiss?: () => void;
+  /**
+   * Called when the toast is removed because its auto-dismiss timer finished (including after hover
+   * pause when the remaining time elapses).
+   */
+  onAutoClose?: () => void;
 }
 
 /**
@@ -159,6 +190,19 @@ export interface ToasterItem {
   readonly style?: Record<string, string | number | undefined>;
   /** Per-toast extra classes; see {@link ToastOptions.classNames}. */
   readonly classNames?: ToastChromeClassNames;
+  /** See {@link ToastOptions.onDismiss}. */
+  readonly onDismiss?: () => void;
+  /** See {@link ToastOptions.onAutoClose}. */
+  readonly onAutoClose?: () => void;
+  /**
+   * Primary row action from {@link ToasterService.action} or {@link ToasterService.cancel}.
+   * Renders a text button next to the message (no icon column).
+   */
+  readonly toastAction?: {
+    readonly role: 'action' | 'cancel';
+    readonly label: string;
+    readonly onClick: () => void;
+  };
 }
 
 /**

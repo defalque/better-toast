@@ -39,6 +39,12 @@
     },
     {
       "path": "./projects/better-toast/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/website/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/website/tsconfig.spec.json"
     }
   ]
 }

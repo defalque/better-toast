@@ -4,6 +4,8 @@ import type { Type } from '@angular/core';
 
 import type {
   HeadlessToastOptions,
+  ToastActionMethodOptions,
+  ToastCancelMethodOptions,
   ToastPromiseLabels,
   ToastOptions,
   ToastVariant,
@@ -13,6 +15,12 @@ import type {
 
 /** Fallback when `<app-toaster [duration]>` is absent and a helper omits `durationMs`. */
 export const DEFAULT_TOAST_DURATION_MS = 4000;
+
+/** Default label for {@link ToasterService.action} when {@link ToastMethodButtonConfig.label} is omitted. */
+export const DEFAULT_TOAST_ACTION_LABEL = 'Action';
+
+/** Default label for {@link ToasterService.cancel} when {@link ToastMethodButtonConfig.label} is omitted. */
+export const DEFAULT_TOAST_CANCEL_LABEL = 'Cancel';
 
 /**
  * Use with `[duration]` or `options.durationMs` so a toast stays until manually dismissed.
@@ -35,9 +43,15 @@ function shouldScheduleAutoDismiss(durationMs: number): boolean {
   return Number.isFinite(durationMs) && durationMs > 0;
 }
 
+type AutoDismissState =
+  | { kind: 'scheduled'; timer: ReturnType<typeof globalThis.setTimeout>; deadline: number }
+  | { kind: 'paused'; remainingMs: number };
+
 @Injectable({ providedIn: 'root' })
 export class ToasterService {
   private readonly _toasts = signal<readonly ToasterItem[]>([]);
+
+  private readonly autoDismissByToastId = new Map<string, AutoDismissState>();
 
   private defaultDurationMs = DEFAULT_TOAST_DURATION_MS;
 
@@ -55,6 +69,62 @@ export class ToasterService {
 
   private resolveDuration(durationMs: ToasterDuration | undefined): number {
     return durationMs !== undefined ? parseToasterDurationMs(durationMs) : this.defaultDurationMs;
+  }
+
+  /** Cancels any auto-dismiss timer for a toast. */
+  private cancelAutoDismiss(id: string): void {
+    const state = this.autoDismissByToastId.get(id);
+    if (!state) {
+      return;
+    }
+    if (state.kind === 'scheduled') {
+      globalThis.clearTimeout(state.timer);
+    }
+    this.autoDismissByToastId.delete(id);
+  }
+
+  /** Schedules auto-dismiss for a toast. */
+  private scheduleAutoDismiss(id: string, durationMs: number): void {
+    this.cancelAutoDismiss(id);
+    if (!shouldScheduleAutoDismiss(durationMs)) {
+      return;
+    }
+    const deadline = Date.now() + durationMs;
+    const timer = globalThis.setTimeout(() => {
+      this.removeToast(id, 'auto');
+    }, durationMs);
+    this.autoDismissByToastId.set(id, { kind: 'scheduled', timer, deadline });
+  }
+
+  /**
+   * Pauses the auto-dismiss timer while the pointer is over the toast (e.g. hover).
+   * No-op if the toast has no active auto-dismiss.
+   */
+  pauseAutoDismiss(id: string): void {
+    const state = this.autoDismissByToastId.get(id);
+    if (!state || state.kind !== 'scheduled') {
+      return;
+    }
+    globalThis.clearTimeout(state.timer);
+    const remainingMs = Math.max(0, state.deadline - Date.now());
+    this.autoDismissByToastId.set(id, { kind: 'paused', remainingMs });
+  }
+
+  /**
+   * Resumes a paused auto-dismiss with the remaining time from {@link pauseAutoDismiss}.
+   */
+  resumeAutoDismiss(id: string): void {
+    const state = this.autoDismissByToastId.get(id);
+    if (!state || state.kind !== 'paused') {
+      return;
+    }
+    const { remainingMs } = state;
+    this.autoDismissByToastId.delete(id);
+    if (remainingMs <= 0) {
+      this.removeToast(id, 'auto');
+      return;
+    }
+    this.scheduleAutoDismiss(id, remainingMs);
   }
 
   /**
@@ -178,6 +248,34 @@ export class ToasterService {
   }
 
   /**
+   * Toast with message and a single **action** button (no icon). Default label is {@link DEFAULT_TOAST_ACTION_LABEL}.
+   * Pass `action.label` and `action.onClick` in {@link ToastActionMethodOptions}.
+   */
+  action(message: string, options: ToastActionMethodOptions): string {
+    const { action: actionCfg, ...rest } = options;
+    const toastAction: NonNullable<ToasterItem['toastAction']> = {
+      role: 'action',
+      label: actionCfg.label ?? DEFAULT_TOAST_ACTION_LABEL,
+      onClick: actionCfg.onClick,
+    };
+    return this.add(message, 'default', this.resolveDuration(rest.durationMs), { ...rest, icon: null }, toastAction);
+  }
+
+  /**
+   * Toast with message and a **cancel**-style button (no icon). Default label is {@link DEFAULT_TOAST_CANCEL_LABEL}.
+   * Pass `cancel.label` and `cancel.onClick` in {@link ToastCancelMethodOptions}.
+   */
+  cancel(message: string, options: ToastCancelMethodOptions): string {
+    const { cancel: cancelCfg, ...rest } = options;
+    const toastAction: NonNullable<ToasterItem['toastAction']> = {
+      role: 'cancel',
+      label: cancelCfg.label ?? DEFAULT_TOAST_CANCEL_LABEL,
+      onClick: cancelCfg.onClick,
+    };
+    return this.add(message, 'default', this.resolveDuration(rest.durationMs), { ...rest, icon: null }, toastAction);
+  }
+
+  /**
    * Shows one toast: loading until `userPromise` settles, then the same toast updates to success or error.
    * Returns the same promise (fulfillment/rejection preserved for callers).
    *
@@ -208,11 +306,14 @@ export class ToasterService {
     variant: ToastVariant,
     durationMs: number,
     options?: ToastOptions,
+    toastAction?: NonNullable<ToasterItem['toastAction']>,
   ): string {
     const id = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
     const icon = options?.icon;
     const style = options?.style;
     const classNames = options?.classNames;
+    const onDismiss = options?.onDismiss;
+    const onAutoClose = options?.onAutoClose;
     const item: ToasterItem = {
       id,
       message,
@@ -220,11 +321,12 @@ export class ToasterService {
       ...(icon !== undefined ? { icon } : {}),
       ...(style !== undefined ? { style } : {}),
       ...(classNames !== undefined ? { classNames } : {}),
+      ...(onDismiss !== undefined ? { onDismiss } : {}),
+      ...(onAutoClose !== undefined ? { onAutoClose } : {}),
+      ...(toastAction !== undefined ? { toastAction } : {}),
     };
     this._toasts.update((list) => [...list, item]);
-    if (shouldScheduleAutoDismiss(durationMs)) {
-      globalThis.setTimeout(() => this.dismiss(id), durationMs);
-    }
+    this.scheduleAutoDismiss(id, durationMs);
     return id;
   }
 
@@ -238,6 +340,8 @@ export class ToasterService {
     const icon = options?.icon;
     const style = options?.style;
     const classNames = options?.classNames;
+    const onDismiss = options?.onDismiss;
+    const onAutoClose = options?.onAutoClose;
 
     const item: ToasterItem = {
       id,
@@ -247,13 +351,13 @@ export class ToasterService {
       ...(icon !== undefined ? { icon } : {}),
       ...(style !== undefined ? { style } : {}),
       ...(classNames !== undefined ? { classNames } : {}),
+      ...(onDismiss !== undefined ? { onDismiss } : {}),
+      ...(onAutoClose !== undefined ? { onAutoClose } : {}),
     };
 
     this._toasts.update((list) => [...list, item]);
 
-    if (shouldScheduleAutoDismiss(durationMs)) {
-      globalThis.setTimeout(() => this.dismiss(id), durationMs);
-    }
+    this.scheduleAutoDismiss(id, durationMs);
 
     return id;
   }
@@ -271,6 +375,8 @@ export class ToasterService {
     };
 
     const classNames = options?.classNames;
+    const onDismiss = options?.onDismiss;
+    const onAutoClose = options?.onAutoClose;
 
     const item: ToasterItem = {
       id,
@@ -279,13 +385,13 @@ export class ToasterService {
       component,
       componentInputs,
       ...(classNames !== undefined ? { classNames } : {}),
+      ...(onDismiss !== undefined ? { onDismiss } : {}),
+      ...(onAutoClose !== undefined ? { onAutoClose } : {}),
     };
 
     this._toasts.update((list) => [...list, item]);
 
-    if (shouldScheduleAutoDismiss(durationMs)) {
-      globalThis.setTimeout(() => this.dismiss(id), durationMs);
-    }
+    this.scheduleAutoDismiss(id, durationMs);
 
     return id;
   }
@@ -306,8 +412,8 @@ export class ToasterService {
         return { ...toast, message, variant };
       }),
     );
-    if (found && shouldScheduleAutoDismiss(durationMs)) {
-      globalThis.setTimeout(() => this.dismiss(id), durationMs);
+    if (found) {
+      this.scheduleAutoDismiss(id, durationMs);
     }
   }
 
@@ -317,13 +423,37 @@ export class ToasterService {
    * @param id The toast ID.
    */
   dismiss(id: string): void {
-    this._toasts.update((list) => list.filter((t) => t.id !== id));
+    this.removeToast(id, 'manual');
   }
 
   /**
    * Clear all toast notifications.
    */
   clear(): void {
+    const snapshot = [...this._toasts()];
+    for (const state of this.autoDismissByToastId.values()) {
+      if (state.kind === 'scheduled') {
+        globalThis.clearTimeout(state.timer);
+      }
+    }
+    this.autoDismissByToastId.clear();
     this._toasts.set([]);
+    for (const toast of snapshot) {
+      toast.onDismiss?.();
+    }
+  }
+
+  private removeToast(id: string, cause: 'auto' | 'manual'): void {
+    const toast = this._toasts().find((t) => t.id === id);
+    if (!toast) {
+      return;
+    }
+    this.cancelAutoDismiss(id);
+    this._toasts.update((list) => list.filter((t) => t.id !== id));
+    if (cause === 'auto') {
+      toast.onAutoClose?.();
+    } else {
+      toast.onDismiss?.();
+    }
   }
 }

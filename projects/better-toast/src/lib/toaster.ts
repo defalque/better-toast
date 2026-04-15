@@ -87,6 +87,8 @@ function mergeToastClassNames(
     '(pointermove)': 'onPointerMove($event)',
     '(pointerup)': 'onPointerUp()',
     '(pointercancel)': 'onPointerCancel()',
+    '(pointerenter)': 'onPointerEnter()',
+    '(pointerleave)': 'onPointerLeave()',
   },
   template: `
     @if (toast()?.html) {
@@ -185,6 +187,18 @@ function mergeToastClassNames(
       }
 
       <p class="msg" [class]="resolvedClassNames()?.message">{{ toast()?.message }}</p>
+
+      @if (toast()?.toastAction) {
+        <button
+          type="button"
+          class="toast-row-btn"
+          [attr.data-row-btn]="toast()!.toastAction!.role"
+          (pointerdown)="onRowButtonPointerDown($event)"
+          (click)="toast()!.toastAction!.onClick()"
+        >
+          {{ toast()!.toastAction!.label }}
+        </button>
+      }
     }
 
     @if (closeButton() && !isHeadless()) {
@@ -341,6 +355,25 @@ export class BetterToastItem {
     return `translateY(${y})`;
   });
 
+  /** Prevents swipe-to-dismiss from starting when pressing the row action / cancel control. */
+  onRowButtonPointerDown(event: PointerEvent): void {
+    event.stopPropagation();
+  }
+
+  onPointerEnter() {
+    const id = this.toast()?.id;
+    if (id) {
+      this.toaster.pauseAutoDismiss(id);
+    }
+  }
+
+  onPointerLeave() {
+    const id = this.toast()?.id;
+    if (id) {
+      this.toaster.resumeAutoDismiss(id);
+    }
+  }
+
   onPointerDown(event: PointerEvent) {
     this.tracking = true;
     this.startY = event.clientY;
@@ -436,6 +469,7 @@ export class BetterToastItem {
  * Each component should render an **SVG** (import its class where you configure `[icons]`).
  * Set `[closeButton]="false"` to hide the per-toast dismiss button.
  * Set `[offset]` for `--toast-offset-*` and `[mobileOffset]` for `--toast-offset-mobile-*` (string all sides, or per-side object).
+ * {@link ToasterService.action} / {@link ToasterService.cancel} render a message plus one text button (no icon column).
  */
 @Component({
   selector: 'better-toaster',
