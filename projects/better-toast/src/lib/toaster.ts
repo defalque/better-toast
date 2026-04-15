@@ -17,12 +17,14 @@ import {
   ToasterService,
 } from './toaster.service';
 import type {
+  ToastChromeClassNames,
   ToasterDuration,
   ToasterIcons,
   ToasterItem,
   ToasterOffset,
   ToasterPosition,
   ToasterToastOptions,
+  ToastOptions,
   ToastVariant,
 } from './toaster.types';
 
@@ -51,6 +53,16 @@ function mergeToastHostStyles(
   return { ...base, ...override };
 }
 
+function mergeToastClassNames(
+  base: ToastChromeClassNames | undefined,
+  override: ToastChromeClassNames | undefined,
+): ToastChromeClassNames | undefined {
+  if (!base && !override) return undefined;
+  if (!base) return override;
+  if (!override) return base;
+  return { ...base, ...override };
+}
+
 @Component({
   selector: 'li[betterToastItem]',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -59,7 +71,7 @@ function mergeToastHostStyles(
     role: 'listitem',
     tabindex: '0',
     class: 'toast',
-    '[class]': 'toasterClassNames()?.toast',
+    '[class]': 'resolvedClassNames()?.toast',
     '[attr.data-variant]': 'variant()',
     '[attr.data-icon]': 'shouldShowIconColumn() ? "true" : "false"',
     '[attr.data-headless]': 'isHeadless() ? "true" : null',
@@ -163,14 +175,14 @@ function mergeToastHostStyles(
         </span>
       }
 
-      <p class="msg" [class]="toasterClassNames()?.message">{{ toast()?.message }}</p>
+      <p class="msg" [class]="resolvedClassNames()?.message">{{ toast()?.message }}</p>
     }
 
     @if (closeButton() && !isHeadless()) {
       <button
         type="button"
         class="close-btn"
-        [class]="toasterClassNames()?.closeButton"
+        [class]="resolvedClassNames()?.closeButton"
         (click)="toaster.dismiss(toast()?.id ?? '')"
         aria-label="Dismiss"
       >
@@ -203,10 +215,12 @@ export class BetterToastItem {
    */
   toasterStyle = input<Record<string, string | number | undefined> | undefined>();
 
-  // TODO
-  toasterClassNames = input<
-    Partial<Record<'toast' | 'message' | 'closeButton', string>> | undefined
-  >();
+  /**
+   * Classes from `<app-toaster [toastOptions]>` — same shape as {@link ToasterToastOptions.classNames}.
+   * Merged with {@link ToasterItem.classNames}; per-toast keys replace the same keys from the toaster.
+   * Styles for those classes usually need **`!important`** to override the library’s encapsulated CSS; see {@link ToastChromeClassNames}.
+   */
+  toasterClassNames = input<ToastChromeClassNames | undefined>();
 
   /** Which icon and color treatment to show for this row. */
   variant = input<ToastVariant>('default');
@@ -214,6 +228,11 @@ export class BetterToastItem {
   /** Merged inline styles for the toast (`[toastOptions].style` then per-toast `style`). */
   protected readonly hostStyle = computed(() =>
     mergeToastHostStyles(this.toasterStyle(), this.toast()?.style),
+  );
+
+  /** Merged `[class]` strings (`[toastOptions].classNames` then per-toast `classNames`). */
+  protected readonly resolvedClassNames = computed(() =>
+    mergeToastClassNames(this.toasterClassNames(), this.toast()?.classNames),
   );
 
   /**
@@ -387,8 +406,10 @@ export class BetterToaster {
   readonly icons = input<ToasterIcons | undefined>();
 
   /**
-   * Defaults applied to every toast (e.g. `style` on the toast host).
-   * Per-toast options passed to the service override on a per-key basis.
+   * Defaults for every toast — shape is {@link ToasterToastOptions}.
+   *
+   * - **`style`** — merged onto each toast host with per-toast {@link ToastOptions.style}; identical keys from the service call win.
+   * - **`classNames`** — extra classes on host / `.msg` / `.close-btn` via **`[class]`**; see {@link ToasterToastOptions.classNames} and {@link ToastChromeClassNames} (**`!important`** is usually required for overrides). Per-toast {@link ToastOptions.classNames} replaces the same keys.
    */
   readonly toastOptions = input<ToasterToastOptions | undefined>();
 

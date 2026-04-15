@@ -10,6 +10,7 @@ export {
 } from './lib/toaster.service';
 export type {
   HeadlessToastOptions,
+  ToastChromeClassNames,
   ToastPromiseLabels,
   ToastOptions,
   ToasterDuration,

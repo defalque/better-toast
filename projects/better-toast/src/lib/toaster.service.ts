@@ -212,12 +212,14 @@ export class ToasterService {
     const id = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
     const icon = options?.icon;
     const style = options?.style;
+    const classNames = options?.classNames;
     const item: ToasterItem = {
       id,
       message,
       variant,
       ...(icon !== undefined ? { icon } : {}),
       ...(style !== undefined ? { style } : {}),
+      ...(classNames !== undefined ? { classNames } : {}),
     };
     this._toasts.update((list) => [...list, item]);
     if (shouldScheduleAutoDismiss(durationMs)) {
@@ -235,6 +237,7 @@ export class ToasterService {
     const id = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
     const icon = options?.icon;
     const style = options?.style;
+    const classNames = options?.classNames;
 
     const item: ToasterItem = {
       id,
@@ -243,6 +246,7 @@ export class ToasterService {
       html,
       ...(icon !== undefined ? { icon } : {}),
       ...(style !== undefined ? { style } : {}),
+      ...(classNames !== undefined ? { classNames } : {}),
     };
 
     this._toasts.update((list) => [...list, item]);
@@ -266,12 +270,15 @@ export class ToasterService {
       toastId: id,
     };
 
+    const classNames = options?.classNames;
+
     const item: ToasterItem = {
       id,
       message: '',
       variant: 'default',
       component,
       componentInputs,
+      ...(classNames !== undefined ? { classNames } : {}),
     };
 
     this._toasts.update((list) => [...list, item]);

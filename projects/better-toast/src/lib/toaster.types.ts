@@ -57,12 +57,18 @@ export type ToastVariant = (typeof TOAST_VARIANTS)[number];
 export type ToasterIcons = Partial<Record<ToastVariant, Type<unknown> | null>>;
 
 /**
- * Second argument for `show` / `success` / `error` / `info` / `warning` / `custom` / `loading`.
- * Not used by `ToasterService.promise()` (that API uses {@link ToastPromiseLabels}).
+ * Optional extra classes for toast chrome, keyed by the element they bind to via **`[class]`**.
+ * Used by {@link ToasterToastOptions.classNames} and {@link ToastOptions.classNames}.
+ *
+ * The library ships encapsulated styles (`toast-item.css`, etc.). Global rules for your class names often **lose to those defaults**, so properties you expect to change **usually need `!important`** (or stronger specificity) to actually apply.
  */
+export type ToastChromeClassNames = Partial<
+  Record<'toast' | 'message' | 'closeButton', string>
+>;
+
 /**
  * Defaults for every toast from `<app-toaster [toastOptions]>`.
- * Per-toast {@link ToastOptions} override these (e.g. `style` keys on a single toast win over the same keys here).
+ * Per-toast {@link ToastOptions} override these (e.g. `style` / `classNames` keys on a single toast win over the same keys here).
  */
 export interface ToasterToastOptions {
   /**
@@ -72,12 +78,23 @@ export interface ToasterToastOptions {
   style?: Record<string, string | number | undefined>;
 
   /**
-   * TODO
+   * Extra CSS class strings merged onto toast chrome via Angular **`[class]`** bindings (from `<app-toaster [toastOptions]>`).
    *
+   * - **`toast`** — list item host (`li.toast` / `AppToastItem`), alongside the built-in `toast` class.
+   * - **`message`** — the text paragraph (`.msg`) when the toast is not `html` / `component` / headless body.
+   * - **`closeButton`** — the dismiss control (`.close-btn`) when `<app-toaster [closeButton]>` is enabled.
+   *
+   * Omitted keys add no extra classes for that part; values are typically space-separated class names (same as a static `class` attribute).
+   *
+   * **Overriding built-in look:** see {@link ToastChromeClassNames} — your CSS generally needs **`!important`** on the declarations that must win.
    */
-  classNames?: Partial<Record<'toast' | 'message' | 'closeButton', string>>;
+  classNames?: ToastChromeClassNames;
 }
 
+/**
+ * Second argument for `show` / `success` / `error` / `info` / `warning` / `custom` / `loading`.
+ * Not used by `ToasterService.promise()` (that API uses {@link ToastPromiseLabels}).
+ */
 export interface ToastOptions {
   /**
    * Omit to use `<app-toaster [duration]>` (or the library default).
@@ -96,6 +113,11 @@ export interface ToastOptions {
    * Merged after `<app-toaster [toastOptions]>` `style` (if any); per-toast keys override the same keys from the toaster.
    */
   style?: Record<string, string | number | undefined>;
+  /**
+   * Extra **`[class]`** strings for this toast only — same keys and **`!important`** guidance as {@link ToasterToastOptions.classNames}.
+   * Merged with `<app-toaster [toastOptions]>` `classNames` (if any); per-toast keys replace the same keys from the toaster.
+   */
+  classNames?: ToastChromeClassNames;
 }
 
 /**
@@ -104,7 +126,8 @@ export interface ToastOptions {
  * Headless toasts ignore `<app-toaster [closeButton]>`: no dismiss control is rendered.
  *
  * Per-toast **`icon`** and **`style`** are omitted: the inner component owns visuals; use
- * `<app-toaster [toastOptions]>` for shared host styling if needed.
+ * `<app-toaster [toastOptions]>` for shared host styling if needed. **`classNames`** still applies to the list-item host
+ * (and to `.msg` / `.close-btn` when that chrome exists).
  *
  * The host always passes a **`toastId`** input (same value as the id returned from `headless()`)
  * so the component can call {@link ToasterService.dismiss} or read its own id. User `inputs` are
@@ -134,6 +157,8 @@ export interface ToasterItem {
   readonly icon?: Type<unknown> | null;
   /** Per-toast host inline styles; see {@link ToastOptions.style}. */
   readonly style?: Record<string, string | number | undefined>;
+  /** Per-toast extra classes; see {@link ToastOptions.classNames}. */
+  readonly classNames?: ToastChromeClassNames;
 }
 
 /**

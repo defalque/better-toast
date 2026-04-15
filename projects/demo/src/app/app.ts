@@ -396,7 +396,10 @@ this.toaster.headless(UploadProgressToast, {
   }
 
   protected showErrorToast(): void {
-    this.toaster.error('Something went wrong', { icon: null });
+    this.toaster.error('Something went wrong', {
+      /* classNames: { toast: 'border-red-500' }, */
+      icon: null,
+    });
   }
 
   protected showInfoToast(): void {
@@ -487,7 +490,7 @@ this.toaster.headless(UploadProgressToast, {
 
   protected readonly toastOptions = {
     /* style: { background: 'red', color: 'yellow' }, */
-    /*  classNames: {
+    /* classNames: {
       closeButton: 'custom-button',
     }, */
   };
