@@ -4,7 +4,7 @@ import hljs from 'highlight.js/lib/core';
 import typescript from 'highlight.js/lib/languages/typescript';
 import { RouterOutlet } from '@angular/router';
 import {
-  Toaster,
+  BetterToaster,
   ToasterService,
   DEFAULT_TOAST_DURATION_MS,
   TOAST_DURATION_MANUAL_DISMISS,
@@ -40,7 +40,7 @@ type HeadlessDemoKind = 'boring' | 'music' | 'cookie' | 'upload';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Toaster],
+  imports: [RouterOutlet, BetterToaster],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
@@ -167,7 +167,7 @@ export class App {
 
   protected readonly toastDemoSnippets: Record<ToastDemoKind, string> = {
     default: `this.toaster.show('Default toast. A very super long message that should wrap.');`,
-    success: `this.toaster.success('Saved successfully', { icon: CustomIcon });`,
+    success: `this.toaster.success('Saved successfully', { icon: CustomSuccessIcon });`,
     error: `this.toaster.error('Something went wrong', { icon: null });`,
     info: `this.toaster.info('Tip: you can stack multiple toasts');`,
     warning: `this.toaster.warning('Your session will expire soon');`,
@@ -259,12 +259,15 @@ export class BoringToast {
   ...
 }
 
+...
+
 this.toaster.headless(BoringToast, {
+  durationMs: 'Infinity',
   inputs: {
     title: 'Boring Toast',
     message:
       'You have full control over the toast content and appearance, while keeping the animations and positioning.',
-    actionMessage: 'Action',
+    actionLabel: 'Action',
     onActionDone: () => console.log('Boring toast action finished'),
   },
 });`,
@@ -293,6 +296,8 @@ export class CustomMusicPlayerToast {
 
   ...
 }
+
+...
 
 this.toaster.headless(CustomMusicPlayerToast, {
   inputs: {
@@ -325,6 +330,8 @@ export class CookieToast {
   ...
 }
 
+...
+
 this.toaster.headless(CookieToast, {
   durationMs: 'Infinity',
   inputs: {
@@ -356,6 +363,8 @@ export class UploadProgressToast {
   /** Simulates upload progress; dismisses shortly after reaching 100%. */
   ...
 }
+
+...
 
 this.toaster.headless(UploadProgressToast, {
   durationMs: 'Infinity',
@@ -482,6 +491,7 @@ this.toaster.headless(UploadProgressToast, {
 
   protected showBoringToast(): void {
     this.toaster.headless(CustomToast, {
+      durationMs: 'Infinity',
       inputs: {
         title: 'Boring Toast',
         message:

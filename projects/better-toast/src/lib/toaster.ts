@@ -52,7 +52,7 @@ function mergeToastHostStyles(
 }
 
 @Component({
-  selector: 'li[appToastItem]',
+  selector: 'li[betterToastItem]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgComponentOutlet],
   host: {
@@ -186,7 +186,7 @@ function mergeToastHostStyles(
   `,
   styleUrl: './toast-item.css',
 })
-export class AppToastItem {
+export class BetterToastItem {
   /** Shared toaster service (e.g. dismiss from the close button). */
   protected readonly toaster = inject(ToasterService);
 
@@ -217,11 +217,11 @@ export class AppToastItem {
 
   /** Resolved standalone SVG icon component from `[icons]`, if any (not `null`). */
   protected readonly iconComponent = computed(() => {
-    const g = this.customIcons()?.[this.variant()];
-    if (g === null) {
+    const customIcon = this.customIcons()?.[this.variant()];
+    if (customIcon === null) {
       return undefined;
     }
-    return g;
+    return customIcon;
   });
 
   /**
@@ -229,26 +229,31 @@ export class AppToastItem {
    * The `default` variant has no built-in icon: the column appears only with a per-toast `icon` or `[icons].default`.
    */
   protected readonly shouldShowIconColumn = computed(() => {
-    const t = this.toast();
-    if (!t) return false;
-    if (t.icon === null) return false;
-    const v = t.variant;
-    if (v === 'default') {
-      if (t.icon != null) {
+    const toast = this.toast();
+
+    if (!toast) return false;
+    if (toast.icon === null) return false;
+
+    const toastVariant = toast.variant;
+    if (toastVariant === 'default') {
+      if (toast.icon != null) {
         return true;
       }
-      const g = this.customIcons()?.default;
-      if (g === null) {
+      const defaultIcon = this.customIcons()?.default;
+      if (defaultIcon === null) {
         return false;
       }
-      return g !== undefined;
+      return defaultIcon !== undefined;
     }
-    if (t.icon != null) {
+
+    if (toast.icon != null) {
       return true;
     }
-    if (this.customIcons()?.[v] === null) {
+
+    if (this.customIcons()?.[toastVariant] === null) {
       return false;
     }
+
     return true;
   });
 
@@ -289,9 +294,9 @@ export class AppToastItem {
  * Set `[offset]` for `--toast-offset-*` and `[mobileOffset]` for `--toast-offset-mobile-*` (string all sides, or per-side object).
  */
 @Component({
-  selector: 'app-toaster',
+  selector: 'better-toaster',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AppToastItem],
+  imports: [BetterToastItem],
   template: `
     <section
       aria-label="Notifications"
@@ -316,7 +321,7 @@ export class AppToastItem {
       >
         @for (toast of toaster.toasts(); track toast.id) {
           <li
-            appToastItem
+            betterToastItem
             [toast]="toast"
             [toasterStyle]="toastOptions()?.style"
             [variant]="toast.variant"
@@ -333,7 +338,7 @@ export class AppToastItem {
   `,
   styleUrl: './toaster.css',
 })
-export class Toaster {
+export class BetterToaster {
   protected readonly toaster = inject(ToasterService);
 
   /** Where the stack is anchored on the viewport. */

@@ -2,7 +2,7 @@
  * Public API Surface of better-toast
  */
 
-export { Toaster } from './lib/toaster';
+export { BetterToaster } from './lib/toaster';
 export {
   DEFAULT_TOAST_DURATION_MS,
   TOAST_DURATION_MANUAL_DISMISS,
