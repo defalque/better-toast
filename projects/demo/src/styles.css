@@ -169,3 +169,7 @@ html {
     color: #a1a1aa;
   }
 }
+
+.custom-button {
+  @apply bg-black! dark:bg-white! hover:opacity-80! text-sm! font-semibold! text-white! dark:text-black!  cursor-pointer! shadow-sm! transition! duration-200!  disabled:cursor-not-allowed! absolute! -top-1! -right-1!;
+}

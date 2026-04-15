@@ -59,6 +59,7 @@ function mergeToastHostStyles(
     role: 'listitem',
     tabindex: '0',
     class: 'toast',
+    '[class]': 'toasterClassNames()?.toast',
     '[attr.data-variant]': 'variant()',
     '[attr.data-icon]': 'shouldShowIconColumn() ? "true" : "false"',
     '[attr.data-headless]': 'isHeadless() ? "true" : null',
@@ -162,13 +163,14 @@ function mergeToastHostStyles(
         </span>
       }
 
-      <p class="msg">{{ toast()?.message }}</p>
+      <p class="msg" [class]="toasterClassNames()?.message">{{ toast()?.message }}</p>
     }
 
     @if (closeButton() && !isHeadless()) {
       <button
         type="button"
         class="close-btn"
+        [class]="toasterClassNames()?.closeButton"
         (click)="toaster.dismiss(toast()?.id ?? '')"
         aria-label="Dismiss"
       >
@@ -200,6 +202,11 @@ export class BetterToastItem {
    * Styles from `<app-toaster [toastOptions]>`; merged with {@link ToasterItem.style} so per-toast keys win.
    */
   toasterStyle = input<Record<string, string | number | undefined> | undefined>();
+
+  // TODO
+  toasterClassNames = input<
+    Partial<Record<'toast' | 'message' | 'closeButton', string>> | undefined
+  >();
 
   /** Which icon and color treatment to show for this row. */
   variant = input<ToastVariant>('default');
@@ -324,6 +331,7 @@ export class BetterToastItem {
             betterToastItem
             [toast]="toast"
             [toasterStyle]="toastOptions()?.style"
+            [toasterClassNames]="toastOptions()?.classNames"
             [variant]="toast.variant"
             [customIcons]="icons()"
             [offset]="offsets()[toast.id]"

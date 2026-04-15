@@ -487,6 +487,9 @@ this.toaster.headless(UploadProgressToast, {
 
   protected readonly toastOptions = {
     /* style: { background: 'red', color: 'yellow' }, */
+    /*  classNames: {
+      closeButton: 'custom-button',
+    }, */
   };
 
   protected showBoringToast(): void {

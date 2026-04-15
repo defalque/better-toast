@@ -70,6 +70,12 @@ export interface ToasterToastOptions {
    * Merged with per-toast {@link ToastOptions.style}; toast-specific values override.
    */
   style?: Record<string, string | number | undefined>;
+
+  /**
+   * TODO
+   *
+   */
+  classNames?: Partial<Record<'toast' | 'message' | 'closeButton', string>>;
 }
 
 export interface ToastOptions {
