@@ -618,8 +618,7 @@ export class BetterToaster {
   /** Resolved `aria-label` for the outer `<section>` live region. */
   protected readonly notificationsRegionAriaLabel = computed(
     () =>
-      this.accessibilityLabels()?.notificationsRegion ??
-      DEFAULT_TOASTER_ARIA_NOTIFICATIONS_REGION,
+      this.accessibilityLabels()?.notificationsRegion ?? DEFAULT_TOASTER_ARIA_NOTIFICATIONS_REGION,
   );
 
   /** Resolved `aria-label` for each toast’s dismiss control. */

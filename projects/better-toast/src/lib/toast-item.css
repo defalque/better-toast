@@ -294,7 +294,7 @@
 }
 
 :host([data-icon='false']) {
-  padding-left: 0.875rem;
+  padding-left: 0.925rem;
 }
 :host([data-icon='false']) .toast-main .msg {
   max-width: 90%;
@@ -313,6 +313,9 @@
 .toast-icon svg,
 .toast-icon ::ng-deep svg {
   display: block;
+  margin-inline: auto;
+  fill: currentColor;
+  stroke: currentColor;
   width: 95%;
   height: 95%;
 }

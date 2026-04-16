@@ -23,6 +23,7 @@ import { CustomMusicPlayerToast } from './components/custom-music-player-toast/c
 import { CustomToast } from './components/custom-toast/custom-toast';
 import { CookieToast } from './components/cookie-toast/cookie-toast';
 import { UploadProgressToast } from './components/upload-progress-toast/upload-progress-toast';
+import { LucideCircleAlert } from '@lucide/angular';
 
 hljs.registerLanguage('typescript', typescript);
 
@@ -418,7 +419,7 @@ this.toaster.headless(UploadProgressToast, {
   protected showErrorToast(): void {
     this.toaster.error('Something went wrong', {
       /* classNames: { toast: 'border-red-500' }, */
-      icon: null,
+      /* icon: null, */
     });
   }
 

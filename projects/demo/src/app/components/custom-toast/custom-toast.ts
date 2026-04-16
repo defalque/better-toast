@@ -59,6 +59,7 @@ export class CustomToast {
 
   /** Set automatically by `ToasterService.headless()`; use with `dismiss()`. */
   protected readonly toastId = input<string>('');
+
   protected readonly title = input<string>('');
   protected readonly message = input<string>('');
   protected readonly actionLabel = input<string>('');

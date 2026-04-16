@@ -1,9 +1,5 @@
 import { Component } from '@angular/core';
 
-/**
- * Example **standalone** toast icon: passed to `<app-toaster [icons]="{ success: CustomIcon }">`.
- * Uses `currentColor` so toast variant styles (via the library’s `::ng-deep` rules) apply.
- */
 @Component({
   selector: 'app-custom-icon',
   imports: [],
@@ -11,8 +7,8 @@ import { Component } from '@angular/core';
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
-      fill="currentColor"
-      stroke="currentColor"
+      fill="#000"
+      stroke="#000"
       stroke-width="1.75"
       stroke-linecap="round"
       stroke-linejoin="round"
