@@ -34,6 +34,29 @@ export type ToasterOffset =
  */
 export type ToasterDuration = number | 'Infinity';
 
+/** Default `aria-label` for the toaster live region (`<section>`). */
+export const DEFAULT_TOASTER_ARIA_NOTIFICATIONS_REGION = 'Notifications';
+
+/** Default `aria-label` for the per-toast dismiss (close) control. */
+export const DEFAULT_TOASTER_ARIA_DISMISS_BUTTON = 'Dismiss';
+
+/**
+ * Overrides for built-in English accessibility strings on `<better-toaster [accessibilityLabels]>`.
+ * Omitted keys keep the library defaults.
+ */
+export interface ToasterAccessibilityLabels {
+  /**
+   * `aria-label` on the polite live region wrapper (`<section>`).
+   * Default {@link DEFAULT_TOASTER_ARIA_NOTIFICATIONS_REGION}.
+   */
+  notificationsRegion?: string;
+  /**
+   * `aria-label` on the dismiss control when `<better-toaster [closeButton]>` is true.
+   * Default {@link DEFAULT_TOASTER_ARIA_DISMISS_BUTTON}.
+   */
+  dismissButton?: string;
+}
+
 export const TOAST_VARIANTS = [
   'default',
   'success',

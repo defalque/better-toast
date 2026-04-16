@@ -16,16 +16,19 @@ import {
   parseToasterDurationMs,
   ToasterService,
 } from './toaster.service';
-import type {
-  ToastChromeClassNames,
-  ToasterDuration,
-  ToasterIcons,
-  ToasterItem,
-  ToasterOffset,
-  ToasterPosition,
-  ToasterToastOptions,
-  ToastOptions,
-  ToastVariant,
+import {
+  DEFAULT_TOASTER_ARIA_DISMISS_BUTTON,
+  DEFAULT_TOASTER_ARIA_NOTIFICATIONS_REGION,
+  type ToastChromeClassNames,
+  type ToasterAccessibilityLabels,
+  type ToasterDuration,
+  type ToasterIcons,
+  type ToasterItem,
+  type ToasterOffset,
+  type ToasterPosition,
+  type ToasterToastOptions,
+  type ToastOptions,
+  type ToastVariant,
 } from './toaster.types';
 
 function swipeDirectionForPosition(position: ToasterPosition): 'down' | 'up' {
@@ -224,7 +227,7 @@ function mergeToastClassNames(
         class="close-btn"
         [class]="resolvedClassNames()?.closeButton"
         (click)="toaster.dismiss(toast()?.id ?? '')"
-        aria-label="Dismiss"
+        [attr.aria-label]="dismissButtonAriaLabel()"
       >
         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <path
@@ -336,6 +339,12 @@ export class BetterToastItem {
 
   /** When false, the dismiss control is not rendered (toasts may still auto-dismiss or be cleared via the service). */
   closeButton = input(true);
+
+  /**
+   * `aria-label` for the dismiss control; set from `<better-toaster [accessibilityLabels]>`.
+   * Default {@link DEFAULT_TOASTER_ARIA_DISMISS_BUTTON}.
+   */
+  dismissButtonAriaLabel = input<string>(DEFAULT_TOASTER_ARIA_DISMISS_BUTTON);
 
   /** Stack anchor from `<better-toaster [position]>` — drives swipe axis and `data-swipe-direction`. */
   stackPosition = input<ToasterPosition>('bottom-right');
@@ -494,6 +503,7 @@ export class BetterToastItem {
  * replace the default artwork (or add an icon for the neutral `default` variant), or use **`null`** to hide that variant’s icon.
  * Each component should render an **SVG** (import its class where you configure `[icons]`).
  * Set `[closeButton]="false"` to hide the per-toast dismiss button.
+ * Set `[accessibilityLabels]` to override default English `aria-label` strings (live region and dismiss control).
  * Set `[offset]` for `--toast-offset-*` and `[mobileOffset]` for `--toast-offset-mobile-*` (string all sides, or per-side object).
  * {@link ToasterService.action} / {@link ToasterService.cancel} render a message plus one text button (no icon column).
  */
@@ -503,7 +513,7 @@ export class BetterToastItem {
   imports: [BetterToastItem],
   template: `
     <section
-      aria-label="Notifications"
+      [attr.aria-label]="notificationsRegionAriaLabel()"
       tabindex="-1"
       aria-live="polite"
       aria-relevant="additions text"
@@ -533,6 +543,7 @@ export class BetterToastItem {
             [customIcons]="icons()"
             [offset]="offsets()[toast.id]"
             [closeButton]="closeButton()"
+            [dismissButtonAriaLabel]="dismissButtonAriaLabel()"
             [stackPosition]="position()"
             (heightChange)="onHeightChange(toast.id, $event)"
             [attr.data-position]="position()"
@@ -595,8 +606,26 @@ export class BetterToaster {
   /** When true (default), each toast shows a dismiss button; set to false to hide it. */
   readonly closeButton = input(true);
 
+  /**
+   * Overrides for built-in English `aria-label` values (live region and per-toast dismiss).
+   * Omitted keys keep {@link DEFAULT_TOASTER_ARIA_NOTIFICATIONS_REGION} and {@link DEFAULT_TOASTER_ARIA_DISMISS_BUTTON}.
+   */
+  readonly accessibilityLabels = input<ToasterAccessibilityLabels | undefined>();
+
   /** Measured height in px per toast id, updated when a toast item reports `heightChange`. */
   readonly heights = signal<Record<string, number>>({} as Record<string, number>);
+
+  /** Resolved `aria-label` for the outer `<section>` live region. */
+  protected readonly notificationsRegionAriaLabel = computed(
+    () =>
+      this.accessibilityLabels()?.notificationsRegion ??
+      DEFAULT_TOASTER_ARIA_NOTIFICATIONS_REGION,
+  );
+
+  /** Resolved `aria-label` for each toast’s dismiss control. */
+  protected readonly dismissButtonAriaLabel = computed(
+    () => this.accessibilityLabels()?.dismissButton ?? DEFAULT_TOASTER_ARIA_DISMISS_BUTTON,
+  );
 
   protected readonly offsetTop = computed(() => resolveToasterOffsetSide(this.offset(), 'top'));
   protected readonly offsetRight = computed(() => resolveToasterOffsetSide(this.offset(), 'right'));

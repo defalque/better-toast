@@ -4,6 +4,12 @@
 
 export { BetterToaster } from './lib/toaster';
 export {
+  DEFAULT_TOASTER_ARIA_DISMISS_BUTTON,
+  DEFAULT_TOASTER_ARIA_NOTIFICATIONS_REGION,
+  TOAST_VARIANTS,
+  TOASTER_POSITIONS,
+} from './lib/toaster.types';
+export {
   DEFAULT_TOAST_ACTION_LABEL,
   DEFAULT_TOAST_CANCEL_LABEL,
   DEFAULT_TOAST_DURATION_MS,
@@ -21,6 +27,7 @@ export type {
   ToastMethodButtonConfig,
   ToastPromiseLabels,
   ToastOptions,
+  ToasterAccessibilityLabels,
   ToasterDuration,
   ToasterIcons,
   ToasterOffset,
@@ -29,4 +36,3 @@ export type {
   ToasterItem,
   ToasterPosition,
 } from './lib/toaster.types';
-export { TOAST_VARIANTS, TOASTER_POSITIONS } from './lib/toaster.types';

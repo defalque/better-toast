@@ -539,9 +539,6 @@ this.toaster.headless(UploadProgressToast, {
       cancelButton: 'bg-red-500! text-white!',
       actionButton: 'bg-blue-500! text-white!',
     }, */
-    classNames: {
-      actionButton: 'bg-emerald-500! text-white!',
-    },
   };
 
   protected showBoringToast(): void {

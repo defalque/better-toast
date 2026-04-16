@@ -486,4 +486,8 @@
   [toastOptions]="toastOptions"
   [duration]="isManualDismissDuration() ? 'Infinity' : toasterDurationMs()"
   [icons]="toastIcons"
+  [accessibilityLabels]="{
+    notificationsRegion: 'Notifiche',
+    dismissButton: 'Chiudi',
+  }"
 />

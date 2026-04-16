@@ -4,6 +4,10 @@ import { vi } from 'vitest';
 
 import { BetterToaster as Toaster } from './toaster';
 import { ToasterService, TOAST_DURATION_MANUAL_DISMISS } from './toaster.service';
+import {
+  DEFAULT_TOASTER_ARIA_DISMISS_BUTTON,
+  DEFAULT_TOASTER_ARIA_NOTIFICATIONS_REGION,
+} from './toaster.types';
 
 @Component({
   selector: 'bt-spec-success-icon',
@@ -72,6 +76,56 @@ describe('better-toast', () => {
     const container = fixture.nativeElement.querySelector('.toast-container') as HTMLElement;
     expect(container.getAttribute('data-position')).toBe('top-left');
     expect(container.getAttribute('data-rich-colors')).toBe('false');
+  });
+
+  it('uses default English aria-labels on the live region and dismiss control', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    const toaster = TestBed.inject(ToasterService);
+    toaster.show('Hi', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const section = fixture.nativeElement.querySelector('section') as HTMLElement;
+    expect(section.getAttribute('aria-label')).toBe(DEFAULT_TOASTER_ARIA_NOTIFICATIONS_REGION);
+
+    const close = fixture.nativeElement.querySelector('.close-btn') as HTMLButtonElement | null;
+    expect(close?.getAttribute('aria-label')).toBe(DEFAULT_TOASTER_ARIA_DISMISS_BUTTON);
+  });
+
+  it('applies [accessibilityLabels] overrides for live region and dismiss aria-label', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.componentRef.setInput('accessibilityLabels', {
+      notificationsRegion: 'Notifiche',
+      dismissButton: 'Chiudi',
+    });
+    const toaster = TestBed.inject(ToasterService);
+    toaster.show('Ciao', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const section = fixture.nativeElement.querySelector('section') as HTMLElement;
+    expect(section.getAttribute('aria-label')).toBe('Notifiche');
+
+    const close = fixture.nativeElement.querySelector('.close-btn') as HTMLButtonElement | null;
+    expect(close?.getAttribute('aria-label')).toBe('Chiudi');
+  });
+
+  it('merges partial [accessibilityLabels] with defaults for omitted keys', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.componentRef.setInput('accessibilityLabels', { dismissButton: 'Chiudi avviso' });
+    const toaster = TestBed.inject(ToasterService);
+    toaster.show('X', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const section = fixture.nativeElement.querySelector('section') as HTMLElement;
+    expect(section.getAttribute('aria-label')).toBe(DEFAULT_TOASTER_ARIA_NOTIFICATIONS_REGION);
+
+    const close = fixture.nativeElement.querySelector('.close-btn') as HTMLButtonElement | null;
+    expect(close?.getAttribute('aria-label')).toBe('Chiudi avviso');
   });
 
   it('applies string offset to all --toast-offset-* vars on the container', async () => {
