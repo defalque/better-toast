@@ -57,17 +57,36 @@ export type ToastVariant = (typeof TOAST_VARIANTS)[number];
 export type ToasterIcons = Partial<Record<ToastVariant, Type<unknown> | null>>;
 
 /**
- * Optional extra classes for toast chrome, keyed by the element they bind to via **`[class]`**.
- * Used by {@link ToasterToastOptions.classNames} and {@link ToastOptions.classNames}.
+ * Extra classes for host, message, and close control only.
+ * Used by {@link ToastOptions.classNames} and {@link HeadlessToastOptions.classNames}.
+ *
+ * Row button defaults (`.action-btn` / `.cancel-btn`) can be set on {@link ToasterToastOptions.classNames} ({@link ToastChromeClassNames})
+ * or overridden per call via {@link ToastActionChromeClassNames} / {@link ToastCancelChromeClassNames}.
  *
  * The library ships encapsulated styles (`toast-item.css`, etc.). Global rules for your class names often **lose to those defaults**, so properties you expect to change **usually need `!important`** (or stronger specificity) to actually apply.
  */
-export type ToastChromeClassNames = Partial<
-  Record<
-    'toast' | 'message' | 'closeButton' | 'actionButton' | 'cancelButton',
-    string
-  >
+export type ToastBaseChromeClassNames = Partial<
+  Record<'toast' | 'message' | 'closeButton', string>
 >;
+
+/**
+ * Merged shape after combining toaster defaults with a toast item (may include row-button keys when that toast has a row button).
+ * The library still uses this internally on {@link ToasterItem} and for `[class]` resolution.
+ */
+export type ToastChromeClassNames = ToastBaseChromeClassNames & {
+  actionButton?: string;
+  cancelButton?: string;
+};
+
+/** `classNames` for {@link ToasterService.action} — includes `.action-btn` only among row buttons. */
+export type ToastActionChromeClassNames = ToastBaseChromeClassNames & {
+  actionButton?: string;
+};
+
+/** `classNames` for {@link ToasterService.cancel} — includes `.cancel-btn` only among row buttons. */
+export type ToastCancelChromeClassNames = ToastBaseChromeClassNames & {
+  cancelButton?: string;
+};
 
 /**
  * Defaults for every toast from `<app-toaster [toastOptions]>`.
@@ -86,12 +105,13 @@ export interface ToasterToastOptions {
    * - **`toast`** — list item host (`li.toast` / `AppToastItem`), alongside the built-in `toast` class.
    * - **`message`** — the text paragraph (`.msg`) when the toast is not `html` / `component` / headless body.
    * - **`closeButton`** — the dismiss control (`.close-btn`) when `<app-toaster [closeButton]>` is enabled.
-   * - **`actionButton`** — the row button for {@link ToasterService.action} (`.action-btn`).
-   * - **`cancelButton`** — the row button for {@link ToasterService.cancel} (`.cancel-btn`).
+   * - **`actionButton`** / **`cancelButton`** — defaults for `.action-btn` / `.cancel-btn` when you use {@link ToasterService.action} / {@link ToasterService.cancel}; ignored on toasts without a row button.
+   *
+   * Per-toast {@link ToastOptions.classNames} cannot set row-button keys; override them on each {@link ToastActionMethodOptions} / {@link ToastCancelMethodOptions} call instead.
    *
    * Omitted keys add no extra classes for that part; values are typically space-separated class names (same as a static `class` attribute).
    *
-   * **Overriding built-in look:** see {@link ToastChromeClassNames} — your CSS generally needs **`!important`** on the declarations that must win.
+   * **Overriding built-in look:** your CSS generally needs **`!important`** on the declarations that must win.
    */
   classNames?: ToastChromeClassNames;
 }
@@ -110,15 +130,17 @@ export interface ToastMethodButtonConfig {
 /**
  * Options for {@link ToasterService.action} only. Use the `action` field (not available on {@link ToastOptions}).
  */
-export type ToastActionMethodOptions = Omit<ToastOptions, 'icon'> & {
+export type ToastActionMethodOptions = Omit<ToastOptions, 'icon' | 'classNames'> & {
   action: ToastMethodButtonConfig;
+  classNames?: ToastActionChromeClassNames;
 };
 
 /**
  * Options for {@link ToasterService.cancel} only. Use the `cancel` field (not available on {@link ToastOptions}).
  */
-export type ToastCancelMethodOptions = Omit<ToastOptions, 'icon'> & {
+export type ToastCancelMethodOptions = Omit<ToastOptions, 'icon' | 'classNames'> & {
   cancel: ToastMethodButtonConfig;
+  classNames?: ToastCancelChromeClassNames;
 };
 
 /**
@@ -146,8 +168,10 @@ export interface ToastOptions {
   /**
    * Extra **`[class]`** strings for this toast only — same keys and **`!important`** guidance as {@link ToasterToastOptions.classNames}.
    * Merged with `<app-toaster [toastOptions]>` `classNames` (if any); per-toast keys replace the same keys from the toaster.
+   *
+   * Row button keys (`actionButton` / `cancelButton`) are only valid on {@link ToastActionMethodOptions} / {@link ToastCancelMethodOptions}.
    */
-  classNames?: ToastChromeClassNames;
+  classNames?: ToastBaseChromeClassNames;
   /**
    * Called when the toast is removed for any reason other than auto-dismiss: close control, swipe,
    * {@link ToasterService.dismiss}, or {@link ToasterService.clear}.
@@ -167,7 +191,7 @@ export interface ToastOptions {
  *
  * Per-toast **`icon`** and **`style`** are omitted: the inner component owns visuals; use
  * `<app-toaster [toastOptions]>` for shared host styling if needed. **`classNames`** still applies to the list-item host
- * (and to `.msg` / `.close-btn` / `.action-btn` / `.cancel-btn` when that chrome exists).
+ * (and to `.msg` / `.close-btn` when that chrome exists).
  *
  * The host always passes a **`toastId`** input (same value as the id returned from `headless()`)
  * so the component can call {@link ToasterService.dismiss} or read its own id. User `inputs` are

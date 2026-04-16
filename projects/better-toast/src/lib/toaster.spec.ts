@@ -586,7 +586,7 @@ describe('better-toast', () => {
     expect(btn.textContent?.trim()).toBe('Cancel');
   });
 
-  it('merges classNames.actionButton; per-toast replaces toaster toastOptions', async () => {
+  it('merges toastOptions.classNames.actionButton; per-toast action classNames replace toaster', async () => {
     TestBed.configureTestingModule({ imports: [Toaster] });
     const fixture = TestBed.createComponent(Toaster);
     fixture.componentRef.setInput('toastOptions', {
@@ -609,11 +609,37 @@ describe('better-toast', () => {
     expect(btn.classList.contains('host-action')).toBe(false);
   });
 
-  it('applies classNames.cancelButton from toastOptions to the cancel row button', async () => {
+  it('merges classNames.actionButton from action(); toaster base classNames still merge for shared keys', async () => {
     TestBed.configureTestingModule({ imports: [Toaster] });
     const fixture = TestBed.createComponent(Toaster);
     fixture.componentRef.setInput('toastOptions', {
-      classNames: { cancelButton: 'my-cancel' },
+      classNames: { message: 'host-msg' },
+    });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    toaster.action('Hi', {
+      durationMs: TOAST_DURATION_MANUAL_DISMISS,
+      action: { onClick: () => {} },
+      classNames: { actionButton: 'toast-action', message: 'toast-msg' },
+    });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const btn = fixture.nativeElement.querySelector('.action-btn') as HTMLButtonElement;
+    expect(btn.classList.contains('toast-action')).toBe(true);
+
+    const msg = fixture.nativeElement.querySelector('.msg') as HTMLElement;
+    expect(msg.classList.contains('toast-msg')).toBe(true);
+    expect(msg.classList.contains('host-msg')).toBe(false);
+  });
+
+  it('merges toastOptions.classNames.cancelButton; per-toast cancel classNames replace toaster', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.componentRef.setInput('toastOptions', {
+      classNames: { cancelButton: 'host-cancel' },
     });
     fixture.detectChanges();
     await fixture.whenStable();
@@ -622,11 +648,13 @@ describe('better-toast', () => {
     toaster.cancel('Bye', {
       durationMs: TOAST_DURATION_MANUAL_DISMISS,
       cancel: { onClick: () => {} },
+      classNames: { cancelButton: 'toast-cancel' },
     });
     fixture.detectChanges();
     await fixture.whenStable();
 
     const btn = fixture.nativeElement.querySelector('.cancel-btn') as HTMLButtonElement;
-    expect(btn.classList.contains('my-cancel')).toBe(true);
+    expect(btn.classList.contains('toast-cancel')).toBe(true);
+    expect(btn.classList.contains('host-cancel')).toBe(false);
   });
 });

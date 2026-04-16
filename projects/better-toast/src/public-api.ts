@@ -12,7 +12,10 @@ export {
 } from './lib/toaster.service';
 export type {
   HeadlessToastOptions,
+  ToastActionChromeClassNames,
   ToastActionMethodOptions,
+  ToastBaseChromeClassNames,
+  ToastCancelChromeClassNames,
   ToastCancelMethodOptions,
   ToastChromeClassNames,
   ToastMethodButtonConfig,

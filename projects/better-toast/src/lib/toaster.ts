@@ -588,7 +588,7 @@ export class BetterToaster {
    * Defaults for every toast — shape is {@link ToasterToastOptions}.
    *
    * - **`style`** — merged onto each toast host with per-toast {@link ToastOptions.style}; identical keys from the service call win.
-   * - **`classNames`** — extra classes on host / `.msg` / `.close-btn` / `.action-btn` / `.cancel-btn` via **`[class]`**; see {@link ToasterToastOptions.classNames} and {@link ToastChromeClassNames} (**`!important`** is usually required for overrides). Per-toast {@link ToastOptions.classNames} replaces the same keys.
+   * - **`classNames`** — extra classes on host / `.msg` / `.close-btn` / row buttons via **`[class]`**; see {@link ToasterToastOptions.classNames} (**`!important`** is usually required for overrides). Per-toast {@link ToastOptions.classNames} replaces host/message/close keys; row overrides come from {@link ToasterService.action} / {@link ToasterService.cancel}.
    */
   readonly toastOptions = input<ToasterToastOptions | undefined>();
 

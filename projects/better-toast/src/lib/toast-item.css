@@ -420,6 +420,7 @@
   flex-shrink: 0;
   margin: -0.15rem -0.25rem -0.15rem 0;
   border: 1px solid var(--toast-border-color);
+  box-shadow: var(--toast-shadow);
   background: var(--toast-bg);
   color: var(--toast-color);
   cursor: pointer;

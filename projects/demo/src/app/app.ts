@@ -174,9 +174,9 @@ export class App {
     info: `this.toaster.info('Tip: you can stack multiple toasts');`,
     warning: `this.toaster.warning('Your session will expire soon');`,
     custom: `this.toaster.custom(\`
-      <div class="font-medium">Check my website: 
+      <div>Check my website: 
         <a href="https://marcodefalco.dev" target="_blank" rel="noopener noreferrer" 
-        class="text-orange-600 dark:text-orange-400 italic hover:underline">
+        class="text-orange-600 dark:text-orange-400 font-medium italic hover:underline">
           marcodefalco.dev
         </a>
       </div>
@@ -423,7 +423,9 @@ this.toaster.headless(UploadProgressToast, {
   }
 
   protected showInfoToast(): void {
-    this.toaster.info('Tip: you can stack multiple toasts');
+    this.toaster.info('Tip: you can stack multiple toasts', {
+      classNames: {},
+    });
   }
 
   protected showWarningToast(): void {
@@ -486,8 +488,8 @@ this.toaster.headless(UploadProgressToast, {
 
   protected showCustomToast(): void {
     this.toaster.custom(`
-        <div class="font-medium">Check my website:
-          <a href="https://marcodefalco.dev" target="_blank" rel="noopener noreferrer" class="hover:underline italic text-orange-600 dark:text-orange-400">
+        <div>Check my website:
+          <a href="https://marcodefalco.dev" target="_blank" rel="noopener noreferrer" class="hover:underline font-medium italic text-orange-600 dark:text-orange-400">
             marcodefalco.dev
           </a>
         </div>
@@ -535,7 +537,11 @@ this.toaster.headless(UploadProgressToast, {
     /* classNames: {
       closeButton: 'custom-button',
       cancelButton: 'bg-red-500! text-white!',
+      actionButton: 'bg-blue-500! text-white!',
     }, */
+    classNames: {
+      actionButton: 'bg-emerald-500! text-white!',
+    },
   };
 
   protected showBoringToast(): void {
