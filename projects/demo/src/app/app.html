@@ -18,7 +18,7 @@
         <button
           type="button"
           class="border border-zinc-200 dark:border-zinc-800/80 text-[0.85rem] font-medium py-2.5 rounded-md hover:bg-zinc-200/70 dark:hover:bg-zinc-800 bg-zinc-50 dark:bg-zinc-950/50 transition-all active:scale-95 cursor-pointer"
-          (click)="selectedToastDemo.set('default'); showDefaultToast()"
+          (click)="toaster.show('Default toast. A very super long message that should wrap.')"
         >
           Default
         </button>
