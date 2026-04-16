@@ -1,0 +1,52 @@
+<div class="flex flex-col items-center justify-center min-h-screen max-w-2xl mx-auto px-4 py-12">
+  <div class="flex flex-col gap-16 w-full">
+    <div class="flex flex-col gap-2 items-center justify-center mt-42 mb-6">
+      <h2 class="text-5xl font-bold tracking-tight">Better Toast</h2>
+      <p class="text-lg text-black/80">A simple and customizable toast library for Angular.</p>
+      <div class="flex gap-4 mt-2">
+        <button
+          class="bg-black text-white px-6 py-2 rounded-lg font-semibold ring-1 ring-black/15 shadow-lg inset-shadow-sm inset-shadow-white/50 cursor-pointer active:scale-95 transition-transform duration-200"
+        >
+          Render a toast
+        </button>
+        <button
+          class="bg-linear-to-bl from-white to-gray-100/80 text-black px-6 py-2 rounded-lg font-semibold ring-1 ring-black/10 shadow-lg inset-shadow-sm inset-shadow-black/3 cursor-pointer active:scale-95 transition-transform duration-200"
+        >
+          Github
+        </button>
+      </div>
+      <a href="#" class="text-[15px] text-black/70 underline cursor-pointer underline-offset-2"
+        >Documentation</a
+      >
+    </div>
+
+    <div class="grid gap-3">
+      <h2 class="text-lg font-medium">Installation</h2>
+      <pre
+        class="bg-linear-to-tl from-white to-gray-100/80 border border-zinc-300/50 rounded-md px-4 py-2 text-sm font-medium"
+      ><code>npm install better-toast</code></pre>
+    </div>
+
+    <div class="grid gap-3">
+      <h2 class="text-lg font-medium">Usage</h2>
+      <p>Render the toaster in the root of your app.</p>
+      <pre
+        class="code-snippet bg-linear-to-tl from-white to-gray-100/80 border border-zinc-300/50 rounded-md px-4 py-4 overflow-x-auto _mt-1"
+      ><code class="block text-sm leading-6 whitespace-pre font-mono"
+        ><span class="code-keyword">import</span> &#123; <span class="code-symbol">ChangeDetectionStrategy</span>, <span class="code-symbol">Component</span> &#125; <span class="code-keyword">from</span> <span class="code-string">'&#64;angular/core'</span>;
+<span class="code-keyword">import</span> &#123; <span class="code-symbol">RouterOutlet</span> &#125; <span class="code-keyword">from</span> <span class="code-string">'&#64;angular/router'</span>;
+<span class="code-keyword">import</span> &#123; <span class="code-symbol">BetterToaster</span> &#125; <span class="code-keyword">from</span> <span class="code-string">'better-toast'</span>;
+
+<span class="code-decorator">&#64;Component</span>(&#123;
+  <span class="code-property">selector</span>: <span class="code-string">'app-root'</span>,
+  <span class="code-property">imports</span>: [<span class="code-symbol">RouterOutlet</span>, <span class="code-symbol">BetterToaster</span>],
+  <span class="code-property">template</span>: <span class="code-string">`</span>
+<span class="code-string">    &lt;router-outlet /&gt;</span>
+<span class="code-string">    &lt;better-toaster /&gt;</span>
+<span class="code-string">  `</span>,
+  <span class="code-property">changeDetection</span>: <span class="code-symbol">ChangeDetectionStrategy</span>.<span class="code-symbol">OnPush</span>,
+&#125;)
+<span class="code-keyword">export</span> <span class="code-keyword">class</span> <span class="code-symbol">App</span> &#123;&#125;</code></pre>
+    </div>
+  </div>
+</div>

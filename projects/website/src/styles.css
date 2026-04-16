@@ -1,3 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import 'tailwindcss';
+
+.code-snippet code {
+  color: var(--color-zinc-500);
+}
+
+.code-snippet .code-keyword {
+  color: var(--color-black);
+}
+
+.code-snippet .code-symbol {
+  color: var(--color-zinc-500);
+}
+
+.code-snippet .code-string {
+  color: var(--color-zinc-500);
+}
+
+.code-snippet .code-property {
+  color: var(--color-black);
+}
+
+.code-snippet .code-decorator {
+  color: var(--color-black);
+}
