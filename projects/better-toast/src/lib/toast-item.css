@@ -363,8 +363,7 @@
   margin-inline-start: auto;
   padding: 0.35rem 0.65rem;
   border-radius: 0.375rem;
-  background: var(--toast-color);
-  color: var(--toast-bg);
+  border: 1px solid transparent;
   font: inherit;
   font-size: 0.8rem;
   font-weight: 600;
@@ -372,11 +371,31 @@
   line-height: 1.2;
   cursor: pointer;
   white-space: nowrap;
+  transition: transform 0.2s ease;
 }
-
 .toast-row-btn:focus-visible {
   outline: 2px solid var(--toast-color);
   outline-offset: 2px;
+}
+.toast-row-btn:active {
+  transform: scale(0.95);
+}
+@media (prefers-reduced-motion: reduce) {
+  .toast-row-btn:active {
+    transform: none;
+  }
+}
+
+.action-btn {
+  background: var(--toast-color);
+  color: var(--toast-bg);
+  border-color: var(--toast-color);
+}
+
+.cancel-btn {
+  background: var(--toast-cancel-bg);
+  color: var(--toast-color);
+  border-color: var(--toast-cancel-border);
 }
 
 .toast-custom {

@@ -63,7 +63,10 @@ export type ToasterIcons = Partial<Record<ToastVariant, Type<unknown> | null>>;
  * The library ships encapsulated styles (`toast-item.css`, etc.). Global rules for your class names often **lose to those defaults**, so properties you expect to change **usually need `!important`** (or stronger specificity) to actually apply.
  */
 export type ToastChromeClassNames = Partial<
-  Record<'toast' | 'message' | 'closeButton', string>
+  Record<
+    'toast' | 'message' | 'closeButton' | 'actionButton' | 'cancelButton',
+    string
+  >
 >;
 
 /**
@@ -83,6 +86,8 @@ export interface ToasterToastOptions {
    * - **`toast`** — list item host (`li.toast` / `AppToastItem`), alongside the built-in `toast` class.
    * - **`message`** — the text paragraph (`.msg`) when the toast is not `html` / `component` / headless body.
    * - **`closeButton`** — the dismiss control (`.close-btn`) when `<app-toaster [closeButton]>` is enabled.
+   * - **`actionButton`** — the row button for {@link ToasterService.action} (`.action-btn`).
+   * - **`cancelButton`** — the row button for {@link ToasterService.cancel} (`.cancel-btn`).
    *
    * Omitted keys add no extra classes for that part; values are typically space-separated class names (same as a static `class` attribute).
    *
@@ -162,7 +167,7 @@ export interface ToastOptions {
  *
  * Per-toast **`icon`** and **`style`** are omitted: the inner component owns visuals; use
  * `<app-toaster [toastOptions]>` for shared host styling if needed. **`classNames`** still applies to the list-item host
- * (and to `.msg` / `.close-btn` when that chrome exists).
+ * (and to `.msg` / `.close-btn` / `.action-btn` / `.cancel-btn` when that chrome exists).
  *
  * The host always passes a **`toastId`** input (same value as the id returned from `headless()`)
  * so the component can call {@link ToasterService.dismiss} or read its own id. User `inputs` are

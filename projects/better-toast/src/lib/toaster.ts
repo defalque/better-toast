@@ -188,16 +188,33 @@ function mergeToastClassNames(
 
       <p class="msg" [class]="resolvedClassNames()?.message">{{ toast()?.message }}</p>
 
-      @if (toast()?.toastAction) {
-        <button
-          type="button"
-          class="toast-row-btn"
-          [attr.data-row-btn]="toast()!.toastAction!.role"
-          (pointerdown)="onRowButtonPointerDown($event)"
-          (click)="onToastRowActionClick($event)"
-        >
-          {{ toast()!.toastAction!.label }}
-        </button>
+      @if (toast()?.toastAction; as rowAction) {
+        @switch (rowAction.role) {
+          @case ('action') {
+            <button
+              type="button"
+              class="toast-row-btn action-btn"
+              [class]="resolvedClassNames()?.actionButton"
+              [attr.data-row-btn]="rowAction.role"
+              (pointerdown)="onRowButtonPointerDown($event)"
+              (click)="onToastRowClick($event)"
+            >
+              {{ rowAction.label }}
+            </button>
+          }
+          @case ('cancel') {
+            <button
+              type="button"
+              class="toast-row-btn cancel-btn"
+              [class]="resolvedClassNames()?.cancelButton"
+              [attr.data-row-btn]="rowAction.role"
+              (pointerdown)="onRowButtonPointerDown($event)"
+              (click)="onToastRowClick($event)"
+            >
+              {{ rowAction.label }}
+            </button>
+          }
+        }
       }
     }
 
@@ -362,11 +379,11 @@ export class BetterToastItem {
     event.stopPropagation();
   }
 
-  onToastRowActionClick(event: Event): void {
-    const item = this.toast();
-    item?.toastAction?.onClick(event);
+  onToastRowClick(event: Event): void {
+    const toast = this.toast();
+    toast?.toastAction?.onClick(event);
     if (event.defaultPrevented) return;
-    this.toaster.dismiss(item?.id ?? '');
+    this.toaster.dismiss(toast?.id ?? '');
   }
 
   onPointerEnter() {
@@ -571,7 +588,7 @@ export class BetterToaster {
    * Defaults for every toast — shape is {@link ToasterToastOptions}.
    *
    * - **`style`** — merged onto each toast host with per-toast {@link ToastOptions.style}; identical keys from the service call win.
-   * - **`classNames`** — extra classes on host / `.msg` / `.close-btn` via **`[class]`**; see {@link ToasterToastOptions.classNames} and {@link ToastChromeClassNames} (**`!important`** is usually required for overrides). Per-toast {@link ToastOptions.classNames} replaces the same keys.
+   * - **`classNames`** — extra classes on host / `.msg` / `.close-btn` / `.action-btn` / `.cancel-btn` via **`[class]`**; see {@link ToasterToastOptions.classNames} and {@link ToastChromeClassNames} (**`!important`** is usually required for overrides). Per-toast {@link ToastOptions.classNames} replaces the same keys.
    */
   readonly toastOptions = input<ToasterToastOptions | undefined>();
 

@@ -203,7 +203,8 @@ this.toaster.promise(myPromise, {
 });`,
     cancel: `this.toaster.cancel('Upload will continue in the background.', {
   cancel: {
-    onClick: () => {
+    onClick: (event: Event) => {
+      event.preventDefault();
       console.log('Cancel clicked');
     },
   },
@@ -452,7 +453,6 @@ this.toaster.headless(UploadProgressToast, {
       action: {
         label: 'Undo',
         onClick: (event: Event) => {
-          event.preventDefault();
           console.log('Undo clicked');
         },
       },
@@ -460,9 +460,10 @@ this.toaster.headless(UploadProgressToast, {
   }
 
   protected showCancelToast(): void {
-    const id = this.toaster.cancel('Upload will continue in the background', {
+    this.toaster.cancel('Upload will continue in the background', {
       cancel: {
-        onClick: () => {
+        onClick: (event: Event) => {
+          event.preventDefault();
           console.log('Stop clicked');
         },
       },
@@ -533,6 +534,7 @@ this.toaster.headless(UploadProgressToast, {
     /* style: { background: 'red', color: 'yellow' }, */
     /* classNames: {
       closeButton: 'custom-button',
+      cancelButton: 'bg-red-500! text-white!',
     }, */
   };
 
