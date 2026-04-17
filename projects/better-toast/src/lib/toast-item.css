@@ -83,9 +83,28 @@
   fill: var(--toast-color);
   color: var(--toast-bg);
 }
+:host(.toast-container[data-theme='dark']):host([data-rich-colors='false'][data-variant='success'])
+  .toast-icon
+  svg,
+:host(.toast-container[data-theme='dark']):host([data-rich-colors='false'][data-variant='success'])
+  .toast-icon
+  ::ng-deep
+  svg {
+  fill: var(--toast-bg);
+  color: var(--toast-color);
+}
 @media (prefers-color-scheme: dark) {
-  :host([data-rich-colors='false'][data-variant='success']) .toast-icon svg,
-  :host([data-rich-colors='false'][data-variant='success']) .toast-icon ::ng-deep svg {
+  :host(.toast-container[data-theme='system']):host(
+      [data-rich-colors='false'][data-variant='success']
+    )
+    .toast-icon
+    svg,
+  :host(.toast-container[data-theme='system']):host(
+      [data-rich-colors='false'][data-variant='success']
+    )
+    .toast-icon
+    ::ng-deep
+    svg {
     fill: var(--toast-bg);
     color: var(--toast-color);
   }
@@ -95,9 +114,28 @@
   fill: var(--toast-success-text);
   color: var(--toast-success-bg);
 }
+:host(.toast-container[data-theme='dark']):host([data-rich-colors='true'][data-variant='success'])
+  .toast-icon
+  svg,
+:host(.toast-container[data-theme='dark']):host([data-rich-colors='true'][data-variant='success'])
+  .toast-icon
+  ::ng-deep
+  svg {
+  fill: var(--toast-success-bg);
+  color: var(--toast-success-text);
+}
 @media (prefers-color-scheme: dark) {
-  :host([data-rich-colors='true'][data-variant='success']) .toast-icon svg,
-  :host([data-rich-colors='true'][data-variant='success']) .toast-icon ::ng-deep svg {
+  :host(.toast-container[data-theme='system']):host(
+      [data-rich-colors='true'][data-variant='success']
+    )
+    .toast-icon
+    svg,
+  :host(.toast-container[data-theme='system']):host(
+      [data-rich-colors='true'][data-variant='success']
+    )
+    .toast-icon
+    ::ng-deep
+    svg {
     fill: var(--toast-success-bg);
     color: var(--toast-success-text);
   }
@@ -113,9 +151,28 @@
   fill: var(--toast-color);
   color: var(--toast-bg);
 }
+:host(.toast-container[data-theme='dark']):host([data-rich-colors='false'][data-variant='error'])
+  .toast-icon
+  svg,
+:host(.toast-container[data-theme='dark']):host([data-rich-colors='false'][data-variant='error'])
+  .toast-icon
+  ::ng-deep
+  svg {
+  fill: var(--toast-bg);
+  color: var(--toast-color);
+}
 @media (prefers-color-scheme: dark) {
-  :host([data-rich-colors='false'][data-variant='error']) .toast-icon svg,
-  :host([data-rich-colors='false'][data-variant='error']) .toast-icon ::ng-deep svg {
+  :host(.toast-container[data-theme='system']):host(
+      [data-rich-colors='false'][data-variant='error']
+    )
+    .toast-icon
+    svg,
+  :host(.toast-container[data-theme='system']):host(
+      [data-rich-colors='false'][data-variant='error']
+    )
+    .toast-icon
+    ::ng-deep
+    svg {
     fill: var(--toast-bg);
     color: var(--toast-color);
   }
@@ -125,9 +182,24 @@
   fill: var(--toast-error-text);
   color: var(--toast-error-bg);
 }
+:host(.toast-container[data-theme='dark']):host([data-rich-colors='true'][data-variant='error'])
+  .toast-icon
+  svg,
+:host(.toast-container[data-theme='dark']):host([data-rich-colors='true'][data-variant='error'])
+  .toast-icon
+  ::ng-deep
+  svg {
+  fill: var(--toast-error-bg);
+  color: var(--toast-error-text);
+}
 @media (prefers-color-scheme: dark) {
-  :host([data-rich-colors='true'][data-variant='error']) .toast-icon svg,
-  :host([data-rich-colors='true'][data-variant='error']) .toast-icon ::ng-deep svg {
+  :host(.toast-container[data-theme='system']):host([data-rich-colors='true'][data-variant='error'])
+    .toast-icon
+    svg,
+  :host(.toast-container[data-theme='system']):host([data-rich-colors='true'][data-variant='error'])
+    .toast-icon
+    ::ng-deep
+    svg {
     fill: var(--toast-error-bg);
     color: var(--toast-error-text);
   }
@@ -143,9 +215,24 @@
   fill: var(--toast-color);
   color: var(--toast-bg);
 }
+:host(.toast-container[data-theme='dark']):host([data-rich-colors='false'][data-variant='info'])
+  .toast-icon
+  svg,
+:host(.toast-container[data-theme='dark']):host([data-rich-colors='false'][data-variant='info'])
+  .toast-icon
+  ::ng-deep
+  svg {
+  fill: var(--toast-bg);
+  color: var(--toast-color);
+}
 @media (prefers-color-scheme: dark) {
-  :host([data-rich-colors='false'][data-variant='info']) .toast-icon svg,
-  :host([data-rich-colors='false'][data-variant='info']) .toast-icon ::ng-deep svg {
+  :host(.toast-container[data-theme='system']):host([data-rich-colors='false'][data-variant='info'])
+    .toast-icon
+    svg,
+  :host(.toast-container[data-theme='system']):host([data-rich-colors='false'][data-variant='info'])
+    .toast-icon
+    ::ng-deep
+    svg {
     fill: var(--toast-bg);
     color: var(--toast-color);
   }
@@ -155,9 +242,24 @@
   fill: var(--toast-info-text);
   color: var(--toast-info-bg);
 }
+:host(.toast-container[data-theme='dark']):host([data-rich-colors='true'][data-variant='info'])
+  .toast-icon
+  svg,
+:host(.toast-container[data-theme='dark']):host([data-rich-colors='true'][data-variant='info'])
+  .toast-icon
+  ::ng-deep
+  svg {
+  fill: var(--toast-info-bg);
+  color: var(--toast-info-text);
+}
 @media (prefers-color-scheme: dark) {
-  :host([data-rich-colors='true'][data-variant='info']) .toast-icon svg,
-  :host([data-rich-colors='true'][data-variant='info']) .toast-icon ::ng-deep svg {
+  :host(.toast-container[data-theme='system']):host([data-rich-colors='true'][data-variant='info'])
+    .toast-icon
+    svg,
+  :host(.toast-container[data-theme='system']):host([data-rich-colors='true'][data-variant='info'])
+    .toast-icon
+    ::ng-deep
+    svg {
     fill: var(--toast-info-bg);
     color: var(--toast-info-text);
   }
@@ -173,9 +275,28 @@
   fill: var(--toast-color);
   color: var(--toast-bg);
 }
+:host(.toast-container[data-theme='dark']):host([data-rich-colors='false'][data-variant='warning'])
+  .toast-icon
+  svg,
+:host(.toast-container[data-theme='dark']):host([data-rich-colors='false'][data-variant='warning'])
+  .toast-icon
+  ::ng-deep
+  svg {
+  fill: var(--toast-bg);
+  color: var(--toast-color);
+}
 @media (prefers-color-scheme: dark) {
-  :host([data-rich-colors='false'][data-variant='warning']) .toast-icon svg,
-  :host([data-rich-colors='false'][data-variant='warning']) .toast-icon ::ng-deep svg {
+  :host(.toast-container[data-theme='system']):host(
+      [data-rich-colors='false'][data-variant='warning']
+    )
+    .toast-icon
+    svg,
+  :host(.toast-container[data-theme='system']):host(
+      [data-rich-colors='false'][data-variant='warning']
+    )
+    .toast-icon
+    ::ng-deep
+    svg {
     fill: var(--toast-bg);
     color: var(--toast-color);
   }
@@ -185,9 +306,28 @@
   fill: var(--toast-warning-text);
   color: var(--toast-warning-bg);
 }
+:host(.toast-container[data-theme='dark']):host([data-rich-colors='true'][data-variant='warning'])
+  .toast-icon
+  svg,
+:host(.toast-container[data-theme='dark']):host([data-rich-colors='true'][data-variant='warning'])
+  .toast-icon
+  ::ng-deep
+  svg {
+  fill: var(--toast-warning-bg);
+  color: var(--toast-warning-text);
+}
 @media (prefers-color-scheme: dark) {
-  :host([data-rich-colors='true'][data-variant='warning']) .toast-icon svg,
-  :host([data-rich-colors='true'][data-variant='warning']) .toast-icon ::ng-deep svg {
+  :host(.toast-container[data-theme='system']):host(
+      [data-rich-colors='true'][data-variant='warning']
+    )
+    .toast-icon
+    svg,
+  :host(.toast-container[data-theme='system']):host(
+      [data-rich-colors='true'][data-variant='warning']
+    )
+    .toast-icon
+    ::ng-deep
+    svg {
     fill: var(--toast-warning-bg);
     color: var(--toast-warning-text);
   }
@@ -319,9 +459,14 @@
   width: 95%;
   height: 95%;
 }
+:host(.toast-container[data-theme='dark']) .toast-icon svg,
+:host(.toast-container[data-theme='dark']) .toast-icon ::ng-deep svg {
+  width: 87.5%;
+  height: 87.5%;
+}
 @media (prefers-color-scheme: dark) {
-  .toast-icon svg,
-  .toast-icon ::ng-deep svg {
+  :host(.toast-container[data-theme='system']) .toast-icon svg,
+  :host(.toast-container[data-theme='system']) .toast-icon ::ng-deep svg {
     width: 87.5%;
     height: 87.5%;
   }

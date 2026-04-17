@@ -11,6 +11,9 @@ export const TOASTER_POSITIONS = [
 
 export type ToasterPosition = (typeof TOASTER_POSITIONS)[number];
 
+/** Visual palette for the toast stack: follow the OS (`system`), or pin light / dark. */
+export type ToasterTheme = 'light' | 'dark' | 'system';
+
 /**
  * Viewport inset from `<app-toaster [offset]>` or `<app-toaster [mobileOffset]>`.
  *

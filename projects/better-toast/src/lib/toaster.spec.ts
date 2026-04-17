@@ -109,6 +109,22 @@ describe('better-toast', () => {
     expect(container.getAttribute('data-rich-colors')).toBe('false');
   });
 
+  it('sets data-theme on the toast container (default system, overridable)', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    let container = fixture.nativeElement.querySelector('.toast-container') as HTMLElement;
+    expect(container.getAttribute('data-theme')).toBe('system');
+
+    fixture.componentRef.setInput('theme', 'dark');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    container = fixture.nativeElement.querySelector('.toast-container') as HTMLElement;
+    expect(container.getAttribute('data-theme')).toBe('dark');
+  });
+
   it('uses default English aria-labels on the live region and dismiss control', async () => {
     TestBed.configureTestingModule({ imports: [Toaster] });
     const fixture = TestBed.createComponent(Toaster);

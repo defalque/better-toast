@@ -26,6 +26,7 @@ import {
   type ToasterItem,
   type ToasterOffset,
   type ToasterPosition,
+  type ToasterTheme,
   type ToasterToastOptions,
   type ToastOptions,
   type ToastVariant,
@@ -505,6 +506,7 @@ export class BetterToastItem {
  * Set `[closeButton]="false"` to hide the per-toast dismiss button.
  * Set `[accessibilityLabels]` to override default English `aria-label` strings (live region and dismiss control).
  * Set `[offset]` for `--toast-offset-*` and `[mobileOffset]` for `--toast-offset-mobile-*` (string all sides, or per-side object).
+ * Set `[theme]` to `light`, `dark`, or `system` (default): semantic colors follow the chosen mode; `system` uses `prefers-color-scheme`.
  * {@link ToasterService.action} / {@link ToasterService.cancel} render a message plus one text button (no icon column).
  */
 @Component({
@@ -531,6 +533,7 @@ export class BetterToastItem {
         [style.--toast-offset-mobile-left]="mobileOffsetLeft()"
         [attr.data-position]="position()"
         [attr.data-rich-colors]="richColors()"
+        [attr.data-theme]="theme()"
         tabindex="-1"
       >
         @for (toast of toaster.toasts(); track toast.id) {
@@ -575,6 +578,12 @@ export class BetterToaster implements OnInit {
 
   /** When true, success/error/info/warning use semantic background and border colors. */
   readonly richColors = input(false);
+
+  /**
+   * Color palette for the stack. `system` (default) follows `prefers-color-scheme`; `light` / `dark` pin the palette regardless of OS.
+   * Reflected as `data-theme` on the toast container (`<ol class="toast-container">`).
+   */
+  readonly theme = input<ToasterTheme>('system');
 
   /**
    * Default auto-dismiss time in ms for `show` / `success` / `error` / `info` / `warning` when the second argument omits `durationMs`.
