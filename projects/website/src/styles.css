@@ -1,13 +1,18 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import 'tailwindcss';
 
 html {
   scrollbar-gutter: stable;
 }
 
+.code-snippet {
+  overflow-x: hidden;
+}
+
 .code-snippet code {
   color: var(--color-zinc-500);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .code-snippet .code-keyword {
@@ -32,4 +37,94 @@ html {
 
 .code-snippet .code-decorator {
   color: var(--color-black);
+}
+
+/* highlight.js (Types section live preview) */
+.toast-type-demo-preview pre {
+  margin: 0;
+}
+
+.toast-type-demo-preview code.hljs {
+  display: block;
+  padding: 0;
+  background: transparent;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+/* highlight.js output: allow long lines to wrap (no horizontal scroll) */
+.code-snippet code.hljs {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.hljs {
+  background: #000; /* nero */
+  color: #e5e5e5; /* grigio chiaro */
+}
+
+/* commenti → più scuri */
+.hljs-comment,
+.hljs-quote {
+  color: var(--color-zinc-500);
+  font-style: italic;
+}
+
+/* keyword → quasi bianco */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
+  color: #000;
+  font-weight: 500;
+}
+
+/* stringhe */
+.hljs-string,
+.hljs-doctag {
+  color: var(--color-zinc-500);
+}
+
+/* numeri / costanti */
+.hljs-number,
+.hljs-literal,
+.hljs-variable,
+.hljs-template-variable {
+  color: #000;
+}
+
+/* funzioni / titoli */
+.hljs-title,
+.hljs-section {
+  color: #000;
+  font-weight: 500;
+}
+
+/* attributi / classi */
+.hljs-attr,
+.hljs-attribute {
+  color: var(--color-zinc-500);
+}
+
+/* tipi / built-in */
+.hljs-type,
+.hljs-built_in {
+  color: #000;
+  font-weight: 500;
+}
+
+/* meta / tag */
+.hljs-meta,
+.hljs-selector-id,
+.hljs-selector-class {
+  color: var(--color-zinc-500);
+}
+
+/* evidenziazione riga */
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
 }

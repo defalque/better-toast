@@ -83,10 +83,10 @@
 
     <div class="grid gap-3">
       <h2 class="text-lg font-medium">Usage</h2>
-      <p>Render the toaster in the root of your app.</p>
+      <p class="text-black/90">Render the toaster in the root of your app.</p>
       <pre
-        class="code-snippet bg-linear-to-tl from-white to-gray-100/50 border border-zinc-300/50 rounded-md px-4 py-4 overflow-x-auto _mt-1"
-      ><code class="block text-[13px] leading-6 whitespace-pre font-mono"
+        class="code-snippet bg-linear-to-tl from-white to-gray-100/50 border border-zinc-300/50 rounded-md p-4 overflow-x-hidden"
+      ><code class="block text-[13px] leading-6 whitespace-pre-wrap wrap-break-word font-mono"
         ><span class="code-keyword">import</span> &#123; <span class="code-symbol">inject</span>, <span class="code-symbol">ChangeDetectionStrategy</span>, <span class="code-symbol">Component</span> &#125; <span class="code-keyword">from</span> <span class="code-string">'&#64;angular/core'</span>;
 <span class="code-keyword">import</span> &#123; <span class="code-symbol">RouterOutlet</span> &#125; <span class="code-keyword">from</span> <span class="code-string">'&#64;angular/router'</span>;
 <span class="code-keyword">import</span> &#123; <span class="code-symbol">BetterToaster</span>, <span class="code-symbol">ToasterService</span> &#125; <span class="code-keyword">from</span> <span class="code-string">'better-toast'</span>;
@@ -113,7 +113,7 @@
 
     <div class="grid gap-3">
       <h2 class="text-lg font-medium">Types</h2>
-      <p>
+      <p class="text-black/90">
         You can customize the type of toast you want to render, and pass an options object as the
         second argument.
       </p>
@@ -121,70 +121,80 @@
         <button
           type="button"
           class="border border-zinc-200 text-[0.85rem] py-2.5 rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
-          (click)="toaster.show('Default toast. A very super long message that should wrap.')"
+          (click)="runTypeDemo('default')"
         >
           Default
         </button>
         <button
           type="button"
           class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
-          (click)="toaster.success('Saved successfully')"
+          (click)="runTypeDemo('success')"
         >
           Success
         </button>
         <button
           type="button"
           class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
-          (click)="toaster.error('Something went wrong')"
+          (click)="runTypeDemo('error')"
         >
           Error
         </button>
         <button
           type="button"
           class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
-          (click)="toaster.info('Tip: you can stack multiple toasts')"
+          (click)="runTypeDemo('info')"
         >
           Info
         </button>
         <button
           type="button"
           class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
-          (click)="toaster.warning('Your session will expire soon')"
+          (click)="runTypeDemo('warning')"
         >
           Warning
         </button>
         <button
           type="button"
           class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
-          (click)="toaster.loading('Loading…')"
+          (click)="runTypeDemo('loading')"
         >
           Loading
         </button>
         <button
           type="button"
           class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
+          (click)="runTypeDemo('action')"
         >
           Action
         </button>
         <button
           type="button"
           class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
+          (click)="runTypeDemo('cancel')"
         >
           Cancel
         </button>
         <button
           type="button"
           class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
+          (click)="runTypeDemo('custom')"
         >
           Custom
         </button>
         <button
           type="button"
           class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
+          (click)="runTypeDemo('promise')"
         >
           Promise
         </button>
       </div>
+      <pre
+        class="code-snippet bg-linear-to-tl from-white to-gray-100/50 border border-zinc-300/50 rounded-md p-4 overflow-x-hidden"
+      ><code
+          class="block text-[13px] leading-6 whitespace-pre-wrap wrap-break-word font-mono language-typescript"
+          [innerHTML]="activeTypeDemoHtml()"
+        ></code></pre>
     </div>
   </div>
 </div>
