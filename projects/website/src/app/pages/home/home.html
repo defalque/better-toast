@@ -45,18 +45,19 @@
   </div> -->
 
   <div class="flex flex-col gap-16 w-full max-w-2xl mx-auto">
-    <div class="flex flex-col gap-2 items-center justify-center mt-42 mb-6">
-      <h2 class="text-5xl font-bold tracking-tight">Better Toast</h2>
-      <p class="text-lg text-black/80">
+    <div class="flex flex-col items-center justify-center mt-42 mb-6">
+      <h2 class="text-[clamp(2.6rem,5vw,3rem)] font-bold tracking-tight">Better Toast</h2>
+      <p class="sm:text-lg text-[17px] text-black/80 text-center text-pretty -mt-0.5 mx-auto">
         A simple and customizable toast library for
         <span
           class="bg-linear-to-r from-pink-500 to-violet-600 bg-clip-text text-lg font-bold text-transparent"
           >Angular</span
         >.
       </p>
-      <div class="flex gap-4 mt-2">
+      <div class="flex gap-4 mt-6">
         <button
           class="bg-black text-white px-6 py-2 rounded-lg font-semibold ring-1 ring-black/15 shadow-lg inset-shadow-sm inset-shadow-white/50 cursor-pointer active:scale-95 transition-transform duration-200"
+          (click)="renderToast()"
         >
           Render a toast
         </button>
@@ -66,7 +67,9 @@
           Github
         </button>
       </div>
-      <a href="#" class="text-[15px] text-black/70 underline cursor-pointer underline-offset-2"
+      <a
+        href="#"
+        class="sm:text-[15px] text-sm text-black/70 underline cursor-pointer underline-offset-2 mt-2"
         >Documentation</a
       >
     </div>
@@ -93,14 +96,95 @@
   <span class="code-property">imports</span>: [<span class="code-symbol">RouterOutlet</span>, <span class="code-symbol">BetterToaster</span>],
   <span class="code-property">template</span>: <span class="code-string">`</span>
   <span class="code-string">    &lt;better-toaster /&gt;</span>
-  <span class="code-string">    &lt;button (click)="toaster.show('Hello, world!')"&gt;Show Toast&lt;/button&gt;</span>
+  <span class="code-string">    &lt;button (click)="showToast()"&gt;Show Toast&lt;/button&gt;</span>
   <span class="code-string">    &lt;router-outlet /&gt;</span>
 <span class="code-string">  `</span>,
   <span class="code-property">changeDetection</span>: <span class="code-symbol">ChangeDetectionStrategy</span>.<span class="code-symbol">OnPush</span>,
 &#125;)
 <span class="code-keyword">export</span> <span class="code-keyword">class</span> <span class="code-symbol">App</span> &#123;
   <span class="code-keyword">protected</span> <span class="code-keyword">readonly</span> <span class="code-symbol">toaster</span> = <span class="code-keyword">inject</span>(<span class="code-symbol">ToasterService</span>);
-&#125;</code></pre>
+
+  <span class="code-keyword">protected</span> <span class="code-keyword">showToast</span>() &#123;
+    <span class="code-keyword">this</span>.<span class="code-symbol">toaster</span>.<span class="code-function">show</span>(<span class="code-string">'Hello, world!'</span>);
+  &#125;
+&#125;
+</code></pre>
+    </div>
+
+    <div class="grid gap-3">
+      <h2 class="text-lg font-medium">Types</h2>
+      <p>
+        You can customize the type of toast you want to render, and pass an options object as the
+        second argument.
+      </p>
+      <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-2 items-center justify-center">
+        <button
+          type="button"
+          class="border border-zinc-200 text-[0.85rem] py-2.5 rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
+          (click)="toaster.show('Default toast. A very super long message that should wrap.')"
+        >
+          Default
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
+          (click)="toaster.success('Saved successfully')"
+        >
+          Success
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
+          (click)="toaster.error('Something went wrong')"
+        >
+          Error
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
+          (click)="toaster.info('Tip: you can stack multiple toasts')"
+        >
+          Info
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
+          (click)="toaster.warning('Your session will expire soon')"
+        >
+          Warning
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
+          (click)="toaster.loading('Loading…')"
+        >
+          Loading
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
+        >
+          Action
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
+        >
+          Custom
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
+        >
+          Promise
+        </button>
+      </div>
     </div>
   </div>
 </div>

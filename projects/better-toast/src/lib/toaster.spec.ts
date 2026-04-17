@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
 
@@ -22,6 +22,18 @@ class SpecSuccessIcon {}
   template: '<span class="bt-spec-custom-default-icon" aria-hidden="true">D</span>',
 })
 class SpecDefaultIcon {}
+
+@Component({
+  imports: [Toaster],
+  template: '<better-toaster [duration]="\'Infinity\'" />',
+})
+class StartupDurationHost {
+  private readonly toaster = inject(ToasterService);
+
+  ngOnInit(): void {
+    this.toaster.show('Startup toast');
+  }
+}
 
 describe('better-toast', () => {
   it('shows and dismisses a toast via the service', () => {
@@ -60,6 +72,25 @@ describe('better-toast', () => {
       toaster.show('Stay', { durationMs: 'Infinity' });
       expect(toaster.toasts().length).toBe(1);
       await vi.advanceTimersByTimeAsync(60_000);
+      expect(toaster.toasts().length).toBe(1);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('uses the toaster [duration] for toasts shown during host ngOnInit', async () => {
+    vi.useFakeTimers();
+    try {
+      TestBed.configureTestingModule({ imports: [StartupDurationHost] });
+      const fixture = TestBed.createComponent(StartupDurationHost);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const toaster = TestBed.inject(ToasterService);
+      expect(toaster.toasts().length).toBe(1);
+
+      await vi.advanceTimersByTimeAsync(60_000);
+
       expect(toaster.toasts().length).toBe(1);
     } finally {
       vi.useRealTimers();

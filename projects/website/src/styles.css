@@ -2,11 +2,19 @@
 
 @import 'tailwindcss';
 
+html {
+  scrollbar-gutter: stable;
+}
+
 .code-snippet code {
   color: var(--color-zinc-500);
 }
 
 .code-snippet .code-keyword {
+  color: var(--color-black);
+}
+
+.code-snippet .code-function {
   color: var(--color-black);
 }
 

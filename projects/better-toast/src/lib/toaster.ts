@@ -4,10 +4,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   ElementRef,
   inject,
   input,
+  OnInit,
   output,
   signal,
 } from '@angular/core';
@@ -555,7 +555,7 @@ export class BetterToastItem {
   `,
   styleUrl: './toaster.css',
 })
-export class BetterToaster {
+export class BetterToaster implements OnInit {
   protected readonly toaster = inject(ToasterService);
 
   /** Where the stack is anchored on the viewport. */
@@ -583,7 +583,11 @@ export class BetterToaster {
    */
   readonly durationMs = input<number, ToasterDuration>(DEFAULT_TOAST_DURATION_MS, {
     alias: 'duration',
-    transform: parseToasterDurationMs,
+    transform: (value) => {
+      const durationMs = parseToasterDurationMs(value);
+      this.toaster.setDefaultDurationMs(durationMs);
+      return durationMs;
+    },
   });
 
   /**
@@ -604,7 +608,7 @@ export class BetterToaster {
   readonly toastOptions = input<ToasterToastOptions | undefined>();
 
   /** When true (default), each toast shows a dismiss button; set to false to hide it. */
-  readonly closeButton = input(true);
+  readonly closeButton = input(false);
 
   /**
    * Overrides for built-in English `aria-label` values (live region and per-toast dismiss).
@@ -670,9 +674,7 @@ export class BetterToaster {
     this.heights.update((h) => ({ ...h, [toastId]: height }));
   }
 
-  constructor() {
-    effect(() => {
-      this.toaster.setDefaultDurationMs(this.durationMs());
-    });
+  ngOnInit(): void {
+    this.toaster.setDefaultDurationMs(this.durationMs());
   }
 }

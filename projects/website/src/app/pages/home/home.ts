@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ToasterService } from 'better-toast';
 
 @Component({
   selector: 'app-home',
@@ -6,4 +7,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   templateUrl: './home.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Home {}
+export class Home {
+  protected toaster = inject(ToasterService);
+
+  protected renderToast() {
+    this.toaster.success('Rendered successfully!');
+  }
+}

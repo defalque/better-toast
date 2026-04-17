@@ -47,33 +47,52 @@ type AutoDismissState =
   | { kind: 'scheduled'; timer: ReturnType<typeof globalThis.setTimeout>; deadline: number }
   | { kind: 'paused'; remainingMs: number };
 
+type ResolvedToastDuration = {
+  durationMs: number;
+  syncWithInitialToasterDefault: boolean;
+};
+
 @Injectable({ providedIn: 'root' })
 export class ToasterService {
   private readonly _toasts = signal<readonly ToasterItem[]>([]);
 
   private readonly autoDismissByToastId = new Map<string, AutoDismissState>();
+  private readonly pendingInitialDefaultSyncByToastId = new Map<string, number>();
 
   private defaultDurationMs = DEFAULT_TOAST_DURATION_MS;
+  private hasRegisteredToasterDefault = false;
 
   /** Active messages, oldest first. */
   readonly toasts = this._toasts.asReadonly();
 
   /** Synced from `Toaster` `[duration]`; used when a helper omits its `durationMs` argument. */
   setDefaultDurationMs(ms: number): void {
-    if (Number.isNaN(ms)) {
-      this.defaultDurationMs = DEFAULT_TOAST_DURATION_MS;
+    const normalizedMs = Number.isNaN(ms) ? DEFAULT_TOAST_DURATION_MS : Math.max(0, ms);
+    this.defaultDurationMs = normalizedMs;
+    if (this.hasRegisteredToasterDefault) {
       return;
     }
-    this.defaultDurationMs = Math.max(0, ms);
+    this.hasRegisteredToasterDefault = true;
+    this.syncPendingInitialDefaultDurations(normalizedMs);
   }
 
-  private resolveDuration(durationMs: ToasterDuration | undefined): number {
-    return durationMs !== undefined ? parseToasterDurationMs(durationMs) : this.defaultDurationMs;
+  private resolveDuration(durationMs: ToasterDuration | undefined): ResolvedToastDuration {
+    if (durationMs !== undefined) {
+      return {
+        durationMs: parseToasterDurationMs(durationMs),
+        syncWithInitialToasterDefault: false,
+      };
+    }
+    return {
+      durationMs: this.defaultDurationMs,
+      syncWithInitialToasterDefault: !this.hasRegisteredToasterDefault,
+    };
   }
 
   /** Cancels any auto-dismiss timer for a toast. */
   private cancelAutoDismiss(id: string): void {
     const state = this.autoDismissByToastId.get(id);
+    this.pendingInitialDefaultSyncByToastId.delete(id);
     if (!state) {
       return;
     }
@@ -94,6 +113,35 @@ export class ToasterService {
       this.removeToast(id, 'auto');
     }, durationMs);
     this.autoDismissByToastId.set(id, { kind: 'scheduled', timer, deadline });
+  }
+
+  private scheduleResolvedAutoDismiss(id: string, duration: ResolvedToastDuration): void {
+    this.scheduleAutoDismiss(id, duration.durationMs);
+    if (duration.syncWithInitialToasterDefault) {
+      this.pendingInitialDefaultSyncByToastId.set(id, Date.now());
+    }
+  }
+
+  private syncPendingInitialDefaultDurations(durationMs: number): void {
+    const pendingEntries = [...this.pendingInitialDefaultSyncByToastId.entries()];
+    this.pendingInitialDefaultSyncByToastId.clear();
+    for (const [id, createdAt] of pendingEntries) {
+      const toastStillExists = this._toasts().some((toast) => toast.id === id);
+      if (!toastStillExists) {
+        continue;
+      }
+      if (!shouldScheduleAutoDismiss(durationMs)) {
+        this.scheduleAutoDismiss(id, durationMs);
+        continue;
+      }
+      const elapsedMs = Math.max(0, Date.now() - createdAt);
+      const remainingMs = Math.max(0, durationMs - elapsedMs);
+      if (remainingMs === 0) {
+        this.removeToast(id, 'auto');
+        continue;
+      }
+      this.scheduleAutoDismiss(id, remainingMs);
+    }
   }
 
   /**
@@ -240,11 +288,17 @@ export class ToasterService {
    * @returns The toast ID, useful for programmatic dismissal.
    */
   loading(message: string, options?: ToastOptions): string {
-    const ms =
+    const duration =
       options?.durationMs !== undefined
-        ? parseToasterDurationMs(options.durationMs)
-        : TOAST_DURATION_MANUAL_DISMISS;
-    return this.add(message, 'loading', ms, options);
+        ? {
+            durationMs: parseToasterDurationMs(options.durationMs),
+            syncWithInitialToasterDefault: false,
+          }
+        : {
+            durationMs: TOAST_DURATION_MANUAL_DISMISS,
+            syncWithInitialToasterDefault: false,
+          };
+    return this.add(message, 'loading', duration, options);
   }
 
   /**
@@ -258,7 +312,13 @@ export class ToasterService {
       label: actionCfg.label ?? DEFAULT_TOAST_ACTION_LABEL,
       onClick: actionCfg.onClick,
     };
-    return this.add(message, 'default', this.resolveDuration(rest.durationMs), { ...rest, icon: null }, toastAction);
+    return this.add(
+      message,
+      'default',
+      this.resolveDuration(rest.durationMs),
+      { ...rest, icon: null },
+      toastAction,
+    );
   }
 
   /**
@@ -272,7 +332,13 @@ export class ToasterService {
       label: cancelCfg.label ?? DEFAULT_TOAST_CANCEL_LABEL,
       onClick: cancelCfg.onClick,
     };
-    return this.add(message, 'default', this.resolveDuration(rest.durationMs), { ...rest, icon: null }, toastAction);
+    return this.add(
+      message,
+      'default',
+      this.resolveDuration(rest.durationMs),
+      { ...rest, icon: null },
+      toastAction,
+    );
   }
 
   /**
@@ -285,17 +351,16 @@ export class ToasterService {
    */
   promise<T>(userPromise: PromiseLike<T>, labels: ToastPromiseLabels<T>): Promise<T> {
     const loadingId = this.loading(labels.loading);
-    const settledDurationMs = this.resolveDuration(undefined);
     return Promise.resolve(userPromise).then(
       (value) => {
         const message =
           typeof labels.success === 'function' ? labels.success(value) : labels.success;
-        this.updateToast(loadingId, message, 'success', settledDurationMs);
+        this.updateToast(loadingId, message, 'success', this.resolveDuration(undefined));
         return value;
       },
       (reason: unknown) => {
         const message = typeof labels.error === 'function' ? labels.error(reason) : labels.error;
-        this.updateToast(loadingId, message, 'error', settledDurationMs);
+        this.updateToast(loadingId, message, 'error', this.resolveDuration(undefined));
         throw reason;
       },
     );
@@ -304,7 +369,7 @@ export class ToasterService {
   private add(
     message: string,
     variant: ToastVariant,
-    durationMs: number,
+    duration: ResolvedToastDuration,
     options?: ToastOptions,
     toastAction?: NonNullable<ToasterItem['toastAction']>,
   ): string {
@@ -326,14 +391,14 @@ export class ToasterService {
       ...(toastAction !== undefined ? { toastAction } : {}),
     };
     this._toasts.update((list) => [...list, item]);
-    this.scheduleAutoDismiss(id, durationMs);
+    this.scheduleResolvedAutoDismiss(id, duration);
     return id;
   }
 
   private addHtml(
     html: string,
     variant: ToastVariant,
-    durationMs: number,
+    duration: ResolvedToastDuration,
     options?: ToastOptions,
   ): string {
     const id = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
@@ -357,14 +422,14 @@ export class ToasterService {
 
     this._toasts.update((list) => [...list, item]);
 
-    this.scheduleAutoDismiss(id, durationMs);
+    this.scheduleResolvedAutoDismiss(id, duration);
 
     return id;
   }
 
   private addComponent(
     component: Type<unknown>,
-    durationMs: number,
+    duration: ResolvedToastDuration,
     options?: HeadlessToastOptions,
   ): string {
     const id = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
@@ -391,7 +456,7 @@ export class ToasterService {
 
     this._toasts.update((list) => [...list, item]);
 
-    this.scheduleAutoDismiss(id, durationMs);
+    this.scheduleResolvedAutoDismiss(id, duration);
 
     return id;
   }
@@ -400,7 +465,7 @@ export class ToasterService {
     id: string,
     message: string,
     variant: ToastVariant,
-    durationMs: number,
+    duration: ResolvedToastDuration,
   ): void {
     let found = false;
     this._toasts.update((toasts) =>
@@ -413,7 +478,7 @@ export class ToasterService {
       }),
     );
     if (found) {
-      this.scheduleAutoDismiss(id, durationMs);
+      this.scheduleResolvedAutoDismiss(id, duration);
     }
   }
 
@@ -437,6 +502,7 @@ export class ToasterService {
       }
     }
     this.autoDismissByToastId.clear();
+    this.pendingInitialDefaultSyncByToastId.clear();
     this._toasts.set([]);
     for (const toast of snapshot) {
       toast.onDismiss?.();
