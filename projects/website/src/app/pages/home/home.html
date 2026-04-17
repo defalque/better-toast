@@ -192,8 +192,35 @@
       <pre
         class="code-snippet bg-linear-to-tl from-white to-gray-100/50 border border-zinc-300/50 rounded-md p-4 overflow-x-hidden"
       ><code
-          class="block text-[13px] leading-6 whitespace-pre-wrap wrap-break-word font-mono language-typescript"
+          class="hljs block text-[13px] leading-6 whitespace-pre-wrap wrap-break-word font-mono language-typescript"
           [innerHTML]="activeTypeDemoHtml()"
+        ></code></pre>
+    </div>
+
+    <div class="grid gap-3">
+      <h2 class="text-lg font-medium">Position</h2>
+      <p class="text-black/90">
+        You can customize the position of the toaster. Swipe direction and enter/exit animations
+        change depending on the position.
+      </p>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 items-center justify-center">
+        @for (pos of toasterPositions; track pos) {
+          <button
+            type="button"
+            class="border text-[0.8rem] py-2.5 rounded-md border-zinc-200 hover:bg-zinc-200/70 transition-all active:scale-95 cursor-pointer"
+            [class.bg-zinc-200]="toasterDemoLayout.position() === pos"
+            [class.bg-zinc-50]="toasterDemoLayout.position() !== pos"
+            (click)="selectPositionDemo(pos)"
+          >
+            {{ pos }}
+          </button>
+        }
+      </div>
+      <pre
+        class="code-snippet bg-linear-to-tl from-white to-gray-100/50 border border-zinc-300/50 rounded-md p-4 overflow-x-hidden"
+      ><code
+          class="hljs block text-[13px] leading-6 whitespace-pre-wrap wrap-break-word font-mono language-xml"
+          [innerHTML]="activePositionDemoHtml()"
         ></code></pre>
     </div>
   </div>

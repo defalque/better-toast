@@ -1,10 +1,13 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { DomSanitizer, type SafeHtml } from '@angular/platform-browser';
-import { ToasterService } from 'better-toast';
+import { TOASTER_POSITIONS, ToasterService, type ToasterPosition } from 'better-toast';
+import { WebsiteToasterDemoLayoutService } from '../../website-toaster-demo-layout.service';
 import hljs from 'highlight.js/lib/core';
 import typescript from 'highlight.js/lib/languages/typescript';
+import xml from 'highlight.js/lib/languages/xml';
 
 hljs.registerLanguage('typescript', typescript);
+hljs.registerLanguage('xml', xml);
 
 const TOAST_TYPE_SOURCE = {
   default: `this.toaster.show('Default toast. A very super long message that should wrap.');`,
@@ -47,6 +50,10 @@ this.toaster.promise(myPromise, {
 
 type ToastTypeDemoId = keyof typeof TOAST_TYPE_SOURCE;
 
+const POSITION_DEMO_SOURCE = Object.fromEntries(
+  TOASTER_POSITIONS.map((p) => [p, `<better-toaster position="${p}" />`]),
+) as Record<ToasterPosition, string>;
+
 @Component({
   selector: 'app-home',
   imports: [],
@@ -56,6 +63,7 @@ type ToastTypeDemoId = keyof typeof TOAST_TYPE_SOURCE;
 export class Home {
   private readonly sanitizer = inject(DomSanitizer);
   protected readonly toaster = inject(ToasterService);
+  protected readonly toasterDemoLayout = inject(WebsiteToasterDemoLayoutService);
 
   /** Which example’s source is shown in the preview (updates on button click). */
   protected readonly activeTypeDemo = signal<ToastTypeDemoId>('default');
@@ -66,6 +74,19 @@ export class Home {
     const { value } = hljs.highlight(src, { language: 'typescript' });
     return this.sanitizer.bypassSecurityTrustHtml(value);
   });
+
+  protected readonly toasterPositions = TOASTER_POSITIONS;
+
+  /** highlight.js HTML for the selected `<better-toaster>` position snippet. */
+  protected readonly activePositionDemoHtml = computed<SafeHtml>(() => {
+    const src = POSITION_DEMO_SOURCE[this.toasterDemoLayout.position()];
+    const { value } = hljs.highlight(src, { language: 'xml' });
+    return this.sanitizer.bypassSecurityTrustHtml(value);
+  });
+
+  protected selectPositionDemo(pos: ToasterPosition): void {
+    this.toasterDemoLayout.position.set(pos);
+  }
 
   protected runTypeDemo(id: ToastTypeDemoId): void {
     this.activeTypeDemo.set(id);
@@ -133,6 +154,6 @@ export class Home {
   }
 
   protected renderToast() {
-    this.toaster.show('This is a toast, swipe it to dismiss');
+    this.toaster.show('This is a toast, swipe it to dismiss.');
   }
 }
