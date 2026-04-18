@@ -3,11 +3,43 @@ import { DomSanitizer, type SafeHtml } from '@angular/platform-browser';
 import { TOASTER_POSITIONS, ToasterService, type ToasterPosition } from 'better-toast';
 import { WebsiteToasterDemoLayoutService } from '../../website-toaster-demo-layout.service';
 import hljs from 'highlight.js/lib/core';
+import bash from 'highlight.js/lib/languages/bash';
 import typescript from 'highlight.js/lib/languages/typescript';
 import xml from 'highlight.js/lib/languages/xml';
 
+hljs.registerLanguage('bash', bash);
 hljs.registerLanguage('typescript', typescript);
 hljs.registerLanguage('xml', xml);
+
+/** highlight.js does not wrap camelCase bindings in `import { … }` (only PascalCase types). Match `inject()` styling. */
+function wrapInjectableImportBinding(html: string): string {
+  return html.replace(/\{ inject,/g, '{ <span class="hljs-title function_">inject</span>,');
+}
+
+const TOAST_DEMO_SOURCE = {
+  installation: `npm install better-toast`,
+  usage: `import { BetterToaster, ToasterService } from 'better-toast';
+import { inject, ChangeDetectionStrategy, Component} from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  imports: [BetterToaster],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: \`
+    <better-toaster />
+    <button (click)="showToast()">Show Toast</button>
+    <router-outlet />
+  \`,
+})
+export class App {
+  protected readonly toaster = inject(ToasterService);
+
+  protected showToast(): void {
+    this.toaster.show('Hello, world!');
+  }
+}`,
+  richColors: `<better-toaster [richColors]="true" />`,
+};
 
 const TOAST_TYPE_SOURCE = {
   default: `this.toaster.show('Default toast. A very super long message that should wrap.');`,
@@ -37,7 +69,7 @@ const TOAST_TYPE_SOURCE = {
 });`,
   promise: `const myPromise = new Promise<{ message: string }>((resolve) => {
   setTimeout(() => {
-    resolve({ message: 'Better-toast rendered successfully' });
+    resolve({ message: 'Better Toast rendered successfully' });
   }, 3000);
 });
 
@@ -48,7 +80,7 @@ this.toaster.promise(myPromise, {
 });`,
 } as const;
 
-type ToastTypeDemoId = keyof typeof TOAST_TYPE_SOURCE;
+type ToastType = keyof typeof TOAST_TYPE_SOURCE;
 
 const POSITION_DEMO_SOURCE = Object.fromEntries(
   TOASTER_POSITIONS.map((p) => [p, `<better-toaster position="${p}" />`]),
@@ -65,13 +97,18 @@ export class Home {
   protected readonly toaster = inject(ToasterService);
   protected readonly toasterDemoLayout = inject(WebsiteToasterDemoLayoutService);
 
-  /** Which example’s source is shown in the preview (updates on button click). */
-  protected readonly activeTypeDemo = signal<ToastTypeDemoId>('default');
+  protected readonly toastInstallationSource = computed(() => {
+    const { value } = hljs.highlight(TOAST_DEMO_SOURCE.installation, { language: 'bash' });
+    return this.sanitizer.bypassSecurityTrustHtml(value);
+  });
 
-  /** highlight.js HTML for the active example. */
-  protected readonly activeTypeDemoHtml = computed<SafeHtml>(() => {
-    const src = TOAST_TYPE_SOURCE[this.activeTypeDemo()];
-    const { value } = hljs.highlight(src, { language: 'typescript' });
+  protected readonly toastUsageSource = computed(() => {
+    const { value } = hljs.highlight(TOAST_DEMO_SOURCE.usage, { language: 'typescript' });
+    return this.sanitizer.bypassSecurityTrustHtml(wrapInjectableImportBinding(value));
+  });
+
+  protected readonly toastRichColorsSource = computed(() => {
+    const { value } = hljs.highlight(TOAST_DEMO_SOURCE.richColors, { language: 'xml' });
     return this.sanitizer.bypassSecurityTrustHtml(value);
   });
 
@@ -88,7 +125,17 @@ export class Home {
     this.toasterDemoLayout.position.set(pos);
   }
 
-  protected runTypeDemo(id: ToastTypeDemoId): void {
+  /** Which example’s source is shown in the preview (updates on button click). */
+  protected readonly activeTypeDemo = signal<ToastType>('default');
+
+  /** highlight.js HTML for the active example. */
+  protected readonly activeTypeDemoHtml = computed<SafeHtml>(() => {
+    const src = TOAST_TYPE_SOURCE[this.activeTypeDemo()];
+    const { value } = hljs.highlight(src, { language: 'typescript' });
+    return this.sanitizer.bypassSecurityTrustHtml(value);
+  });
+
+  protected runTypeDemo(id: ToastType): void {
     this.activeTypeDemo.set(id);
     switch (id) {
       case 'default':
@@ -136,12 +183,12 @@ export class Home {
         break;
       case 'promise':
         this.toaster.promise(
-          new Promise<string>((resolve) => {
-            setTimeout(() => resolve('Done'), 2000);
+          new Promise<{ message: string }>((resolve) => {
+            setTimeout(() => resolve({ message: 'Better Toast rendered successfully' }), 2000);
           }),
           {
             loading: 'Saving…',
-            success: 'Saved!',
+            success: (data) => `${data.message}`,
             error: 'Failed to save',
           },
         );
@@ -154,6 +201,6 @@ export class Home {
   }
 
   protected renderToast() {
-    this.toaster.show('This is a toast, swipe it to dismiss.');
+    this.toaster.show('This is a toast, swipe and release to dismiss.');
   }
 }

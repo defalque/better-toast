@@ -4,42 +4,11 @@ html {
   scrollbar-gutter: stable;
 }
 
-.code-snippet {
-  overflow-x: hidden;
+p {
+  @apply text-pretty;
+  @apply text-black/80;
 }
 
-.code-snippet code {
-  color: var(--color-zinc-500);
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-.code-snippet .code-keyword {
-  color: var(--color-black);
-}
-
-.code-snippet .code-function {
-  color: var(--color-black);
-}
-
-.code-snippet .code-symbol {
-  color: var(--color-zinc-500);
-}
-
-.code-snippet .code-string {
-  color: var(--color-zinc-500);
-}
-
-.code-snippet .code-property {
-  color: var(--color-black);
-}
-
-.code-snippet .code-decorator {
-  color: var(--color-black);
-}
-
-/* highlight.js (Types section live preview) */
 .toast-type-demo-preview pre {
   margin: 0;
 }
@@ -52,7 +21,6 @@ html {
   line-height: 1.5;
 }
 
-/* highlight.js output: allow long lines to wrap (no horizontal scroll) */
 .code-snippet code.hljs {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
@@ -62,71 +30,47 @@ html {
 }
 
 .hljs {
-  background: #000; /* nero */
-  color: #e5e5e5; /* grigio chiaro */
+  background: #000;
+  color: #e5e5e5;
 }
 
-/* commenti → più scuri */
-.hljs-comment,
-.hljs-quote {
-  color: var(--color-zinc-500);
-  font-style: italic;
+.hljs-string,
+.hljs-doctag {
+  color: var(--color-zinc-600);
 }
 
-/* keyword → quasi bianco */
 .hljs-keyword,
 .hljs-selector-tag,
 .hljs-subst {
-  color: #000;
+  color: var(--color-zinc-800);
   font-weight: 500;
 }
 
-/* stringhe */
-.hljs-string,
-.hljs-doctag {
+.hljs-meta,
+.hljs-selector-id,
+.hljs-selector-class {
+  color: var(--color-black);
+}
+
+.hljs-type,
+.hljs-built_in {
   color: var(--color-zinc-500);
+  font-weight: 500;
 }
 
-/* numeri / costanti */
-.hljs-number,
-.hljs-literal,
-.hljs-variable,
-.hljs-template-variable {
-  color: #000;
-}
-
-/* funzioni / titoli */
 .hljs-title,
 .hljs-section {
-  color: #000;
-  font-weight: 500;
+  color: var(--color-zinc-800);
+  font-weight: 600;
 }
 
-/* attributi / classi */
 .hljs-attr,
 .hljs-attribute {
   color: var(--color-zinc-500);
 }
 
-/* tipi / built-in */
-.hljs-type,
-.hljs-built_in {
-  color: #000;
-  font-weight: 500;
-}
-
-/* meta / tag */
-.hljs-meta,
-.hljs-selector-id,
-.hljs-selector-class {
+.hljs-comment,
+.hljs-quote {
   color: var(--color-zinc-500);
-}
-
-/* evidenziazione riga */
-.hljs-emphasis {
   font-style: italic;
-}
-
-.hljs-strong {
-  font-weight: bold;
 }

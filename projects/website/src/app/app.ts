@@ -14,6 +14,6 @@ export class App {
   protected readonly toasterDemoLayout = inject(WebsiteToasterDemoLayoutService);
 
   ngOnInit(): void {
-    this.toaster.show('ngOnInit', { durationMs: 3000 });
+    // this.toaster.show('ngOnInit', { durationMs: 3000 });
   }
 }

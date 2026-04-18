@@ -46,8 +46,8 @@
 
   <div class="flex flex-col gap-16 w-full max-w-2xl mx-auto">
     <div class="flex flex-col items-center justify-center mt-42 mb-6">
-      <h2 class="text-[clamp(2.6rem,5vw,3rem)] font-bold tracking-tight">Better Toast</h2>
-      <p class="sm:text-lg text-[17px] text-black/80 text-center text-pretty -mt-0.5 mx-auto">
+      <h1 class="text-[clamp(2.6rem,5vw,3rem)] font-bold tracking-tight">Better Toast</h1>
+      <p class="sm:text-lg text-[17px] text-black/80 text-center -mt-0.5 mx-auto">
         A simple and customizable toast library for
         <span
           class="bg-linear-to-r from-pink-500 to-violet-600 bg-clip-text text-lg font-bold text-transparent"
@@ -56,13 +56,13 @@
       </p>
       <div class="flex gap-4 mt-6">
         <button
-          class="bg-black text-white px-6 py-2 rounded-lg font-semibold ring-1 ring-black/15 shadow-lg inset-shadow-sm inset-shadow-white/50 cursor-pointer active:scale-95 transition-transform duration-200"
+          class="bg-black text-white px-6 py-2 rounded-lg font-semibold ring-1 ring-black/15 shadow-lg inset-shadow-sm inset-shadow-white/50 cursor-pointer active:scale-95 transition-transform duration-200 focus"
           (click)="renderToast()"
         >
           Render a toast
         </button>
         <button
-          class="bg-linear-to-bl from-white to-gray-100/80 text-black px-6 py-2 rounded-lg font-semibold ring-1 ring-black/10 shadow-lg inset-shadow-sm inset-shadow-black/3 cursor-pointer active:scale-95 transition-transform duration-200"
+          class="bg-linear-to-bl from-white to-gray-100/80 text-black px-6 py-2 rounded-lg font-semibold ring-1 ring-black/10 shadow-lg inset-shadow-sm inset-shadow-black/3 cursor-pointer active:scale-95 transition-transform duration-200 focus"
         >
           Github
         </button>
@@ -77,113 +77,96 @@
     <div class="grid gap-3">
       <h2 class="text-lg font-medium">Installation</h2>
       <pre
-        class="bg-linear-to-tl from-white to-gray-100/50 border border-zinc-300/50 rounded-md px-4 py-2 text-sm font-medium"
-      ><code>npm install better-toast</code></pre>
+        class="code-snippet bg-linear-to-tl from-white to-gray-100/50 border border-zinc-300/50 rounded-md p-4 overflow-x-hidden"
+      ><code
+          class="hljs block text-[13px] leading-6 whitespace-pre-wrap wrap-break-word font-mono language-bash"
+          [innerHTML]="toastInstallationSource()"
+        ></code></pre>
     </div>
 
     <div class="grid gap-3">
       <h2 class="text-lg font-medium">Usage</h2>
-      <p class="text-black/90">Render the toaster in the root of your app.</p>
+      <p>Render the toaster in the root of your app.</p>
       <pre
         class="code-snippet bg-linear-to-tl from-white to-gray-100/50 border border-zinc-300/50 rounded-md p-4 overflow-x-hidden"
-      ><code class="block text-[13px] leading-6 whitespace-pre-wrap wrap-break-word font-mono"
-        ><span class="code-keyword">import</span> &#123; <span class="code-symbol">inject</span>, <span class="code-symbol">ChangeDetectionStrategy</span>, <span class="code-symbol">Component</span> &#125; <span class="code-keyword">from</span> <span class="code-string">'&#64;angular/core'</span>;
-<span class="code-keyword">import</span> &#123; <span class="code-symbol">RouterOutlet</span> &#125; <span class="code-keyword">from</span> <span class="code-string">'&#64;angular/router'</span>;
-<span class="code-keyword">import</span> &#123; <span class="code-symbol">BetterToaster</span>, <span class="code-symbol">ToasterService</span> &#125; <span class="code-keyword">from</span> <span class="code-string">'better-toast'</span>;
-
-<span class="code-decorator">&#64;Component</span>(&#123;
-  <span class="code-property">selector</span>: <span class="code-string">'app-root'</span>,
-  <span class="code-property">imports</span>: [<span class="code-symbol">RouterOutlet</span>, <span class="code-symbol">BetterToaster</span>],
-  <span class="code-property">template</span>: <span class="code-string">`</span>
-  <span class="code-string">    &lt;better-toaster /&gt;</span>
-  <span class="code-string">    &lt;button (click)="showToast()"&gt;Show Toast&lt;/button&gt;</span>
-  <span class="code-string">    &lt;router-outlet /&gt;</span>
-<span class="code-string">  `</span>,
-  <span class="code-property">changeDetection</span>: <span class="code-symbol">ChangeDetectionStrategy</span>.<span class="code-symbol">OnPush</span>,
-&#125;)
-<span class="code-keyword">export</span> <span class="code-keyword">class</span> <span class="code-symbol">App</span> &#123;
-  <span class="code-keyword">protected</span> <span class="code-keyword">readonly</span> <span class="code-symbol">toaster</span> = <span class="code-keyword">inject</span>(<span class="code-symbol">ToasterService</span>);
-
-  <span class="code-keyword">protected</span> <span class="code-keyword">showToast</span>() &#123;
-    <span class="code-keyword">this</span>.<span class="code-symbol">toaster</span>.<span class="code-function">show</span>(<span class="code-string">'Hello, world!'</span>);
-  &#125;
-&#125;
-</code></pre>
+      ><code
+          class="hljs block text-[13px] leading-6 whitespace-pre-wrap wrap-break-word font-mono language-typescript"
+          [innerHTML]="toastUsageSource()"
+        ></code></pre>
     </div>
 
-    <div class="grid gap-3">
+    <div class="grid gap-4">
       <h2 class="text-lg font-medium">Types</h2>
-      <p class="text-black/90">
+      <p>
         You can customize the type of toast you want to render, and pass an options object as the
         second argument.
       </p>
       <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-2 items-center justify-center">
         <button
           type="button"
-          class="border border-zinc-200 text-[0.85rem] py-2.5 rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
-          (click)="runTypeDemo('default')"
+          class="border border-zinc-200 text-[0.85rem] py-2.5 rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer focus"
         >
           Default
         </button>
         <button
           type="button"
-          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer focus"
           (click)="runTypeDemo('success')"
         >
           Success
         </button>
         <button
           type="button"
-          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer focus"
           (click)="runTypeDemo('error')"
         >
           Error
         </button>
         <button
           type="button"
-          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer focus"
           (click)="runTypeDemo('info')"
         >
           Info
         </button>
         <button
           type="button"
-          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer focus"
           (click)="runTypeDemo('warning')"
         >
           Warning
         </button>
         <button
           type="button"
-          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer focus"
           (click)="runTypeDemo('loading')"
         >
           Loading
         </button>
         <button
           type="button"
-          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer focus"
           (click)="runTypeDemo('action')"
         >
           Action
         </button>
         <button
           type="button"
-          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer focus"
           (click)="runTypeDemo('cancel')"
         >
           Cancel
         </button>
         <button
           type="button"
-          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer focus"
           (click)="runTypeDemo('custom')"
         >
           Custom
         </button>
         <button
           type="button"
-          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer"
+          class="border border-zinc-200 py-2.5 text-[0.85rem] rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer focus"
           (click)="runTypeDemo('promise')"
         >
           Promise
@@ -197,9 +180,9 @@
         ></code></pre>
     </div>
 
-    <div class="grid gap-3">
+    <div class="grid gap-4">
       <h2 class="text-lg font-medium">Position</h2>
-      <p class="text-black/90">
+      <p>
         You can customize the position of the toaster. Swipe direction and enter/exit animations
         change depending on the position.
       </p>
@@ -207,7 +190,7 @@
         @for (pos of toasterPositions; track pos) {
           <button
             type="button"
-            class="border text-[0.8rem] py-2.5 rounded-md border-zinc-200 hover:bg-zinc-200/70 transition-all active:scale-95 cursor-pointer"
+            class="border text-[0.85rem] py-2.5 rounded-md border-zinc-200 hover:bg-zinc-200/70 transition-all ease active:scale-95 cursor-pointer focus"
             [class.bg-zinc-200]="toasterDemoLayout.position() === pos"
             [class.bg-zinc-50]="toasterDemoLayout.position() !== pos"
             (click)="selectPositionDemo(pos)"
@@ -222,6 +205,57 @@
           class="hljs block text-[13px] leading-6 whitespace-pre-wrap wrap-break-word font-mono language-xml"
           [innerHTML]="activePositionDemoHtml()"
         ></code></pre>
+    </div>
+
+    <div class="grid gap-4">
+      <h2 class="text-lg font-medium">Rich colors</h2>
+      <p>
+        When set to
+        <code
+          class="font-light text-[14px] text-black/60 bg-zinc-100 _border border-zinc-200 rounded-md px-2 py-0.5"
+          >true</code
+        >, success, error, info, and warning variants adopt semantic background and border colors.
+      </p>
+      <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 items-center justify-center">
+        <button
+          type="button"
+          class="border border-zinc-200 text-[0.85rem] py-2.5 rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer focus"
+        >
+          Success
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 text-[0.85rem] py-2.5 rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer focus"
+        >
+          Error
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 text-[0.85rem] py-2.5 rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer focus"
+        >
+          Info
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 text-[0.85rem] py-2.5 rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer focus"
+        >
+          Warning
+        </button>
+      </div>
+      <pre
+        class="code-snippet bg-linear-to-tl from-white to-gray-100/50 border border-zinc-300/50 rounded-md p-4 overflow-x-hidden"
+      ><code
+          class="hljs block text-[13px] leading-6 whitespace-pre-wrap wrap-break-word font-mono language-xml"
+          [innerHTML]="toastRichColorsSource()"
+        ></code></pre>
+    </div>
+
+    <div class="grid gap-4">
+      <h2 class="text-lg font-medium">Other</h2>
+      <p>
+        Discover more features and options in the
+        <a href="/documentation" class="underline underline-offset-2">documentation</a>.
+      </p>
     </div>
   </div>
 </div>
