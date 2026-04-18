@@ -184,13 +184,25 @@ function mergeToastClassNames(
               @case ('loading') {
                 <div class="toast-icon-loading" aria-hidden="true"></div>
               }
+              @case ('description') {}
               @case ('default') {}
             }
           }
         </span>
       }
 
-      <p class="msg" [class]="resolvedClassNames()?.message">{{ toast()?.message }}</p>
+      @if (hasDescription()) {
+        <div class="stack">
+          <p class="msg" [class]="resolvedClassNames()?.message">{{ toast()?.message }}</p>
+          @if (toast()?.description) {
+            <p class="description" [class]="resolvedClassNames()?.description">
+              {{ toast()!.description }}
+            </p>
+          }
+        </div>
+      } @else {
+        <p class="msg" [class]="resolvedClassNames()?.message">{{ toast()?.message }}</p>
+      }
 
       @if (toast()?.toastAction; as rowAction) {
         @switch (rowAction.role) {
@@ -269,6 +281,17 @@ export class BetterToastItem {
   /** Which icon and color treatment to show for this row. */
   variant = input<ToastVariant>('default');
 
+  /**
+   * Stacked title + optional secondary line: {@link ToastVariant} **`description`**, or any variant with
+   * non-empty {@link ToasterItem.description} ({@link ToastOptions.description} on `show` / `success` / etc.).
+   */
+  protected readonly hasDescription = computed(() => {
+    const toast = this.toast();
+    if (!toast) return false;
+    if (toast.variant === 'description') return true;
+    return !!toast.description?.trim();
+  });
+
   /** Merged inline styles for the toast (`[toastOptions].style` then per-toast `style`). */
   protected readonly hostStyle = computed(() =>
     mergeToastHostStyles(this.toasterStyle(), this.toast()?.style),
@@ -305,15 +328,18 @@ export class BetterToastItem {
     if (toast.icon === null) return false;
 
     const toastVariant = toast.variant;
-    if (toastVariant === 'default') {
+    if (toastVariant === 'default' || toastVariant === 'description') {
       if (toast.icon != null) {
         return true;
       }
-      const defaultIcon = this.customIcons()?.default;
-      if (defaultIcon === null) {
+      const neutralIcon =
+        toastVariant === 'default'
+          ? this.customIcons()?.default
+          : (this.customIcons()?.description ?? this.customIcons()?.default);
+      if (neutralIcon === null) {
         return false;
       }
-      return defaultIcon !== undefined;
+      return neutralIcon !== undefined;
     }
 
     if (toast.icon != null) {
@@ -500,7 +526,7 @@ export class BetterToastItem {
  * Variant-colored surfaces are off by default; set `[richColors]="true"` to enable them.
  * Set `[duration]` for auto-dismiss when service helpers omit their duration argument.
  * Use **`duration="Infinity"`** (that exact literal) or `[duration]="…"` with a number / {@link TOAST_DURATION_MANUAL_DISMISS} for persist until dismissed; `0` still works.
- * Pass `[icons]` with optional **standalone** components for `default` / `success` / `error` / `info` / `warning` / `loading`:
+ * Pass `[icons]` with optional **standalone** components for `default` / `description` / `success` / `error` / `info` / `warning` / `loading`:
  * replace the default artwork (or add an icon for the neutral `default` variant), or use **`null`** to hide that variant’s icon.
  * Each component should render an **SVG** (import its class where you configure `[icons]`).
  * Set `[closeButton]="false"` to hide the per-toast dismiss button.
@@ -612,7 +638,7 @@ export class BetterToaster implements OnInit {
    * Defaults for every toast — shape is {@link ToasterToastOptions}.
    *
    * - **`style`** — merged onto each toast host with per-toast {@link ToastOptions.style}; identical keys from the service call win.
-   * - **`classNames`** — extra classes on host / `.msg` / `.close-btn` / row buttons via **`[class]`**; see {@link ToasterToastOptions.classNames} (**`!important`** is usually required for overrides). Per-toast {@link ToastOptions.classNames} replaces host/message/close keys; row overrides come from {@link ToasterService.action} / {@link ToasterService.cancel}.
+   * - **`classNames`** — extra classes on host / `.msg` / `.description` / `.close-btn` / row buttons via **`[class]`**; see {@link ToasterToastOptions.classNames} (**`!important`** is usually required for overrides). Per-toast {@link ToastOptions.classNames} replaces host/message/close keys; row overrides come from {@link ToasterService.action} / {@link ToasterService.cancel}.
    */
   readonly toastOptions = input<ToasterToastOptions | undefined>();
 

@@ -50,6 +50,64 @@ describe('better-toast', () => {
     expect(toaster.toasts().length).toBe(0);
   });
 
+  it('description() uses the description variant and stores options.description', () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const toaster = TestBed.inject(ToasterService);
+
+    toaster.description('Title', {
+      description: 'Secondary line',
+      durationMs: TOAST_DURATION_MANUAL_DISMISS,
+    });
+    expect(toaster.toasts()[0].variant).toBe('description');
+    expect(toaster.toasts()[0].message).toBe('Title');
+    expect(toaster.toasts()[0].description).toBe('Secondary line');
+  });
+
+  it('description() renders a column stack with title and description', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    toaster.description('Hello', {
+      description: 'Details here',
+      durationMs: TOAST_DURATION_MANUAL_DISMISS,
+    });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const host = fixture.nativeElement.querySelector('li.toast') as HTMLElement;
+    expect(host.getAttribute('data-variant')).toBe('description');
+    const stack = host.querySelector('.toast-text-stack');
+    expect(stack).toBeTruthy();
+    expect(host.querySelector('.msg')?.textContent?.trim()).toBe('Hello');
+    expect(host.querySelector('.description')?.textContent?.trim()).toBe('Details here');
+  });
+
+  it('success with options.description uses stacked layout and keeps success variant', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    toaster.success('Saved', {
+      description: 'Your file is in Downloads.',
+      durationMs: TOAST_DURATION_MANUAL_DISMISS,
+    });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const host = fixture.nativeElement.querySelector('li.toast') as HTMLElement;
+    expect(host.getAttribute('data-variant')).toBe('success');
+    expect(host.querySelector('.toast-text-stack')).toBeTruthy();
+    expect(host.querySelector('.msg')?.textContent?.trim()).toBe('Saved');
+    expect(host.querySelector('.description')?.textContent?.trim()).toBe(
+      'Your file is in Downloads.',
+    );
+  });
+
   it('treats durationMs 0 as manual dismiss (backward compatible)', async () => {
     vi.useFakeTimers();
     try {
@@ -523,7 +581,7 @@ describe('better-toast', () => {
 
     const host = fixture.nativeElement.querySelector('li.toast') as HTMLElement;
     expect(host.querySelector('.toast-custom')?.innerHTML).toContain('Rich');
-    expect(host.querySelector('.toast-main')).toBeNull();
+    expect(host.querySelector('.toast-text-stack')).toBeNull();
     expect(host.querySelector('.toast-icon')).toBeNull();
     expect(host.querySelector('.msg')).toBeNull();
   });

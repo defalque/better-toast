@@ -190,6 +190,18 @@ export class ToasterService {
   }
 
   /**
+   * Display a toast using the **`description`** variant: same neutral chrome as **`default`** (icon rules, colors).
+   * The message is the title; pass {@link ToastOptions.description} for a secondary line. You can also pass
+   * `description` on `show` / `success` / etc. to get the column layout with that variant’s icon and styling.
+   *
+   * @param message Title line.
+   * @param options Optional configuration (including `description` for the body below the title).
+   */
+  description(message: string, options?: ToastOptions): string {
+    return this.add(message, 'description', this.resolveDuration(options?.durationMs), options);
+  }
+
+  /**
    * Display a success toast notification.
    *
    * If `options` or `options.durationMs` are not provided, the toast will use the duration value from `<app-toaster [duration]>`.
@@ -379,6 +391,7 @@ export class ToasterService {
     const classNames = options?.classNames;
     const onDismiss = options?.onDismiss;
     const onAutoClose = options?.onAutoClose;
+    const description = options?.description;
     const item: ToasterItem = {
       id,
       message,
@@ -386,6 +399,7 @@ export class ToasterService {
       ...(icon !== undefined ? { icon } : {}),
       ...(style !== undefined ? { style } : {}),
       ...(classNames !== undefined ? { classNames } : {}),
+      ...(description !== undefined ? { description } : {}),
       ...(onDismiss !== undefined ? { onDismiss } : {}),
       ...(onAutoClose !== undefined ? { onAutoClose } : {}),
       ...(toastAction !== undefined ? { toastAction } : {}),
@@ -407,6 +421,7 @@ export class ToasterService {
     const classNames = options?.classNames;
     const onDismiss = options?.onDismiss;
     const onAutoClose = options?.onAutoClose;
+    const description = options?.description;
 
     const item: ToasterItem = {
       id,
@@ -416,6 +431,7 @@ export class ToasterService {
       ...(icon !== undefined ? { icon } : {}),
       ...(style !== undefined ? { style } : {}),
       ...(classNames !== undefined ? { classNames } : {}),
+      ...(description !== undefined ? { description } : {}),
       ...(onDismiss !== undefined ? { onDismiss } : {}),
       ...(onAutoClose !== undefined ? { onAutoClose } : {}),
     };

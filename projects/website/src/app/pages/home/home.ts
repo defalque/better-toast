@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { DomSanitizer, type SafeHtml } from '@angular/platform-browser';
 import { TOASTER_POSITIONS, ToasterService, type ToasterPosition } from 'better-toast';
 import { WebsiteToasterDemoLayoutService } from '../../website-toaster-demo-layout.service';
 import hljs from 'highlight.js/lib/core';
@@ -43,6 +42,10 @@ export class App {
 
 const TOAST_TYPE_SOURCE = {
   default: `this.toaster.show('Default toast. A very super long message that should wrap.');`,
+  description: `this.toaster.description('Backup complete', {
+  description:
+    '12 files were uploaded to the cloud. You can restore them anytime from Settings.',
+});`,
   success: `this.toaster.success('Saved successfully');`,
   error: `this.toaster.error('Something went wrong');`,
   info: `this.toaster.info('Tip: you can stack multiple toasts');`,
@@ -93,46 +96,38 @@ const POSITION_DEMO_SOURCE = Object.fromEntries(
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Home {
-  private readonly sanitizer = inject(DomSanitizer);
   protected readonly toaster = inject(ToasterService);
   protected readonly toasterDemoLayout = inject(WebsiteToasterDemoLayoutService);
 
-  protected readonly toastInstallationSource = computed(() => {
-    const { value } = hljs.highlight(TOAST_DEMO_SOURCE.installation, { language: 'bash' });
-    return this.sanitizer.bypassSecurityTrustHtml(value);
-  });
-
-  protected readonly toastUsageSource = computed(() => {
-    const { value } = hljs.highlight(TOAST_DEMO_SOURCE.usage, { language: 'typescript' });
-    return this.sanitizer.bypassSecurityTrustHtml(wrapInjectableImportBinding(value));
-  });
-
-  protected readonly toastRichColorsSource = computed(() => {
-    const { value } = hljs.highlight(TOAST_DEMO_SOURCE.richColors, { language: 'xml' });
-    return this.sanitizer.bypassSecurityTrustHtml(value);
-  });
-
+  protected readonly toastTypes = Object.keys(TOAST_TYPE_SOURCE) as ToastType[];
   protected readonly toasterPositions = TOASTER_POSITIONS;
 
-  /** highlight.js HTML for the selected `<better-toaster>` position snippet. */
-  protected readonly activePositionDemoHtml = computed<SafeHtml>(() => {
-    const src = POSITION_DEMO_SOURCE[this.toasterDemoLayout.position()];
-    const { value } = hljs.highlight(src, { language: 'xml' });
-    return this.sanitizer.bypassSecurityTrustHtml(value);
+  protected readonly toastInstallationSource = computed(() => {
+    return hljs.highlight(TOAST_DEMO_SOURCE.installation, { language: 'bash' }).value;
+  });
+  protected readonly toastUsageSource = computed(() => {
+    const { value } = hljs.highlight(TOAST_DEMO_SOURCE.usage, { language: 'typescript' });
+    return wrapInjectableImportBinding(value);
+  });
+  protected readonly toastRichColorsSource = computed(() => {
+    return hljs.highlight(TOAST_DEMO_SOURCE.richColors, { language: 'xml' }).value;
   });
 
   protected selectPositionDemo(pos: ToasterPosition): void {
     this.toasterDemoLayout.position.set(pos);
   }
+  /** highlight.js HTML for better-toaster position. */
+  protected readonly activePositionDemoHtml = computed(() => {
+    return hljs.highlight(POSITION_DEMO_SOURCE[this.toasterDemoLayout.position()], {
+      language: 'xml',
+    }).value;
+  });
 
-  /** Which example’s source is shown in the preview (updates on button click). */
   protected readonly activeTypeDemo = signal<ToastType>('default');
-
-  /** highlight.js HTML for the active example. */
-  protected readonly activeTypeDemoHtml = computed<SafeHtml>(() => {
-    const src = TOAST_TYPE_SOURCE[this.activeTypeDemo()];
-    const { value } = hljs.highlight(src, { language: 'typescript' });
-    return this.sanitizer.bypassSecurityTrustHtml(value);
+  /** highlight.js HTML for the active type example. */
+  protected readonly activeTypeDemoHtml = computed(() => {
+    return hljs.highlight(TOAST_TYPE_SOURCE[this.activeTypeDemo()], { language: 'typescript' })
+      .value;
   });
 
   protected runTypeDemo(id: ToastType): void {
@@ -140,6 +135,12 @@ export class Home {
     switch (id) {
       case 'default':
         this.toaster.show('Default toast. A very super long message that should wrap.');
+        break;
+      case 'description':
+        this.toaster.description('Backup complete', {
+          description:
+            '12 files were uploaded to the cloud. You can restore them anytime from Settings.',
+        });
         break;
       case 'success':
         this.toaster.success('Saved successfully');

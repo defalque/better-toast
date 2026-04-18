@@ -31,6 +31,7 @@ type ToastDemoKind =
   | 'success'
   | 'error'
   | 'info'
+  | 'description'
   | 'warning'
   | 'custom'
   | 'loading'
@@ -172,6 +173,12 @@ export class App {
     success: `this.toaster.success('Saved successfully', { icon: CustomSuccessIcon });`,
     error: `this.toaster.error('Something went wrong', { icon: null });`,
     info: `this.toaster.info('Tip: you can stack multiple toasts');`,
+    description: `this.toaster.description('Backup complete', {
+  description:
+    '12 files were uploaded to the cloud. You can restore them anytime from Settings.',
+});
+// Same column layout on any type, e.g. success/error:
+// this.toaster.success('Saved', { description: 'Stored in Downloads.' });`,
     warning: `this.toaster.warning('Your session will expire soon');`,
     custom: `this.toaster.custom(\`
       <div>Check my website: 
@@ -425,6 +432,14 @@ this.toaster.headless(UploadProgressToast, {
   protected showInfoToast(): void {
     this.toaster.info('Tip: you can stack multiple toasts', {
       classNames: {},
+    });
+  }
+
+  protected descriptionToast(): void {
+    this.toaster.description('Backup complete', {
+      description:
+        '12 files were uploaded to the cloud. You can restore them anytime from Settings.',
+      icon: CustomIcon,
     });
   }
 

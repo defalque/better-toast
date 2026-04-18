@@ -4,9 +4,25 @@ html {
   scrollbar-gutter: stable;
 }
 
-p {
+.landing-page-h2 {
+  @apply text-lg font-medium;
+}
+
+.landing-page-paragraph {
   @apply text-pretty;
   @apply text-black/80;
+}
+
+.landing-page-button {
+  @apply border border-zinc-200 text-[0.85rem] py-2.5 rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer;
+}
+
+.landing-page-pre {
+  @apply bg-linear-to-tl from-white to-gray-100/50 border border-zinc-300/50 rounded-md p-4 overflow-x-hidden;
+}
+
+.landing-page-code {
+  @apply block text-[13px] leading-6 whitespace-pre-wrap wrap-break-word font-mono;
 }
 
 .toast-type-demo-preview pre {

@@ -68,7 +68,9 @@
 }
 
 :host([data-variant='default']) .toast-icon svg,
-:host([data-variant='default']) .toast-icon ::ng-deep svg {
+:host([data-variant='default']) .toast-icon ::ng-deep svg,
+:host([data-variant='description']) .toast-icon svg,
+:host([data-variant='description']) .toast-icon ::ng-deep svg {
   fill: var(--toast-color);
   color: var(--toast-bg);
 }
@@ -436,9 +438,6 @@
 :host([data-icon='false']) {
   padding-left: 0.925rem;
 }
-:host([data-icon='false']) .toast-main .msg {
-  max-width: 90%;
-}
 
 .toast-icon,
 .toast-icon ::ng-deep {
@@ -502,6 +501,40 @@
 @media (width < 40rem) {
   .msg {
     max-width: 90%;
+    font-size: 0.8rem;
+  }
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.stack .msg {
+  flex: 0 1 auto;
+  max-width: 100%;
+}
+
+/* No icon: keep title line slightly narrower when stacked with a description */
+:host([data-icon='false']) .stack .msg {
+  max-width: 90%;
+}
+
+.description {
+  margin: 0;
+  font-size: 0.825rem;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  opacity: 0.9;
+  max-width: 100%;
+}
+@media (width < 40rem) {
+  .description {
     font-size: 0.8rem;
   }
 }

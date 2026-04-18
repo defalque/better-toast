@@ -62,6 +62,7 @@ export interface ToasterAccessibilityLabels {
 
 export const TOAST_VARIANTS = [
   'default',
+  'description',
   'success',
   'error',
   'info',
@@ -92,7 +93,7 @@ export type ToasterIcons = Partial<Record<ToastVariant, Type<unknown> | null>>;
  * The library ships encapsulated styles (`toast-item.css`, etc.). Global rules for your class names often **lose to those defaults**, so properties you expect to change **usually need `!important`** (or stronger specificity) to actually apply.
  */
 export type ToastBaseChromeClassNames = Partial<
-  Record<'toast' | 'message' | 'closeButton', string>
+  Record<'toast' | 'message' | 'description' | 'closeButton', string>
 >;
 
 /**
@@ -129,7 +130,8 @@ export interface ToasterToastOptions {
    * Extra CSS class strings merged onto toast chrome via Angular **`[class]`** bindings (from `<app-toaster [toastOptions]>`).
    *
    * - **`toast`** — list item host (`li.toast` / `AppToastItem`), alongside the built-in `toast` class.
-   * - **`message`** — the text paragraph (`.msg`) when the toast is not `html` / `component` / headless body.
+   * - **`message`** — the title line (`.msg`) when the toast is not `html` / `component` / headless body.
+   * - **`description`** — the secondary line (`.description`) when {@link ToastOptions.description} is set or for the **`description`** variant.
    * - **`closeButton`** — the dismiss control (`.close-btn`) when `<app-toaster [closeButton]>` is enabled.
    * - **`actionButton`** / **`cancelButton`** — defaults for `.action-btn` / `.cancel-btn` when you use {@link ToasterService.action} / {@link ToasterService.cancel}; ignored on toasts without a row button.
    *
@@ -170,7 +172,8 @@ export type ToastCancelMethodOptions = Omit<ToastOptions, 'icon' | 'classNames'>
 };
 
 /**
- * Second argument for `show` / `success` / `error` / `info` / `warning` / `custom` / `loading`.
+ * Options for the second argument of `show`, `success`, `error`, `info`, `warning`, `custom`, `loading`,
+ * and {@link ToasterService#description}.
  * Not used by `ToasterService.promise()` (that API uses {@link ToastPromiseLabels}).
  */
 export interface ToastOptions {
@@ -191,6 +194,12 @@ export interface ToastOptions {
    * Merged after `<app-toaster [toastOptions]>` `style` (if any); per-toast keys override the same keys from the toaster.
    */
   style?: Record<string, string | number | undefined>;
+  /**
+   * Secondary line below {@link ToasterItem.message} in a column layout. Works on every toast helper
+   * (`show`, `success`, `error`, …). {@link ToasterService#description} uses the **`description`** variant
+   * (neutral chrome like `default`); you can still pass this on other variants for the same layout with their icons/colors.
+   */
+  description?: string;
   /**
    * Extra **`[class]`** strings for this toast only — same keys and **`!important`** guidance as {@link ToasterToastOptions.classNames}.
    * Merged with `<app-toaster [toastOptions]>` `classNames` (if any); per-toast keys replace the same keys from the toaster.
@@ -234,8 +243,10 @@ export interface HeadlessToastOptions extends Omit<ToastOptions, 'icon' | 'style
 export interface ToasterItem {
   readonly id: string;
   readonly message: string;
+  /** Secondary line; see {@link ToastOptions.description}. */
+  readonly description?: string;
   readonly variant: ToastVariant;
-  /** When set, replaces the default icon + message; body is `.toast-custom` only (no `.toast-main`), still sanitized by Angular. */
+  /** When set, replaces the default icon + message; body is `.toast-custom` only (no `.msg` / `.toast-text-stack`), still sanitized by Angular. */
   readonly html?: string;
   /**
    * When set (without `html`), the toast body is this standalone component only — same stack and motion as other toasts, without host chrome or a close button.
