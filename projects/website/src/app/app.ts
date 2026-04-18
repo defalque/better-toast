@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ToasterService, BetterToaster } from 'better-toast';
-import { WebsiteToasterDemoLayoutService } from './website-toaster-demo-layout.service';
+import { HelperService } from './helper.service';
 
 @Component({
   selector: 'app-root',
@@ -11,9 +11,7 @@ import { WebsiteToasterDemoLayoutService } from './website-toaster-demo-layout.s
 })
 export class App {
   protected readonly toaster = inject(ToasterService);
-  protected readonly toasterDemoLayout = inject(WebsiteToasterDemoLayoutService);
+  protected readonly helper = inject(HelperService);
 
-  ngOnInit(): void {
-    // this.toaster.show('ngOnInit', { durationMs: 3000 });
-  }
+  protected readonly richColors = computed(() => this.helper.richColors());
 }

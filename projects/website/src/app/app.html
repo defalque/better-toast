@@ -1,4 +1,9 @@
 <main>
   <router-outlet />
-  <better-toaster [position]="toasterDemoLayout.position()" [duration]="'Infinity'" theme="light" />
+  <better-toaster
+    [position]="helper.position()"
+    [duration]="'Infinity'"
+    theme="light"
+    [richColors]="richColors()"
+  />
 </main>

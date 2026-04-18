@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { TOASTER_POSITIONS, ToasterService, type ToasterPosition } from 'better-toast';
-import { WebsiteToasterDemoLayoutService } from '../../website-toaster-demo-layout.service';
+import { HelperService } from '../../helper.service';
 import hljs from 'highlight.js/lib/core';
 import bash from 'highlight.js/lib/languages/bash';
 import typescript from 'highlight.js/lib/languages/typescript';
 import xml from 'highlight.js/lib/languages/xml';
+import { HeadlessComponent } from '../../components/headless-component/headless-component';
 
 hljs.registerLanguage('bash', bash);
 hljs.registerLanguage('typescript', typescript);
@@ -81,9 +82,18 @@ this.toaster.promise(myPromise, {
   success: (data) => \`\${data.message}\`,
   error: 'Promise rejected',
 });`,
+  headless: `this.toaster.headless(MusicPlayerToast, {
+  durationMs: 'Infinity',
+  inputs: {
+    songTitle: 'Stay',
+    songImage: 'https://cdn-images.dzcdn.net/images/cover/dd6fe7fa9267185c4b835bd4f155d1d2/0x1900-000000-80-0-0.jpg',
+    songArtist: 'The Kid Laroi, Justin Bieber',
+  },
+});`,
 } as const;
 
 type ToastType = keyof typeof TOAST_TYPE_SOURCE;
+type RichColorType = 'success' | 'error' | 'info' | 'warning';
 
 const POSITION_DEMO_SOURCE = Object.fromEntries(
   TOASTER_POSITIONS.map((p) => [p, `<better-toaster position="${p}" />`]),
@@ -97,10 +107,16 @@ const POSITION_DEMO_SOURCE = Object.fromEntries(
 })
 export class Home {
   protected readonly toaster = inject(ToasterService);
-  protected readonly toasterDemoLayout = inject(WebsiteToasterDemoLayoutService);
+  protected readonly helper = inject(HelperService);
 
   protected readonly toastTypes = Object.keys(TOAST_TYPE_SOURCE) as ToastType[];
   protected readonly toasterPositions = TOASTER_POSITIONS;
+  protected readonly richColorTypes: readonly RichColorType[] = [
+    'success',
+    'error',
+    'info',
+    'warning',
+  ];
 
   protected readonly toastInstallationSource = computed(() => {
     return hljs.highlight(TOAST_DEMO_SOURCE.installation, { language: 'bash' }).value;
@@ -114,11 +130,11 @@ export class Home {
   });
 
   protected selectPositionDemo(pos: ToasterPosition): void {
-    this.toasterDemoLayout.position.set(pos);
+    this.helper.position.set(pos);
   }
   /** highlight.js HTML for better-toaster position. */
   protected readonly activePositionDemoHtml = computed(() => {
-    return hljs.highlight(POSITION_DEMO_SOURCE[this.toasterDemoLayout.position()], {
+    return hljs.highlight(POSITION_DEMO_SOURCE[this.helper.position()], {
       language: 'xml',
     }).value;
   });
@@ -132,6 +148,7 @@ export class Home {
 
   protected runTypeDemo(id: ToastType): void {
     this.activeTypeDemo.set(id);
+    if (this.helper.richColors()) this.helper.richColors.set(false);
     switch (id) {
       case 'default':
         this.toaster.show('Default toast. A very super long message that should wrap.');
@@ -193,6 +210,39 @@ export class Home {
             error: 'Failed to save',
           },
         );
+        break;
+      case 'headless':
+        this.toaster.headless(HeadlessComponent, {
+          durationMs: 'Infinity',
+          inputs: {
+            songTitle: 'Stay',
+            songImage:
+              'https://cdn-images.dzcdn.net/images/cover/dd6fe7fa9267185c4b835bd4f155d1d2/0x1900-000000-80-0-0.jpg',
+            songArtist: 'The Kid Laroi, Justin Bieber',
+          },
+        });
+        break;
+      default: {
+        const _exhaustive: never = id;
+        return _exhaustive;
+      }
+    }
+  }
+
+  protected runRichColorsDemo(id: RichColorType): void {
+    this.helper.richColors.set(true);
+    switch (id) {
+      case 'success':
+        this.toaster.success('Saved successfully');
+        break;
+      case 'error':
+        this.toaster.error('Something went wrong');
+        break;
+      case 'info':
+        this.toaster.info('Tip: you can stack multiple toasts');
+        break;
+      case 'warning':
+        this.toaster.warning('Your session will expire soon');
         break;
       default: {
         const _exhaustive: never = id;

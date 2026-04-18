@@ -27,7 +27,7 @@
   scale: 1;
   transition:
     opacity 0.4s ease,
-    transform 0.4s ease-out,
+    transform 0.4s ease,
     scale 0.4s ease;
 }
 @media (width >= 40rem) {
@@ -569,9 +569,9 @@
 }
 
 .action-btn {
-  background: var(--toast-color);
-  color: var(--toast-bg);
-  border-color: var(--toast-color);
+  background: var(--toast-action-bg);
+  color: var(--toast-action-text);
+  border-color: var(--toast-action-border);
 }
 
 .cancel-btn {
