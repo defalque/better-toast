@@ -32,11 +32,11 @@ import {
   type ToastVariant,
 } from './toaster.types';
 
+const GAP = 16;
+
 function swipeDirectionForPosition(position: ToasterPosition): 'down' | 'up' {
   return position.startsWith('bottom') ? 'down' : 'up';
 }
-
-const GAP = 16;
 
 function resolveToasterOffsetSide(
   offset: ToasterOffset | undefined,
@@ -84,6 +84,7 @@ function mergeToastClassNames(
     '[attr.data-icon]': 'shouldShowIconColumn() ? "true" : "false"',
     '[attr.data-headless]': 'isHeadless() ? "true" : null',
     '[attr.data-swipe-direction]': 'swipeDirection()',
+    '[attr.data-theme]': 'theme()',
     '[style.--offset]': 'offset() + "px"',
     '[style]': 'isHeadless() ? undefined : hostStyle()',
     '[animate.leave]': '"leave"',
@@ -376,6 +377,12 @@ export class BetterToastItem {
   /** Stack anchor from `<better-toaster [position]>` — drives swipe axis and `data-swipe-direction`. */
   stackPosition = input<ToasterPosition>('bottom-right');
 
+  /**
+   * Color palette from `<better-toaster [theme]>`; mirrored on the host as `data-theme`
+   * so item-scoped CSS can react to the chosen mode without `:host-context()`.
+   */
+  theme = input<ToasterTheme>('system');
+
   /** `down` when anchored to the bottom (dismiss by swiping down), `up` when anchored to the top. */
   protected readonly swipeDirection = computed(() =>
     swipeDirectionForPosition(this.stackPosition()),
@@ -384,6 +391,9 @@ export class BetterToastItem {
   /** Emits the measured host height in px once after the first render so the parent can stack siblings. */
   heightChange = output<number>();
 
+  /**
+   * Emits the measured host height in px once after the first render so the parent can stack siblings.
+   */
   constructor() {
     afterNextRender(() => {
       const height = this.host.nativeElement.offsetHeight;
@@ -414,7 +424,10 @@ export class BetterToastItem {
   onRowButtonPointerDown(event: PointerEvent): void {
     event.stopPropagation();
   }
-
+  /**
+   * Dismisses the toast when the row action / cancel control is clicked.
+   * @param event - The event object.
+   */
   onToastRowClick(event: Event): void {
     const toast = this.toast();
     toast?.toastAction?.onClick(event);
@@ -422,6 +435,9 @@ export class BetterToastItem {
     this.toaster.dismiss(toast?.id ?? '');
   }
 
+  /**
+   * Pauses auto-dismiss when the pointer enters the toast.
+   */
   onPointerEnter() {
     const id = this.toast()?.id;
     if (id) {
@@ -429,6 +445,9 @@ export class BetterToastItem {
     }
   }
 
+  /**
+   * Resumes auto-dismiss when the pointer leaves the toast.
+   */
   onPointerLeave() {
     const id = this.toast()?.id;
     if (id) {
@@ -436,12 +455,20 @@ export class BetterToastItem {
     }
   }
 
+  /**
+   * Starts tracking the pointer down event.
+   * @param event - The pointer down event object.
+   */
   onPointerDown(event: PointerEvent) {
     this.tracking = true;
     this.startY = event.clientY;
     this.pointerId = event.pointerId;
   }
 
+  /**
+   * Updates the toast position when the pointer moves.
+   * @param event - The pointer move event object.
+   */
   onPointerMove(event: PointerEvent) {
     if (!this.tracking && !this.isDragging()) return;
 
@@ -469,6 +496,9 @@ export class BetterToastItem {
     el.style.translate = `0 ${dragDy}px`;
   }
 
+  /**
+   * Ends tracking the pointer up event and dismisses the toast if the pointer has moved beyond the swipe threshold.
+   */
   onPointerUp() {
     this.tracking = false;
 
@@ -504,6 +534,9 @@ export class BetterToastItem {
     }
   }
 
+  /**
+   * Ends tracking the pointer cancel event and resets the toast position.
+   */
   onPointerCancel() {
     this.tracking = false;
 
@@ -574,6 +607,7 @@ export class BetterToastItem {
             [closeButton]="closeButton()"
             [dismissButtonAriaLabel]="dismissButtonAriaLabel()"
             [stackPosition]="position()"
+            [theme]="theme()"
             (heightChange)="onHeightChange(toast.id, $event)"
             [attr.data-position]="position()"
             [attr.data-rich-colors]="richColors()"
@@ -586,30 +620,6 @@ export class BetterToastItem {
 })
 export class BetterToaster implements OnInit {
   protected readonly toaster = inject(ToasterService);
-
-  /** Where the stack is anchored on the viewport. */
-  readonly position = input<ToasterPosition>('bottom-right');
-
-  /**
-   * Viewport inset for the toast stack: a single CSS value for all sides, or an object with any of `top` / `right` / `bottom` / `left`.
-   * Binds `--toast-offset-top` / `right` / `bottom` / `left` on `.toast-container`.
-   */
-  readonly offset = input<ToasterOffset | undefined>(undefined);
-
-  /**
-   * Viewport inset for narrow layouts: binds `--toast-offset-mobile-top` / `right` / `bottom` / `left` on `.toast-container`.
-   * Same shape as {@link offset}.
-   */
-  readonly mobileOffset = input<ToasterOffset | undefined>(undefined);
-
-  /** When true, success/error/info/warning use semantic background and border colors. */
-  readonly richColors = input(false);
-
-  /**
-   * Color palette for the stack. `system` (default) follows `prefers-color-scheme`; `light` / `dark` pin the palette regardless of OS.
-   * Reflected as `data-theme` on the toast container (`<ol class="toast-container">`).
-   */
-  readonly theme = input<ToasterTheme>('system');
 
   /**
    * Default auto-dismiss time in ms for `show` / `success` / `error` / `info` / `warning` when the second argument omits `durationMs`.
@@ -624,7 +634,27 @@ export class BetterToaster implements OnInit {
       return durationMs;
     },
   });
-
+  /** Where the stack is anchored on the viewport. */
+  readonly position = input<ToasterPosition>('bottom-right');
+  /**
+   * Viewport inset for the toast stack: a single CSS value for all sides, or an object with any of `top` / `right` / `bottom` / `left`.
+   * Binds `--toast-offset-top` / `right` / `bottom` / `left` on `.toast-container`.
+   */
+  readonly offset = input<ToasterOffset | undefined>(undefined);
+  /**
+   * Viewport inset for narrow layouts: binds `--toast-offset-mobile-top` / `right` / `bottom` / `left` on `.toast-container`.
+   * Same shape as {@link offset}.
+   */
+  readonly mobileOffset = input<ToasterOffset | undefined>(undefined);
+  /**
+   * When true, success/error/info/warning use semantic background and border colors.
+   */
+  readonly richColors = input(false);
+  /**
+   * Color palette for the stack. `system` (default) follows `prefers-color-scheme`; `light` / `dark` pin the palette regardless of OS.
+   * Reflected as `data-theme` on the toast container (`<ol class="toast-container">`).
+   */
+  readonly theme = input<ToasterTheme>('system');
   /**
    * Optional per-variant **standalone** components that replace the default SVG (or loading indicator).
    * Import each icon component in the host and pass its class here; each one should render an SVG
@@ -633,7 +663,6 @@ export class BetterToaster implements OnInit {
    * **`null`** for a variant hides that variant’s icon.
    */
   readonly icons = input<ToasterIcons | undefined>();
-
   /**
    * Defaults for every toast — shape is {@link ToasterToastOptions}.
    *
@@ -641,10 +670,8 @@ export class BetterToaster implements OnInit {
    * - **`classNames`** — extra classes on host / `.msg` / `.description` / `.close-btn` / row buttons via **`[class]`**; see {@link ToasterToastOptions.classNames} (**`!important`** is usually required for overrides). Per-toast {@link ToastOptions.classNames} replaces host/message/close keys; row overrides come from {@link ToasterService.action} / {@link ToasterService.cancel}.
    */
   readonly toastOptions = input<ToasterToastOptions | undefined>();
-
-  /** When true (default), each toast shows a dismiss button; set to false to hide it. */
+  /** When true, each toast shows a dismiss button. */
   readonly closeButton = input(false);
-
   /**
    * Overrides for built-in English `aria-label` values (live region and per-toast dismiss).
    * Omitted keys keep {@link DEFAULT_TOASTER_ARIA_NOTIFICATIONS_REGION} and {@link DEFAULT_TOASTER_ARIA_DISMISS_BUTTON}.
@@ -659,28 +686,35 @@ export class BetterToaster implements OnInit {
     () =>
       this.accessibilityLabels()?.notificationsRegion ?? DEFAULT_TOASTER_ARIA_NOTIFICATIONS_REGION,
   );
-
   /** Resolved `aria-label` for each toast’s dismiss control. */
   protected readonly dismissButtonAriaLabel = computed(
     () => this.accessibilityLabels()?.dismissButton ?? DEFAULT_TOASTER_ARIA_DISMISS_BUTTON,
   );
 
+  /** Vertical offset in px for the toast stack. */
   protected readonly offsetTop = computed(() => resolveToasterOffsetSide(this.offset(), 'top'));
+  /** Horizontal offset in px for the toast stack. */
   protected readonly offsetRight = computed(() => resolveToasterOffsetSide(this.offset(), 'right'));
+  /** Vertical offset in px for the toast stack. */
   protected readonly offsetBottom = computed(() =>
     resolveToasterOffsetSide(this.offset(), 'bottom'),
   );
+  /** Horizontal offset in px for the toast stack. */
   protected readonly offsetLeft = computed(() => resolveToasterOffsetSide(this.offset(), 'left'));
 
+  /** Vertical offset in px for the toast stack on narrow layouts. */
   protected readonly mobileOffsetTop = computed(() =>
     resolveToasterOffsetSide(this.mobileOffset(), 'top'),
   );
+  /** Horizontal offset in px for the toast stack on narrow layouts. */
   protected readonly mobileOffsetRight = computed(() =>
     resolveToasterOffsetSide(this.mobileOffset(), 'right'),
   );
+  /** Vertical offset in px for the toast stack on narrow layouts. */
   protected readonly mobileOffsetBottom = computed(() =>
     resolveToasterOffsetSide(this.mobileOffset(), 'bottom'),
   );
+  /** Horizontal offset in px for the toast stack on narrow layouts. */
   protected readonly mobileOffsetLeft = computed(() =>
     resolveToasterOffsetSide(this.mobileOffset(), 'left'),
   );
@@ -709,6 +743,9 @@ export class BetterToaster implements OnInit {
     this.heights.update((h) => ({ ...h, [toastId]: height }));
   }
 
+  /**
+   * Initializes the toaster service with the default duration.
+   */
   ngOnInit(): void {
     this.toaster.setDefaultDurationMs(this.durationMs());
   }

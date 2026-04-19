@@ -85,10 +85,8 @@
   fill: var(--toast-color);
   color: var(--toast-bg);
 }
-:host(.toast-container[data-theme='dark']):host([data-rich-colors='false'][data-variant='success'])
-  .toast-icon
-  svg,
-:host(.toast-container[data-theme='dark']):host([data-rich-colors='false'][data-variant='success'])
+:host([data-theme='dark'][data-rich-colors='false'][data-variant='success']) .toast-icon svg,
+:host([data-theme='dark'][data-rich-colors='false'][data-variant='success'])
   .toast-icon
   ::ng-deep
   svg {
@@ -96,14 +94,8 @@
   color: var(--toast-color);
 }
 @media (prefers-color-scheme: dark) {
-  :host(.toast-container[data-theme='system']):host(
-      [data-rich-colors='false'][data-variant='success']
-    )
-    .toast-icon
-    svg,
-  :host(.toast-container[data-theme='system']):host(
-      [data-rich-colors='false'][data-variant='success']
-    )
+  :host([data-theme='system'][data-rich-colors='false'][data-variant='success']) .toast-icon svg,
+  :host([data-theme='system'][data-rich-colors='false'][data-variant='success'])
     .toast-icon
     ::ng-deep
     svg {
@@ -116,10 +108,8 @@
   fill: var(--toast-success-text);
   color: var(--toast-success-bg);
 }
-:host(.toast-container[data-theme='dark']):host([data-rich-colors='true'][data-variant='success'])
-  .toast-icon
-  svg,
-:host(.toast-container[data-theme='dark']):host([data-rich-colors='true'][data-variant='success'])
+:host([data-theme='dark'][data-rich-colors='true'][data-variant='success']) .toast-icon svg,
+:host([data-theme='dark'][data-rich-colors='true'][data-variant='success'])
   .toast-icon
   ::ng-deep
   svg {
@@ -127,14 +117,8 @@
   color: var(--toast-success-text);
 }
 @media (prefers-color-scheme: dark) {
-  :host(.toast-container[data-theme='system']):host(
-      [data-rich-colors='true'][data-variant='success']
-    )
-    .toast-icon
-    svg,
-  :host(.toast-container[data-theme='system']):host(
-      [data-rich-colors='true'][data-variant='success']
-    )
+  :host([data-theme='system'][data-rich-colors='true'][data-variant='success']) .toast-icon svg,
+  :host([data-theme='system'][data-rich-colors='true'][data-variant='success'])
     .toast-icon
     ::ng-deep
     svg {
@@ -153,10 +137,8 @@
   fill: var(--toast-color);
   color: var(--toast-bg);
 }
-:host(.toast-container[data-theme='dark']):host([data-rich-colors='false'][data-variant='error'])
-  .toast-icon
-  svg,
-:host(.toast-container[data-theme='dark']):host([data-rich-colors='false'][data-variant='error'])
+:host([data-theme='dark'][data-rich-colors='false'][data-variant='error']) .toast-icon svg,
+:host([data-theme='dark'][data-rich-colors='false'][data-variant='error'])
   .toast-icon
   ::ng-deep
   svg {
@@ -164,14 +146,8 @@
   color: var(--toast-color);
 }
 @media (prefers-color-scheme: dark) {
-  :host(.toast-container[data-theme='system']):host(
-      [data-rich-colors='false'][data-variant='error']
-    )
-    .toast-icon
-    svg,
-  :host(.toast-container[data-theme='system']):host(
-      [data-rich-colors='false'][data-variant='error']
-    )
+  :host([data-theme='system'][data-rich-colors='false'][data-variant='error']) .toast-icon svg,
+  :host([data-theme='system'][data-rich-colors='false'][data-variant='error'])
     .toast-icon
     ::ng-deep
     svg {
@@ -184,10 +160,8 @@
   fill: var(--toast-error-text);
   color: var(--toast-error-bg);
 }
-:host(.toast-container[data-theme='dark']):host([data-rich-colors='true'][data-variant='error'])
-  .toast-icon
-  svg,
-:host(.toast-container[data-theme='dark']):host([data-rich-colors='true'][data-variant='error'])
+:host([data-theme='dark'][data-rich-colors='true'][data-variant='error']) .toast-icon svg,
+:host([data-theme='dark'][data-rich-colors='true'][data-variant='error'])
   .toast-icon
   ::ng-deep
   svg {
@@ -195,10 +169,8 @@
   color: var(--toast-error-text);
 }
 @media (prefers-color-scheme: dark) {
-  :host(.toast-container[data-theme='system']):host([data-rich-colors='true'][data-variant='error'])
-    .toast-icon
-    svg,
-  :host(.toast-container[data-theme='system']):host([data-rich-colors='true'][data-variant='error'])
+  :host([data-theme='system'][data-rich-colors='true'][data-variant='error']) .toast-icon svg,
+  :host([data-theme='system'][data-rich-colors='true'][data-variant='error'])
     .toast-icon
     ::ng-deep
     svg {
@@ -217,10 +189,8 @@
   fill: var(--toast-color);
   color: var(--toast-bg);
 }
-:host(.toast-container[data-theme='dark']):host([data-rich-colors='false'][data-variant='info'])
-  .toast-icon
-  svg,
-:host(.toast-container[data-theme='dark']):host([data-rich-colors='false'][data-variant='info'])
+:host([data-theme='dark'][data-rich-colors='false'][data-variant='info']) .toast-icon svg,
+:host([data-theme='dark'][data-rich-colors='false'][data-variant='info'])
   .toast-icon
   ::ng-deep
   svg {
@@ -228,10 +198,8 @@
   color: var(--toast-color);
 }
 @media (prefers-color-scheme: dark) {
-  :host(.toast-container[data-theme='system']):host([data-rich-colors='false'][data-variant='info'])
-    .toast-icon
-    svg,
-  :host(.toast-container[data-theme='system']):host([data-rich-colors='false'][data-variant='info'])
+  :host([data-theme='system'][data-rich-colors='false'][data-variant='info']) .toast-icon svg,
+  :host([data-theme='system'][data-rich-colors='false'][data-variant='info'])
     .toast-icon
     ::ng-deep
     svg {
@@ -244,21 +212,14 @@
   fill: var(--toast-info-text);
   color: var(--toast-info-bg);
 }
-:host(.toast-container[data-theme='dark']):host([data-rich-colors='true'][data-variant='info'])
-  .toast-icon
-  svg,
-:host(.toast-container[data-theme='dark']):host([data-rich-colors='true'][data-variant='info'])
-  .toast-icon
-  ::ng-deep
-  svg {
+:host([data-theme='dark'][data-rich-colors='true'][data-variant='info']) .toast-icon svg,
+:host([data-theme='dark'][data-rich-colors='true'][data-variant='info']) .toast-icon ::ng-deep svg {
   fill: var(--toast-info-bg);
   color: var(--toast-info-text);
 }
 @media (prefers-color-scheme: dark) {
-  :host(.toast-container[data-theme='system']):host([data-rich-colors='true'][data-variant='info'])
-    .toast-icon
-    svg,
-  :host(.toast-container[data-theme='system']):host([data-rich-colors='true'][data-variant='info'])
+  :host([data-theme='system'][data-rich-colors='true'][data-variant='info']) .toast-icon svg,
+  :host([data-theme='system'][data-rich-colors='true'][data-variant='info'])
     .toast-icon
     ::ng-deep
     svg {
@@ -277,10 +238,8 @@
   fill: var(--toast-color);
   color: var(--toast-bg);
 }
-:host(.toast-container[data-theme='dark']):host([data-rich-colors='false'][data-variant='warning'])
-  .toast-icon
-  svg,
-:host(.toast-container[data-theme='dark']):host([data-rich-colors='false'][data-variant='warning'])
+:host([data-theme='dark'][data-rich-colors='false'][data-variant='warning']) .toast-icon svg,
+:host([data-theme='dark'][data-rich-colors='false'][data-variant='warning'])
   .toast-icon
   ::ng-deep
   svg {
@@ -288,14 +247,8 @@
   color: var(--toast-color);
 }
 @media (prefers-color-scheme: dark) {
-  :host(.toast-container[data-theme='system']):host(
-      [data-rich-colors='false'][data-variant='warning']
-    )
-    .toast-icon
-    svg,
-  :host(.toast-container[data-theme='system']):host(
-      [data-rich-colors='false'][data-variant='warning']
-    )
+  :host([data-theme='system'][data-rich-colors='false'][data-variant='warning']) .toast-icon svg,
+  :host([data-theme='system'][data-rich-colors='false'][data-variant='warning'])
     .toast-icon
     ::ng-deep
     svg {
@@ -308,10 +261,8 @@
   fill: var(--toast-warning-text);
   color: var(--toast-warning-bg);
 }
-:host(.toast-container[data-theme='dark']):host([data-rich-colors='true'][data-variant='warning'])
-  .toast-icon
-  svg,
-:host(.toast-container[data-theme='dark']):host([data-rich-colors='true'][data-variant='warning'])
+:host([data-theme='dark'][data-rich-colors='true'][data-variant='warning']) .toast-icon svg,
+:host([data-theme='dark'][data-rich-colors='true'][data-variant='warning'])
   .toast-icon
   ::ng-deep
   svg {
@@ -319,14 +270,8 @@
   color: var(--toast-warning-text);
 }
 @media (prefers-color-scheme: dark) {
-  :host(.toast-container[data-theme='system']):host(
-      [data-rich-colors='true'][data-variant='warning']
-    )
-    .toast-icon
-    svg,
-  :host(.toast-container[data-theme='system']):host(
-      [data-rich-colors='true'][data-variant='warning']
-    )
+  :host([data-theme='system'][data-rich-colors='true'][data-variant='warning']) .toast-icon svg,
+  :host([data-theme='system'][data-rich-colors='true'][data-variant='warning'])
     .toast-icon
     ::ng-deep
     svg {
@@ -458,14 +403,14 @@
   width: 95%;
   height: 95%;
 }
-:host(.toast-container[data-theme='dark']) .toast-icon svg,
-:host(.toast-container[data-theme='dark']) .toast-icon ::ng-deep svg {
+:host([data-theme='dark']) .toast-icon svg,
+:host([data-theme='dark']) .toast-icon ::ng-deep svg {
   width: 87.5%;
   height: 87.5%;
 }
 @media (prefers-color-scheme: dark) {
-  :host(.toast-container[data-theme='system']) .toast-icon svg,
-  :host(.toast-container[data-theme='system']) .toast-icon ::ng-deep svg {
+  :host([data-theme='system']) .toast-icon svg,
+  :host([data-theme='system']) .toast-icon ::ng-deep svg {
     width: 87.5%;
     height: 87.5%;
   }
