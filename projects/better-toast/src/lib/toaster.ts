@@ -266,21 +266,41 @@ export class BetterToastItem {
 
   /** Toast payload (message, id, variant from the service). */
   toast = input<ToasterItem>();
-
   /**
    * Styles from `<app-toaster [toastOptions]>`; merged with {@link ToasterItem.style} so per-toast keys win.
    */
   toasterStyle = input<Record<string, string | number | undefined> | undefined>();
-
   /**
    * Classes from `<app-toaster [toastOptions]>` — same shape as {@link ToasterToastOptions.classNames}.
    * Merged with {@link ToasterItem.classNames}; per-toast keys replace the same keys from the toaster.
    * Styles for those classes usually need **`!important`** to override the library’s encapsulated CSS; see {@link ToastChromeClassNames}.
    */
   toasterClassNames = input<ToastChromeClassNames | undefined>();
-
   /** Which icon and color treatment to show for this row. */
   variant = input<ToastVariant>('default');
+  /** Vertical stack offset in px; bound to `--offset` on the host for layout. */
+  offset = input.required<number>();
+  /** When false, the dismiss control is not rendered (toasts may still auto-dismiss or be cleared via the service). */
+  closeButton = input(true);
+  /**
+   * Per-variant icon overrides from `<app-toaster [icons]>`.
+   * Each override must be a standalone component whose template includes the SVG artwork.
+   */
+  customIcons = input<ToasterIcons | undefined>();
+  /**
+   * `aria-label` for the dismiss control; set from `<better-toaster [accessibilityLabels]>`.
+   * Default {@link DEFAULT_TOASTER_ARIA_DISMISS_BUTTON}.
+   */
+  dismissButtonAriaLabel = input<string>(DEFAULT_TOASTER_ARIA_DISMISS_BUTTON);
+  /** Stack anchor from `<better-toaster [position]>` — drives swipe axis and `data-swipe-direction`. */
+  stackPosition = input<ToasterPosition>('bottom-right');
+  /**
+   * Color palette from `<better-toaster [theme]>`; mirrored on the host as `data-theme`
+   * so item-scoped CSS can react to the chosen mode without `:host-context()`.
+   */
+  theme = input<ToasterTheme>('system');
+  /** Emits the measured host height in px once after the first render so the parent can stack siblings. */
+  heightChange = output<number>();
 
   /**
    * Stacked title + optional secondary line: {@link ToastVariant} **`description`**, or any variant with
@@ -292,23 +312,14 @@ export class BetterToastItem {
     if (toast.variant === 'description') return true;
     return !!toast.description?.trim();
   });
-
   /** Merged inline styles for the toast (`[toastOptions].style` then per-toast `style`). */
   protected readonly hostStyle = computed(() =>
     mergeToastHostStyles(this.toasterStyle(), this.toast()?.style),
   );
-
   /** Merged `[class]` strings (`[toastOptions].classNames` then per-toast `classNames`). */
   protected readonly resolvedClassNames = computed(() =>
     mergeToastClassNames(this.toasterClassNames(), this.toast()?.classNames),
   );
-
-  /**
-   * Per-variant icon overrides from `<app-toaster [icons]>`.
-   * Each override must be a standalone component whose template includes the SVG artwork.
-   */
-  customIcons = input<ToasterIcons | undefined>();
-
   /** Resolved standalone SVG icon component from `[icons]`, if any (not `null`). */
   protected readonly iconComponent = computed(() => {
     const customIcon = this.customIcons()?.[this.variant()];
@@ -317,7 +328,6 @@ export class BetterToastItem {
     }
     return customIcon;
   });
-
   /**
    * Renders the icon column unless the toast or `[icons]` opts out with `icon: null` / a `null` entry for that variant.
    * The `default` variant has no built-in icon: the column appears only with a per-toast `icon` or `[icons].default`.
@@ -353,43 +363,16 @@ export class BetterToastItem {
 
     return true;
   });
-
-  /** Vertical stack offset in px; bound to `--offset` on the host for layout. */
-  offset = input.required<number>();
-
   /** Bound to {@link ToasterItem.componentInputs} for headless (`NgComponentOutlet`) toasts. */
   protected readonly componentOutletInputs = computed(
     (): Record<string, unknown> => this.toast()?.componentInputs ?? {},
   );
-
   /** When true, host uses no default toast chrome (border, padding, surface) — only stack + motion. */
   protected readonly isHeadless = computed(() => this.toast()?.component != null);
-
-  /** When false, the dismiss control is not rendered (toasts may still auto-dismiss or be cleared via the service). */
-  closeButton = input(true);
-
-  /**
-   * `aria-label` for the dismiss control; set from `<better-toaster [accessibilityLabels]>`.
-   * Default {@link DEFAULT_TOASTER_ARIA_DISMISS_BUTTON}.
-   */
-  dismissButtonAriaLabel = input<string>(DEFAULT_TOASTER_ARIA_DISMISS_BUTTON);
-
-  /** Stack anchor from `<better-toaster [position]>` — drives swipe axis and `data-swipe-direction`. */
-  stackPosition = input<ToasterPosition>('bottom-right');
-
-  /**
-   * Color palette from `<better-toaster [theme]>`; mirrored on the host as `data-theme`
-   * so item-scoped CSS can react to the chosen mode without `:host-context()`.
-   */
-  theme = input<ToasterTheme>('system');
-
   /** `down` when anchored to the bottom (dismiss by swiping down), `up` when anchored to the top. */
   protected readonly swipeDirection = computed(() =>
     swipeDirectionForPosition(this.stackPosition()),
   );
-
-  /** Emits the measured host height in px once after the first render so the parent can stack siblings. */
-  heightChange = output<number>();
 
   /**
    * Emits the measured host height in px once after the first render so the parent can stack siblings.
@@ -444,7 +427,6 @@ export class BetterToastItem {
       this.toaster.pauseAutoDismiss(id);
     }
   }
-
   /**
    * Resumes auto-dismiss when the pointer leaves the toast.
    */
@@ -454,7 +436,6 @@ export class BetterToastItem {
       this.toaster.resumeAutoDismiss(id);
     }
   }
-
   /**
    * Starts tracking the pointer down event.
    * @param event - The pointer down event object.
@@ -464,7 +445,6 @@ export class BetterToastItem {
     this.startY = event.clientY;
     this.pointerId = event.pointerId;
   }
-
   /**
    * Updates the toast position when the pointer moves.
    * @param event - The pointer move event object.
@@ -495,7 +475,6 @@ export class BetterToastItem {
 
     el.style.translate = `0 ${dragDy}px`;
   }
-
   /**
    * Ends tracking the pointer up event and dismisses the toast if the pointer has moved beyond the swipe threshold.
    */
@@ -533,7 +512,6 @@ export class BetterToastItem {
       setTimeout(cleanup, 450);
     }
   }
-
   /**
    * Ends tracking the pointer cancel event and resets the toast position.
    */

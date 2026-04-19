@@ -12,100 +12,80 @@
   --toast-offset-mobile-right: 16px;
 }
 
-.toast-container[data-theme='light'],
-.toast-container[data-theme='system'] {
-  --toast-bg: oklch(100% 0 0);
-  --toast-color: oklch(30% 0 0);
-  --toast-border-color: oklch(92% 0.004 286.32 / 0.65);
-  --toast-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-
-  --toast-cancel-bg: oklch(86.9% 0.005 56.366 / 0.5);
-  --toast-cancel-text: var(--toast-color);
-  --toast-cancel-border: oklch(86.9% 0.005 56.366 / 0.3);
-
-  --toast-success-bg: oklch(97.9% 0.021 166.113);
-  --toast-success-text: oklch(59.6% 0.145 163.225);
-  --toast-success-border: oklch(69.6% 0.17 162.48 / 0.1);
-
-  --toast-error-bg: oklch(97.5% 0.012 25);
-  --toast-error-text: oklch(57.7% 0.245 27.325);
-  --toast-error-border: oklch(80.8% 0.114 19.571 / 0.1);
-
-  --toast-info-bg: oklch(97.7% 0.013 236.62);
-  --toast-info-text: oklch(68.5% 0.169 237.323);
-  --toast-info-border: oklch(82.8% 0.111 230.318 / 0.15);
-
-  --toast-warning-bg: oklch(98.7% 0.022 95.277);
-  --toast-warning-text: oklch(66.6% 0.179 58.318);
-  --toast-warning-border: oklch(76.9% 0.188 70.08 / 0.15);
-
-  --toast-action-bg: var(--color-black);
-  --toast-action-text: var(--color-white);
-  --toast-action-border: var(--color-black);
+/* color-scheme drives the resolution of light-dark() below.
+   - 'light' / 'dark' force a scheme; 'system' follows prefers-color-scheme.
+   color-scheme is inherited, so toast-item children resolve light-dark() the same way. */
+.toast-container[data-theme='light'] {
+  color-scheme: light;
 }
-
 .toast-container[data-theme='dark'] {
-  --toast-bg: oklch(10% 0 0);
-  --toast-color: oklch(98% 0 0);
-  --toast-border-color: oklch(37% 0.013 285.805 / 0.75);
-  --toast-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.5);
-
-  --toast-cancel-bg: oklch(26.8% 0.007 34.298 / 0.7);
-  --toast-cancel-text: var(--toast-color);
-  --toast-cancel-border: oklch(26.8% 0.007 34.298 / 0.7);
-
-  --toast-success-bg: oklch(26.2% 0.051 172.552);
-  --toast-success-text: oklch(92.5% 0.084 155.995);
-  --toast-success-border: oklch(92.5% 0.084 155.995 / 0.1);
-
-  --toast-error-bg: oklch(25.8% 0.092 26.042);
-  --toast-error-text: oklch(88.5% 0.062 18.334);
-  --toast-error-border: oklch(88.5% 0.062 18.334 / 0.125);
-
-  --toast-info-bg: oklch(29.3% 0.066 243.157);
-  --toast-info-text: oklch(90.1% 0.058 230.902);
-  --toast-info-border: oklch(90.1% 0.058 230.902 / 0.125);
-
-  --toast-warning-bg: oklch(28.6% 0.066 53.813);
-  --toast-warning-text: oklch(92.4% 0.12 95.746);
-  --toast-warning-border: oklch(92.4% 0.12 95.746 / 0.125);
+  color-scheme: dark;
 }
-
-@media (prefers-color-scheme: dark) {
-  .toast-container[data-theme='system'] {
-    --toast-bg: oklch(10% 0 0);
-    --toast-color: oklch(98% 0 0);
-    --toast-border-color: oklch(37% 0.013 285.805 / 0.75);
-    --toast-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.5);
-
-    --toast-cancel-bg: oklch(26.8% 0.007 34.298 / 0.7);
-    --toast-cancel-text: var(--toast-color);
-    --toast-cancel-border: oklch(26.8% 0.007 34.298 / 0.7);
-
-    --toast-success-bg: oklch(26.2% 0.051 172.552);
-    --toast-success-text: oklch(92.5% 0.084 155.995);
-    --toast-success-border: oklch(92.5% 0.084 155.995 / 0.1);
-
-    --toast-error-bg: oklch(25.8% 0.092 26.042);
-    --toast-error-text: oklch(88.5% 0.062 18.334);
-    --toast-error-border: oklch(88.5% 0.062 18.334 / 0.125);
-
-    --toast-info-bg: oklch(29.3% 0.066 243.157);
-    --toast-info-text: oklch(90.1% 0.058 230.902);
-    --toast-info-border: oklch(90.1% 0.058 230.902 / 0.125);
-
-    --toast-warning-bg: oklch(28.6% 0.066 53.813);
-    --toast-warning-text: oklch(92.4% 0.12 95.746);
-    --toast-warning-border: oklch(92.4% 0.12 95.746 / 0.125);
-  }
+.toast-container[data-theme='system'] {
+  color-scheme: light dark;
 }
 
 .toast-container {
+  --toast-bg: light-dark(oklch(100% 0 0), oklch(10% 0 0));
+  --toast-color: light-dark(oklch(30% 0 0), oklch(98% 0 0));
+  --toast-border-color: light-dark(oklch(92% 0.004 286.32 / 0.65), oklch(37% 0.013 285.805 / 0.75));
+  /* box-shadow is a composite value, not a color, so light-dark() can't be used here. */
+  --toast-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  --toast-success-bg: light-dark(oklch(97.9% 0.021 166.113), oklch(26.2% 0.051 172.552));
+  --toast-success-text: light-dark(oklch(59.6% 0.145 163.225), oklch(92.5% 0.084 155.995));
+  --toast-success-border: light-dark(
+    oklch(69.6% 0.17 162.48 / 0.1),
+    oklch(92.5% 0.084 155.995 / 0.1)
+  );
+
+  --toast-error-bg: light-dark(oklch(97.5% 0.012 25), oklch(25.8% 0.092 26.042));
+  --toast-error-text: light-dark(oklch(57.7% 0.245 27.325), oklch(88.5% 0.062 18.334));
+  --toast-error-border: light-dark(
+    oklch(80.8% 0.114 19.571 / 0.1),
+    oklch(88.5% 0.062 18.334 / 0.125)
+  );
+
+  --toast-info-bg: light-dark(oklch(97.7% 0.013 236.62), oklch(29.3% 0.066 243.157));
+  --toast-info-text: light-dark(oklch(68.5% 0.169 237.323), oklch(90.1% 0.058 230.902));
+  --toast-info-border: light-dark(
+    oklch(82.8% 0.111 230.318 / 0.15),
+    oklch(90.1% 0.058 230.902 / 0.125)
+  );
+
+  --toast-warning-bg: light-dark(oklch(98.7% 0.022 95.277), oklch(28.6% 0.066 53.813));
+  --toast-warning-text: light-dark(oklch(66.6% 0.179 58.318), oklch(92.4% 0.12 95.746));
+  --toast-warning-border: light-dark(
+    oklch(76.9% 0.188 70.08 / 0.15),
+    oklch(92.4% 0.12 95.746 / 0.125)
+  );
+
+  --toast-action-bg: light-dark(var(--color-black), var(--color-white));
+  --toast-action-text: light-dark(var(--color-white), var(--color-black));
+  --toast-action-border: light-dark(var(--color-black), var(--color-white));
+
+  --toast-cancel-bg: light-dark(oklch(86.9% 0.005 56.366 / 0.3), oklch(26.8% 0.007 34.298 / 0.85));
+  --toast-cancel-text: var(--toast-color);
+  --toast-cancel-border: light-dark(
+    oklch(86.9% 0.005 56.366 / 0.1),
+    oklch(26.8% 0.007 34.298 / 0.5)
+  );
+
   position: fixed;
   z-index: var(--toast-z-index);
   width: auto;
   pointer-events: none;
   overflow: visible;
+}
+
+/* box-shadow is composite, so it can't share light-dark(); override only when dark. */
+.toast-container[data-theme='dark'] {
+  --toast-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.5);
+}
+@media (prefers-color-scheme: dark) {
+  .toast-container[data-theme='system'] {
+    --toast-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.5);
+  }
 }
 
 .toast-container[data-position^='top'] {
