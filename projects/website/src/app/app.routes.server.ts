@@ -10,15 +10,19 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Prerender,
   },
   {
-    path: 'docs/installation',
+    path: 'docs/better-toaster',
     renderMode: RenderMode.Prerender,
   },
   {
-    path: 'docs/usage',
+    path: 'docs/toast-types',
     renderMode: RenderMode.Prerender,
   },
   {
-    path: 'docs/api',
+    path: 'docs/other',
+    renderMode: RenderMode.Prerender,
+  },
+  {
+    path: 'docs/styling',
     renderMode: RenderMode.Prerender,
   },
   {

@@ -2,9 +2,10 @@ import { Routes } from '@angular/router';
 import { Home } from './pages/home/home';
 import { DocsShell } from './pages/docs/docs-shell/docs-shell';
 import { DocGettingStarted } from './pages/docs/doc-getting-started/doc-getting-started';
-import { DocInstallation } from './pages/docs/doc-installation/doc-installation';
-import { DocUsage } from './pages/docs/doc-usage/doc-usage';
-import { DocApi } from './pages/docs/doc-api/doc-api';
+import { DocBetterToaster } from './pages/docs/doc-better-toaster/doc-better-toaster';
+import { DocToastTypes } from './pages/docs/doc-toast-types/doc-toast-types';
+import { DocOther } from './pages/docs/doc-other/doc-other';
+import { DocStyling } from './pages/docs/doc-styling/doc-styling';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -14,9 +15,10 @@ export const routes: Routes = [
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'getting-started' },
       { path: 'getting-started', component: DocGettingStarted },
-      { path: 'installation', component: DocInstallation },
-      { path: 'usage', component: DocUsage },
-      { path: 'api', component: DocApi },
+      { path: 'better-toaster', component: DocBetterToaster },
+      { path: 'toast-types', component: DocToastTypes },
+      { path: 'other', component: DocOther },
+      { path: 'styling', component: DocStyling },
     ],
   },
   { path: '**', redirectTo: '' },
