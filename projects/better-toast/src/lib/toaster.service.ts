@@ -89,7 +89,11 @@ export class ToasterService {
     };
   }
 
-  /** Cancels any auto-dismiss timer for a toast. */
+  /**
+   * Stops any auto-dismiss for this toast: clears a running timeout if present, drops timer state,
+   * and removes the toast from {@link pendingInitialDefaultSyncByToastId} so it is not adjusted
+   * when the host `Toaster` default arrives.
+   */
   private cancelAutoDismiss(id: string): void {
     const state = this.autoDismissByToastId.get(id);
     this.pendingInitialDefaultSyncByToastId.delete(id);
@@ -102,7 +106,11 @@ export class ToasterService {
     this.autoDismissByToastId.delete(id);
   }
 
-  /** Schedules auto-dismiss for a toast. */
+  /**
+   * (Re)starts auto-dismiss from a concrete duration in milliseconds.
+   * Idempotent per toast: always cancels any existing timer first.
+   * Manual dismiss (`Infinity`) and non-positive values do not schedule a timer.
+   */
   private scheduleAutoDismiss(id: string, durationMs: number): void {
     this.cancelAutoDismiss(id);
     if (!shouldScheduleAutoDismiss(durationMs)) {
@@ -115,6 +123,11 @@ export class ToasterService {
     this.autoDismissByToastId.set(id, { kind: 'scheduled', timer, deadline });
   }
 
+  /**
+   * Applies the resolved duration from {@link resolveDuration} and, when the toast used the
+   * service fallback before the host `Toaster` registered `[duration]`, records creation time so
+   * {@link syncPendingInitialDefaultDurations} can stretch or shorten the timer once the real default is known.
+   */
   private scheduleResolvedAutoDismiss(id: string, duration: ResolvedToastDuration): void {
     this.scheduleAutoDismiss(id, duration.durationMs);
     if (duration.syncWithInitialToasterDefault) {
@@ -122,6 +135,11 @@ export class ToasterService {
     }
   }
 
+  /**
+   * Called on first {@link setDefaultDurationMs} from `Toaster`. For toasts that were shown while
+   * only the library default applied, recomputes remaining time from each toast’s creation stamp
+   * so total visible time matches the host default instead of resetting the full interval.
+   */
   private syncPendingInitialDefaultDurations(durationMs: number): void {
     const pendingEntries = [...this.pendingInitialDefaultSyncByToastId.entries()];
     this.pendingInitialDefaultSyncByToastId.clear();
@@ -147,6 +165,8 @@ export class ToasterService {
   /**
    * Pauses the auto-dismiss timer while the pointer is over the toast (e.g. hover).
    * No-op if the toast has no active auto-dismiss.
+   *
+   * @param id The toast ID.
    */
   pauseAutoDismiss(id: string): void {
     const state = this.autoDismissByToastId.get(id);
@@ -160,6 +180,8 @@ export class ToasterService {
 
   /**
    * Resumes a paused auto-dismiss with the remaining time from {@link pauseAutoDismiss}.
+   *
+   * @param id The toast ID.
    */
   resumeAutoDismiss(id: string): void {
     const state = this.autoDismissByToastId.get(id);
@@ -178,11 +200,8 @@ export class ToasterService {
   /**
    * Display a neutral (default) toast notification.
    *
-   * If `options` or `options.durationMs` are not provided, the toast will use the duration value from `<app-toaster [duration]>`.
-   * If no `[duration]` is set in the toaster, it falls back to {@link DEFAULT_TOAST_DURATION_MS}.
-   *
    * @param message The toast content.
-   * @param options Optional configuration (icon, custom duration, etc).
+   * @param options Optional configuration object {@link ToastOptions}.
    * @returns The toast ID, useful for programmatic dismissal.
    */
   show(message: string, options?: ToastOptions): string {
@@ -190,12 +209,11 @@ export class ToasterService {
   }
 
   /**
-   * Display a toast using the **`description`** variant: same neutral chrome as **`default`** (icon rules, colors).
-   * The message is the title; pass {@link ToastOptions.description} for a secondary line. You can also pass
-   * `description` on `show` / `success` / etc. to get the column layout with that variant’s icon and styling.
+   * Display a toast using the **`description`** variant: same neutral chrome as **`default`**.
    *
    * @param message Title line.
-   * @param options Optional configuration (including `description` for the body below the title).
+   * @param options Optional configuration object {@link ToastOptions}.
+   * @returns The toast ID, useful for programmatic dismissal.
    */
   description(message: string, options?: ToastOptions): string {
     return this.add(message, 'description', this.resolveDuration(options?.durationMs), options);
@@ -204,11 +222,8 @@ export class ToasterService {
   /**
    * Display a success toast notification.
    *
-   * If `options` or `options.durationMs` are not provided, the toast will use the duration value from `<app-toaster [duration]>`.
-   * If no `[duration]` is set in the toaster, it falls back to {@link DEFAULT_TOAST_DURATION_MS}.
-   *
    * @param message The toast content.
-   * @param options Optional configuration (icon, custom duration, etc).
+   * @param options Optional configuration object {@link ToastOptions}.
    * @returns The toast ID, useful for programmatic dismissal.
    */
   success(message: string, options?: ToastOptions): string {
@@ -218,11 +233,8 @@ export class ToasterService {
   /**
    * Display an error toast notification.
    *
-   * If `options` or `options.durationMs` are not provided, the toast will use the duration value from `<app-toaster [duration]>`.
-   * If no `[duration]` is set in the toaster, it falls back to {@link DEFAULT_TOAST_DURATION_MS}.
-   *
    * @param message The toast content.
-   * @param options Optional configuration (icon, custom duration, etc).
+   * @param options Optional configuration object {@link ToastOptions}.
    * @returns The toast ID, useful for programmatic dismissal.
    */
   error(message: string, options?: ToastOptions): string {
@@ -232,11 +244,8 @@ export class ToasterService {
   /**
    * Display an info toast notification.
    *
-   * If `options` or `options.durationMs` are not provided, the toast will use the duration value from `<app-toaster [duration]>`.
-   * If no `[duration]` is set in the toaster, it falls back to {@link DEFAULT_TOAST_DURATION_MS}.
-   *
    * @param message The toast content.
-   * @param options Optional configuration (icon, custom duration, etc).
+   * @param options Optional configuration object {@link ToastOptions}.
    * @returns The toast ID, useful for programmatic dismissal.
    */
   info(message: string, options?: ToastOptions): string {
@@ -246,11 +255,8 @@ export class ToasterService {
   /**
    * Display a warning toast notification.
    *
-   * If `options` or `options.durationMs` are not provided, the toast will use the duration value from `<app-toaster [duration]>`.
-   * If no `[duration]` is set in the toaster, it falls back to {@link DEFAULT_TOAST_DURATION_MS}.
-   *
    * @param message The toast content.
-   * @param options Optional configuration (icon, custom duration, etc).
+   * @param options Optional configuration object {@link ToastOptions}.
    * @returns The toast ID, useful for programmatic dismissal.
    */
   warning(message: string, options?: ToastOptions): string {
@@ -258,12 +264,11 @@ export class ToasterService {
   }
 
   /**
-   * Show a toast whose body is custom HTML inside the usual toast chrome (animations, close button).
+   * Show a toast whose body is custom HTML inside the usual toast chrome.
    * The string is bound with `[innerHTML]` and sanitized by Angular like any template HTML.
-   * Uses the `default` variant. Omit `durationMs` to use `<app-toaster [duration]>` (or {@link DEFAULT_TOAST_DURATION_MS}). Use {@link TOAST_DURATION_MANUAL_DISMISS} (or `0`) to stay until dismissed.
    *
    * @param html The custom HTML content.
-   * @param options Optional configuration (icon, custom duration, etc).
+   * @param options Optional configuration object {@link ToastOptions}.
    * @returns The toast ID, useful for programmatic dismissal.
    */
   custom(html: string, options?: ToastOptions): string {
@@ -271,17 +276,14 @@ export class ToasterService {
   }
 
   /**
-   * Show a toast whose body is a **standalone** Angular component on a **headless** host: no default border,
-   * padding, shadow, or surface color — only stack position and enter/leave motion. No close button is shown;
-   * dismiss with `durationMs` / `<app-toaster [duration]>` or call {@link dismiss} with the returned id.
-   * The default message + icon row is omitted; the component supplies all visuals.
+   * Show a toast whose body is a **standalone** Angular component on a headless host: no default border,
+   * padding, shadow, or surface color — only stack position and enter/leave animations; the component supplies all visuals.
    *
-   * Pass {@link HeadlessToastOptions.inputs} to feed `input()` / `@Input()` on that component.
-   * The component also receives **`toastId`** (matches the returned id) for programmatic dismiss.
-   * Omit `durationMs` to use `<app-toaster [duration]>` (or {@link DEFAULT_TOAST_DURATION_MS}).
+   * Pass {@link HeadlessToastOptions.inputs} to feed `input()` on that component.
+   * The component also automatically receives **`toastId`** (matches the returned id) for programmatic dismiss inside the component.
    *
    * @param component The component class (must be usable with `NgComponentOutlet`).
-   * @param options Optional duration and component `inputs`.
+   * @param options Optional configuration object {@link HeadlessToastOptions}.
    * @returns The toast ID, useful for programmatic dismissal.
    */
   headless(component: Type<unknown>, options?: HeadlessToastOptions): string {
@@ -296,7 +298,7 @@ export class ToasterService {
    * The literal **`"Infinity"`** (or {@link TOAST_DURATION_MANUAL_DISMISS} / `0`) keeps the toast until dismissed.
    *
    * @param message The toast content.
-   * @param options Optional configuration (icon, custom duration, etc).
+   * @param options Optional configuration object {@link ToastOptions}.
    * @returns The toast ID, useful for programmatic dismissal.
    */
   loading(message: string, options?: ToastOptions): string {
@@ -314,8 +316,12 @@ export class ToasterService {
   }
 
   /**
-   * Toast with message and a single **action** button (no icon). Default label is {@link DEFAULT_TOAST_ACTION_LABEL}.
-   * Pass `action.label` and `action.onClick` in {@link ToastActionMethodOptions}.
+   * Toast with message and a single **action** button. Default action button label is {@link DEFAULT_TOAST_ACTION_LABEL}.
+   * Pass `action.label` and `action.onClick` in {@link ToastActionMethodOptions} to customize the action button.
+   *
+   * @param message The toast content.
+   * @param options Optional configuration object {@link ToastActionMethodOptions}.
+   * @returns The toast ID, useful for programmatic dismissal.
    */
   action(message: string, options: ToastActionMethodOptions): string {
     const { action: actionCfg, ...rest } = options;
@@ -334,8 +340,12 @@ export class ToasterService {
   }
 
   /**
-   * Toast with message and a **cancel**-style button (no icon). Default label is {@link DEFAULT_TOAST_CANCEL_LABEL}.
-   * Pass `cancel.label` and `cancel.onClick` in {@link ToastCancelMethodOptions}.
+   * Toast with message and a **cancel**-style button. Default cancel button label is {@link DEFAULT_TOAST_CANCEL_LABEL}.
+   * Pass `cancel.label` and `cancel.onClick` in {@link ToastCancelMethodOptions} to customize the cancel button.
+   *
+   * @param message The toast content.
+   * @param options Optional configuration object {@link ToastCancelMethodOptions}.
+   * @returns The toast ID, useful for programmatic dismissal.
    */
   cancel(message: string, options: ToastCancelMethodOptions): string {
     const { cancel: cancelCfg, ...rest } = options;
@@ -376,6 +386,33 @@ export class ToasterService {
         throw reason;
       },
     );
+  }
+
+  /**
+   * Dismiss a toast notification.
+   *
+   * @param id The toast ID.
+   */
+  dismiss(id: string): void {
+    this.removeToast(id, 'manual');
+  }
+
+  /**
+   * Clear all toast notifications.
+   */
+  clear(): void {
+    const snapshot = [...this._toasts()];
+    for (const state of this.autoDismissByToastId.values()) {
+      if (state.kind === 'scheduled') {
+        globalThis.clearTimeout(state.timer);
+      }
+    }
+    this.autoDismissByToastId.clear();
+    this.pendingInitialDefaultSyncByToastId.clear();
+    this._toasts.set([]);
+    for (const toast of snapshot) {
+      toast.onDismiss?.();
+    }
   }
 
   private add(
@@ -495,33 +532,6 @@ export class ToasterService {
     );
     if (found) {
       this.scheduleResolvedAutoDismiss(id, duration);
-    }
-  }
-
-  /**
-   * Dismiss a toast notification.
-   *
-   * @param id The toast ID.
-   */
-  dismiss(id: string): void {
-    this.removeToast(id, 'manual');
-  }
-
-  /**
-   * Clear all toast notifications.
-   */
-  clear(): void {
-    const snapshot = [...this._toasts()];
-    for (const state of this.autoDismissByToastId.values()) {
-      if (state.kind === 'scheduled') {
-        globalThis.clearTimeout(state.timer);
-      }
-    }
-    this.autoDismissByToastId.clear();
-    this.pendingInitialDefaultSyncByToastId.clear();
-    this._toasts.set([]);
-    for (const toast of snapshot) {
-      toast.onDismiss?.();
     }
   }
 
