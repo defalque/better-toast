@@ -25,6 +25,10 @@ html {
   @apply block text-[13px] leading-6 whitespace-pre-wrap wrap-break-word font-mono;
 }
 
+.active {
+  @apply text-zinc-800 dark:text-white bg-zinc-200/50 dark:bg-zinc-800/90;
+}
+
 .toast-type-demo-preview pre {
   margin: 0;
 }

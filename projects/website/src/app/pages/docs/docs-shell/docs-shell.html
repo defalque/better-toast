@@ -1,0 +1,78 @@
+<div class="flex flex-col min-h-screen">
+  <aside
+    class="w-64 border-r border-dashed border-zinc-200 dark:border-zinc-800 fixed left-0 top-0 bottom-0 bg-gray-100/60 dark:bg-zinc-900 divide-y divide-zinc-200 dark:divide-zinc-800 divide-dashed"
+  >
+    <div class="p-4 space-x-2">
+      <a href="/" class="text-xl font-semibold text-black dark:text-white">Better Toast</a>
+      <span class="text-xs text-zinc-600 dark:text-zinc-500 self-end font-medium"
+        >by
+        <a
+          href="https://marcodefalco.dev"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-orange-500 dark:text-orange-400"
+          >Marco De Falco</a
+        ></span
+      >
+    </div>
+    <ul
+      class="flex flex-col gap-6 p-4 font-medium divide-y divide-zinc-200 dark:divide-zinc-800 divide-dashed"
+    >
+      <div class="pb-6 space-y-1">
+        <p class="px-2 text-xs text-zinc-400 dark:text-zinc-500">Basics</p>
+        <li class="w-full">
+          <a
+            [routerLink]="['/docs/getting-started']"
+            routerLinkActive="active"
+            class="text-sm text-zinc-600/90 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/90 px-2 py-1 rounded-md block"
+            >Getting Started</a
+          >
+        </li>
+      </div>
+
+      <div class="pb-6 space-y-1">
+        <p class="px-2 text-xs text-zinc-400 dark:text-zinc-500">API</p>
+        <li class="w-full">
+          <a
+            [routerLink]="['/docs/better-toaster']"
+            routerLinkActive="active"
+            class="text-sm text-zinc-600/90 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/90 px-2 py-1 rounded-md block"
+            >Better Toaster</a
+          >
+        </li>
+        <li class="w-full">
+          <a
+            [routerLink]="['/docs/toast-types']"
+            routerLinkActive="active"
+            class="text-sm text-zinc-600/90 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/90 px-2 py-1 rounded-md block"
+            >Toast types</a
+          >
+        </li>
+        <li class="w-full">
+          <a
+            [routerLink]="['/docs/other']"
+            routerLinkActive="active"
+            class="text-sm text-zinc-600/90 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/90 px-2 py-1 rounded-md block"
+            >Other</a
+          >
+        </li>
+      </div>
+
+      <div class="pb-6 space-y-1">
+        <span class="px-2 text-xs text-zinc-400 dark:text-zinc-500">Guides</span>
+        <li class="w-full">
+          <a
+            [routerLink]="['/docs/styling']"
+            routerLinkActive="active"
+            class="text-sm text-zinc-600/90 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/90 px-2 py-1 rounded-md block"
+            >Styling</a
+          >
+        </li>
+      </div>
+    </ul>
+  </aside>
+
+  <main class="flex-1 p-4 ml-64 dark:bg-zinc-900/97">
+    <router-outlet />
+  </main>
+</div>
