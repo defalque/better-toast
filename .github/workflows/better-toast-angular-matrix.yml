@@ -1,0 +1,52 @@
+# Runs better-toast unit tests and library build against multiple Angular majors.
+# Website-only deps (e.g. @lucide/angular) may not match older Angular peers; installs use --legacy-peer-deps.
+
+name: better-toast Angular matrix
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - angular: '20'
+            typescript: '~5.8.0'
+          - angular: '21'
+            typescript: '~5.9.0'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Align workspace to Angular ${{ matrix.angular }}
+        run: |
+          npm install --legacy-peer-deps \
+            @angular/common@${{ matrix.angular }} \
+            @angular/compiler@${{ matrix.angular }} \
+            @angular/core@${{ matrix.angular }} \
+            @angular/forms@${{ matrix.angular }} \
+            @angular/platform-browser@${{ matrix.angular }} \
+            @angular/platform-server@${{ matrix.angular }} \
+            @angular/router@${{ matrix.angular }} \
+            @angular/ssr@${{ matrix.angular }} \
+            @angular/build@${{ matrix.angular }} \
+            @angular/cli@${{ matrix.angular }} \
+            @angular/compiler-cli@${{ matrix.angular }} \
+            ng-packagr@${{ matrix.angular }} \
+            typescript@${{ matrix.typescript }}
+
+      - name: Build library (ng-packagr)
+        run: npx ng build better-toast
+
+      - name: Unit tests (better-toast)
+        run: npm run test:better-toast

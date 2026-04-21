@@ -5,20 +5,20 @@ html {
 }
 
 .landing-page-h2 {
-  @apply text-lg font-medium;
+  @apply text-zinc-900 dark:text-zinc-100 text-lg font-medium;
 }
 
 .landing-page-paragraph {
   @apply text-pretty;
-  @apply text-black/80;
+  @apply text-zinc-900/80 dark:text-zinc-50;
 }
 
 .landing-page-button {
-  @apply border border-zinc-200 text-[0.85rem] py-2.5 rounded-md hover:bg-zinc-200/70 bg-zinc-50 transition-all active:scale-95 cursor-pointer;
+  @apply text-zinc-900 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-800/50 text-[0.85rem] py-2.5 rounded-md hover:bg-zinc-200/70 dark:hover:bg-zinc-800/50 bg-zinc-50 dark:bg-zinc-950/90 transition-all active:scale-95 cursor-pointer;
 }
 
 .landing-page-pre {
-  @apply bg-linear-to-tl from-white to-gray-100/50 border border-zinc-300/50 rounded-md p-4 overflow-x-hidden;
+  @apply bg-linear-to-tl from-white to-gray-100/50 dark:from-zinc-950/90 dark:to-zinc-950/90 border border-zinc-300/50 dark:border-zinc-800/50 rounded-md p-4 overflow-x-hidden;
 }
 
 .landing-page-code {
@@ -48,6 +48,11 @@ html {
   background: transparent;
   color: var(--color-black);
 }
+@media (prefers-color-scheme: dark) {
+  .code-snippet code.hljs {
+    color: var(--color-white);
+  }
+}
 
 .hljs {
   background: #000;
@@ -58,6 +63,12 @@ html {
 .hljs-doctag {
   color: var(--color-zinc-600);
 }
+@media (prefers-color-scheme: dark) {
+  .hljs-string,
+  .hljs-doctag {
+    color: var(--color-zinc-500);
+  }
+}
 
 .hljs-keyword,
 .hljs-selector-tag,
@@ -65,11 +76,25 @@ html {
   color: var(--color-zinc-800);
   font-weight: 500;
 }
+@media (prefers-color-scheme: dark) {
+  .hljs-keyword,
+  .hljs-selector-tag,
+  .hljs-subst {
+    color: var(--color-zinc-300);
+  }
+}
 
 .hljs-meta,
 .hljs-selector-id,
 .hljs-selector-class {
   color: var(--color-black);
+}
+@media (prefers-color-scheme: dark) {
+  .hljs-meta,
+  .hljs-selector-id,
+  .hljs-selector-class {
+    color: var(--color-white);
+  }
 }
 
 .hljs-type,
@@ -77,20 +102,44 @@ html {
   color: var(--color-zinc-500);
   font-weight: 500;
 }
+@media (prefers-color-scheme: dark) {
+  .hljs-type,
+  .hljs-built_in {
+    color: var(--color-zinc-300);
+  }
+}
 
 .hljs-title,
 .hljs-section {
   color: var(--color-zinc-800);
   font-weight: 600;
 }
+@media (prefers-color-scheme: dark) {
+  .hljs-title,
+  .hljs-section {
+    color: var(--color-white);
+  }
+}
 
 .hljs-attr,
 .hljs-attribute {
   color: var(--color-zinc-500);
+}
+@media (prefers-color-scheme: dark) {
+  .hljs-attr,
+  .hljs-attribute {
+    color: var(--color-zinc-300);
+  }
 }
 
 .hljs-comment,
 .hljs-quote {
   color: var(--color-zinc-500);
   font-style: italic;
+}
+@media (prefers-color-scheme: dark) {
+  .hljs-comment,
+  .hljs-quote {
+    color: var(--color-zinc-400);
+  }
 }

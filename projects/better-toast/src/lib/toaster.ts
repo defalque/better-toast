@@ -649,7 +649,7 @@ export class BetterToaster implements OnInit {
    */
   readonly toastOptions = input<ToasterToastOptions | undefined>();
   /** When true, each toast shows a dismiss button. */
-  readonly closeButton = input(false);
+  readonly closeButton = input(true);
   /**
    * Overrides for built-in English `aria-label` values (live region and per-toast dismiss).
    * Omitted keys keep {@link DEFAULT_TOASTER_ARIA_NOTIFICATIONS_REGION} and {@link DEFAULT_TOASTER_ARIA_DISMISS_BUTTON}.

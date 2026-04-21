@@ -79,7 +79,7 @@ describe('better-toast', () => {
 
     const host = fixture.nativeElement.querySelector('li.toast') as HTMLElement;
     expect(host.getAttribute('data-variant')).toBe('description');
-    const stack = host.querySelector('.toast-text-stack');
+    const stack = host.querySelector('.stack');
     expect(stack).toBeTruthy();
     expect(host.querySelector('.msg')?.textContent?.trim()).toBe('Hello');
     expect(host.querySelector('.description')?.textContent?.trim()).toBe('Details here');
@@ -101,7 +101,7 @@ describe('better-toast', () => {
 
     const host = fixture.nativeElement.querySelector('li.toast') as HTMLElement;
     expect(host.getAttribute('data-variant')).toBe('success');
-    expect(host.querySelector('.toast-text-stack')).toBeTruthy();
+    expect(host.querySelector('.stack')).toBeTruthy();
     expect(host.querySelector('.msg')?.textContent?.trim()).toBe('Saved');
     expect(host.querySelector('.description')?.textContent?.trim()).toBe(
       'Your file is in Downloads.',
@@ -581,7 +581,7 @@ describe('better-toast', () => {
 
     const host = fixture.nativeElement.querySelector('li.toast') as HTMLElement;
     expect(host.querySelector('.toast-custom')?.innerHTML).toContain('Rich');
-    expect(host.querySelector('.toast-text-stack')).toBeNull();
+    expect(host.querySelector('.stack')).toBeNull();
     expect(host.querySelector('.toast-icon')).toBeNull();
     expect(host.querySelector('.msg')).toBeNull();
   });

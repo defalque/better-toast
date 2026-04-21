@@ -246,7 +246,7 @@ export interface ToasterItem {
   /** Secondary line; see {@link ToastOptions.description}. */
   readonly description?: string;
   readonly variant: ToastVariant;
-  /** When set, replaces the default icon + message; body is `.toast-custom` only (no `.msg` / `.toast-text-stack`), still sanitized by Angular. */
+  /** When set, replaces the default icon + message; body is `.toast-custom` only (no `.msg` / `.stack`), still sanitized by Angular. */
   readonly html?: string;
   /**
    * When set (without `html`), the toast body is this standalone component only — same stack and motion as other toasts, without host chrome or a close button.
