@@ -25,6 +25,14 @@ html {
   @apply block text-[13px] leading-6 whitespace-pre-wrap wrap-break-word font-mono;
 }
 
+.doc-container {
+  @apply flex max-w-2xl mx-auto flex-1 flex-col text-[17px];
+}
+
+.toc {
+  @apply sticky top-22 right-0 hidden h-full shrink-0 flex-col gap-2 text-sm font-medium xl:flex;
+}
+
 .active {
   @apply text-zinc-800 dark:text-white bg-zinc-200/50 dark:bg-zinc-800/90;
 }
