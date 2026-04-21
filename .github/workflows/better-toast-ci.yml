@@ -1,0 +1,44 @@
+# Runs better-toast unit tests and library build on Angular 21 (library supports 21+ only).
+# Website-only deps (e.g. @lucide/angular) may not match all peer ranges; installs use --legacy-peer-deps.
+
+name: better-toast CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Align workspace to Angular 21
+        run: |
+          npm install --legacy-peer-deps \
+            @angular/common@21 \
+            @angular/compiler@21 \
+            @angular/core@21 \
+            @angular/forms@21 \
+            @angular/platform-browser@21 \
+            @angular/platform-server@21 \
+            @angular/router@21 \
+            @angular/ssr@21 \
+            @angular/build@21 \
+            @angular/cli@21 \
+            @angular/compiler-cli@21 \
+            ng-packagr@21 \
+            typescript@~5.9.0
+
+      - name: Build library (ng-packagr)
+        run: npx ng build better-toast
+
+      - name: Unit tests (better-toast)
+        run: npm run test:better-toast
