@@ -14,4 +14,12 @@ export class App {
   protected readonly helper = inject(HelperService);
 
   protected readonly richColors = computed(() => this.helper.richColors());
+
+  /* ngOnInit(): void {
+    this.toaster.show('Hello, world!');
+  }
+
+  ngAfterViewInit(): void {
+    this.toaster.show('Hello, world!');
+  } */
 }

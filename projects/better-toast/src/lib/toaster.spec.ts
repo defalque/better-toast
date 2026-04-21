@@ -31,7 +31,7 @@ class StartupDurationHost {
   private readonly toaster = inject(ToasterService);
 
   ngOnInit(): void {
-    this.toaster.show('Startup toast');
+    this.toaster.show('Startup toast', { durationMs: 'Infinity' });
   }
 }
 
@@ -136,7 +136,7 @@ describe('better-toast', () => {
     }
   });
 
-  it('uses the toaster [duration] for toasts shown during host ngOnInit', async () => {
+  it('allows manual dismiss when toast is shown from host ngOnInit with per-toast durationMs', async () => {
     vi.useFakeTimers();
     try {
       TestBed.configureTestingModule({ imports: [StartupDurationHost] });
