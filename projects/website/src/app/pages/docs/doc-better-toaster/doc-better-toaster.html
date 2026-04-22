@@ -1,5 +1,7 @@
 <div class="flex w-full gap-2">
-  <div class="doc-container divide-y divide-dashed divide-zinc-200 dark:divide-zinc-600/50">
+  <div
+    class="doc-container divide-y divide-dashed divide-zinc-200 dark:divide-zinc-600/50 overflow-x-auto"
+  >
     <div class="pb-16">
       <h1 class="text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
         Better Toaster
@@ -159,7 +161,7 @@
           API Reference
         </h2>
         <div
-          class="w-full overflow-hidden rounded-lg border border-zinc-200 dark:border-zinc-600/50"
+          class="w-full overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-600/50"
         >
           <table class="w-full">
             <thead
@@ -247,8 +249,13 @@
                 <td
                   class="text-left text-zinc-900 dark:text-zinc-500 font-medium text-sm px-6 py-4 align-top"
                 >
-                  <code class="p-code-snippet text-sm!">string</code> |
-                  <code class="p-code-snippet text-sm!">object</code>
+                  <div class="flex flex-wrap gap-2 items-baseline">
+                    <code class="p-code-snippet text-sm!">string</code>
+                    <span class="text-zinc-400 dark:text-zinc-600 select-none" aria-hidden="true"
+                      >|</span
+                    >
+                    <code class="p-code-snippet text-sm!">object</code>
+                  </div>
                 </td>
                 <td
                   class="text-left text-zinc-900 dark:text-zinc-300 font-medium text-sm px-6 py-4 align-top whitespace-nowrap"
@@ -266,8 +273,13 @@
                 <td
                   class="text-left text-zinc-900 dark:text-zinc-500 font-medium text-sm px-6 py-4 align-top"
                 >
-                  <code class="p-code-snippet text-sm!">string</code> |
-                  <code class="p-code-snippet text-sm!">object</code>
+                  <div class="flex flex-wrap gap-2 items-baseline">
+                    <code class="p-code-snippet text-sm!">string</code>
+                    <span class="text-zinc-400 dark:text-zinc-600 select-none" aria-hidden="true"
+                      >|</span
+                    >
+                    <code class="p-code-snippet text-sm!">object</code>
+                  </div>
                 </td>
                 <td
                   class="text-left text-zinc-900 dark:text-zinc-300 font-medium text-sm px-6 py-4 align-top whitespace-nowrap"
@@ -404,7 +416,7 @@
       <a href="/docs/toast-types" class="flex items-end gap-2">
         <div class="flex flex-col items-end">
           <p class="text-zinc-600 dark:text-zinc-400 text-[13px]">Next</p>
-          <p class="text-zinc-600 dark:text-zinc-200 text-sm font-medium">Toast Types</p>
+          <p class="text-zinc-600 dark:text-zinc-200 text-sm font-medium">Toast types</p>
         </div>
         <svg
           xmlns="http://www.w3.org/2000/svg"
