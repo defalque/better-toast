@@ -1,113 +1,136 @@
 <div class="flex w-full gap-2">
-  <div class="doc-container">
-    <h1 class="text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-      Getting Started
-    </h1>
-    <p class="text-zinc-700 dark:text-zinc-300 mt-4">
-      Get started with Better Toast by following the steps below.
-    </p>
-
-    <div class="space-y-4 pt-20" id="installation">
-      <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
-        Installation
-      </h2>
-      <p class="text-zinc-700 dark:text-zinc-300">
-        Install Better Toast using your favorite package manager.
+  <div class="doc-container divide-y divide-dashed divide-zinc-200 dark:divide-zinc-600/50">
+    <div class="pb-16">
+      <h1 class="text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+        Getting Started
+      </h1>
+      <p class="text-zinc-700 dark:text-zinc-300 mt-4">
+        Get started with Better Toast by following the steps below.
       </p>
-      <div>
-        <div
-          class="w-full rounded-md rounded-b-none bg-zinc-100 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800/50 flex items-center gap-2 px-4 py-2"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="var(--color-zinc-500)"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="size-4"
+
+      <div class="space-y-4 pt-20" id="installation">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Installation
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300">
+          Install Better Toast using your favorite package manager.
+        </p>
+        <div>
+          <div
+            class="w-full rounded-md rounded-b-none bg-zinc-100 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800/50 flex items-center gap-2 px-4 py-2"
           >
-            <path d="M12 19h8" />
-            <path d="m4 17 6-6-6-6" />
-          </svg>
-          <span class="text-zinc-500 text-xs font-mono">Terminal</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="var(--color-zinc-500)"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="size-4"
+            >
+              <path d="M12 19h8" />
+              <path d="m4 17 6-6-6-6" />
+            </svg>
+            <span class="text-zinc-500 text-xs font-mono">Terminal</span>
+          </div>
+          <pre
+            class="landing-page-pre border-t-0! rounded-t-none!"
+          ><code class="landing-page-code language-bash dark:text-white!" [innerHTML]="toastInstallationSource()"></code></pre>
         </div>
-        <pre
-          class="landing-page-pre border-t-0! rounded-t-none!"
-        ><code class="landing-page-code language-bash dark:text-white!" [innerHTML]="toastInstallationSource()"></code></pre>
+      </div>
+
+      <div class="space-y-4 pt-20" id="add-better-toaster-to-your-app">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Add better-toaster to your app
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300">Place the toaster in the root of your app.</p>
+        <div>
+          <div
+            class="w-full rounded-md rounded-b-none bg-zinc-100 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800/50 flex items-center gap-2 px-4 py-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="var(--color-zinc-500)"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="size-4"
+            >
+              <path
+                d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
+              />
+              <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+            </svg>
+            <span class="text-zinc-500 text-xs font-mono">app.ts</span>
+          </div>
+          <pre
+            class="landing-page-pre border-t-0! rounded-t-none!"
+          ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="toastUsageSource()"></code></pre>
+        </div>
+      </div>
+
+      <div class="space-y-4 pt-20" id="render-a-toast">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Render a toast
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300">
+          For all options, view the
+          <a
+            href="/docs/toast-types"
+            class="text-black dark:text-white underline cursor-pointer underline-offset-2"
+            >toast page</a
+          >
+        </p>
+        <div>
+          <div
+            class="w-full rounded-md rounded-b-none bg-zinc-100 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800/50 flex items-center gap-2 px-4 py-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="var(--color-zinc-500)"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="size-4"
+            >
+              <path
+                d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
+              />
+              <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+            </svg>
+            <span class="text-zinc-500 text-xs font-mono">app.ts</span>
+          </div>
+          <pre
+            class="landing-page-pre border-t-0! rounded-t-none!"
+          ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="toastTypesSource()"></code></pre>
+        </div>
       </div>
     </div>
 
-    <div class="space-y-4 pt-20" id="add-better-toaster-to-your-app">
-      <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
-        Add better-toaster to your app
-      </h2>
-      <p class="text-zinc-700 dark:text-zinc-300">Place the toaster in the root of your app.</p>
-      <div>
-        <div
-          class="w-full rounded-md rounded-b-none bg-zinc-100 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800/50 flex items-center gap-2 px-4 py-2"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="var(--color-zinc-500)"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="size-4"
-          >
-            <path
-              d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
-            />
-            <path d="M14 2v5a1 1 0 0 0 1 1h5" />
-          </svg>
-          <span class="text-zinc-500 text-xs font-mono">app.ts</span>
+    <div class="flex justify-end mt-6">
+      <a href="/docs/better-toaster" class="flex items-end gap-2">
+        <div class="flex flex-col items-end">
+          <p class="text-zinc-600 dark:text-zinc-400 text-[13px]">Next</p>
+          <p class="text-zinc-600 dark:text-zinc-200 text-sm font-medium">Better Toaster</p>
         </div>
-        <pre
-          class="landing-page-pre border-t-0! rounded-t-none!"
-        ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="toastUsageSource()"></code></pre>
-      </div>
-    </div>
-
-    <div class="space-y-4 pt-20" id="render-a-toast">
-      <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
-        Render a toast
-      </h2>
-      <p class="text-zinc-700 dark:text-zinc-300">
-        For all options, view the
-        <a
-          href="/docs/toast-types"
-          class="text-black dark:text-white underline cursor-pointer underline-offset-2"
-          >toast page</a
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="var(--color-zinc-500)"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="size-4.5"
         >
-      </p>
-      <div>
-        <div
-          class="w-full rounded-md rounded-b-none bg-zinc-100 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800/50 flex items-center gap-2 px-4 py-2"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="var(--color-zinc-500)"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="size-4"
-          >
-            <path
-              d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
-            />
-            <path d="M14 2v5a1 1 0 0 0 1 1h5" />
-          </svg>
-          <span class="text-zinc-500 text-xs font-mono">app.ts</span>
-        </div>
-        <pre
-          class="landing-page-pre border-t-0! rounded-t-none!"
-        ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="toastTypesSource()"></code></pre>
-      </div>
+          <path d="m9 18 6-6-6-6" />
+        </svg>
+      </a>
     </div>
   </div>
 
