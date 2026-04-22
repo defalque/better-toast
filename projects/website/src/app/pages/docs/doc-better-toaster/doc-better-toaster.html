@@ -1,1 +1,233 @@
-<p>doc-better-toaster works!</p>
+<div class="flex w-full gap-2">
+  <div class="doc-container">
+    <h1 class="text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+      Better Toaster
+    </h1>
+    <p class="text-zinc-700 dark:text-zinc-300 mt-4">
+      Renders all toast notifications. Place it anywhere in your app, preferably near the root for
+      consistent behavior.
+    </p>
+
+    <div class="space-y-4 pt-20" id="customization">
+      <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+        Customization
+      </h2>
+      <p class="text-zinc-700 dark:text-zinc-300">
+        Customize the toaster's appearance and behavior via component options. See the
+        <a href="/" class="text-black dark:text-white underline cursor-pointer underline-offset-2"
+          >homepage</a
+        >
+        for examples of the scenarios below.
+      </p>
+    </div>
+
+    <div class="space-y-4 pt-20" id="position">
+      <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+        Position
+      </h2>
+      <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+        Defines the position where all toast notifications appear. Library defaults to
+        <code class="p-code-snippet">bottom-right</code>.
+      </p>
+      <div>
+        <pre
+          class="landing-page-pre"
+        ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="positionSource()"></code></pre>
+      </div>
+    </div>
+
+    <div class="space-y-4 pt-20" id="duration">
+      <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+        Duration
+      </h2>
+      <p class="text-zinc-700 dark:text-zinc-300">
+        Controls how long toast notifications remain visible. Library defaults to 4 seconds.
+      </p>
+      <div>
+        <pre
+          class="landing-page-pre"
+        ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="durationSource()"></code></pre>
+      </div>
+    </div>
+
+    <div class="space-y-4 pt-20" id="offsets">
+      <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">Offsets</h2>
+      <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+        You can customize the offset values using the
+        <code class="p-code-snippet">offset</code>
+        and
+        <code class="p-code-snippet">mobileOffset</code>
+        inputs.<br />
+        The default desktop offset is
+        <code class="p-code-snippet">24px</code>, while the default mobile offset is
+        <code class="p-code-snippet">16px</code>.<br />
+        The mobileOffset value is applied when the screen width is below
+        <code class="p-code-snippet">640px</code>.
+      </p>
+      <div>
+        <pre
+          class="landing-page-pre"
+        ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="offsetsSource()"></code></pre>
+      </div>
+    </div>
+
+    <div class="space-y-4 pt-20" id="theme">
+      <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">Theme</h2>
+      <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+        You can make the toaster's theme adapt to your app's theme by passing a
+        <code class="p-code-snippet">theme</code> prop. Library defaults to
+        <code class="p-code-snippet">system</code>.
+      </p>
+      <div>
+        <pre
+          class="landing-page-pre"
+        ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="themeSource()"></code></pre>
+      </div>
+    </div>
+
+    <div class="space-y-4 pt-20" id="rich-colors">
+      <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+        Rich Colors
+      </h2>
+      <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+        When set to
+        <code class="p-code-snippet">true</code>, success, error, info, and warning variants adopt
+        semantic background and border colors. Library defaults to
+        <code class="p-code-snippet">false</code>.
+      </p>
+      <div>
+        <pre
+          class="landing-page-pre"
+        ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="richColorsSource()"></code></pre>
+      </div>
+    </div>
+
+    <div class="space-y-4 pt-20" id="close-button">
+      <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+        Close Button
+      </h2>
+      <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+        When set to
+        <code class="p-code-snippet">false</code>, the close button is hidden on each toast. Library
+        defaults to <code class="p-code-snippet">true</code>.
+      </p>
+      <div>
+        <pre
+          class="landing-page-pre"
+        ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="closeButtonSource()"></code></pre>
+      </div>
+    </div>
+
+    <div class="space-y-4 pt-20" id="icons">
+      <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">Icons</h2>
+      <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+        You can override the default icons for each variant by passing an object with the variant
+        names as keys. The recommended way to override the icons is to create a standalone component
+        class for the variant you want to override. You can also pass
+        <code class="p-code-snippet">null</code> to hide the icon for a variant.
+      </p>
+      <div>
+        <pre
+          class="landing-page-pre"
+        ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="iconsSource()"></code></pre>
+      </div>
+    </div>
+
+    <div class="space-y-4 pt-20" id="accessibility-labels">
+      <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+        Accessibility Labels
+      </h2>
+      <p class="text-zinc-700 dark:text-zinc-300 text-balance">
+        You can override the default accessibility labels for the live region and dismiss control by
+        passing an object with <code class="p-code-snippet">notificationsRegion</code> and
+        <code class="p-code-snippet">dismissButton</code> as keys.<br />
+        Library defaults to <code class="p-code-snippet">Notifications</code> for the live region
+        and <code class="p-code-snippet">Dismiss</code> for the dismiss control.
+      </p>
+      <div>
+        <pre
+          class="landing-page-pre"
+        ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="accessibilityLabelsSource()"></code></pre>
+      </div>
+    </div>
+
+    <div class="space-y-4 pt-20" id="api-reference">
+      <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+        API Reference
+      </h2>
+      <div>
+        <pre
+          class="landing-page-pre"
+        ><code class="landing-page-code language-typescript dark:text-white!"></code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="toc">
+    <div class="flex items-baseline gap-2">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="var(--color-zinc-500)"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="size-4"
+      >
+        <path d="M4 14h6" />
+        <path d="M4 2h10" />
+        <rect x="4" y="18" width="16" height="4" rx="1" />
+        <rect x="4" y="6" width="16" height="4" rx="1" />
+      </svg>
+      <span class="text-zinc-500">On this page</span>
+    </div>
+
+    <ul class="space-y-2 ml-6">
+      <li>
+        <a href="/docs/better-toaster#customization" class="text-zinc-600 dark:text-zinc-400"
+          >Customization</a
+        >
+      </li>
+      <li>
+        <a href="/docs/better-toaster#position" class="text-zinc-600 dark:text-zinc-400"
+          >Position</a
+        >
+      </li>
+      <li>
+        <a href="/docs/better-toaster#duration" class="text-zinc-600 dark:text-zinc-400"
+          >Duration</a
+        >
+      </li>
+      <li>
+        <a href="/docs/better-toaster#offsets" class="text-zinc-600 dark:text-zinc-400">Offsets</a>
+      </li>
+      <li>
+        <a href="/docs/better-toaster#theme" class="text-zinc-600 dark:text-zinc-400">Theme</a>
+      </li>
+      <li>
+        <a href="/docs/better-toaster#rich-colors" class="text-zinc-600 dark:text-zinc-400"
+          >Rich colors</a
+        >
+      </li>
+      <li>
+        <a href="/docs/better-toaster#close-button" class="text-zinc-600 dark:text-zinc-400"
+          >Close button</a
+        >
+      </li>
+      <li>
+        <a href="/docs/better-toaster#icons" class="text-zinc-600 dark:text-zinc-400">Icons</a>
+      </li>
+      <li>
+        <a href="/docs/better-toaster#accessibility-labels" class="text-zinc-600 dark:text-zinc-400"
+          >Accessibility labels</a
+        >
+      </li>
+      <li>
+        <a href="/docs/better-toaster#api-reference" class="text-zinc-600 dark:text-zinc-400"
+          >API Reference</a
+        >
+      </li>
+    </ul>
+  </div>
+</div>
