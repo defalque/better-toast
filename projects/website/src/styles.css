@@ -4,7 +4,7 @@
 
 html {
   scrollbar-gutter: stable;
-  scrollbar-color: var(--color-zinc-400) var(--color-zinc-100);
+  scrollbar-color: var(--color-zinc-400) var(--color-zinc-200);
 }
 
 html::-webkit-scrollbar {
@@ -27,7 +27,7 @@ html::-webkit-scrollbar-thumb:hover {
 }
 
 html.dark {
-  scrollbar-color: var(--color-zinc-600) var(--color-zinc-900);
+  scrollbar-color: var(--color-zinc-600) var(--color-zinc-800);
 }
 
 html.dark::-webkit-scrollbar-track {
@@ -57,7 +57,7 @@ html.dark::-webkit-scrollbar-thumb:hover {
 }
 
 .landing-page-pre {
-  @apply bg-linear-to-tl from-white to-gray-100/50 dark:from-zinc-950/90 dark:to-zinc-950/90 border border-zinc-300/50 dark:border-zinc-800/50 rounded-md p-4 overflow-x-hidden;
+  @apply bg-linear-to-tl from-white to-gray-100/50 dark:from-zinc-950/50 dark:to-zinc-950/50 border border-zinc-300/50 dark:border-zinc-800/50 rounded-md p-4 overflow-x-hidden;
 }
 
 .landing-page-code {
@@ -81,7 +81,7 @@ html.dark::-webkit-scrollbar-thumb:hover {
 }
 
 .active {
-  @apply text-zinc-800 dark:text-white bg-zinc-200/50 dark:bg-zinc-800/90;
+  @apply text-zinc-800 dark:text-white bg-zinc-200/50 dark:bg-zinc-800/60;
 }
 
 .toast-type-demo-preview pre {
