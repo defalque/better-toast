@@ -2,6 +2,46 @@
 
 html {
   scrollbar-gutter: stable;
+  scrollbar-color: var(--color-zinc-400) var(--color-zinc-100);
+  scrollbar-width: thin;
+}
+
+html::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+html::-webkit-scrollbar-track {
+  background: var(--color-zinc-100);
+}
+
+html::-webkit-scrollbar-thumb {
+  background: var(--color-zinc-400);
+  border-radius: 9999px;
+  border: 2px solid var(--color-zinc-100);
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background: var(--color-zinc-500);
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    scrollbar-color: var(--color-zinc-600) var(--color-zinc-900);
+  }
+
+  html::-webkit-scrollbar-track {
+    background: var(--color-zinc-800);
+  }
+
+  html::-webkit-scrollbar-thumb {
+    background: var(--color-zinc-600);
+    border-color: var(--color-zinc-800);
+  }
+
+  html::-webkit-scrollbar-thumb:hover {
+    background: var(--color-zinc-500);
+  }
 }
 
 .landing-page-h2 {
@@ -78,7 +118,7 @@ html {
 @media (prefers-color-scheme: dark) {
   .hljs-string,
   .hljs-doctag {
-    color: var(--color-zinc-500);
+    color: var(--color-zinc-400);
   }
 }
 
