@@ -1,5 +1,7 @@
 <div class="flex w-full gap-2">
-  <div class="doc-container divide-y divide-dashed divide-zinc-200 dark:divide-zinc-600/50">
+  <div
+    class="doc-container divide-y divide-dashed divide-zinc-200 dark:divide-zinc-600/50 overflow-x-auto"
+  >
     <div class="pb-16">
       <h1 class="text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">Toast</h1>
       <p class="text-zinc-700 dark:text-zinc-300 mt-4">
@@ -131,7 +133,7 @@
           Renders a checkmark icon in front of the message.
         </p>
 
-        <div class="my-7 space-y-4">
+        <div class="mt-7 space-y-4">
           <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
             <div class="flex items-center gap-4">
               <button
@@ -189,7 +191,7 @@
           Renders an error icon in front of the message.
         </p>
 
-        <div class="my-7 space-y-4">
+        <div class="mt-7 space-y-4">
           <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
             <div class="flex items-center gap-4">
               <button
@@ -247,7 +249,7 @@
           Renders an info icon in front of the message.
         </p>
 
-        <div class="my-7 space-y-4">
+        <div class="mt-7 space-y-4">
           <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
             <div class="flex items-center gap-4">
               <button
@@ -307,7 +309,7 @@
           Renders a warning icon in front of the message.
         </p>
 
-        <div class="my-7 space-y-4">
+        <div class="mt-7 space-y-4">
           <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
             <div class="flex items-center gap-4">
               <button
@@ -368,7 +370,7 @@
           yourself instead of using a promise toast.
         </p>
 
-        <div class="my-7 space-y-4">
+        <div class="mt-7 space-y-4">
           <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
             <div class="flex items-center gap-4">
               <button
@@ -418,10 +420,383 @@
           }
         </div>
       </div>
+
+      <!-- Action Toast -->
+      <div class="space-y-4 pt-20" id="action">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Action
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+          Renders a primary button by passing a <code class="p-code-snippet">action</code> object in
+          the options, enabling customization of the button
+          <code class="p-code-snippet">label</code> and the
+          <code class="p-code-snippet">onClick</code> callback to run when the button is clicked.
+        </p>
+        <div class="my-7 space-y-4">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
+            <div class="flex items-center gap-4">
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  actionToastTab() === 'preview'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="actionToastTab.set('preview')"
+              >
+                Preview
+              </button>
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  actionToastTab() === 'code'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="actionToastTab.set('code')"
+              >
+                Code
+              </button>
+            </div>
+
+            <button
+              type="button"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              (click)="copyActionToastCode()"
+            >
+              {{ actionToastCodeCopied() ? 'Copied!' : 'Copy code' }}
+            </button>
+          </div>
+
+          @if (actionToastTab() === 'preview') {
+            <pre
+              class="landing-page-pre h-80!"
+            ><code class="dark:text-white! grid! place-items-center! h-full!">
+                      <button (click)="renderActionToast()" type="button" class="font-sans font-semibold bg-white shadow-sm dark:bg-zinc-900/80 text-black dark:text-zinc-100 cursor-pointer border border-zinc-200 dark:border-zinc-600/30 py-2 px-6 rounded-full text-sm active:scale-95 transition-all">Render a toast with an action</button>
+                    </code></pre>
+          } @else {
+            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+                      class=" landing-page-code language-typescript dark:text-white!"
+                      [innerHTML]="renderActionToastSource()"
+                    ></code></pre>
+          }
+        </div>
+        <p class="text-zinc-700 dark:text-zinc-300">
+          By default, clicking the button closes the toast - call
+          <code class="p-code-snippet">event.preventDefault()</code> within the
+          <code class="p-code-snippet">onClick</code> handler to prevent this behavior.
+        </p>
+      </div>
+
+      <!-- Cancel Toast -->
+      <div class="space-y-4 pt-20" id="cancel">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Cancel
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+          Renders a secondary button by passing a <code class="p-code-snippet">cancel</code> object
+          in the options, enabling customization of the button
+          <code class="p-code-snippet">label</code> and the
+          <code class="p-code-snippet">onClick</code> callback to run when the button is clicked.
+        </p>
+        <div class="my-7 space-y-4">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
+            <div class="flex items-center gap-4">
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  cancelToastTab() === 'preview'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="cancelToastTab.set('preview')"
+              >
+                Preview
+              </button>
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  cancelToastTab() === 'code'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="cancelToastTab.set('code')"
+              >
+                Code
+              </button>
+            </div>
+            <button
+              type="button"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              (click)="copyCancelToastCode()"
+            >
+              {{ cancelToastCodeCopied() ? 'Copied!' : 'Copy code' }}
+            </button>
+          </div>
+          @if (cancelToastTab() === 'preview') {
+            <pre
+              class="landing-page-pre h-80!"
+            ><code class="dark:text-white! grid! place-items-center! h-full!">
+                      <button (click)="renderCancelToast()" type="button" class="font-sans font-semibold bg-white shadow-sm dark:bg-zinc-900/80 text-black dark:text-zinc-100 cursor-pointer border border-zinc-200 dark:border-zinc-600/30 py-2 px-6 rounded-full text-sm active:scale-95 transition-all">Render a cancel toast</button>
+                    </code></pre>
+          } @else {
+            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+                      class=" landing-page-code language-typescript dark:text-white!"
+                      [innerHTML]="renderCancelToastSource()"
+                    ></code></pre>
+          }
+        </div>
+        <p class="text-zinc-700 dark:text-zinc-300">
+          By default, clicking the button closes the toast - call
+          <code class="p-code-snippet">event.preventDefault()</code> within the
+          <code class="p-code-snippet">onClick</code> handler to prevent this behavior.
+        </p>
+      </div>
+
+      <!-- Promise Toast -->
+      <div class="space-y-4 pt-20" id="promise">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Promise
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+          Starts in a loading state and will update automatically after the promise resolves or
+          fails. You can pass a function to the success/error messages to incorporate the
+          result/error of the promise.
+        </p>
+        <div class="mt-7 space-y-4">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
+            <div class="flex items-center gap-4">
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  promiseToastTab() === 'preview'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="promiseToastTab.set('preview')"
+              >
+                Preview
+              </button>
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  promiseToastTab() === 'code'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="promiseToastTab.set('code')"
+              >
+                Code
+              </button>
+            </div>
+            <button
+              type="button"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              (click)="copyPromiseToastCode()"
+            >
+              {{ promiseToastCodeCopied() ? 'Copied!' : 'Copy code' }}
+            </button>
+          </div>
+          @if (promiseToastTab() === 'preview') {
+            <pre
+              class="landing-page-pre h-80!"
+            ><code class="dark:text-white! grid! place-items-center! h-full!">
+                      <button (click)="renderPromiseToast()" type="button" class="font-sans font-semibold bg-white shadow-sm dark:bg-zinc-900/80 text-black dark:text-zinc-100 cursor-pointer border border-zinc-200 dark:border-zinc-600/30 py-2 px-6 rounded-full text-sm active:scale-95 transition-all">Render a promise toast</button>
+                    </code></pre>
+          } @else {
+            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+                      class=" landing-page-code language-typescript dark:text-white!"
+                      [innerHTML]="renderPromiseToastSource()"
+                    ></code></pre>
+          }
+        </div>
+      </div>
+
+      <!-- Custom Toast -->
+      <div class="space-y-4 pt-20" id="custom">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Custom
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+          You can pass an HTML string as the first argument to render a custom toast while
+          preserving the default styling.
+        </p>
+      </div>
+
+      <!-- Headless Toast -->
+      <div class="space-y-4 pt-20" id="headless">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Headless
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+          Use it to render an unstyled toast with a custom component while maintaining the
+          functionality. This method receives the component as an argument, giving you access to all
+          properties.
+        </p>
+      </div>
+
+      <!-- API Reference -->
+      <div class="space-y-4 pt-20" id="api-reference">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          API Reference
+        </h2>
+        <div
+          class="w-full overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-600/50 shadow-2xs"
+        >
+          <table class="w-full">
+            <thead
+              class="bg-zinc-100 dark:bg-zinc-900/90 [&_th]:border-b [&_th]:border-zinc-200 dark:[&_th]:border-zinc-600/50"
+            >
+              <tr>
+                <th class="text-left text-zinc-900 dark:text-zinc-300 font-medium px-6 py-2">
+                  Input
+                </th>
+                <th class="text-left text-zinc-900 dark:text-zinc-300 font-medium px-6 py-2">
+                  Type
+                </th>
+                <th class="text-left text-zinc-900 dark:text-zinc-300 font-medium px-6 py-2">
+                  Default
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              class="divide-y divide-zinc-200 dark:divide-zinc-600/50 bg-gray-50/20 dark:bg-zinc-950/80"
+            >
+              <tr>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-300 font-medium text-sm px-6 py-4 align-top"
+                >
+                  <code class="p-code-snippet text-sm!">classNames</code>
+                </td>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-500 font-medium text-sm px-6 py-4 align-top"
+                >
+                  <code class="p-code-snippet text-sm!">object</code>
+                </td>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-300 font-medium text-sm px-6 py-4 align-top whitespace-nowrap"
+                >
+                  <code class="p-code-snippet text-sm!">-</code>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="text-left text-zinc-900 dark:text-zinc-300 font-medium px-6 py-4">
+                  <code class="p-code-snippet">description</code>
+                </td>
+                <td class="text-left text-zinc-900 dark:text-zinc-500 font-medium px-6 py-4">
+                  <code class="p-code-snippet whitespace-nowrap">string</code>
+                </td>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-300 font-medium text-sm px-6 py-4 whitespace-nowrap"
+                >
+                  <code class="p-code-snippet text-sm!">-</code>
+                </td>
+              </tr>
+
+              <tr>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-300 font-medium text-sm px-6 py-4 align-top"
+                >
+                  <code class="p-code-snippet text-sm!">duration</code>
+                </td>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-500 font-medium text-sm px-6 py-4 align-top"
+                >
+                  <div class="flex flex-wrap gap-2 items-baseline">
+                    <code class="p-code-snippet text-sm!">number</code>
+                    <span class="text-zinc-400 dark:text-zinc-600 select-none" aria-hidden="true"
+                      >|</span
+                    >
+                    <code class="p-code-snippet text-sm!">'Infinity'</code>
+                  </div>
+                </td>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-300 font-medium text-sm px-6 py-4 align-top whitespace-nowrap"
+                >
+                  <code class="p-code-snippet text-sm!">4000</code>
+                </td>
+              </tr>
+
+              <tr>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-300 font-medium text-sm px-6 py-4 align-top"
+                >
+                  <code class="p-code-snippet text-sm!">icon</code>
+                </td>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-500 font-medium text-sm px-6 py-4 align-top"
+                >
+                  <code class="p-code-snippet text-sm!">Component</code>
+                </td>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-300 font-medium text-sm px-6 py-4 align-top whitespace-nowrap"
+                >
+                  <code class="p-code-snippet">-</code>
+                </td>
+              </tr>
+
+              <tr>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-300 font-medium text-sm px-6 py-4 align-top"
+                >
+                  <code class="p-code-snippet">onAutoClose</code>
+                </td>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-500 font-medium text-sm px-6 py-4 align-top"
+                >
+                  <code class="p-code-snippet">function</code>
+                </td>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-300 font-medium text-sm px-6 py-4 align-top whitespace-nowrap"
+                >
+                  <code class="p-code-snippet">-</code>
+                </td>
+              </tr>
+
+              <tr>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-300 font-medium text-sm px-6 py-4 align-top"
+                >
+                  <code class="p-code-snippet">onDismiss</code>
+                </td>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-500 font-medium text-sm px-6 py-4 align-top"
+                >
+                  <code class="p-code-snippet">function</code>
+                </td>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-300 font-medium text-sm px-6 py-4 align-top whitespace-nowrap"
+                >
+                  <code class="p-code-snippet">-</code>
+                </td>
+              </tr>
+
+              <tr>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-300 font-medium text-sm px-6 py-4 align-top"
+                >
+                  <code class="p-code-snippet text-sm!">style</code>
+                </td>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-500 font-medium text-sm px-6 py-4 align-top"
+                >
+                  <code class="p-code-snippet text-sm!">object</code>
+                </td>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-300 font-medium text-sm px-6 py-4 align-top whitespace-nowrap"
+                >
+                  <code class="p-code-snippet text-sm!">-</code>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
     <div class="flex justify-between mt-6">
-      <a href="/docs/getting-started" class="flex items-end gap-2">
+      <a href="/docs/better-toaster" class="flex items-end gap-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -440,7 +815,7 @@
         </div>
       </a>
 
-      <a href="/docs/toast-types" class="flex items-end gap-2">
+      <a href="/docs/other" class="flex items-end gap-2">
         <div class="flex flex-col items-end">
           <p class="text-zinc-600 dark:text-zinc-400 text-[13px]">Next</p>
           <p class="text-zinc-600 dark:text-zinc-200 text-sm font-medium">Other</p>
@@ -507,6 +882,9 @@
       </li>
       <li>
         <a href="/docs/toast-types#cancel" class="text-zinc-600 dark:text-zinc-300/75">Cancel</a>
+      </li>
+      <li>
+        <a href="/docs/toast-types#promise" class="text-zinc-600 dark:text-zinc-300/75">Promise</a>
       </li>
       <li>
         <a href="/docs/toast-types#custom" class="text-zinc-600 dark:text-zinc-300/75">Custom</a>

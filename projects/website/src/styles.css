@@ -3,7 +3,6 @@
 html {
   scrollbar-gutter: stable;
   scrollbar-color: var(--color-zinc-400) var(--color-zinc-100);
-  scrollbar-width: thin;
 }
 
 html::-webkit-scrollbar {

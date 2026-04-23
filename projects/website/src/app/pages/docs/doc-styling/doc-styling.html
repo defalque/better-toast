@@ -1,1 +1,56 @@
-<p>doc-styling works!</p>
+<div class="flex w-full gap-2">
+  <div
+    class="doc-container divide-y divide-dashed divide-zinc-200 dark:divide-zinc-600/50 overflow-x-auto"
+  >
+    <div class="pb-16">
+      <h1 class="text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">Styling</h1>
+      <p class="text-zinc-700 dark:text-zinc-300 mt-4">
+        How to style Better Toast beyond the default theme.
+      </p>
+    </div>
+
+    <div class="flex justify-start mt-6">
+      <a href="/docs/other" class="flex items-end gap-2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="var(--color-zinc-500)"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="size-4.5"
+        >
+          <path d="m15 18-6-6 6-6" />
+        </svg>
+        <div class="flex flex-col items-start">
+          <p class="text-zinc-600 dark:text-zinc-400 text-[13px]">Previous</p>
+          <p class="text-zinc-600 dark:text-zinc-200 text-sm font-medium">Other</p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="toc">
+    <div class="flex items-baseline gap-2">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="var(--color-zinc-500)"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="size-4"
+      >
+        <path d="M4 14h6" />
+        <path d="M4 2h10" />
+        <rect x="4" y="18" width="16" height="4" rx="1" />
+        <rect x="4" y="6" width="16" height="4" rx="1" />
+      </svg>
+      <span class="text-zinc-500">On this page</span>
+    </div>
+
+    <ul class="space-y-2 ml-6"></ul>
+  </div>
+</div>

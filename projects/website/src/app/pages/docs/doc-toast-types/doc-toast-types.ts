@@ -24,7 +24,6 @@ export class DefaultToastComponent {
     this.toaster.show('This is a toast');
   }
 }`;
-
 const TOAST_WITH_OPTIONS_SOURCE = `import { BetterToaster, ToasterService } from 'better-toast';
 import { inject, ChangeDetectionStrategy, Component} from '@angular/core';
 import { CustomIcon } from './components/custom-icon';
@@ -50,7 +49,6 @@ export class ToastWithOptionsComponent {
     });
   }
 }`;
-
 const SUCCESS_TOAST_SOURCE = `import { BetterToaster, ToasterService } from 'better-toast';
 import { inject, ChangeDetectionStrategy, Component} from '@angular/core';
 
@@ -69,7 +67,6 @@ export class SuccessToastComponent {
     this.toaster.success ('This is a success toast');
   }
 }`;
-
 const ERROR_TOAST_SOURCE = `import { BetterToaster, ToasterService } from 'better-toast';
 import { inject, ChangeDetectionStrategy, Component} from '@angular/core';
 
@@ -88,7 +85,6 @@ export class ErrorToastComponent {
     this.toaster.error ('This is a error toast');
   }
 }`;
-
 const INFO_TOAST_SOURCE = `import { BetterToaster, ToasterService } from 'better-toast';
 import { inject, ChangeDetectionStrategy, Component} from '@angular/core';
 
@@ -107,7 +103,6 @@ export class InfoToastComponent {
     this.toaster.info('This is an info toast');
   }
 }`;
-
 const WARNING_TOAST_SOURCE = `import { BetterToaster, ToasterService } from 'better-toast';
 import { inject, ChangeDetectionStrategy, Component} from '@angular/core';
 
@@ -126,7 +121,6 @@ export class WarningToastComponent {
     this.toaster.warning('This is a warning toast');
   }
 }`;
-
 const LOADING_TOAST_SOURCE = `import { BetterToaster, ToasterService } from 'better-toast';
 import { inject, ChangeDetectionStrategy, Component} from '@angular/core';
 
@@ -143,6 +137,84 @@ export class LoadingToastComponent {
 
   protected renderLoadingToast(): void {
     this.toaster.loading('Loading...');
+  }
+}`;
+const ACTION_TOAST_SOURCE = `import { BetterToaster, ToasterService } from 'better-toast';
+import { inject, ChangeDetectionStrategy, Component} from '@angular/core';
+
+@Component({
+  selector: 'app-action-toast',
+  imports: [BetterToaster],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: \`
+    <button (click)="renderActionToast()" type="button" class="btn">Render a action toast</button>
+  \`,
+})
+export class ActionToastComponent {
+  protected readonly toaster = inject(ToasterService);
+
+  protected renderActionToast(): void {
+    this.toaster.action('This is an action toast', {
+      action: {
+        label: 'Action',
+        onClick: () => {
+          console.log('Action clicked');
+        },
+      },
+    });
+  }
+}`;
+const CANCEL_TOAST_SOURCE = `import { BetterToaster, ToasterService } from 'better-toast';
+import { inject, ChangeDetectionStrategy, Component} from '@angular/core';
+
+@Component({
+  selector: 'app-cancel-toast',
+  imports: [BetterToaster],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: \`
+    <button (click)="renderCancelToast()" type="button" class="btn">Render a cancel toast</button>
+  \`,
+})
+export class CancelToastComponent {
+  protected readonly toaster = inject(ToasterService);
+
+  protected renderCancelToast(): void {
+    this.toaster.cancel('This is a cancel toast', {
+      cancel: {
+        label: 'Cancel',
+        onClick: () => {
+          console.log('Cancel clicked');
+        },
+      },
+    });
+  }
+}`;
+const PROMISE_TOAST_SOURCE = `import { BetterToaster, ToasterService } from 'better-toast';
+import { inject, ChangeDetectionStrategy, Component} from '@angular/core';
+
+@Component({
+  selector: 'app-promise-toast',
+  imports: [BetterToaster],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: \`
+    <button (click)="renderPromiseToast()" type="button" class="btn">Render a promise toast</button>
+  \`,
+})
+export class PromiseToastComponent {
+  protected readonly toaster = inject(ToasterService);
+
+  protected renderPromiseToast(): void {
+    const myPromise = new Promise<{ message: string }>((resolve) => {
+      setTimeout(() => {
+        resolve({ message: 'Better-toast rendered successfully' });
+      }, 3000);
+    });
+
+    this.toaster.promise(myPromise, {
+      loading: 'Loading...',
+      success: 'Promise resolved',
+      error: 'Promise rejected',
+    });
   }
 }`;
 
@@ -165,6 +237,9 @@ export class DocToastTypes {
   protected infoToastTab = signal<'preview' | 'code'>('preview');
   protected warningToastTab = signal<'preview' | 'code'>('preview');
   protected loadingToastTab = signal<'preview' | 'code'>('preview');
+  protected actionToastTab = signal<'preview' | 'code'>('preview');
+  protected cancelToastTab = signal<'preview' | 'code'>('preview');
+  protected promiseToastTab = signal<'preview' | 'code'>('preview');
 
   protected toastCodeCopied = signal(false);
   protected toastWithOptionsCodeCopied = signal(false);
@@ -173,15 +248,18 @@ export class DocToastTypes {
   protected infoToastCodeCopied = signal(false);
   protected warningToastCodeCopied = signal(false);
   protected loadingToastCodeCopied = signal(false);
+  protected actionToastCodeCopied = signal(false);
+  protected cancelToastCodeCopied = signal(false);
+  protected promiseToastCodeCopied = signal(false);
 
   private copyResetTimeout: ReturnType<typeof setTimeout> | null = null;
 
   protected renderToast(message: string): void {
     this.toaster.show(message);
   }
-  protected readonly renderToastSource = computed(
-    () => hljs.highlight(RENDER_TOAST_SOURCE, { language: 'typescript' }).value,
-  );
+  protected renderToastSource() {
+    return hljs.highlight(RENDER_TOAST_SOURCE, { language: 'typescript' }).value;
+  }
   protected renderToastWithOptions() {
     this.toaster.show('This is a toast with options', {
       durationMs: 5000,
@@ -191,9 +269,9 @@ export class DocToastTypes {
       },
     });
   }
-  protected readonly toastWithOptionsSource = computed(
-    () => hljs.highlight(TOAST_WITH_OPTIONS_SOURCE, { language: 'typescript' }).value,
-  );
+  protected toastWithOptionsSource() {
+    return hljs.highlight(TOAST_WITH_OPTIONS_SOURCE, { language: 'typescript' }).value;
+  }
   protected renderSuccessToast() {
     this.toaster.success('This is a success toast');
   }
@@ -224,6 +302,48 @@ export class DocToastTypes {
   protected renderLoadingToastSource(): string {
     return hljs.highlight(LOADING_TOAST_SOURCE, { language: 'typescript' }).value;
   }
+  protected renderActionToast(): void {
+    this.toaster.action('This is an action toast', {
+      action: {
+        label: 'Action',
+        onClick: () => {
+          console.log('Action clicked');
+        },
+      },
+    });
+  }
+  protected renderActionToastSource(): string {
+    return hljs.highlight(ACTION_TOAST_SOURCE, { language: 'typescript' }).value;
+  }
+  protected renderCancelToast(): void {
+    this.toaster.cancel('This is a cancel toast', {
+      cancel: {
+        label: 'Cancel',
+        onClick: () => {
+          console.log('Cancel clicked');
+        },
+      },
+    });
+  }
+  protected renderCancelToastSource(): string {
+    return hljs.highlight(CANCEL_TOAST_SOURCE, { language: 'typescript' }).value;
+  }
+  protected renderPromiseToast(): void {
+    const myPromise = new Promise<{ message: string }>((resolve) => {
+      setTimeout(() => {
+        resolve({ message: 'Better-toast rendered successfully' });
+      }, 3000);
+    });
+
+    this.toaster.promise(myPromise, {
+      loading: 'Loading...',
+      success: 'Promise resolved',
+      error: 'Promise rejected',
+    });
+  }
+  protected renderPromiseToastSource(): string {
+    return hljs.highlight(PROMISE_TOAST_SOURCE, { language: 'typescript' }).value;
+  }
 
   protected async copyToastCode(): Promise<void> {
     await this.copyToClipboard(RENDER_TOAST_SOURCE, this.toastCodeCopied);
@@ -245,6 +365,15 @@ export class DocToastTypes {
   }
   protected async copyLoadingToastCode(): Promise<void> {
     await this.copyToClipboard(LOADING_TOAST_SOURCE, this.loadingToastCodeCopied);
+  }
+  protected async copyActionToastCode(): Promise<void> {
+    await this.copyToClipboard(ACTION_TOAST_SOURCE, this.actionToastCodeCopied);
+  }
+  protected async copyCancelToastCode(): Promise<void> {
+    await this.copyToClipboard(CANCEL_TOAST_SOURCE, this.cancelToastCodeCopied);
+  }
+  protected async copyPromiseToastCode(): Promise<void> {
+    await this.copyToClipboard(PROMISE_TOAST_SOURCE, this.promiseToastCodeCopied);
   }
 
   private async copyToClipboard(
