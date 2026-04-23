@@ -1,0 +1,83 @@
+<div
+  role="radiogroup"
+  aria-label="Theme"
+  class="inline-flex items-center gap-0.5 rounded-full ring-1 ring-black/10 dark:ring-white/12 bg-white/80 dark:bg-zinc-950/80 p-0.5 shadow-xs backdrop-blur-sm"
+>
+  @for (opt of options; track opt.value) {
+    <button
+      type="button"
+      role="radio"
+      [attr.aria-checked]="theme.preference() === opt.value"
+      [attr.aria-label]="opt.label + ' theme'"
+      [title]="opt.label"
+      (click)="select(opt.value)"
+      class="relative grid place-items-center size-7 rounded-full cursor-pointer transition-colors focus"
+      [class.bg-zinc-100]="theme.preference() === opt.value"
+      [class.dark:bg-zinc-800]="theme.preference() === opt.value"
+      [class.text-zinc-900]="theme.preference() === opt.value"
+      [class.dark:text-zinc-100]="theme.preference() === opt.value"
+      [class.text-zinc-500]="theme.preference() !== opt.value"
+      [class.dark:text-zinc-400]="theme.preference() !== opt.value"
+      [class.hover:text-zinc-800]="theme.preference() !== opt.value"
+      [class.dark:hover:text-zinc-200]="theme.preference() !== opt.value"
+    >
+      @switch (opt.value) {
+        @case ('light') {
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+            class="size-4"
+          >
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2" />
+            <path d="M12 20v2" />
+            <path d="m4.93 4.93 1.41 1.41" />
+            <path d="m17.66 17.66 1.41 1.41" />
+            <path d="M2 12h2" />
+            <path d="M20 12h2" />
+            <path d="m6.34 17.66-1.41 1.41" />
+            <path d="m19.07 4.93-1.41 1.41" />
+          </svg>
+        }
+        @case ('dark') {
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+            class="size-4"
+          >
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+        }
+        @case ('system') {
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+            class="size-4"
+          >
+            <rect x="2" y="3" width="20" height="14" rx="2" />
+            <line x1="8" y1="21" x2="16" y2="21" />
+            <line x1="12" y1="17" x2="12" y2="21" />
+          </svg>
+        }
+      }
+    </button>
+  }
+</div>

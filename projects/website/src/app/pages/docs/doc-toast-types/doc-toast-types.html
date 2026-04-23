@@ -56,7 +56,7 @@
             <pre
               class="landing-page-pre h-80!"
             ><code class="dark:text-white! grid! place-items-center! h-full!">
-                <button (click)="renderToast('This is a toast')" type="button" class="font-sans font-semibold bg-white shadow-sm dark:bg-zinc-900/80 text-black dark:text-zinc-100 cursor-pointer border border-zinc-200 dark:border-zinc-600/30 py-2 px-6 rounded-full text-sm active:scale-95 transition-all">Render a toast</button>
+                <button (click)="renderToast('This is a toast')" type="button" class="toast-button">Render a toast</button>
               </code></pre>
           } @else {
             <pre class="landing-page-pre h-80! overflow-y-auto!"><code
@@ -113,7 +113,7 @@
               class="landing-page-pre h-80!"
             ><code class="dark:text-white! grid! place-items-center! h-full!">
               
-              <button (click)="renderToastWithOptions()" type="button" class="font-sans font-semibold bg-white shadow-sm dark:bg-zinc-900/80 text-black dark:text-zinc-100 cursor-pointer border border-zinc-200 dark:border-zinc-600/30 py-2 px-6 rounded-full text-sm active:scale-95 transition-all">Render a toast</button>
+              <button (click)="renderToastWithOptions()" type="button" class="toast-button">Render a toast</button>
             </code></pre>
           } @else {
             <pre class="landing-page-pre h-80! overflow-y-auto!"><code
@@ -173,7 +173,7 @@
             <pre
               class="landing-page-pre h-80!"
             ><code class="dark:text-white! grid! place-items-center! h-full!">
-                  <button (click)="renderSuccessToast()" type="button" class="font-sans font-semibold bg-white shadow-sm dark:bg-zinc-900/80 text-black dark:text-zinc-100 cursor-pointer border border-zinc-200 dark:border-zinc-600/30 py-2 px-6 rounded-full text-sm active:scale-95 transition-all">Render a success toast</button>
+                  <button (click)="renderSuccessToast()" type="button" class="toast-button">Render a success toast</button>
                 </code></pre>
           } @else {
             <pre class="landing-page-pre h-80! overflow-y-auto!"><code
@@ -231,7 +231,7 @@
             <pre
               class="landing-page-pre h-80!"
             ><code class="dark:text-white! grid! place-items-center! h-full!">
-                    <button (click)="renderErrorToast()" type="button" class="font-sans font-semibold bg-white shadow-sm dark:bg-zinc-900/80 text-black dark:text-zinc-100 cursor-pointer border border-zinc-200 dark:border-zinc-600/30 py-2 px-6 rounded-full text-sm active:scale-95 transition-all">Render a error toast</button>
+                    <button (click)="renderErrorToast()" type="button" class="toast-button">Render a error toast</button>
                   </code></pre>
           } @else {
             <pre class="landing-page-pre h-80! overflow-y-auto!"><code
@@ -289,7 +289,7 @@
             <pre
               class="landing-page-pre h-80!"
             ><code class="dark:text-white! grid! place-items-center! h-full!">
-                    <button (click)="renderInfoToast()" type="button" class="font-sans font-semibold bg-white shadow-sm dark:bg-zinc-900/80 text-black dark:text-zinc-100 cursor-pointer border border-zinc-200 dark:border-zinc-600/30 py-2 px-6 rounded-full text-sm active:scale-95 transition-all">Render an info toast</button>
+                    <button (click)="renderInfoToast()" type="button" class="toast-button">Render an info toast</button>
                   </code></pre>
           } @else {
             <pre class="landing-page-pre h-80! overflow-y-auto!"><code
@@ -349,7 +349,7 @@
             <pre
               class="landing-page-pre h-80!"
             ><code class="dark:text-white! grid! place-items-center! h-full!">
-                    <button (click)="renderWarningToast()" type="button" class="font-sans font-semibold bg-white shadow-sm dark:bg-zinc-900/80 text-black dark:text-zinc-100 cursor-pointer border border-zinc-200 dark:border-zinc-600/30 py-2 px-6 rounded-full text-sm active:scale-95 transition-all">Render a warning toast</button>
+                      <button (click)="renderWarningToast()" type="button" class="toast-button">Render a warning toast</button>
                   </code></pre>
           } @else {
             <pre class="landing-page-pre h-80! overflow-y-auto!"><code
@@ -410,7 +410,7 @@
             <pre
               class="landing-page-pre h-80!"
             ><code class="dark:text-white! grid! place-items-center! h-full!">
-                    <button (click)="renderLoadingToast()" type="button" class="font-sans font-semibold bg-white shadow-sm dark:bg-zinc-900/80 text-black dark:text-zinc-100 cursor-pointer border border-zinc-200 dark:border-zinc-600/30 py-2 px-6 rounded-full text-sm active:scale-95 transition-all">Render a loading toast</button>
+                    <button (click)="renderLoadingToast()" type="button" class="toast-button">Render a loading toast</button>
                   </code></pre>
           } @else {
             <pre class="landing-page-pre h-80! overflow-y-auto!"><code
@@ -472,7 +472,7 @@
             <pre
               class="landing-page-pre h-80!"
             ><code class="dark:text-white! grid! place-items-center! h-full!">
-                      <button (click)="renderActionToast()" type="button" class="font-sans font-semibold bg-white shadow-sm dark:bg-zinc-900/80 text-black dark:text-zinc-100 cursor-pointer border border-zinc-200 dark:border-zinc-600/30 py-2 px-6 rounded-full text-sm active:scale-95 transition-all">Render a toast with an action</button>
+                      <button (click)="renderActionToast()" type="button" class="toast-button">Render a toast with an action</button>
                     </code></pre>
           } @else {
             <pre class="landing-page-pre h-80! overflow-y-auto!"><code
@@ -537,7 +537,7 @@
             <pre
               class="landing-page-pre h-80!"
             ><code class="dark:text-white! grid! place-items-center! h-full!">
-                      <button (click)="renderCancelToast()" type="button" class="font-sans font-semibold bg-white shadow-sm dark:bg-zinc-900/80 text-black dark:text-zinc-100 cursor-pointer border border-zinc-200 dark:border-zinc-600/30 py-2 px-6 rounded-full text-sm active:scale-95 transition-all">Render a cancel toast</button>
+                      <button (click)="renderCancelToast()" type="button" class="toast-button">Render a cancel toast</button>
                     </code></pre>
           } @else {
             <pre class="landing-page-pre h-80! overflow-y-auto!"><code
@@ -601,7 +601,7 @@
             <pre
               class="landing-page-pre h-80!"
             ><code class="dark:text-white! grid! place-items-center! h-full!">
-                      <button (click)="renderPromiseToast()" type="button" class="font-sans font-semibold bg-white shadow-sm dark:bg-zinc-900/80 text-black dark:text-zinc-100 cursor-pointer border border-zinc-200 dark:border-zinc-600/30 py-2 px-6 rounded-full text-sm active:scale-95 transition-all">Render a promise toast</button>
+                      <button (click)="renderPromiseToast()" type="button" class="toast-button">Render a promise toast</button>
                     </code></pre>
           } @else {
             <pre class="landing-page-pre h-80! overflow-y-auto!"><code
