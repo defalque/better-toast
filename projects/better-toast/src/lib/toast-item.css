@@ -89,6 +89,7 @@
 :host([data-rich-colors='true'][data-variant='success']) .toast-icon svg,
 :host([data-rich-colors='true'][data-variant='success']) .toast-icon ::ng-deep svg {
   fill: light-dark(var(--toast-success-text), var(--toast-success-bg));
+  stroke: light-dark(var(--toast-success-bg), var(--toast-success-text));
   color: light-dark(var(--toast-success-bg), var(--toast-success-text));
 }
 
@@ -105,6 +106,7 @@
 :host([data-rich-colors='true'][data-variant='error']) .toast-icon svg,
 :host([data-rich-colors='true'][data-variant='error']) .toast-icon ::ng-deep svg {
   fill: light-dark(var(--toast-error-text), var(--toast-error-bg));
+  stroke: light-dark(var(--toast-error-bg), var(--toast-error-text));
   color: light-dark(var(--toast-error-bg), var(--toast-error-text));
 }
 
@@ -121,6 +123,7 @@
 :host([data-rich-colors='true'][data-variant='info']) .toast-icon svg,
 :host([data-rich-colors='true'][data-variant='info']) .toast-icon ::ng-deep svg {
   fill: light-dark(var(--toast-info-text), var(--toast-info-bg));
+  stroke: light-dark(var(--toast-info-bg), var(--toast-info-text));
   color: light-dark(var(--toast-info-bg), var(--toast-info-text));
 }
 
@@ -137,6 +140,7 @@
 :host([data-rich-colors='true'][data-variant='warning']) .toast-icon svg,
 :host([data-rich-colors='true'][data-variant='warning']) .toast-icon ::ng-deep svg {
   fill: light-dark(var(--toast-warning-text), var(--toast-warning-bg));
+  stroke: light-dark(var(--toast-warning-bg), var(--toast-warning-text));
   color: light-dark(var(--toast-warning-bg), var(--toast-warning-text));
 }
 
@@ -258,8 +262,8 @@
 .toast-icon ::ng-deep svg {
   display: block;
   margin-inline: auto;
-  fill: currentColor;
-  stroke: currentColor;
+  fill: light-dark(var(--toast-color), var(--toast-bg));
+  stroke: light-dark(var(--toast-bg), var(--toast-color));
   width: 95%;
   height: 95%;
 }

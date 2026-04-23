@@ -1,1 +1,265 @@
-<p>doc-toast-types works!</p>
+<div class="flex w-full gap-2">
+  <div class="doc-container divide-y divide-dashed divide-zinc-200 dark:divide-zinc-600/50">
+    <div class="pb-16">
+      <h1 class="text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">Toast</h1>
+      <p class="text-zinc-700 dark:text-zinc-300 mt-4">
+        Use it to render different types of toast notifications.
+      </p>
+
+      <div class="space-y-4 pt-20" id="rendering-a-toast">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Rendering a toast
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300">
+          You can call it with just a string, that will become the title.
+        </p>
+
+        <div class="my-7 space-y-4">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
+            <div class="flex items-center gap-4">
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  toastTab() === 'preview'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="toastTab.set('preview')"
+              >
+                Preview
+              </button>
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  toastTab() === 'code'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="toastTab.set('code')"
+              >
+                Code
+              </button>
+            </div>
+
+            <button
+              type="button"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              (click)="copyToastCode()"
+            >
+              {{ toastCodeCopied() ? 'Copied!' : 'Copy code' }}
+            </button>
+          </div>
+
+          @if (toastTab() === 'preview') {
+            <pre
+              class="landing-page-pre h-80!"
+            ><code class="dark:text-white! grid! place-items-center! h-full!">
+                <button (click)="renderToast('This is a toast')" type="button" class="font-sans font-semibold bg-white shadow-sm dark:bg-zinc-900/80 text-black dark:text-zinc-100 cursor-pointer border border-zinc-200 dark:border-zinc-600/30 py-2 px-6 rounded-full text-sm active:scale-95 transition-all">Render a toast</button>
+              </code></pre>
+          } @else {
+            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+                class=" landing-page-code language-typescript dark:text-white!"
+                [innerHTML]="renderToastSource()"
+              ></code></pre>
+          }
+        </div>
+
+        <p class="text-zinc-700 dark:text-zinc-300">
+          Or provide an object as the second argument with more options. These will override the
+          options passed to <code class="p-code-snippet">&lt;better-toaster&gt;</code> if you have
+          provided any.
+        </p>
+
+        <div class="mt-7 space-y-4">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
+            <div class="flex items-center gap-4">
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  toastWithOptionsTab() === 'preview'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="toastWithOptionsTab.set('preview')"
+              >
+                Preview
+              </button>
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  toastWithOptionsTab() === 'code'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="toastWithOptionsTab.set('code')"
+              >
+                Code
+              </button>
+            </div>
+
+            <button
+              type="button"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              (click)="copyToastWithOptionsCode()"
+            >
+              {{ toastWithOptionsCodeCopied() ? 'Copied!' : 'Copy code' }}
+            </button>
+          </div>
+
+          @if (toastWithOptionsTab() === 'preview') {
+            <pre
+              class="landing-page-pre h-80!"
+            ><code class="dark:text-white! grid! place-items-center! h-full!">
+              
+              <button (click)="renderToastWithOptions()" type="button" class="font-sans font-semibold bg-white shadow-sm dark:bg-zinc-900/80 text-black dark:text-zinc-100 cursor-pointer border border-zinc-200 dark:border-zinc-600/30 py-2 px-6 rounded-full text-sm active:scale-95 transition-all">Render a toast</button>
+            </code></pre>
+          } @else {
+            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+              class=" landing-page-code language-typescript dark:text-white!"
+              [innerHTML]="toastWithOptionsSource()"
+            ></code></pre>
+          }
+        </div>
+      </div>
+
+      <div class="space-y-4 pt-20" id="success">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Success
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300">
+          Renders a checkmark icon in front of the message.
+        </p>
+      </div>
+      <div class="space-y-4 pt-20" id="error">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">Error</h2>
+        <p class="text-zinc-700 dark:text-zinc-300">
+          Renders an error icon in front of the message.
+        </p>
+      </div>
+      <div class="space-y-4 pt-20" id="info">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">Info</h2>
+        <p class="text-zinc-700 dark:text-zinc-300">Renders a info icon in front of the message.</p>
+      </div>
+      <div class="space-y-4 pt-20" id="warning">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Warning
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300">
+          Renders a warning icon in front of the message.
+        </p>
+      </div>
+
+      <div class="space-y-4 pt-20" id="loading">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Loading
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300">
+          Renders a loading icon in front of the message.
+        </p>
+      </div>
+    </div>
+
+    <div class="flex justify-between mt-6">
+      <a href="/docs/getting-started" class="flex items-end gap-2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="var(--color-zinc-500)"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="size-4.5"
+        >
+          <path d="m15 18-6-6 6-6" />
+        </svg>
+        <div class="flex flex-col items-start">
+          <p class="text-zinc-600 dark:text-zinc-400 text-[13px]">Previous</p>
+          <p class="text-zinc-600 dark:text-zinc-200 text-sm font-medium">Better Toaster</p>
+        </div>
+      </a>
+
+      <a href="/docs/toast-types" class="flex items-end gap-2">
+        <div class="flex flex-col items-end">
+          <p class="text-zinc-600 dark:text-zinc-400 text-[13px]">Next</p>
+          <p class="text-zinc-600 dark:text-zinc-200 text-sm font-medium">Other</p>
+        </div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="var(--color-zinc-500)"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="size-4.5"
+        >
+          <path d="m9 18 6-6-6-6" />
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="toc">
+    <div class="flex items-baseline gap-2">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="var(--color-zinc-500)"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="size-4"
+      >
+        <path d="M4 14h6" />
+        <path d="M4 2h10" />
+        <rect x="4" y="18" width="16" height="4" rx="1" />
+        <rect x="4" y="6" width="16" height="4" rx="1" />
+      </svg>
+      <span class="text-zinc-500">On this page</span>
+    </div>
+
+    <ul class="space-y-2 ml-6">
+      <li>
+        <a href="/docs/toast-types#rendering-a-toast" class="text-zinc-600 dark:text-zinc-300/75"
+          >Rendering a toast</a
+        >
+      </li>
+      <li>
+        <a href="/docs/toast-types#success" class="text-zinc-600 dark:text-zinc-300/75">Success</a>
+      </li>
+      <li>
+        <a href="/docs/toast-types#error" class="text-zinc-600 dark:text-zinc-300/75">Error</a>
+      </li>
+      <li>
+        <a href="/docs/toast-types#info" class="text-zinc-600 dark:text-zinc-300/75">Info</a>
+      </li>
+      <li>
+        <a href="/docs/toast-types#warning" class="text-zinc-600 dark:text-zinc-300/75">Warning</a>
+      </li>
+      <li>
+        <a href="/docs/toast-types#loading" class="text-zinc-600 dark:text-zinc-300/75">Loading</a>
+      </li>
+      <li>
+        <a href="/docs/toast-types#action" class="text-zinc-600 dark:text-zinc-300/75">Action</a>
+      </li>
+      <li>
+        <a href="/docs/toast-types#cancel" class="text-zinc-600 dark:text-zinc-300/75">Cancel</a>
+      </li>
+      <li>
+        <a href="/docs/toast-types#custom" class="text-zinc-600 dark:text-zinc-300/75">Custom</a>
+      </li>
+      <li>
+        <a href="/docs/toast-types#headless" class="text-zinc-600 dark:text-zinc-300/75"
+          >Headless</a
+        >
+      </li>
+      <li>
+        <a href="/docs/toast-types#api-reference" class="text-zinc-600 dark:text-zinc-300/75"
+          >API Reference</a
+        >
+      </li>
+    </ul>
+  </div>
+</div>
