@@ -390,6 +390,33 @@ describe('better-toast', () => {
     }
   });
 
+  it('does not swipe-dismiss loading toasts', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.componentRef.setInput('duration', TOAST_DURATION_MANUAL_DISMISS);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    toaster.loading('Wait');
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toastHost = fixture.nativeElement.querySelector('li.toast') as HTMLElement;
+    expect(toastHost.getAttribute('data-variant')).toBe('loading');
+
+    const pid = 42;
+    toastHost.dispatchEvent(
+      new PointerEvent('pointerdown', { bubbles: true, clientY: 100, pointerId: pid }),
+    );
+    toastHost.dispatchEvent(
+      new PointerEvent('pointermove', { bubbles: true, clientY: 250, pointerId: pid }),
+    );
+    toastHost.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: pid }));
+
+    expect(toaster.toasts().length).toBe(1);
+  });
+
   it('sets variant on items from typed helpers', () => {
     TestBed.configureTestingModule({ imports: [Toaster] });
     const toaster = TestBed.inject(ToasterService);

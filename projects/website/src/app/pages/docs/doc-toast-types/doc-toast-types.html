@@ -122,6 +122,7 @@
         </div>
       </div>
 
+      <!-- Success Toast -->
       <div class="space-y-4 pt-20" id="success">
         <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
           Success
@@ -129,17 +130,175 @@
         <p class="text-zinc-700 dark:text-zinc-300">
           Renders a checkmark icon in front of the message.
         </p>
+
+        <div class="my-7 space-y-4">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
+            <div class="flex items-center gap-4">
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  successToastTab() === 'preview'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="successToastTab.set('preview')"
+              >
+                Preview
+              </button>
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  successToastTab() === 'code'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="successToastTab.set('code')"
+              >
+                Code
+              </button>
+            </div>
+
+            <button
+              type="button"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              (click)="copySuccessToastCode()"
+            >
+              {{ successToastCodeCopied() ? 'Copied!' : 'Copy code' }}
+            </button>
+          </div>
+
+          @if (successToastTab() === 'preview') {
+            <pre
+              class="landing-page-pre h-80!"
+            ><code class="dark:text-white! grid! place-items-center! h-full!">
+                  <button (click)="renderSuccessToast()" type="button" class="font-sans font-semibold bg-white shadow-sm dark:bg-zinc-900/80 text-black dark:text-zinc-100 cursor-pointer border border-zinc-200 dark:border-zinc-600/30 py-2 px-6 rounded-full text-sm active:scale-95 transition-all">Render a success toast</button>
+                </code></pre>
+          } @else {
+            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+                  class=" landing-page-code language-typescript dark:text-white!"
+                  [innerHTML]="renderSuccessToastSource()"
+                ></code></pre>
+          }
+        </div>
       </div>
+
+      <!-- Error Toast -->
       <div class="space-y-4 pt-20" id="error">
         <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">Error</h2>
         <p class="text-zinc-700 dark:text-zinc-300">
           Renders an error icon in front of the message.
         </p>
+
+        <div class="my-7 space-y-4">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
+            <div class="flex items-center gap-4">
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  errorToastTab() === 'preview'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="errorToastTab.set('preview')"
+              >
+                Preview
+              </button>
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  errorToastTab() === 'code'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="errorToastTab.set('code')"
+              >
+                Code
+              </button>
+            </div>
+
+            <button
+              type="button"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              (click)="copyErrorToastCode()"
+            >
+              {{ errorToastCodeCopied() ? 'Copied!' : 'Copy code' }}
+            </button>
+          </div>
+
+          @if (errorToastTab() === 'preview') {
+            <pre
+              class="landing-page-pre h-80!"
+            ><code class="dark:text-white! grid! place-items-center! h-full!">
+                    <button (click)="renderErrorToast()" type="button" class="font-sans font-semibold bg-white shadow-sm dark:bg-zinc-900/80 text-black dark:text-zinc-100 cursor-pointer border border-zinc-200 dark:border-zinc-600/30 py-2 px-6 rounded-full text-sm active:scale-95 transition-all">Render a error toast</button>
+                  </code></pre>
+          } @else {
+            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+                    class=" landing-page-code language-typescript dark:text-white!"
+                    [innerHTML]="renderErrorToastSource()"
+                  ></code></pre>
+          }
+        </div>
       </div>
+
+      <!-- Info Toast -->
       <div class="space-y-4 pt-20" id="info">
         <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">Info</h2>
-        <p class="text-zinc-700 dark:text-zinc-300">Renders a info icon in front of the message.</p>
+        <p class="text-zinc-700 dark:text-zinc-300">
+          Renders an info icon in front of the message.
+        </p>
+
+        <div class="my-7 space-y-4">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
+            <div class="flex items-center gap-4">
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  infoToastTab() === 'preview'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="infoToastTab.set('preview')"
+              >
+                Preview
+              </button>
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  infoToastTab() === 'code'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="infoToastTab.set('code')"
+              >
+                Code
+              </button>
+            </div>
+
+            <button
+              type="button"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              (click)="copyInfoToastCode()"
+            >
+              {{ infoToastCodeCopied() ? 'Copied!' : 'Copy code' }}
+            </button>
+          </div>
+
+          @if (infoToastTab() === 'preview') {
+            <pre
+              class="landing-page-pre h-80!"
+            ><code class="dark:text-white! grid! place-items-center! h-full!">
+                    <button (click)="renderInfoToast()" type="button" class="font-sans font-semibold bg-white shadow-sm dark:bg-zinc-900/80 text-black dark:text-zinc-100 cursor-pointer border border-zinc-200 dark:border-zinc-600/30 py-2 px-6 rounded-full text-sm active:scale-95 transition-all">Render an info toast</button>
+                  </code></pre>
+          } @else {
+            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+                    class=" landing-page-code language-typescript dark:text-white!"
+                    [innerHTML]="renderInfoToastSource()"
+                  ></code></pre>
+          }
+        </div>
       </div>
+
+      <!-- Warning Toast -->
       <div class="space-y-4 pt-20" id="warning">
         <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
           Warning
@@ -147,15 +306,117 @@
         <p class="text-zinc-700 dark:text-zinc-300">
           Renders a warning icon in front of the message.
         </p>
+
+        <div class="my-7 space-y-4">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
+            <div class="flex items-center gap-4">
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  warningToastTab() === 'preview'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="warningToastTab.set('preview')"
+              >
+                Preview
+              </button>
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  warningToastTab() === 'code'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="warningToastTab.set('code')"
+              >
+                Code
+              </button>
+            </div>
+
+            <button
+              type="button"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              (click)="copyWarningToastCode()"
+            >
+              {{ warningToastCodeCopied() ? 'Copied!' : 'Copy code' }}
+            </button>
+          </div>
+
+          @if (warningToastTab() === 'preview') {
+            <pre
+              class="landing-page-pre h-80!"
+            ><code class="dark:text-white! grid! place-items-center! h-full!">
+                    <button (click)="renderWarningToast()" type="button" class="font-sans font-semibold bg-white shadow-sm dark:bg-zinc-900/80 text-black dark:text-zinc-100 cursor-pointer border border-zinc-200 dark:border-zinc-600/30 py-2 px-6 rounded-full text-sm active:scale-95 transition-all">Render a warning toast</button>
+                  </code></pre>
+          } @else {
+            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+                    class=" landing-page-code language-typescript dark:text-white!"
+                    [innerHTML]="renderWarningToastSource()"
+                  ></code></pre>
+          }
+        </div>
       </div>
 
+      <!-- Loading Toast -->
       <div class="space-y-4 pt-20" id="loading">
         <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
           Loading
         </h2>
         <p class="text-zinc-700 dark:text-zinc-300">
-          Renders a loading icon in front of the message.
+          Renders a toast with a loading spinner. Useful when you want to handle various states
+          yourself instead of using a promise toast.
         </p>
+
+        <div class="my-7 space-y-4">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
+            <div class="flex items-center gap-4">
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  loadingToastTab() === 'preview'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="loadingToastTab.set('preview')"
+              >
+                Preview
+              </button>
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  loadingToastTab() === 'code'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="loadingToastTab.set('code')"
+              >
+                Code
+              </button>
+            </div>
+
+            <button
+              type="button"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              (click)="copyLoadingToastCode()"
+            >
+              {{ loadingToastCodeCopied() ? 'Copied!' : 'Copy code' }}
+            </button>
+          </div>
+
+          @if (loadingToastTab() === 'preview') {
+            <pre
+              class="landing-page-pre h-80!"
+            ><code class="dark:text-white! grid! place-items-center! h-full!">
+                    <button (click)="renderLoadingToast()" type="button" class="font-sans font-semibold bg-white shadow-sm dark:bg-zinc-900/80 text-black dark:text-zinc-100 cursor-pointer border border-zinc-200 dark:border-zinc-600/30 py-2 px-6 rounded-full text-sm active:scale-95 transition-all">Render a loading toast</button>
+                  </code></pre>
+          } @else {
+            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+                    class=" landing-page-code language-typescript dark:text-white!"
+                    [innerHTML]="renderLoadingToastSource()"
+                  ></code></pre>
+          }
+        </div>
       </div>
     </div>
 

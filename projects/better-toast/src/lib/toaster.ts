@@ -441,6 +441,9 @@ export class BetterToastItem {
    * @param event - The pointer down event object.
    */
   onPointerDown(event: PointerEvent) {
+    if (this.variant() === 'loading') {
+      return;
+    }
     this.tracking = true;
     this.startY = event.clientY;
     this.pointerId = event.pointerId;
