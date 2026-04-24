@@ -6,6 +6,7 @@ import bash from 'highlight.js/lib/languages/bash';
 import typescript from 'highlight.js/lib/languages/typescript';
 import xml from 'highlight.js/lib/languages/xml';
 import { HeadlessComponent } from '../../components/headless-component/headless-component';
+import { HomeCustomToastBody } from '../docs/doc-toast-types/components/custom-toast-body/custom-toast-body';
 
 hljs.registerLanguage('bash', bash);
 hljs.registerLanguage('typescript', typescript);
@@ -68,7 +69,7 @@ const TOAST_TYPE_SOURCE = {
     },
   },
 });`,
-  custom: `this.toaster.custom('<strong>HTML</strong> is allowed.', {
+  custom: `this.toaster.custom(CustomToastBody, {
   durationMs: 4000,
 });`,
   promise: `const myPromise = new Promise<{ message: string }>((resolve) => {
@@ -197,7 +198,7 @@ export class Home {
         break;
       }
       case 'custom':
-        this.toaster.custom('<strong>HTML</strong> is allowed.', { durationMs: 4000 });
+        this.toaster.custom(HomeCustomToastBody);
         break;
       case 'promise':
         this.toaster.promise(

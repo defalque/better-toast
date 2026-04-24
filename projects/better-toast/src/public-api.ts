@@ -17,6 +17,7 @@ export {
   ToasterService,
 } from './lib/toaster.service';
 export type {
+  CustomToastOptions,
   HeadlessToastOptions,
   ToastActionChromeClassNames,
   ToastActionMethodOptions,

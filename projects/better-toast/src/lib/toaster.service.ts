@@ -3,6 +3,7 @@ import { Injectable, signal } from '@angular/core';
 import type { Type } from '@angular/core';
 
 import type {
+  CustomToastOptions,
   HeadlessToastOptions,
   ToastActionMethodOptions,
   ToastCancelMethodOptions,
@@ -208,15 +209,23 @@ export class ToasterService {
   }
 
   /**
-   * Show a toast whose body is custom HTML inside the usual toast chrome.
-   * The string is bound with `[innerHTML]` and sanitized by Angular like any template HTML.
+   * Show a toast whose **message area** is a standalone Angular component while keeping normal toast chrome
+   * (surface, icon column when applicable, close button, stack motion).
    *
-   * @param html The custom HTML content.
-   * @param options Optional configuration object {@link ToastOptions}.
+   * Pass {@link CustomToastOptions.inputs} for `input()` / `@Input()` on that component.
+   * The component also receives **`toastId`** (matches the returned id) for programmatic dismiss.
+   *
+   * @param component The component class (must be usable with `NgComponentOutlet`).
+   * @param options Optional configuration object {@link CustomToastOptions}.
    * @returns The toast ID, useful for programmatic dismissal.
    */
-  custom(html: string, options?: ToastOptions): string {
-    return this.addHtml(html, 'default', this.resolveDuration(options?.durationMs), options);
+  custom(component: Type<unknown>, options?: CustomToastOptions): string {
+    return this.addContentComponent(
+      component,
+      'default',
+      this.resolveDuration(options?.durationMs),
+      options,
+    );
   }
 
   /**
@@ -383,13 +392,17 @@ export class ToasterService {
     return id;
   }
 
-  private addHtml(
-    html: string,
+  private addContentComponent(
+    component: Type<unknown>,
     variant: ToastVariant,
     durationMs: number,
-    options?: ToastOptions,
+    options?: CustomToastOptions,
   ): string {
     const id = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
+    const componentInputs: Record<string, unknown> = {
+      ...(options?.inputs ?? {}),
+      toastId: id,
+    };
     const icon = options?.icon;
     const style = options?.style;
     const classNames = options?.classNames;
@@ -401,7 +414,8 @@ export class ToasterService {
       id,
       message: '',
       variant,
-      html,
+      contentComponent: component,
+      contentComponentInputs: componentInputs,
       ...(icon !== undefined ? { icon } : {}),
       ...(style !== undefined ? { style } : {}),
       ...(classNames !== undefined ? { classNames } : {}),
@@ -411,9 +425,7 @@ export class ToasterService {
     };
 
     this._toasts.update((list) => [...list, item]);
-
     this.scheduleAutoDismiss(id, durationMs);
-
     return id;
   }
 

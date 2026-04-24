@@ -130,7 +130,7 @@ export interface ToasterToastOptions {
    * Extra CSS class strings merged onto toast chrome via Angular **`[class]`** bindings (from `<app-toaster [toastOptions]>`).
    *
    * - **`toast`** — list item host (`li.toast` / `AppToastItem`), alongside the built-in `toast` class.
-   * - **`message`** — the title line (`.msg`) when the toast is not `html` / `component` / headless body.
+   * - **`message`** — the title line (`.msg`) when the toast is not a headless body or {@link ToasterItem.contentComponent} body.
    * - **`description`** — the secondary line (`.description`) when {@link ToastOptions.description} is set or for the **`description`** variant.
    * - **`closeButton`** — the dismiss control (`.close-btn`) when `<app-toaster [closeButton]>` is enabled.
    * - **`actionButton`** / **`cancelButton`** — defaults for `.action-btn` / `.cancel-btn` when you use {@link ToasterService.action} / {@link ToasterService.cancel}; ignored on toasts without a row button.
@@ -172,8 +172,19 @@ export type ToastCancelMethodOptions = Omit<ToastOptions, 'icon' | 'classNames'>
 };
 
 /**
- * Options for the second argument of `show`, `success`, `error`, `info`, `warning`, `custom`, `loading`,
+ * Options for {@link ToasterService.custom}.
+ * {@link CustomToastOptions.inputs} is merged into the body component (same pattern as {@link HeadlessToastOptions.inputs});
+ * **`toastId`** is always injected after your inputs. The component must declare a matching `input()` / `@Input()` for **`toastId`**
+ * so `NgComponentOutlet` can bind it (same requirement as {@link ToasterService.headless}).
+ */
+export interface CustomToastOptions extends ToastOptions {
+  inputs?: Record<string, unknown>;
+}
+
+/**
+ * Options for the second argument of `show`, `success`, `error`, `info`, `warning`, `loading`,
  * and {@link ToasterService#description}.
+ * {@link ToasterService.custom} uses {@link CustomToastOptions} instead.
  * Not used by `ToasterService.promise()` (that API uses {@link ToastPromiseLabels}).
  */
 export interface ToastOptions {
@@ -246,10 +257,15 @@ export interface ToasterItem {
   /** Secondary line; see {@link ToastOptions.description}. */
   readonly description?: string;
   readonly variant: ToastVariant;
-  /** When set, replaces the default icon + message; body is `.toast-custom` only (no `.msg` / `.stack`), still sanitized by Angular. */
-  readonly html?: string;
   /**
-   * When set (without `html`), the toast body is this standalone component only — same stack and motion as other toasts, without host chrome or a close button.
+   * When set, the toast body is this standalone component rendered **inside** normal chrome (icon column when applicable, `.msg` host, close button),
+   * via {@link ToasterService.custom}.
+   */
+  readonly contentComponent?: Type<unknown>;
+  /** Bound to {@link ToasterItem.contentComponent} via `NgComponentOutlet` (includes auto **`toastId`**). */
+  readonly contentComponentInputs?: Record<string, unknown>;
+  /**
+   * When set (without {@link ToasterItem.contentComponent}), the toast body is this standalone component only — same stack and motion as other toasts, without host chrome or a close button.
    */
   readonly component?: Type<unknown>;
   /** Bound to the headless component via `NgComponentOutlet`. */

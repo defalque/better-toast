@@ -21,6 +21,7 @@ import { CustomWarning } from './icons/custom-warning/custom-warning';
 import { CustomLoading } from './icons/custom-loading/custom-loading';
 import { CustomMusicPlayerToast } from './components/custom-music-player-toast/custom-music-player-toast';
 import { CustomToast } from './components/custom-toast/custom-toast';
+import { CustomLinkToastBody } from './components/custom-link-toast-body/custom-link-toast-body';
 import { CookieToast } from './components/cookie-toast/cookie-toast';
 import { UploadProgressToast } from './components/upload-progress-toast/upload-progress-toast';
 
@@ -180,14 +181,7 @@ export class App {
 // Same column layout on any type, e.g. success/error:
 // this.toaster.success('Saved', { description: 'Stored in Downloads.' });`,
     warning: `this.toaster.warning('Your session will expire soon');`,
-    custom: `this.toaster.custom(\`
-      <div>Check my website: 
-        <a href="https://marcodefalco.dev" target="_blank" rel="noopener noreferrer" 
-        class="text-orange-600 dark:text-orange-400 font-medium italic hover:underline">
-          marcodefalco.dev
-        </a>
-      </div>
-\`);`,
+    custom: `this.toaster.custom(CustomLinkToastBody);`,
     loading: `this.toaster.loading('Loading…');`,
     promise: `const myPromise = new Promise<{ message: string }>((resolve) => {
       setTimeout(() => {
@@ -502,13 +496,7 @@ this.toaster.headless(UploadProgressToast, {
   }
 
   protected showCustomToast(): void {
-    this.toaster.custom(`
-        <div>Check my website:
-          <a href="https://marcodefalco.dev" target="_blank" rel="noopener noreferrer" class="hover:underline font-medium italic text-orange-600 dark:text-orange-400">
-            marcodefalco.dev
-          </a>
-        </div>
-    `);
+    this.toaster.custom(CustomLinkToastBody);
   }
 
   protected toggleRichColors(): void {

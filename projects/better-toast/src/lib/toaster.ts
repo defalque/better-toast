@@ -96,9 +96,7 @@ function mergeToastClassNames(
     '(pointerleave)': 'onPointerLeave()',
   },
   template: `
-    @if (toast()?.html) {
-      <div class="toast-custom" [innerHTML]="toast()!.html!"></div>
-    } @else if (toast()?.component) {
+    @if (toast()?.component) {
       <ng-container *ngComponentOutlet="toast()!.component!; inputs: componentOutletInputs()" />
     } @else {
       @if (shouldShowIconColumn()) {
@@ -194,7 +192,18 @@ function mergeToastClassNames(
 
       @if (hasDescription()) {
         <div class="stack">
-          <p class="msg" [class]="resolvedClassNames()?.message">{{ toast()?.message }}</p>
+          @if (toast()?.contentComponent) {
+            <div class="msg" [class]="resolvedClassNames()?.message">
+              <ng-container
+                *ngComponentOutlet="
+                  toast()!.contentComponent!;
+                  inputs: contentComponentOutletInputs()
+                "
+              />
+            </div>
+          } @else {
+            <p class="msg" [class]="resolvedClassNames()?.message">{{ toast()?.message }}</p>
+          }
           @if (toast()?.description) {
             <p class="description" [class]="resolvedClassNames()?.description">
               {{ toast()!.description }}
@@ -202,7 +211,18 @@ function mergeToastClassNames(
           }
         </div>
       } @else {
-        <p class="msg" [class]="resolvedClassNames()?.message">{{ toast()?.message }}</p>
+        @if (toast()?.contentComponent) {
+          <div class="msg" [class]="resolvedClassNames()?.message">
+            <ng-container
+              *ngComponentOutlet="
+                toast()!.contentComponent!;
+                inputs: contentComponentOutletInputs()
+              "
+            />
+          </div>
+        } @else {
+          <p class="msg" [class]="resolvedClassNames()?.message">{{ toast()?.message }}</p>
+        }
       }
 
       @if (toast()?.toastAction; as rowAction) {
@@ -366,6 +386,10 @@ export class BetterToastItem {
   /** Bound to {@link ToasterItem.componentInputs} for headless (`NgComponentOutlet`) toasts. */
   protected readonly componentOutletInputs = computed(
     (): Record<string, unknown> => this.toast()?.componentInputs ?? {},
+  );
+  /** Bound to {@link ToasterItem.contentComponentInputs} for {@link ToasterService.custom} body components. */
+  protected readonly contentComponentOutletInputs = computed(
+    (): Record<string, unknown> => this.toast()?.contentComponentInputs ?? {},
   );
   /** When true, host uses no default toast chrome (border, padding, surface) — only stack + motion. */
   protected readonly isHeadless = computed(() => this.toast()?.component != null);

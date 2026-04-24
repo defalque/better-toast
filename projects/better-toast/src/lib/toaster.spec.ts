@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
 
@@ -22,6 +22,15 @@ class SpecSuccessIcon {}
   template: '<span class="bt-spec-custom-default-icon" aria-hidden="true">D</span>',
 })
 class SpecDefaultIcon {}
+
+@Component({
+  selector: 'bt-spec-custom-body',
+  standalone: true,
+  template: '<p class="bt-spec-custom-body">Rich</p>',
+})
+class SpecCustomBody {
+  readonly toastId = input<string>('');
+}
 
 @Component({
   imports: [Toaster],
@@ -591,26 +600,28 @@ describe('better-toast', () => {
     expect(fixture.nativeElement.querySelector('.toast-icon')).toBeNull();
   });
 
-  it('custom() stores html and omits the default icon/message branch', async () => {
+  it('custom() renders a body component inside default toast chrome', async () => {
     TestBed.configureTestingModule({ imports: [Toaster] });
     const fixture = TestBed.createComponent(Toaster);
     fixture.detectChanges();
     await fixture.whenStable();
 
     const toaster = TestBed.inject(ToasterService);
-    toaster.custom('<p class="x">Rich</p>', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    toaster.custom(SpecCustomBody, { durationMs: TOAST_DURATION_MANUAL_DISMISS });
     fixture.detectChanges();
     await fixture.whenStable();
 
-    expect(toaster.toasts()[0].html).toBe('<p class="x">Rich</p>');
-    expect(toaster.toasts()[0].message).toBe('');
-    expect(toaster.toasts()[0].variant).toBe('default');
+    const toast = toaster.toasts()[0];
+    expect(toast.contentComponent).toBe(SpecCustomBody);
+    expect(toast.message).toBe('');
+    expect(toast.variant).toBe('default');
+    expect(toast.contentComponentInputs?.['toastId']).toBe(toast.id);
 
     const host = fixture.nativeElement.querySelector('li.toast') as HTMLElement;
-    expect(host.querySelector('.toast-custom')?.innerHTML).toContain('Rich');
-    expect(host.querySelector('.stack')).toBeNull();
-    expect(host.querySelector('.toast-icon')).toBeNull();
-    expect(host.querySelector('.msg')).toBeNull();
+    expect(host.querySelector('.toast-custom')).toBeNull();
+    expect(host.querySelector('.bt-spec-custom-body')).toBeTruthy();
+    expect(host.querySelector('.msg')).toBeTruthy();
+    expect(host.querySelector('.close-btn')).toBeTruthy();
   });
 
   it('calls onAutoClose when the toast auto-dismisses', async () => {

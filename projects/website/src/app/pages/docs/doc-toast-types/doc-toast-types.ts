@@ -1,8 +1,10 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ToasterService } from 'better-toast';
 import hljs from 'highlight.js';
 import typescript from 'highlight.js/lib/languages/typescript';
 import { CustomIcon } from './components/custom-icon/custom-icon';
+import { HeadlessComponent } from '../../../components/headless-component/headless-component';
+import { HomeCustomToastBody } from './components/custom-toast-body/custom-toast-body';
 
 hljs.registerLanguage('typescript', typescript);
 
@@ -217,6 +219,100 @@ export class PromiseToastComponent {
     });
   }
 }`;
+const HEADLESS_TOAST_SOURCE = `import { Component, inject, input } from '@angular/core';
+import { ToasterService } from 'better-toast';
+
+@Component({
+  selector: 'app-headless-component',
+  imports: [],
+  template: '
+    <div
+      class="w-fit dark:ring-zinc-800/90 px-4 py-2 rounded-2xl bg-zinc-50/10 backdrop-blur-sm dark:bg-zinc-950/10 ..."
+    >
+       <!-- Your headless toast code here -->
+    </div>
+  ',
+})
+export class HeadlessComponent {
+  protected readonly toaster = inject(ToasterService);
+
+  /** Same id returned from 'ToasterService.headless()'; use with 'dismiss()'. */
+  protected readonly toastId = input<string>('');
+
+  protected readonly songTitle = input<string>('');
+  protected readonly songImage = input<string>('');
+  protected readonly songArtist = input<string>('');
+}
+
+import { Component, inject } from '@angular/core';
+import { ToasterService } from 'better-toast';
+import { HeadlessComponent } from './components/headless-component/headless-component';
+
+@Component({
+  selector: 'app-headless-toast',
+  imports: [],
+  template: '
+    <button (click)="renderHeadlessToast()" type="button" class="btn">Render a headless toast</button>
+  ',
+})
+export class HeadlessToast {
+  protected readonly toaster = inject(ToasterService);
+
+  protected renderHeadlessToast(): void {
+    this.toaster.headless(HeadlessComponent, {
+      durationMs: 'Infinity',
+      inputs: {
+        songTitle: 'Stay',
+        songImage:
+          'https://cdn-images.dzcdn.net/images/cover/dd6fe7fa9267185c4b835bd4f155d1d2/0x1900-000000-80-0-0.jpg',
+        songArtist: 'The Kid Laroi, Justin Bieber',
+      },
+    });
+  }
+}`;
+const CUSTOM_TOAST_SOURCE = `import { Component, inject, input } from '@angular/core';
+import { ToasterService } from 'better-toast';
+
+@Component({
+  selector: 'app-custom-toast-component',
+  imports: [],
+  template: '
+    <span>
+    Check my website:
+    <a
+      href="https://marcodefalco.dev"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="text-orange-600 dark:text-orange-400 font-medium italic hover:underline"
+    >
+      marcodefalco.dev
+    </a>
+  </span>
+  ',
+})
+export class CustomToastComponent {
+  /** Same id returned from 'ToasterService.headless()'; use with 'dismiss()'. */
+  protected readonly toastId = input<string>('');
+}
+
+import { Component, inject } from '@angular/core';
+import { ToasterService } from 'better-toast';
+import { CustomToastComponent } from './components/custom-toast-component/custom-toast-component';
+
+@Component({
+  selector: 'app-custom-toast',
+  imports: [],
+  template: '
+    <button (click)="renderCustomToast()" type="button" class="btn">Render a custom toast</button>
+  ',
+})
+export class CustomToast {
+  protected readonly toaster = inject(ToasterService);
+
+  protected renderCustomToast(): void {
+    this.toaster.custom(CustomToastComponent);
+  }
+}`;
 
 @Component({
   selector: 'app-doc-toast-types',
@@ -240,6 +336,8 @@ export class DocToastTypes {
   protected actionToastTab = signal<'preview' | 'code'>('preview');
   protected cancelToastTab = signal<'preview' | 'code'>('preview');
   protected promiseToastTab = signal<'preview' | 'code'>('preview');
+  protected headlessToastTab = signal<'preview' | 'code'>('preview');
+  protected customToastTab = signal<'preview' | 'code'>('preview');
 
   protected toastCodeCopied = signal(false);
   protected toastWithOptionsCodeCopied = signal(false);
@@ -251,6 +349,8 @@ export class DocToastTypes {
   protected actionToastCodeCopied = signal(false);
   protected cancelToastCodeCopied = signal(false);
   protected promiseToastCodeCopied = signal(false);
+  protected headlessToastCodeCopied = signal(false);
+  protected customToastCodeCopied = signal(false);
 
   private copyResetTimeout: ReturnType<typeof setTimeout> | null = null;
 
@@ -344,6 +444,26 @@ export class DocToastTypes {
   protected renderPromiseToastSource(): string {
     return hljs.highlight(PROMISE_TOAST_SOURCE, { language: 'typescript' }).value;
   }
+  protected renderHeadlessToast(): void {
+    this.toaster.headless(HeadlessComponent, {
+      durationMs: 'Infinity',
+      inputs: {
+        songTitle: 'Stay',
+        songImage:
+          'https://cdn-images.dzcdn.net/images/cover/dd6fe7fa9267185c4b835bd4f155d1d2/0x1900-000000-80-0-0.jpg',
+        songArtist: 'The Kid Laroi, Justin Bieber',
+      },
+    });
+  }
+  protected renderHeadlessToastSource(): string {
+    return hljs.highlight(HEADLESS_TOAST_SOURCE, { language: 'typescript' }).value;
+  }
+  protected renderCustomToast(): void {
+    this.toaster.custom(HomeCustomToastBody, {});
+  }
+  protected renderCustomToastSource(): string {
+    return hljs.highlight(CUSTOM_TOAST_SOURCE, { language: 'typescript' }).value;
+  }
 
   protected async copyToastCode(): Promise<void> {
     await this.copyToClipboard(RENDER_TOAST_SOURCE, this.toastCodeCopied);
@@ -374,6 +494,12 @@ export class DocToastTypes {
   }
   protected async copyPromiseToastCode(): Promise<void> {
     await this.copyToClipboard(PROMISE_TOAST_SOURCE, this.promiseToastCodeCopied);
+  }
+  protected async copyHeadlessToastCode(): Promise<void> {
+    await this.copyToClipboard(HEADLESS_TOAST_SOURCE, this.headlessToastCodeCopied);
+  }
+  protected async copyCustomToastCode(): Promise<void> {
+    await this.copyToClipboard(CUSTOM_TOAST_SOURCE, this.customToastCodeCopied);
   }
 
   private async copyToClipboard(

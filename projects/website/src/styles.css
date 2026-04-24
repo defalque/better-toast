@@ -65,7 +65,7 @@ html.dark::-webkit-scrollbar-thumb:hover {
 }
 
 .p-code-snippet {
-  @apply font-light text-[15px] text-black/60 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-950/90 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-2 py-0.5;
+  @apply font-light text-[15px] text-black/70 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-950/90 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-2 py-0.5;
 }
 
 .toast-button {

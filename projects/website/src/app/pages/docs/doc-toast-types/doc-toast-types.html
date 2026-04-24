@@ -618,8 +618,62 @@
           Custom
         </h2>
         <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
-          You can pass an HTML string as the first argument to render a custom toast while
-          preserving the default styling.
+          You can pass a standalone component class as the first argument instead of a string to
+          render a custom toast while maintaining default styling.
+        </p>
+        <div class="mt-7 space-y-4">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
+            <div class="flex items-center gap-4">
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  customToastTab() === 'preview'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="customToastTab.set('preview')"
+              >
+                Preview
+              </button>
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  customToastTab() === 'code'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="customToastTab.set('code')"
+              >
+                Code
+              </button>
+            </div>
+            <button
+              type="button"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              (click)="copyCustomToastCode()"
+            >
+              {{ customToastCodeCopied() ? 'Copied!' : 'Copy code' }}
+            </button>
+          </div>
+          @if (customToastTab() === 'preview') {
+            <pre
+              class="landing-page-pre h-80!"
+            ><code class="dark:text-white! grid! place-items-center! h-full!">
+                      <button (click)="renderCustomToast()" type="button" class="toast-button">Render a custom toast</button>
+                    </code></pre>
+          } @else {
+            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+                      class=" landing-page-code language-typescript dark:text-white!"
+                      [innerHTML]="renderCustomToastSource()"
+                    ></code></pre>
+          }
+        </div>
+        <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+          Use <code class="p-code-snippet">inputs</code> on the options object (second argument) for
+          your component’s data. To access the toast id for programmatic dismiss, declare
+          <code class="p-code-snippet">toastId</code> using
+          <code class="p-code-snippet">input()</code> or
+          <code class="p-code-snippet">@Input()</code>.
         </p>
       </div>
 
@@ -632,6 +686,60 @@
           Use it to render an unstyled toast with a custom component while maintaining the
           functionality. This method receives the component as an argument, giving you access to all
           properties.
+        </p>
+        <div class="mt-7 space-y-4">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
+            <div class="flex items-center gap-4">
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  headlessToastTab() === 'preview'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="headlessToastTab.set('preview')"
+              >
+                Preview
+              </button>
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  headlessToastTab() === 'code'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="headlessToastTab.set('code')"
+              >
+                Code
+              </button>
+            </div>
+            <button
+              type="button"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              (click)="copyHeadlessToastCode()"
+            >
+              {{ headlessToastCodeCopied() ? 'Copied!' : 'Copy code' }}
+            </button>
+          </div>
+          @if (headlessToastTab() === 'preview') {
+            <pre
+              class="landing-page-pre h-80!"
+            ><code class="dark:text-white! grid! place-items-center! h-full!">
+                      <button (click)="renderHeadlessToast()" type="button" class="toast-button">Render a headless toast</button>
+                    </code></pre>
+          } @else {
+            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+                      class=" landing-page-code language-typescript dark:text-white!"
+                      [innerHTML]="renderHeadlessToastSource()"
+                    ></code></pre>
+          }
+        </div>
+        <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+          Use <code class="p-code-snippet">inputs</code> on the options object (second argument) for
+          your component’s data. To access the toast id for programmatic dismiss, declare
+          <code class="p-code-snippet">toastId</code> using
+          <code class="p-code-snippet">input()</code> or
+          <code class="p-code-snippet">@Input()</code>.
         </p>
       </div>
 
@@ -698,7 +806,7 @@
                 <td
                   class="text-left text-zinc-900 dark:text-zinc-300 font-medium text-sm px-6 py-4 align-top"
                 >
-                  <code class="p-code-snippet text-sm!">duration</code>
+                  <code class="p-code-snippet text-sm!">durationMs</code>
                 </td>
                 <td
                   class="text-left text-zinc-900 dark:text-zinc-500 font-medium text-sm px-6 py-4 align-top"
@@ -728,6 +836,24 @@
                   class="text-left text-zinc-900 dark:text-zinc-500 font-medium text-sm px-6 py-4 align-top"
                 >
                   <code class="p-code-snippet text-sm!">Component</code>
+                </td>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-300 font-medium text-sm px-6 py-4 align-top whitespace-nowrap"
+                >
+                  <code class="p-code-snippet">-</code>
+                </td>
+              </tr>
+
+              <tr>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-300 font-medium text-sm px-6 py-4 align-top"
+                >
+                  <code class="p-code-snippet text-sm!">inputs</code>
+                </td>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-500 font-medium text-sm px-6 py-4 align-top"
+                >
+                  <code class="p-code-snippet text-sm!">object</code>
                 </td>
                 <td
                   class="text-left text-zinc-900 dark:text-zinc-300 font-medium text-sm px-6 py-4 align-top whitespace-nowrap"

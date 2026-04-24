@@ -1,8 +1,10 @@
 <div class="flex flex-col min-h-screen">
   <header class="block lg:hidden p-4 border-b border-dashed border-zinc-200 dark:border-zinc-800">
     <div class="mx-auto py-4 max-w-2xl">
-      <div class="flex items-center justify-between">
-        <a href="/" class="text-2xl font-bold text-black dark:text-white">Better Toast</a>
+      <div class="flex items-center-safe justify-between">
+        <a href="/" class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100"
+          >Better Toast</a
+        >
 
         <button
           class="text-sm text-zinc-600 dark:text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 cursor-pointer"
@@ -15,13 +17,13 @@
             fill="none"
             stroke="currentColor"
             stroke-width="2"
-            stroke-linejoin="round"
             stroke-linecap="round"
-            class=""
+            stroke-linejoin="round"
+            class="-rotate-90"
           >
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
+            <path d="M5 21v-6" />
+            <path d="M12 21V3" />
+            <path d="M19 21V9" />
           </svg>
         </button>
       </div>
@@ -32,8 +34,10 @@
     class="w-64 border-r border-dashed border-zinc-200 dark:border-zinc-800 hidden lg:block fixed left-0 top-0 bottom-0 bg-gray-100/60 dark:bg-zinc-950/50 divide-y divide-zinc-200 dark:divide-zinc-800 divide-dashed"
   >
     <div class="px-3 py-4 space-x-2">
-      <a href="/" class="text-xl font-semibold text-black dark:text-white">Better Toast</a>
-      <span class="text-xs text-zinc-600 dark:text-zinc-500 self-end font-medium"
+      <a href="/" class="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100"
+        >Better Toast</a
+      >
+      <span class="text-[11px] text-zinc-600 dark:text-zinc-500 self-end font-medium"
         >by
         <a
           href="https://marcodefalco.dev"
@@ -45,7 +49,7 @@
       >
     </div>
     <ul
-      class="flex flex-col gap-6 p-3 font-medium divide-y divide-zinc-200 dark:divide-zinc-800 divide-dashed"
+      class="flex flex-col gap-6 px-3 font-medium divide-y divide-zinc-200 dark:divide-zinc-800 divide-dashed"
     >
       <div class="py-6 space-y-1.5">
         <p class="px-2 text-xs text-zinc-400 dark:text-zinc-500">Basics</p>
