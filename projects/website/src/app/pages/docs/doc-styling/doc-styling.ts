@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Meta } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-doc-styling',
@@ -9,4 +10,14 @@ import { Component } from '@angular/core';
     class: 'block w-full min-w-0 max-w-5xl mx-auto',
   },
 })
-export class DocStyling {}
+export class DocStyling {
+  private readonly meta = inject(Meta);
+
+  constructor() {
+    this.meta.updateTag({
+      name: 'description',
+      content:
+        'Style Better Toast to match your app. Theming, CSS class hooks, and design tokens for light and dark UI.',
+    });
+  }
+}

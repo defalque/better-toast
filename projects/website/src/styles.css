@@ -7,6 +7,15 @@ html {
   scrollbar-color: var(--color-zinc-400) var(--color-zinc-200);
 }
 
+html.docs-shell-drawer-open,
+body.docs-shell-drawer-open {
+  overflow: hidden;
+}
+
+html.docs-shell-drawer-open {
+  overscroll-behavior: none;
+}
+
 html::-webkit-scrollbar {
   width: 10px;
   height: 10px;

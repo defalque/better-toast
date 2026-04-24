@@ -5,6 +5,7 @@ import typescript from 'highlight.js/lib/languages/typescript';
 import { CustomIcon } from './components/custom-icon/custom-icon';
 import { HeadlessComponent } from '../../../components/headless-component/headless-component';
 import { HomeCustomToastBody } from './components/custom-toast-body/custom-toast-body';
+import { Meta } from '@angular/platform-browser';
 
 hljs.registerLanguage('typescript', typescript);
 
@@ -324,6 +325,16 @@ export class CustomToast {
   },
 })
 export class DocToastTypes {
+  private readonly meta = inject(Meta);
+
+  constructor() {
+    this.meta.updateTag({
+      name: 'description',
+      content:
+        'Create success, error, and custom toasts. API examples and options for all toast types in Better Toast for Angular.',
+    });
+  }
+
   protected readonly toaster = inject(ToasterService);
 
   protected toastTab = signal<'preview' | 'code'>('preview');

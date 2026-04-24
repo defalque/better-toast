@@ -1,4 +1,5 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
+import { Meta } from '@angular/platform-browser';
 import hljs from 'highlight.js';
 import bash from 'highlight.js/lib/languages/bash';
 import typescript from 'highlight.js/lib/languages/typescript';
@@ -14,6 +15,16 @@ hljs.registerLanguage('typescript', typescript);
   },
 })
 export class DocGettingStarted {
+  private readonly meta = inject(Meta);
+
+  constructor() {
+    this.meta.updateTag({
+      name: 'description',
+      content:
+        'Install Better Toast, register the provider, and show your first toast. A step-by-step guide for Angular applications.',
+    });
+  }
+
   protected readonly toastInstallationSource = computed(() => {
     return hljs.highlight(`npm install better-toast`, { language: 'bash' }).value;
   });

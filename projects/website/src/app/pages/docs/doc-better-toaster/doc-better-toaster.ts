@@ -1,4 +1,5 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
+import { Meta } from '@angular/platform-browser';
 import hljs from 'highlight.js';
 import xml from 'highlight.js/lib/languages/xml';
 
@@ -14,6 +15,16 @@ hljs.registerLanguage('xml', xml);
   },
 })
 export class DocBetterToaster {
+  private readonly meta = inject(Meta);
+
+  constructor() {
+    this.meta.updateTag({
+      name: 'description',
+      content:
+        'Host component for the toast stack. Position, theming, and configuration options for the BetterToaster in Angular.',
+    });
+  }
+
   protected readonly positionSource = computed(() => {
     return hljs.highlight(
       `<!-- Render toasts at the bottom right corner of the viewport -->

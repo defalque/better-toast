@@ -8,7 +8,11 @@ import { DocOther } from './pages/docs/doc-other/doc-other';
 import { DocStyling } from './pages/docs/doc-styling/doc-styling';
 
 export const routes: Routes = [
-  { path: '', component: Home, title: 'Better Toast' },
+  {
+    path: '',
+    component: Home,
+    title: 'Better Toast',
+  },
   {
     path: 'docs',
     component: DocsShell,
@@ -24,9 +28,21 @@ export const routes: Routes = [
         component: DocBetterToaster,
         title: 'Better Toaster - Better Toast',
       },
-      { path: 'toast-types', component: DocToastTypes, title: 'Toast - Better Toast' },
-      { path: 'other', component: DocOther, title: 'Other - Better Toast' },
-      { path: 'styling', component: DocStyling, title: 'Styling - Better Toast' },
+      {
+        path: 'toast-types',
+        component: DocToastTypes,
+        title: 'Toast - Better Toast',
+      },
+      {
+        path: 'other',
+        component: DocOther,
+        title: 'Other - Better Toast',
+      },
+      {
+        path: 'styling',
+        component: DocStyling,
+        title: 'Styling - Better Toast',
+      },
     ],
   },
   { path: '**', redirectTo: '' },

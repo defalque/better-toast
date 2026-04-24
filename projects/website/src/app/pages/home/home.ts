@@ -7,6 +7,7 @@ import typescript from 'highlight.js/lib/languages/typescript';
 import xml from 'highlight.js/lib/languages/xml';
 import { HeadlessComponent } from '../../components/headless-component/headless-component';
 import { HomeCustomToastBody } from '../docs/doc-toast-types/components/custom-toast-body/custom-toast-body';
+import { Meta } from '@angular/platform-browser';
 
 hljs.registerLanguage('bash', bash);
 hljs.registerLanguage('typescript', typescript);
@@ -107,6 +108,16 @@ const POSITION_DEMO_SOURCE = Object.fromEntries(
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Home {
+  private readonly meta = inject(Meta);
+
+  constructor() {
+    this.meta.updateTag({
+      name: 'description',
+      content:
+        'Toast notifications for Angular. Lightweight, accessible, and headless. Style with CSS and ship better UX in minutes.',
+    });
+  }
+
   protected readonly toaster = inject(ToasterService);
   protected readonly helper = inject(HelperService);
 

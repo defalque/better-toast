@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { Meta } from '@angular/platform-browser';
 import { ToasterService } from 'better-toast';
 import hljs from 'highlight.js';
 import typescript from 'highlight.js/lib/languages/typescript';
@@ -61,6 +62,16 @@ export class OnAutoCloseCallback {
   },
 })
 export class DocOther {
+  private readonly meta = inject(Meta);
+
+  constructor() {
+    this.meta.updateTag({
+      name: 'description',
+      content:
+        'Callbacks, auto-close, duration, and extra behaviors. Dismiss handling and patterns beyond basic toasts in Better Toast.',
+    });
+  }
+
   protected readonly toaster = inject(ToasterService);
 
   protected programmaticDismissSource(): string {
