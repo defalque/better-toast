@@ -7,6 +7,160 @@
       <p class="text-zinc-700 dark:text-zinc-300 mt-4">
         Other things you can do with Better Toast.
       </p>
+
+      <div class="space-y-4 pt-20" id="programmatic-dismiss">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Programmatic dismiss
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+          You can programmatically dismiss a toast by calling the
+          <code class="p-code-snippet">dismiss()</code> method on the
+          <code class="p-code-snippet">ToasterService</code> instance.
+        </p>
+
+        <div>
+          <pre
+            class="landing-page-pre"
+          ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="programmaticDismissSource()"></code></pre>
+        </div>
+
+        <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+          Or clear all toasts by calling the
+          <code class="p-code-snippet">clear()</code> method instead.
+        </p>
+
+        <div>
+          <pre
+            class="landing-page-pre"
+          ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="clearAllToastsSource()"></code></pre>
+        </div>
+      </div>
+
+      <div class="space-y-4 pt-20" id="on-dismiss-callback">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          onDismiss callback
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+          You can pass a callback function to the
+          <code class="p-code-snippet">onDismiss</code> option to be called when either the close
+          button gets clicked or the toast is swiped.
+        </p>
+        <div class="mt-7 space-y-4">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
+            <div class="flex items-center gap-4">
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  onDismissCallbackTab() === 'preview'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="onDismissCallbackTab.set('preview')"
+              >
+                Preview
+              </button>
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  onDismissCallbackTab() === 'code'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="onDismissCallbackTab.set('code')"
+              >
+                Code
+              </button>
+            </div>
+            <button
+              type="button"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              (click)="copyOnDismissCallbackCode()"
+            >
+              {{ onDismissCallbackCodeCopied() ? 'Copied!' : 'Copy code' }}
+            </button>
+          </div>
+          @if (onDismissCallbackTab() === 'preview') {
+            <pre
+              class="landing-page-pre h-80!"
+            ><code class="dark:text-white! grid! place-items-center! h-full!">
+                      <button (click)="renderToast()" type="button" class="toast-button">Render a toast</button>
+                    </code></pre>
+          } @else {
+            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+                      class=" landing-page-code language-typescript dark:text-white!"
+                      [innerHTML]="onDismissCallbackSource()"
+                    ></code></pre>
+          }
+        </div>
+      </div>
+
+      <div class="space-y-4 pt-20" id="on-auto-close-callback">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          onAutoClose callback
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+          You can pass a callback function to the
+          <code class="p-code-snippet">onAutoClose</code> option to be called when the toast
+          disappears automatically after its timeout (durationMs input).
+        </p>
+        <div class="mt-7 space-y-4">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
+            <div class="flex items-center gap-4">
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  onAutoCloseCallbackTab() === 'preview'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="onAutoCloseCallbackTab.set('preview')"
+              >
+                Preview
+              </button>
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  onAutoCloseCallbackTab() === 'code'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="onAutoCloseCallbackTab.set('code')"
+              >
+                Code
+              </button>
+            </div>
+            <button
+              type="button"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              (click)="copyOnAutoCloseCallbackCode()"
+            >
+              {{ onAutoCloseCallbackCodeCopied() ? 'Copied!' : 'Copy code' }}
+            </button>
+          </div>
+          @if (onAutoCloseCallbackTab() === 'preview') {
+            <pre
+              class="landing-page-pre h-80!"
+            ><code class="dark:text-white! grid! place-items-center! h-full!">
+                      <button (click)="renderToast()" type="button" class="toast-button">Render a toast</button>
+                    </code></pre>
+          } @else {
+            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+                      class=" landing-page-code language-typescript dark:text-white!"
+                      [innerHTML]="onAutoCloseCallbackSource()"
+                    ></code></pre>
+          }
+        </div>
+      </div>
+
+      <div class="space-y-4 pt-20" id="rendering-custom-components">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Rendering custom components
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+          You can pass a custom component to the
+          <code class="p-code-snippet">component</code> option to be rendered in the toast.
+        </p>
+      </div>
     </div>
 
     <div class="flex justify-between mt-6">
@@ -70,6 +224,29 @@
       <span class="text-zinc-500">On this page</span>
     </div>
 
-    <ul class="space-y-2 ml-6"></ul>
+    <ul class="space-y-2 ml-6">
+      <li>
+        <a href="/docs/other#programmatic-dismiss" class="text-zinc-600 dark:text-zinc-300/75"
+          >Programmatic dismiss</a
+        >
+      </li>
+      <li>
+        <a href="/docs/other#on-dismiss-callback" class="text-zinc-600 dark:text-zinc-300/75"
+          >onDismiss callback</a
+        >
+      </li>
+      <li>
+        <a href="/docs/other#on-auto-close-callback" class="text-zinc-600 dark:text-zinc-300/75"
+          >onAutoClose callback</a
+        >
+      </li>
+      <li>
+        <a
+          href="/docs/other#rendering-custom-components"
+          class="text-zinc-600 dark:text-zinc-300/75"
+          >Rendering custom components</a
+        >
+      </li>
+    </ul>
   </div>
 </div>
