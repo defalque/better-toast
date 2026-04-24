@@ -76,6 +76,8 @@
   width: auto;
   pointer-events: none;
   overflow: visible;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* box-shadow is composite, so it can't share light-dark(); override only when dark. */

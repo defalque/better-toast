@@ -1,0 +1,16 @@
+.overlay-leave {
+  opacity: 0;
+  transition: opacity 0.1s ease-in-out;
+}
+.sidebar-enter {
+  transform: translateX(0);
+  transition: transform 0.2s ease-in-out;
+
+  @starting-style {
+    transform: translateX(100%);
+  }
+}
+.sidebar-leave {
+  transform: translateX(100%);
+  transition: transform 0.2s ease-in-out;
+}
