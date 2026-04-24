@@ -44,7 +44,7 @@
       <a href="/" class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100"
         >Better Toast</a
       >
-      <span class="text-[11px] text-zinc-600 dark:text-zinc-500 self-end font-medium"
+      <span class="text-[10px] text-zinc-600 dark:text-zinc-500 self-end font-semibold"
         >by
         <a
           href="https://marcodefalco.dev"
@@ -55,62 +55,68 @@
         ></span
       >
     </div>
-    <ul
-      class="flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto px-3 font-medium divide-y divide-zinc-200 dark:divide-zinc-800 divide-dashed"
+    <nav
+      class="flex min-h-0 flex-1 flex-col _gap-6 overflow-y-auto px-3 font-medium divide-y divide-zinc-200 dark:divide-zinc-800 divide-dashed"
     >
-      <div class="py-6 space-y-1.5">
-        <p class="px-2 text-xs text-zinc-400 dark:text-zinc-500">Basics</p>
-        <li class="w-full">
-          <a
-            [routerLink]="['/docs/getting-started']"
-            routerLinkActive="active"
-            class="text-sm text-zinc-600/95 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/60 px-2 py-1 rounded-md block"
-            >Getting Started</a
-          >
-        </li>
+      <div class="py-6">
+        <span class="px-2 text-xs text-zinc-500/70 dark:text-zinc-500">Basics</span>
+        <ul class="space-y-1">
+          <li class="w-full">
+            <a
+              [routerLink]="['/docs/getting-started']"
+              routerLinkActive="active"
+              class="text-sm text-zinc-600/95 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/60 px-2 py-1 rounded-md block"
+              >Getting Started</a
+            >
+          </li>
+        </ul>
       </div>
 
-      <div class="pb-6 space-y-1">
-        <p class="px-2 text-xs text-zinc-400 dark:text-zinc-500">API</p>
-        <li class="w-full">
-          <a
-            [routerLink]="['/docs/better-toaster']"
-            routerLinkActive="active"
-            class="text-sm text-zinc-600/95 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/60 px-2 py-1 rounded-md block"
-            >Better Toaster</a
-          >
-        </li>
-        <li class="w-full">
-          <a
-            [routerLink]="['/docs/toast-types']"
-            routerLinkActive="active"
-            class="text-sm text-zinc-600/95 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/60 px-2 py-1 rounded-md block"
-            >Toast</a
-          >
-        </li>
-        <li class="w-full">
-          <a
-            [routerLink]="['/docs/other']"
-            routerLinkActive="active"
-            class="text-sm text-zinc-600/95 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/60 px-2 py-1 rounded-md block"
-            >Other</a
-          >
-        </li>
+      <div class="py-6">
+        <span class="px-2 text-xs text-zinc-500/70 dark:text-zinc-500">API</span>
+        <ul class="space-y-1">
+          <li class="w-full">
+            <a
+              [routerLink]="['/docs/better-toaster']"
+              routerLinkActive="active"
+              class="text-sm text-zinc-600/95 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/60 px-2 py-1 rounded-md block"
+              >Better Toaster</a
+            >
+          </li>
+          <li class="w-full">
+            <a
+              [routerLink]="['/docs/toast-types']"
+              routerLinkActive="active"
+              class="text-sm text-zinc-600/95 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/60 px-2 py-1 rounded-md block"
+              >Toast</a
+            >
+          </li>
+          <li class="w-full">
+            <a
+              [routerLink]="['/docs/other']"
+              routerLinkActive="active"
+              class="text-sm text-zinc-600/95 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/60 px-2 py-1 rounded-md block"
+              >Other</a
+            >
+          </li>
+        </ul>
       </div>
 
-      <div class="pb-6 space-y-1 flex-1">
-        <span class="px-2 text-xs text-zinc-400 dark:text-zinc-500">Guides</span>
-        <li class="w-full">
-          <a
-            [routerLink]="['/docs/styling']"
-            routerLinkActive="active"
-            class="text-sm text-zinc-600/95 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/60 px-2 py-1 rounded-md block"
-            >Styling</a
-          >
-        </li>
+      <div class="py-6 flex-1">
+        <span class="px-2 text-xs text-zinc-500/70 dark:text-zinc-500">Guides</span>
+        <ul class="space-y-1">
+          <li class="w-full">
+            <a
+              [routerLink]="['/docs/styling']"
+              routerLinkActive="active"
+              class="text-sm text-zinc-600/95 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/60 px-2 py-1 rounded-md block"
+              >Styling</a
+            >
+          </li>
+        </ul>
       </div>
 
-      <div class="mt-auto pb-6">
+      <div class="mt-auto py-6">
         <div class="flex items-center justify-between">
           <app-theme-toggle />
           <a
@@ -151,7 +157,7 @@
           </a>
         </div>
       </div>
-    </ul>
+    </nav>
   </aside>
 
   @if (openDrawer()) {
@@ -168,67 +174,73 @@
       animate.enter="sidebar-enter"
       animate.leave="sidebar-leave"
     >
-      <ul
-        class="flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto px-3 font-medium divide-y divide-zinc-200 dark:divide-zinc-800 divide-dashed"
+      <nav
+        class="flex min-h-0 flex-1 flex-col _gap-6 overflow-y-auto px-3 font-medium divide-y divide-zinc-200 dark:divide-zinc-800 divide-dashed"
       >
-        <div class="py-6 space-y-1.5">
-          <p class="px-2 text-xs text-zinc-400 dark:text-zinc-500">Basics</p>
-          <li class="w-full">
-            <a
-              [routerLink]="['/docs/getting-started']"
-              routerLinkActive="active"
-              (click)="openDrawer.set(false)"
-              class="text-sm text-zinc-600/95 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/60 px-2 py-1 rounded-md block"
-              >Getting Started</a
-            >
-          </li>
+        <div class="py-6">
+          <span class="px-2 text-xs text-zinc-500/70 dark:text-zinc-500">Basics</span>
+          <ul class="space-y-1">
+            <li class="w-full">
+              <a
+                [routerLink]="['/docs/getting-started']"
+                routerLinkActive="active"
+                (click)="openDrawer.set(false)"
+                class="text-sm text-zinc-600/95 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/60 px-2 py-1 rounded-md block"
+                >Getting Started</a
+              >
+            </li>
+          </ul>
         </div>
 
-        <div class="pb-6 space-y-1">
-          <p class="px-2 text-xs text-zinc-400 dark:text-zinc-500">API</p>
-          <li class="w-full">
-            <a
-              [routerLink]="['/docs/better-toaster']"
-              routerLinkActive="active"
-              (click)="openDrawer.set(false)"
-              class="text-sm text-zinc-600/95 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/60 px-2 py-1 rounded-md block"
-              >Better Toaster</a
-            >
-          </li>
-          <li class="w-full">
-            <a
-              [routerLink]="['/docs/toast-types']"
-              routerLinkActive="active"
-              (click)="openDrawer.set(false)"
-              class="text-sm text-zinc-600/95 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/60 px-2 py-1 rounded-md block"
-              >Toast</a
-            >
-          </li>
-          <li class="w-full">
-            <a
-              [routerLink]="['/docs/other']"
-              routerLinkActive="active"
-              (click)="openDrawer.set(false)"
-              class="text-sm text-zinc-600/95 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/60 px-2 py-1 rounded-md block"
-              >Other</a
-            >
-          </li>
+        <div class="py-6">
+          <span class="px-2 text-xs text-zinc-500/70 dark:text-zinc-500">API</span>
+          <ul class="space-y-1">
+            <li class="w-full">
+              <a
+                [routerLink]="['/docs/better-toaster']"
+                routerLinkActive="active"
+                (click)="openDrawer.set(false)"
+                class="text-sm text-zinc-600/95 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/60 px-2 py-1 rounded-md block"
+                >Better Toaster</a
+              >
+            </li>
+            <li class="w-full">
+              <a
+                [routerLink]="['/docs/toast-types']"
+                routerLinkActive="active"
+                (click)="openDrawer.set(false)"
+                class="text-sm text-zinc-600/95 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/60 px-2 py-1 rounded-md block"
+                >Toast</a
+              >
+            </li>
+            <li class="w-full">
+              <a
+                [routerLink]="['/docs/other']"
+                routerLinkActive="active"
+                (click)="openDrawer.set(false)"
+                class="text-sm text-zinc-600/95 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/60 px-2 py-1 rounded-md block"
+                >Other</a
+              >
+            </li>
+          </ul>
         </div>
 
-        <div class="pb-6 space-y-1 flex-1">
-          <span class="px-2 text-xs text-zinc-400 dark:text-zinc-500">Guides</span>
-          <li class="w-full">
-            <a
-              [routerLink]="['/docs/styling']"
-              routerLinkActive="active"
-              (click)="openDrawer.set(false)"
-              class="text-sm text-zinc-600/95 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/60 px-2 py-1 rounded-md block"
-              >Styling</a
-            >
-          </li>
+        <div class="py-6 flex-1">
+          <span class="px-2 text-xs text-zinc-500/70 dark:text-zinc-500">Guides</span>
+          <ul class="space-y-1">
+            <li class="w-full">
+              <a
+                [routerLink]="['/docs/styling']"
+                routerLinkActive="active"
+                (click)="openDrawer.set(false)"
+                class="text-sm text-zinc-600/95 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/60 px-2 py-1 rounded-md block"
+                >Styling</a
+              >
+            </li>
+          </ul>
         </div>
 
-        <div class="mt-auto pb-6">
+        <div class="mt-auto py-6">
           <div class="flex items-center justify-between">
             <app-theme-toggle />
             <a
@@ -269,7 +281,7 @@
             </a>
           </div>
         </div>
-      </ul>
+      </nav>
     </aside>
   }
 
