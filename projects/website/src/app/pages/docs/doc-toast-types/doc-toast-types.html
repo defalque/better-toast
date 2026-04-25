@@ -45,10 +45,24 @@
 
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
               (click)="copyToastCode()"
             >
-              {{ toastCodeCopied() ? 'Copied!' : 'Copy code' }}
+              @if (toastCodeCopied()) {
+                <span
+                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
+                  animate.enter="enter"
+                  animate.leave="leave"
+                  >Copied!</span
+                >
+              } @else {
+                <span
+                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
+                  [animate.enter]="enterEnabled() ? 'enter' : null"
+                  animate.leave="leave"
+                  >Copy code</span
+                >
+              }
             </button>
           </div>
 
@@ -101,10 +115,24 @@
 
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
               (click)="copyToastWithOptionsCode()"
             >
-              {{ toastWithOptionsCodeCopied() ? 'Copied!' : 'Copy code' }}
+              @if (toastWithOptionsCodeCopied()) {
+                <span
+                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
+                  animate.enter="enter"
+                  animate.leave="leave"
+                  >Copied!</span
+                >
+              } @else {
+                <span
+                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
+                  [animate.enter]="enterEnabled() ? 'enter' : null"
+                  animate.leave="leave"
+                  >Copy code</span
+                >
+              }
             </button>
           </div>
 
@@ -162,10 +190,24 @@
 
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
               (click)="copySuccessToastCode()"
             >
-              {{ successToastCodeCopied() ? 'Copied!' : 'Copy code' }}
+              @if (successToastCodeCopied()) {
+                <span
+                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
+                  animate.enter="enter"
+                  animate.leave="leave"
+                  >Copied!</span
+                >
+              } @else {
+                <span
+                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
+                  [animate.enter]="enterEnabled() ? 'enter' : null"
+                  animate.leave="leave"
+                  >Copy code</span
+                >
+              }
             </button>
           </div>
 
@@ -220,10 +262,24 @@
 
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
               (click)="copyErrorToastCode()"
             >
-              {{ errorToastCodeCopied() ? 'Copied!' : 'Copy code' }}
+              @if (errorToastCodeCopied()) {
+                <span
+                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
+                  animate.enter="enter"
+                  animate.leave="leave"
+                  >Copied!</span
+                >
+              } @else {
+                <span
+                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
+                  [animate.enter]="enterEnabled() ? 'enter' : null"
+                  animate.leave="leave"
+                  >Copy code</span
+                >
+              }
             </button>
           </div>
 
@@ -278,10 +334,24 @@
 
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
               (click)="copyInfoToastCode()"
             >
-              {{ infoToastCodeCopied() ? 'Copied!' : 'Copy code' }}
+              @if (infoToastCodeCopied()) {
+                <span
+                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
+                  animate.enter="enter"
+                  animate.leave="leave"
+                  >Copied!</span
+                >
+              } @else {
+                <span
+                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
+                  [animate.enter]="enterEnabled() ? 'enter' : null"
+                  animate.leave="leave"
+                  >Copy code</span
+                >
+              }
             </button>
           </div>
 
@@ -338,10 +408,24 @@
 
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
               (click)="copyWarningToastCode()"
             >
-              {{ warningToastCodeCopied() ? 'Copied!' : 'Copy code' }}
+              @if (warningToastCodeCopied()) {
+                <span
+                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
+                  animate.enter="enter"
+                  animate.leave="leave"
+                  >Copied!</span
+                >
+              } @else {
+                <span
+                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
+                  [animate.enter]="enterEnabled() ? 'enter' : null"
+                  animate.leave="leave"
+                  >Copy code</span
+                >
+              }
             </button>
           </div>
 
@@ -399,10 +483,21 @@
 
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
               (click)="copyLoadingToastCode()"
             >
-              {{ loadingToastCodeCopied() ? 'Copied!' : 'Copy code' }}
+              @if (loadingToastCodeCopied()) {
+                <span
+                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
+                  animate.enter="enter"
+                  animate.leave="leave"
+                  >Copied!</span
+                >
+              } @else {
+                <span class="absolute top-1/2 left-1/2 -translate-y-1/2" animate.leave="leave"
+                  >Copy code</span
+                >
+              }
             </button>
           </div>
 
@@ -461,10 +556,24 @@
 
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
               (click)="copyActionToastCode()"
             >
-              {{ actionToastCodeCopied() ? 'Copied!' : 'Copy code' }}
+              @if (actionToastCodeCopied()) {
+                <span
+                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
+                  animate.enter="enter"
+                  animate.leave="leave"
+                  >Copied!</span
+                >
+              } @else {
+                <span
+                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
+                  [animate.enter]="enterEnabled() ? 'enter' : null"
+                  animate.leave="leave"
+                  >Copy code</span
+                >
+              }
             </button>
           </div>
 
@@ -527,10 +636,24 @@
             </div>
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
               (click)="copyCancelToastCode()"
             >
-              {{ cancelToastCodeCopied() ? 'Copied!' : 'Copy code' }}
+              @if (cancelToastCodeCopied()) {
+                <span
+                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
+                  animate.enter="enter"
+                  animate.leave="leave"
+                  >Copied!</span
+                >
+              } @else {
+                <span
+                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
+                  [animate.enter]="enterEnabled() ? 'enter' : null"
+                  animate.leave="leave"
+                  >Copy code</span
+                >
+              }
             </button>
           </div>
           @if (cancelToastTab() === 'preview') {
@@ -591,10 +714,24 @@
             </div>
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
               (click)="copyPromiseToastCode()"
             >
-              {{ promiseToastCodeCopied() ? 'Copied!' : 'Copy code' }}
+              @if (promiseToastCodeCopied()) {
+                <span
+                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
+                  animate.enter="enter"
+                  animate.leave="leave"
+                  >Copied!</span
+                >
+              } @else {
+                <span
+                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
+                  [animate.enter]="enterEnabled() ? 'enter' : null"
+                  animate.leave="leave"
+                  >Copy code</span
+                >
+              }
             </button>
           </div>
           @if (promiseToastTab() === 'preview') {
@@ -649,10 +786,24 @@
             </div>
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
               (click)="copyCustomToastCode()"
             >
-              {{ customToastCodeCopied() ? 'Copied!' : 'Copy code' }}
+              @if (customToastCodeCopied()) {
+                <span
+                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
+                  animate.enter="enter"
+                  animate.leave="leave"
+                  >Copied!</span
+                >
+              } @else {
+                <span
+                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
+                  [animate.enter]="enterEnabled() ? 'enter' : null"
+                  animate.leave="leave"
+                  >Copy code</span
+                >
+              }
             </button>
           </div>
           @if (customToastTab() === 'preview') {
@@ -715,10 +866,24 @@
             </div>
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
               (click)="copyHeadlessToastCode()"
             >
-              {{ headlessToastCodeCopied() ? 'Copied!' : 'Copy code' }}
+              @if (headlessToastCodeCopied()) {
+                <span
+                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
+                  animate.enter="enter"
+                  animate.leave="leave"
+                  >Copied!</span
+                >
+              } @else {
+                <span
+                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
+                  [animate.enter]="enterEnabled() ? 'enter' : null"
+                  animate.leave="leave"
+                  >Copy code</span
+                >
+              }
             </button>
           </div>
           @if (headlessToastTab() === 'preview') {

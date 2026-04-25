@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { afterNextRender, ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { ToasterService } from 'better-toast';
 import hljs from 'highlight.js';
 import typescript from 'highlight.js/lib/languages/typescript';
@@ -320,18 +320,26 @@ export class CustomToast {
   imports: [],
   templateUrl: './doc-toast-types.html',
   styleUrl: './doc-toast-types.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'block w-full min-w-0 max-w-5xl mx-auto',
   },
 })
 export class DocToastTypes {
   private readonly meta = inject(Meta);
+  protected readonly enterEnabled = signal(false);
 
   constructor() {
     this.meta.updateTag({
       name: 'description',
       content:
         'Create success, error, and custom toasts. API examples and options for all toast types in Better Toast for Angular.',
+    });
+
+    afterNextRender(() => {
+      setTimeout(() => {
+        this.enterEnabled.set(true);
+      }, 100);
     });
   }
 
@@ -518,6 +526,9 @@ export class DocToastTypes {
     copiedSignal: ReturnType<typeof signal<boolean>>,
   ): Promise<void> {
     try {
+      if (copiedSignal()) {
+        return;
+      }
       await navigator.clipboard.writeText(source);
       copiedSignal.set(true);
       if (this.copyResetTimeout !== null) {
