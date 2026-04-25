@@ -163,13 +163,13 @@
   @if (openDrawer()) {
     <div
       aria-hidden="true"
-      class="fixed inset-0 pointer-events-auto bg-black/50 starting:opacity-0 transition-opacity duration-300 ease-in-out opacity-100"
+      class="fixed inset-0 pointer-events-auto bg-black/50 starting:opacity-0 transition-opacity duration-300 ease-in-out opacity-100 z-100"
       (click)="openDrawer.set(false)"
       animate.leave="overlay-leave"
     ></div>
     <aside
       role="dialog"
-      class="w-64 rounded-lg border border-dashed border-zinc-200 dark:border-zinc-800 flex flex-col fixed right-2 top-2 bottom-2 z-10 bg-gray-100 dark:bg-zinc-950 divide-y divide-zinc-200 dark:divide-zinc-800 divide-dashed"
+      class="w-64 z-150 rounded-lg border border-dashed border-zinc-200 dark:border-zinc-800 flex flex-col fixed right-2 top-2 bottom-2 bg-gray-100 dark:bg-zinc-950 divide-y divide-zinc-200 dark:divide-zinc-800 divide-dashed"
       (click)="$event.stopPropagation()"
       animate.enter="sidebar-enter"
       animate.leave="sidebar-leave"

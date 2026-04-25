@@ -4,52 +4,23 @@
 
 html {
   scrollbar-gutter: stable;
-  scrollbar-color: var(--color-zinc-400) var(--color-zinc-200);
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-zinc-500) transparent;
 }
 
 html.docs-shell-drawer-open,
 body.docs-shell-drawer-open {
   overflow: hidden;
+  scrollbar-width: none;
 }
-
 html.docs-shell-drawer-open {
   overscroll-behavior: none;
+  scrollbar-gutter: auto;
 }
 
-html::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-html::-webkit-scrollbar-track {
-  background: var(--color-zinc-100);
-}
-
-html::-webkit-scrollbar-thumb {
-  background: var(--color-zinc-400);
-  border-radius: 9999px;
-  border: 2px solid var(--color-zinc-100);
-}
-
-html::-webkit-scrollbar-thumb:hover {
-  background: var(--color-zinc-500);
-}
-
-html.dark {
-  scrollbar-color: var(--color-zinc-600) var(--color-zinc-800);
-}
-
-html.dark::-webkit-scrollbar-track {
-  background: var(--color-zinc-800);
-}
-
-html.dark::-webkit-scrollbar-thumb {
-  background: var(--color-zinc-600);
-  border-color: var(--color-zinc-800);
-}
-
-html.dark::-webkit-scrollbar-thumb:hover {
-  background: var(--color-zinc-500);
+html.docs-shell-drawer-open::-webkit-scrollbar,
+body.docs-shell-drawer-open::-webkit-scrollbar {
+  display: none;
 }
 
 .landing-page-h2 {
