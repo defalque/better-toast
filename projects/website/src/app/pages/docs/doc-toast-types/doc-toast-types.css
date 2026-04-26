@@ -18,3 +18,41 @@
     transform: translateY(-20px);
   }
 }
+
+.doc-container {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.tab {
+  transition: translate 0.4s ease-out;
+
+  button[data-active='true'] {
+    anchor-name: --active-link;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    height: 2px;
+    border-radius: 9999px;
+    bottom: anchor(bottom);
+    z-index: -1;
+    background-color: var(--color-black);
+
+    position-anchor: --active-link;
+    transition:
+      left 0.3s ease-out,
+      right 0.3s ease-out;
+  }
+
+  &:has(button[data-active='true'])::after {
+    right: anchor(right);
+    left: anchor(left);
+    bottom: -8px;
+    border-radius: 9999px;
+  }
+}

@@ -45,9 +45,10 @@
           <code class="p-code-snippet">onDismiss</code> option to be called when either the close
           button gets clicked or the toast is swiped.
         </p>
-        <div class="mt-7 space-y-4">
-          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
-            <div class="flex items-center gap-4">
+        <div class="mt-7 space-y-6">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5 relative">
+            <div class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-200 -z-10"></div>
+            <div class="flex items-center gap-4 relative tab">
               <button
                 type="button"
                 class="font-medium  cursor-pointer {{
@@ -56,6 +57,7 @@
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="onDismissCallbackTab.set('preview')"
+                [attr.data-active]="onDismissCallbackTab() === 'preview'"
               >
                 Preview
               </button>
@@ -67,16 +69,31 @@
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="onDismissCallbackTab.set('code')"
+                [attr.data-active]="onDismissCallbackTab() === 'code'"
               >
                 Code
               </button>
             </div>
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
               (click)="copyOnDismissCallbackCode()"
             >
-              {{ onDismissCallbackCodeCopied() ? 'Copied!' : 'Copy code' }}
+              @if (onDismissCallbackCodeCopied()) {
+                <span
+                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
+                  animate.enter="enter"
+                  animate.leave="leave"
+                  >Copied!</span
+                >
+              } @else {
+                <span
+                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
+                  [animate.enter]="enterEnabled() ? 'enter' : null"
+                  animate.leave="leave"
+                  >Copy code</span
+                >
+              }
             </button>
           </div>
           @if (onDismissCallbackTab() === 'preview') {
@@ -103,9 +120,10 @@
           <code class="p-code-snippet">onAutoClose</code> option to be called when the toast
           disappears automatically after its timeout (durationMs input).
         </p>
-        <div class="mt-7 space-y-4">
-          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
-            <div class="flex items-center gap-4">
+        <div class="mt-7 space-y-6">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5 relative">
+            <div class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-200 -z-10"></div>
+            <div class="flex items-center gap-4 relative tab">
               <button
                 type="button"
                 class="font-medium  cursor-pointer {{
@@ -114,6 +132,7 @@
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="onAutoCloseCallbackTab.set('preview')"
+                [attr.data-active]="onAutoCloseCallbackTab() === 'preview'"
               >
                 Preview
               </button>
@@ -125,16 +144,31 @@
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="onAutoCloseCallbackTab.set('code')"
+                [attr.data-active]="onAutoCloseCallbackTab() === 'code'"
               >
                 Code
               </button>
             </div>
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
               (click)="copyOnAutoCloseCallbackCode()"
             >
-              {{ onAutoCloseCallbackCodeCopied() ? 'Copied!' : 'Copy code' }}
+              @if (onAutoCloseCallbackCodeCopied()) {
+                <span
+                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
+                  animate.enter="enter"
+                  animate.leave="leave"
+                  >Copied!</span
+                >
+              } @else {
+                <span
+                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
+                  [animate.enter]="enterEnabled() ? 'enter' : null"
+                  animate.leave="leave"
+                  >Copy code</span
+                >
+              }
             </button>
           </div>
           @if (onAutoCloseCallbackTab() === 'preview') {

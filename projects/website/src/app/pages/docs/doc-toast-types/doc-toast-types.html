@@ -16,10 +16,12 @@
           You can call it with just a string, that will become the title.
         </p>
 
-        <div class="my-7 space-y-4">
-          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
-            <div class="flex items-center gap-4">
+        <div class="my-7 space-y-6">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5 relative">
+            <div class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-200 -z-10"></div>
+            <div class="flex items-center gap-4 tab relative">
               <button
+                [attr.data-active]="toastTab() === 'preview'"
                 type="button"
                 class="font-medium  cursor-pointer {{
                   toastTab() === 'preview'
@@ -31,6 +33,7 @@
                 Preview
               </button>
               <button
+                [attr.data-active]="toastTab() === 'code'"
                 type="button"
                 class="font-medium  cursor-pointer {{
                   toastTab() === 'code'
@@ -86,10 +89,12 @@
           provided any.
         </p>
 
-        <div class="mt-7 space-y-4">
-          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
-            <div class="flex items-center gap-4">
+        <div class="mt-7 space-y-6">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5 relative">
+            <div class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-200 -z-10"></div>
+            <div class="flex items-center gap-4 tab relative">
               <button
+                [attr.data-active]="toastWithOptionsTab() === 'preview'"
                 type="button"
                 class="font-medium  cursor-pointer {{
                   toastWithOptionsTab() === 'preview'
@@ -101,6 +106,7 @@
                 Preview
               </button>
               <button
+                [attr.data-active]="toastWithOptionsTab() === 'code'"
                 type="button"
                 class="font-medium  cursor-pointer {{
                   toastWithOptionsTab() === 'code'
@@ -161,10 +167,12 @@
           Renders a checkmark icon in front of the message.
         </p>
 
-        <div class="mt-7 space-y-4">
-          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
-            <div class="flex items-center gap-4">
+        <div class="mt-7 space-y-6">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5 relative">
+            <div class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-200 -z-10"></div>
+            <div class="flex items-center gap-4 tab relative">
               <button
+                [attr.data-active]="successToastTab() === 'preview'"
                 type="button"
                 class="font-medium  cursor-pointer {{
                   successToastTab() === 'preview'
@@ -176,6 +184,7 @@
                 Preview
               </button>
               <button
+                [attr.data-active]="successToastTab() === 'code'"
                 type="button"
                 class="font-medium  cursor-pointer {{
                   successToastTab() === 'code'
@@ -233,10 +242,12 @@
           Renders an error icon in front of the message.
         </p>
 
-        <div class="mt-7 space-y-4">
-          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
-            <div class="flex items-center gap-4">
+        <div class="mt-7 space-y-6">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5 relative">
+            <div class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-200 -z-10"></div>
+            <div class="flex items-center gap-4 tab relative">
               <button
+                [attr.data-active]="errorToastTab() === 'preview'"
                 type="button"
                 class="font-medium  cursor-pointer {{
                   errorToastTab() === 'preview'
@@ -248,6 +259,7 @@
                 Preview
               </button>
               <button
+                [attr.data-active]="errorToastTab() === 'code'"
                 type="button"
                 class="font-medium  cursor-pointer {{
                   errorToastTab() === 'code'
@@ -305,10 +317,12 @@
           Renders an info icon in front of the message.
         </p>
 
-        <div class="mt-7 space-y-4">
-          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
-            <div class="flex items-center gap-4">
+        <div class="mt-7 space-y-6">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5 relative">
+            <div class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-200 -z-10"></div>
+            <div class="flex items-center gap-4 tab relative">
               <button
+                [attr.data-active]="infoToastTab() === 'preview'"
                 type="button"
                 class="font-medium  cursor-pointer {{
                   infoToastTab() === 'preview'
@@ -320,6 +334,7 @@
                 Preview
               </button>
               <button
+                [attr.data-active]="infoToastTab() === 'code'"
                 type="button"
                 class="font-medium  cursor-pointer {{
                   infoToastTab() === 'code'
@@ -379,10 +394,12 @@
           Renders a warning icon in front of the message.
         </p>
 
-        <div class="mt-7 space-y-4">
-          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
-            <div class="flex items-center gap-4">
+        <div class="mt-7 space-y-6">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5 relative">
+            <div class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-200 -z-10"></div>
+            <div class="flex items-center gap-4 tab relative">
               <button
+                [attr.data-active]="warningToastTab() === 'preview'"
                 type="button"
                 class="font-medium  cursor-pointer {{
                   warningToastTab() === 'preview'
@@ -394,6 +411,7 @@
                 Preview
               </button>
               <button
+                [attr.data-active]="warningToastTab() === 'code'"
                 type="button"
                 class="font-medium  cursor-pointer {{
                   warningToastTab() === 'code'
@@ -454,10 +472,12 @@
           yourself instead of using a promise toast.
         </p>
 
-        <div class="mt-7 space-y-4">
-          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
-            <div class="flex items-center gap-4">
+        <div class="mt-7 space-y-6">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5 relative">
+            <div class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-200 -z-10"></div>
+            <div class="flex items-center gap-4 tab relative">
               <button
+                [attr.data-active]="loadingToastTab() === 'preview'"
                 type="button"
                 class="font-medium  cursor-pointer {{
                   loadingToastTab() === 'preview'
@@ -469,6 +489,7 @@
                 Preview
               </button>
               <button
+                [attr.data-active]="loadingToastTab() === 'code'"
                 type="button"
                 class="font-medium  cursor-pointer {{
                   loadingToastTab() === 'code'
@@ -527,10 +548,12 @@
           <code class="p-code-snippet">label</code> and the
           <code class="p-code-snippet">onClick</code> callback to run when the button is clicked.
         </p>
-        <div class="my-7 space-y-4">
-          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
-            <div class="flex items-center gap-4">
+        <div class="my-7 space-y-6">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5 relative">
+            <div class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-200 -z-10"></div>
+            <div class="flex items-center gap-4 tab relative">
               <button
+                [attr.data-active]="actionToastTab() === 'preview'"
                 type="button"
                 class="font-medium  cursor-pointer {{
                   actionToastTab() === 'preview'
@@ -542,6 +565,7 @@
                 Preview
               </button>
               <button
+                [attr.data-active]="actionToastTab() === 'code'"
                 type="button"
                 class="font-medium  cursor-pointer {{
                   actionToastTab() === 'code'
@@ -608,10 +632,12 @@
           <code class="p-code-snippet">label</code> and the
           <code class="p-code-snippet">onClick</code> callback to run when the button is clicked.
         </p>
-        <div class="my-7 space-y-4">
-          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
-            <div class="flex items-center gap-4">
+        <div class="my-7 space-y-6">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5 relative">
+            <div class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-200 -z-10"></div>
+            <div class="flex items-center gap-4 tab relative">
               <button
+                [attr.data-active]="cancelToastTab() === 'preview'"
                 type="button"
                 class="font-medium  cursor-pointer {{
                   cancelToastTab() === 'preview'
@@ -623,6 +649,7 @@
                 Preview
               </button>
               <button
+                [attr.data-active]="cancelToastTab() === 'code'"
                 type="button"
                 class="font-medium  cursor-pointer {{
                   cancelToastTab() === 'code'
@@ -686,10 +713,12 @@
           fails. You can pass a function to the success/error messages to incorporate the
           result/error of the promise.
         </p>
-        <div class="mt-7 space-y-4">
-          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
-            <div class="flex items-center gap-4">
+        <div class="mt-7 space-y-6">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5 relative">
+            <div class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-200 -z-10"></div>
+            <div class="flex items-center gap-4 tab relative">
               <button
+                [attr.data-active]="promiseToastTab() === 'preview'"
                 type="button"
                 class="font-medium  cursor-pointer {{
                   promiseToastTab() === 'preview'
@@ -701,6 +730,7 @@
                 Preview
               </button>
               <button
+                [attr.data-active]="promiseToastTab() === 'code'"
                 type="button"
                 class="font-medium  cursor-pointer {{
                   promiseToastTab() === 'code'
@@ -758,10 +788,12 @@
           You can pass a standalone component class as the first argument instead of a string to
           render a custom toast while maintaining default styling.
         </p>
-        <div class="mt-7 space-y-4">
-          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
-            <div class="flex items-center gap-4">
+        <div class="mt-7 space-y-6">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5 relative">
+            <div class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-200 -z-10"></div>
+            <div class="flex items-center gap-4 tab relative">
               <button
+                [attr.data-active]="customToastTab() === 'preview'"
                 type="button"
                 class="font-medium  cursor-pointer {{
                   customToastTab() === 'preview'
@@ -773,6 +805,7 @@
                 Preview
               </button>
               <button
+                [attr.data-active]="customToastTab() === 'code'"
                 type="button"
                 class="font-medium  cursor-pointer {{
                   customToastTab() === 'code'
@@ -838,10 +871,12 @@
           functionality. This method receives the component as an argument, giving you access to all
           properties.
         </p>
-        <div class="mt-7 space-y-4">
-          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
-            <div class="flex items-center gap-4">
+        <div class="mt-7 space-y-6">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5 relative">
+            <div class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-200 -z-10"></div>
+            <div class="flex items-center gap-4 tab relative">
               <button
+                [attr.data-active]="headlessToastTab() === 'preview'"
                 type="button"
                 class="font-medium  cursor-pointer {{
                   headlessToastTab() === 'preview'
@@ -853,6 +888,7 @@
                 Preview
               </button>
               <button
+                [attr.data-active]="headlessToastTab() === 'code'"
                 type="button"
                 class="font-medium  cursor-pointer {{
                   headlessToastTab() === 'code'
@@ -1147,7 +1183,11 @@
       <span class="text-zinc-500">On this page</span>
     </div>
 
-    <ul class="space-y-2 ml-6">
+    <ul class="space-y-2 ml-6 relative">
+      <!-- <div
+        class="absolute top-0 -left-4 w-px h-full border-l border-dashed border-zinc-200 dark:border-zinc-600/50 -z-10"
+      ></div> -->
+
       <li>
         <a href="/docs/toast-types#rendering-a-toast" class="text-zinc-600 dark:text-zinc-300/75"
           >Rendering a toast</a

@@ -38,10 +38,15 @@
           Styling specific elements
         </h2>
         <p class="text-zinc-700 dark:text-zinc-300">
-          The preferred way to style the toasts with classes is through the headless approach.
-          However, if you only need to change a few things you can apply a class to each element
-          within the toast using the <code class="p-code-snippet">classNames</code> option in the
-          <code class="p-code-snippet">toastOptions</code> input. You will need to use
+          The preferred way to style the toasts with classes is through the
+          <a
+            href="/docs/styling#headless"
+            class="text-black dark:text-white underline cursor-pointer underline-offset-2"
+            >headless</a
+          >
+          approach. However, if you only need to change a few things you can apply a class to each
+          element within the toast using the <code class="p-code-snippet">classNames</code> option
+          in the <code class="p-code-snippet">toastOptions</code> input. You will need to use
           <code class="p-code-snippet">!important</code> in order to override the default styles.
         </p>
         <div>
@@ -76,9 +81,10 @@
           No default styles + full control of the component. This is the recommended approach as
           people usually either use the defaults or go fully custom.
         </p>
-        <div class="mt-7 space-y-4">
-          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5">
-            <div class="flex items-center gap-4">
+        <div class="mt-7 space-y-6">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5 relative">
+            <div class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-200 -z-10"></div>
+            <div class="flex items-center gap-4 relative tab">
               <button
                 type="button"
                 class="font-medium  cursor-pointer {{
@@ -87,6 +93,7 @@
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="headlessToastTab.set('preview')"
+                [attr.data-active]="headlessToastTab() === 'preview'"
               >
                 Preview
               </button>
@@ -98,6 +105,7 @@
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="headlessToastTab.set('code')"
+                [attr.data-active]="headlessToastTab() === 'code'"
               >
                 Code
               </button>

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { afterNextRender, Component, inject, signal } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 import { ToasterService } from 'better-toast';
 import hljs from 'highlight.js';
@@ -63,12 +63,19 @@ export class OnAutoCloseCallback {
 })
 export class DocOther {
   private readonly meta = inject(Meta);
+  protected readonly enterEnabled = signal(true);
 
   constructor() {
     this.meta.updateTag({
       name: 'description',
       content:
         'Callbacks, auto-close, duration, and extra behaviors. Dismiss handling and patterns beyond basic toasts in Better Toast.',
+    });
+
+    afterNextRender(() => {
+      setTimeout(() => {
+        this.enterEnabled.set(true);
+      }, 100);
     });
   }
 
