@@ -5,7 +5,7 @@
 html {
   scrollbar-gutter: stable;
   scrollbar-width: thin;
-  scrollbar-color: var(--color-zinc-500) transparent;
+  scrollbar-color: color-mix(gray 50%, transparent) transparent;
 }
 
 html.docs-shell-drawer-open,

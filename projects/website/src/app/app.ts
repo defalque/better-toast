@@ -17,11 +17,21 @@ export class App {
 
   protected readonly richColors = computed(() => this.helper.richColors());
 
-  /* ngOnInit(): void {
-    this.toaster.show('Hello, world!');
-  }
+  toastOptions = {
+    style: {
+      background: 'blue',
+    },
+  };
 
-  ngAfterViewInit(): void {
-    this.toaster.show('Hello, world!');
-  } */
+  // ngOnInit(): void {
+  //   this.toaster.show('Hello, world!');
+  // }
+
+  // ngAfterViewInit(): void {
+  //   this.toaster.show('Hello, world!', {
+  //     classNames: {
+  //       toast: 'bg-red-500! text-white!',
+  //     },
+  //   });
+  // }
 }
