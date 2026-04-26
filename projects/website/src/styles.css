@@ -37,7 +37,7 @@ body.docs-shell-drawer-open::-webkit-scrollbar {
 }
 
 .landing-page-pre {
-  @apply bg-linear-to-tl from-white to-gray-100/50 dark:from-zinc-950/50 dark:to-zinc-950/50 border border-zinc-300/50 dark:border-zinc-800/50 rounded-md p-4 overflow-x-hidden;
+  @apply bg-linear-to-tl from-white to-gray-100/50 dark:from-zinc-950/50 dark:to-zinc-950/50 border border-zinc-300/50 dark:border-zinc-800/80 rounded-md p-4 overflow-x-hidden;
 }
 
 .landing-page-code {

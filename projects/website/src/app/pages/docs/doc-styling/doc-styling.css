@@ -42,10 +42,14 @@
   }
 
   &:has(button[data-active='true'])::after {
+    background-color: var(--color-black);
     right: anchor(right);
     left: anchor(left);
     bottom: -8px;
     border-radius: 9999px;
+  }
+  &:has(button[data-active='true']):where(.dark, .dark *)::after {
+    background-color: var(--color-white);
   }
 }
 
