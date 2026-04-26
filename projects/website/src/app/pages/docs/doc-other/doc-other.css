@@ -60,3 +60,36 @@
     display: none;
   }
 }
+
+.toc-content {
+  a[data-active='true'] {
+    anchor-name: --active-toc-link;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    border-radius: 9999px;
+    left: -17px;
+    top: anchor(top);
+    z-index: -1;
+    background-color: var(--color-black);
+
+    position-anchor: --active-toc-link;
+    transition:
+      top 0.3s ease-out,
+      height 0.2s ease-out,
+      background-color 0.2s ease-out;
+  }
+
+  &:has(a[data-active='true'])::after {
+    background-color: var(--color-black);
+    height: 17px;
+    border-radius: 9999px;
+  }
+  &:has(a[data-active='true']):where(.dark, .dark *)::after {
+    background-color: var(--color-white);
+  }
+}

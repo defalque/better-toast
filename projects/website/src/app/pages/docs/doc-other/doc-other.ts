@@ -1,4 +1,4 @@
-import { afterNextRender, Component, inject, signal } from '@angular/core';
+import { afterNextRender, Component, DestroyRef, inject, signal } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 import { ToasterService } from 'better-toast';
 import hljs from 'highlight.js';
@@ -52,6 +52,8 @@ export class OnAutoCloseCallback {
   }
 }`;
 
+type OtherDocSection = 'programmatic-dismiss' | 'on-dismiss-callback' | 'on-auto-close-callback';
+
 @Component({
   selector: 'app-doc-other',
   imports: [],
@@ -65,6 +67,68 @@ export class DocOther {
   private readonly meta = inject(Meta);
   protected readonly enterEnabled = signal(true);
 
+  protected activeSection = signal<OtherDocSection>('programmatic-dismiss');
+  protected readonly destroyRef = inject(DestroyRef);
+
+  private watchTocTargets(): void {
+    const tocLinks = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>('.toc-content a[href*="#"]'),
+    );
+
+    const sections = tocLinks
+      .map((link) => {
+        const id = link.hash.slice(1);
+        const target = document.getElementById(id);
+
+        return this.isOtherDocSection(id) && target ? { id, target } : null;
+      })
+      .filter(
+        (section): section is { id: OtherDocSection; target: HTMLElement } => section !== null,
+      );
+
+    if (sections.length === 0) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntry = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+
+        if (!visibleEntry) {
+          return;
+        }
+
+        const activeSection = sections.find((section) => section.target === visibleEntry.target);
+
+        if (activeSection) {
+          this.activeSection.set(activeSection.id);
+        }
+      },
+      {
+        rootMargin: '-120px 0px -70% 0px',
+        threshold: 0,
+      },
+    );
+
+    for (const section of sections) {
+      observer.observe(section.target);
+    }
+
+    this.destroyRef.onDestroy(() => observer.disconnect());
+  }
+
+  private isOtherDocSection(id: string): id is OtherDocSection {
+    return ['programmatic-dismiss', 'on-dismiss-callback', 'on-auto-close-callback'].includes(id);
+  }
+
+  protected tocLinkClass(section: OtherDocSection): string {
+    return this.activeSection() === section
+      ? 'text-black dark:text-white'
+      : 'text-zinc-600 dark:text-zinc-300/75';
+  }
+
   constructor() {
     this.meta.updateTag({
       name: 'description',
@@ -76,6 +140,8 @@ export class DocOther {
       setTimeout(() => {
         this.enterEnabled.set(true);
       }, 100);
+
+      this.watchTocTargets();
     });
   }
 

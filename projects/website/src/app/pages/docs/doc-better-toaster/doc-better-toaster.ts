@@ -1,9 +1,21 @@
-import { Component, computed, inject } from '@angular/core';
+import { afterNextRender, Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 import hljs from 'highlight.js';
 import xml from 'highlight.js/lib/languages/xml';
 
 hljs.registerLanguage('xml', xml);
+
+type BetterToasterDocSection =
+  | 'customization'
+  | 'position'
+  | 'duration'
+  | 'offsets'
+  | 'theme'
+  | 'rich-colors'
+  | 'close-button'
+  | 'icons'
+  | 'accessibility-labels'
+  | 'api-reference';
 
 @Component({
   selector: 'app-doc-better-toaster',
@@ -17,11 +29,89 @@ hljs.registerLanguage('xml', xml);
 export class DocBetterToaster {
   private readonly meta = inject(Meta);
 
+  protected activeSection = signal<BetterToasterDocSection>('customization');
+  protected readonly destroyRef = inject(DestroyRef);
+
+  private watchTocTargets(): void {
+    const tocLinks = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>('.toc-content a[href*="#"]'),
+    );
+
+    const sections = tocLinks
+      .map((link) => {
+        const id = link.hash.slice(1);
+        const target = document.getElementById(id);
+
+        return this.isBetterToasterDocSection(id) && target ? { id, target } : null;
+      })
+      .filter(
+        (section): section is { id: BetterToasterDocSection; target: HTMLElement } =>
+          section !== null,
+      );
+
+    if (sections.length === 0) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntry = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+
+        if (!visibleEntry) {
+          return;
+        }
+
+        const activeSection = sections.find((section) => section.target === visibleEntry.target);
+
+        if (activeSection) {
+          this.activeSection.set(activeSection.id);
+        }
+      },
+      {
+        rootMargin: '-120px 0px -70% 0px',
+        threshold: 0,
+      },
+    );
+
+    for (const section of sections) {
+      observer.observe(section.target);
+    }
+
+    this.destroyRef.onDestroy(() => observer.disconnect());
+  }
+
+  private isBetterToasterDocSection(id: string): id is BetterToasterDocSection {
+    return [
+      'customization',
+      'position',
+      'duration',
+      'offsets',
+      'theme',
+      'rich-colors',
+      'close-button',
+      'icons',
+      'accessibility-labels',
+      'api-reference',
+    ].includes(id);
+  }
+
+  protected tocLinkClass(section: BetterToasterDocSection): string {
+    return this.activeSection() === section
+      ? 'text-black dark:text-white'
+      : 'text-zinc-500 dark:text-zinc-300/75';
+  }
+
   constructor() {
     this.meta.updateTag({
       name: 'description',
       content:
         'Host component for the toast stack. Position, theming, and configuration options for the BetterToaster in Angular.',
+    });
+
+    afterNextRender(() => {
+      this.watchTocTargets();
     });
   }
 

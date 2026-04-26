@@ -1,4 +1,4 @@
-import { afterNextRender, Component, inject, signal } from '@angular/core';
+import { afterNextRender, Component, DestroyRef, inject, signal } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 import { ToasterService } from 'better-toast';
 import hljs from 'highlight.js';
@@ -102,6 +102,8 @@ export class HeadlessToast {
   }
 }`;
 
+type StylingDocSection = 'global-styles' | 'styling-specific-elements' | 'headless';
+
 @Component({
   selector: 'app-doc-styling',
   imports: [],
@@ -115,6 +117,68 @@ export class DocStyling {
   private readonly meta = inject(Meta);
   protected readonly enterEnabled = signal(false);
 
+  protected activeSection = signal<StylingDocSection>('global-styles');
+  protected readonly destroyRef = inject(DestroyRef);
+
+  private watchTocTargets(): void {
+    const tocLinks = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>('.toc-content a[href*="#"]'),
+    );
+
+    const sections = tocLinks
+      .map((link) => {
+        const id = link.hash.slice(1);
+        const target = document.getElementById(id);
+
+        return this.isStylingDocSection(id) && target ? { id, target } : null;
+      })
+      .filter(
+        (section): section is { id: StylingDocSection; target: HTMLElement } => section !== null,
+      );
+
+    if (sections.length === 0) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntry = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+
+        if (!visibleEntry) {
+          return;
+        }
+
+        const activeSection = sections.find((section) => section.target === visibleEntry.target);
+
+        if (activeSection) {
+          this.activeSection.set(activeSection.id);
+        }
+      },
+      {
+        rootMargin: '-120px 0px -70% 0px',
+        threshold: 0,
+      },
+    );
+
+    for (const section of sections) {
+      observer.observe(section.target);
+    }
+
+    this.destroyRef.onDestroy(() => observer.disconnect());
+  }
+
+  private isStylingDocSection(id: string): id is StylingDocSection {
+    return ['global-styles', 'styling-specific-elements', 'headless'].includes(id);
+  }
+
+  protected tocLinkClass(section: StylingDocSection): string {
+    return this.activeSection() === section
+      ? 'text-black dark:text-white'
+      : 'text-zinc-600 dark:text-zinc-300/75';
+  }
+
   constructor() {
     this.meta.updateTag({
       name: 'description',
@@ -123,9 +187,12 @@ export class DocStyling {
     });
 
     afterNextRender(() => {
+      console.log('afterNextRender');
       setTimeout(() => {
         this.enterEnabled.set(true);
       }, 100);
+
+      this.watchTocTargets();
     });
   }
 

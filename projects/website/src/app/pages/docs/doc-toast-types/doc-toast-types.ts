@@ -1,4 +1,11 @@
-import { afterNextRender, ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  signal,
+} from '@angular/core';
 import { ToasterService } from 'better-toast';
 import hljs from 'highlight.js';
 import typescript from 'highlight.js/lib/languages/typescript';
@@ -8,6 +15,20 @@ import { HomeCustomToastBody } from './components/custom-toast-body/custom-toast
 import { Meta } from '@angular/platform-browser';
 
 hljs.registerLanguage('typescript', typescript);
+
+type ToastDocSection =
+  | 'rendering-a-toast'
+  | 'success'
+  | 'error'
+  | 'info'
+  | 'warning'
+  | 'loading'
+  | 'action'
+  | 'cancel'
+  | 'promise'
+  | 'custom'
+  | 'headless'
+  | 'api-reference';
 
 const RENDER_TOAST_SOURCE = `import { BetterToaster, ToasterService } from 'better-toast';
 import { inject, ChangeDetectionStrategy, Component} from '@angular/core';
@@ -327,6 +348,7 @@ export class CustomToast {
 })
 export class DocToastTypes {
   private readonly meta = inject(Meta);
+  private readonly destroyRef = inject(DestroyRef);
   protected readonly enterEnabled = signal(false);
 
   constructor() {
@@ -340,10 +362,14 @@ export class DocToastTypes {
       setTimeout(() => {
         this.enterEnabled.set(true);
       }, 100);
+
+      this.watchTocTargets();
     });
   }
 
   protected readonly toaster = inject(ToasterService);
+
+  protected activeSection = signal<ToastDocSection>('rendering-a-toast');
 
   protected toastTab = signal<'preview' | 'code'>('preview');
   protected toastWithOptionsTab = signal<'preview' | 'code'>('preview');
@@ -519,6 +545,78 @@ export class DocToastTypes {
   }
   protected async copyCustomToastCode(): Promise<void> {
     await this.copyToClipboard(CUSTOM_TOAST_SOURCE, this.customToastCodeCopied);
+  }
+
+  protected tocLinkClass(section: ToastDocSection): string {
+    return this.activeSection() === section
+      ? 'text-black dark:text-white'
+      : 'text-zinc-600 dark:text-zinc-300/75';
+  }
+
+  private watchTocTargets(): void {
+    const tocLinks = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>('.toc-content a[href*="#"]'),
+    );
+
+    const sections = tocLinks
+      .map((link) => {
+        const id = link.hash.slice(1);
+        const target = document.getElementById(id);
+
+        return this.isToastDocSection(id) && target ? { id, target } : null;
+      })
+      .filter(
+        (section): section is { id: ToastDocSection; target: HTMLElement } => section !== null,
+      );
+
+    if (sections.length === 0) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntry = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+
+        if (!visibleEntry) {
+          return;
+        }
+
+        const activeSection = sections.find((section) => section.target === visibleEntry.target);
+
+        if (activeSection) {
+          this.activeSection.set(activeSection.id);
+        }
+      },
+      {
+        rootMargin: '-120px 0px -70% 0px',
+        threshold: 0,
+      },
+    );
+
+    for (const section of sections) {
+      observer.observe(section.target);
+    }
+
+    this.destroyRef.onDestroy(() => observer.disconnect());
+  }
+
+  private isToastDocSection(id: string): id is ToastDocSection {
+    return [
+      'rendering-a-toast',
+      'success',
+      'error',
+      'info',
+      'warning',
+      'loading',
+      'action',
+      'cancel',
+      'promise',
+      'custom',
+      'headless',
+      'api-reference',
+    ].includes(id);
   }
 
   private async copyToClipboard(

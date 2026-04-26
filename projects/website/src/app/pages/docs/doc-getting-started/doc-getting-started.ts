@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
   inject,
   signal,
 } from '@angular/core';
@@ -51,6 +52,11 @@ export class App {
   }
 }`;
 
+type GettingStartedDocSection =
+  | 'installation'
+  | 'add-better-toaster-to-your-app'
+  | 'render-a-toast';
+
 @Component({
   selector: 'app-doc-getting-started',
   templateUrl: './doc-getting-started.html',
@@ -68,6 +74,69 @@ export class DocGettingStarted {
   protected readonly usageCodeCopied = signal(false);
   protected readonly typesCodeCopied = signal(false);
 
+  protected activeSection = signal<GettingStartedDocSection>('installation');
+  protected readonly destroyRef = inject(DestroyRef);
+
+  private watchTocTargets(): void {
+    const tocLinks = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>('.toc-content a[href*="#"]'),
+    );
+
+    const sections = tocLinks
+      .map((link) => {
+        const id = link.hash.slice(1);
+        const target = document.getElementById(id);
+
+        return this.isGettingStartedDocSection(id) && target ? { id, target } : null;
+      })
+      .filter(
+        (section): section is { id: GettingStartedDocSection; target: HTMLElement } =>
+          section !== null,
+      );
+
+    if (sections.length === 0) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntry = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+
+        if (!visibleEntry) {
+          return;
+        }
+
+        const activeSection = sections.find((section) => section.target === visibleEntry.target);
+
+        if (activeSection) {
+          this.activeSection.set(activeSection.id);
+        }
+      },
+      {
+        rootMargin: '-120px 0px -70% 0px',
+        threshold: 0,
+      },
+    );
+
+    for (const section of sections) {
+      observer.observe(section.target);
+    }
+
+    this.destroyRef.onDestroy(() => observer.disconnect());
+  }
+
+  private isGettingStartedDocSection(id: string): id is GettingStartedDocSection {
+    return ['installation', 'add-better-toaster-to-your-app', 'render-a-toast'].includes(id);
+  }
+
+  protected tocLinkClass(section: GettingStartedDocSection): string {
+    return this.activeSection() === section
+      ? 'text-black dark:text-white'
+      : 'text-zinc-600 dark:text-zinc-300/75';
+  }
+
   constructor() {
     this.meta.updateTag({
       name: 'description',
@@ -79,6 +148,8 @@ export class DocGettingStarted {
       setTimeout(() => {
         this.enterEnabled.set(true);
       }, 100);
+
+      this.watchTocTargets();
     });
   }
 
