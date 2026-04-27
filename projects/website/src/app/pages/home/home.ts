@@ -8,6 +8,7 @@ import xml from 'highlight.js/lib/languages/xml';
 import { HeadlessComponent } from '../../components/headless-component/headless-component';
 import { HomeCustomToastBody } from '../docs/doc-toast-types/components/custom-toast-body/custom-toast-body';
 import { Meta } from '@angular/platform-browser';
+import { RouterLink } from '@angular/router';
 
 hljs.registerLanguage('bash', bash);
 hljs.registerLanguage('typescript', typescript);
@@ -103,7 +104,7 @@ const POSITION_DEMO_SOURCE = Object.fromEntries(
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './home.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

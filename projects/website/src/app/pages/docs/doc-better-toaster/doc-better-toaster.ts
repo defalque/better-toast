@@ -183,17 +183,15 @@ export class DocBetterToaster {
   protected readonly iconsSource = computed(() => {
     return hljs.highlight(
       `<!-- app-custom-success-icon.component.ts -->
-<!-- recommended to use "currentColor" for fill and stroke -->
+<!-- Use fill/stroke utilities (including dark: variants) on the SVG so the icon matches light and dark themes. -->
 <!-- recommended stroke-width is "1.75" -->
 @Component({
   selector: 'app-custom-success-icon',
   standalone: true,
   template: \`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-      fill="currentColor"  
-      stroke="currentColor" 
       stroke-width="1.75"  
-      ...
+      class="fill-black! dark:fill-none! stroke-black! dark:stroke-white! size-4!"
     >
       <!-- Your SVG code here -->
     </svg>
