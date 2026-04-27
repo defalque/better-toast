@@ -77,4 +77,4 @@ After building the library, the package output is written under `dist/better-toa
 
 ## Documentation
 
-The website project contains the full docs and examples under `projects/website/src/app/pages/docs`. The website will be deployed soon. The library README contains the npm-facing quickstart and API overview.
+The website project contains the full docs and examples under `projects/website/src/app/pages/docs`; the website will be deployed soon. The library README contains the npm-facing quickstart and API overview.
