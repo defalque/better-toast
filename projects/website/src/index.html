@@ -3,8 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <title>Better Toast</title>
+    <link id="app-favicon" rel="icon" href="/favicon-light.ico" type="image/x-icon" />
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="index, follow" />
+    <meta />
 
     <script>
       // Applies the persisted theme before Angular hydrates to avoid a flash of the wrong theme.
@@ -18,6 +21,9 @@
                 : 'light'
               : pref;
           document.documentElement.classList.toggle('dark', resolved === 'dark');
+          document
+            .getElementById('app-favicon')
+            ?.setAttribute('href', resolved === 'dark' ? '/favicon-dark.ico' : '/favicon-light.ico');
         } catch (e) {}
       })();
     </script>

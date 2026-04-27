@@ -1,15 +1,30 @@
-import { DOCUMENT, Inject, Injectable, PLATFORM_ID, computed, effect, signal } from '@angular/core';
+import {
+  DOCUMENT,
+  Inject,
+  Injectable,
+  PLATFORM_ID,
+  computed,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
 export type ThemePreference = 'light' | 'dark' | 'system';
 export type ResolvedTheme = 'light' | 'dark';
 
 const STORAGE_KEY = 'theme';
+const FAVICON_BY_THEME: Record<ResolvedTheme, string> = {
+  light: '/favicon-light.ico',
+  dark: '/favicon-dark.ico',
+};
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
   private readonly isBrowser: boolean;
   private readonly systemPrefersDark = signal(false);
+  private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
 
   readonly preference = signal<ThemePreference>('system');
 
@@ -19,11 +34,8 @@ export class ThemeService {
     return pref;
   });
 
-  constructor(
-    @Inject(DOCUMENT) private readonly document: Document,
-    @Inject(PLATFORM_ID) platformId: object,
-  ) {
-    this.isBrowser = isPlatformBrowser(platformId);
+  constructor() {
+    this.isBrowser = isPlatformBrowser(this.platformId);
 
     if (this.isBrowser) {
       const stored = this.readStoredPreference();
@@ -36,8 +48,10 @@ export class ThemeService {
 
     effect(() => {
       if (!this.isBrowser) return;
-      const isDark = this.resolved() === 'dark';
+      const resolved = this.resolved();
+      const isDark = resolved === 'dark';
       this.document.documentElement.classList.toggle('dark', isDark);
+      this.updateFavicon(resolved);
     });
   }
 
@@ -50,6 +64,10 @@ export class ThemeService {
         /* ignore quota / privacy-mode errors */
       }
     }
+  }
+
+  private updateFavicon(theme: ResolvedTheme): void {
+    this.document.getElementById('app-favicon')?.setAttribute('href', FAVICON_BY_THEME[theme]);
   }
 
   private readStoredPreference(): ThemePreference | null {
