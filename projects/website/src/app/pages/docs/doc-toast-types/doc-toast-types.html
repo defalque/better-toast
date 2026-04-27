@@ -529,7 +529,10 @@
                   >Copied!</span
                 >
               } @else {
-                <span class="absolute top-1/2 left-1/2 -translate-y-1/2" animate.leave="leave"
+                <span
+                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
+                  [animate.enter]="enterEnabled() ? 'enter' : null"
+                  animate.leave="leave"
                   >Copy code</span
                 >
               }

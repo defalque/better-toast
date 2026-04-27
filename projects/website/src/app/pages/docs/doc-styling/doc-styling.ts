@@ -187,7 +187,6 @@ export class DocStyling {
     });
 
     afterNextRender(() => {
-      console.log('afterNextRender');
       setTimeout(() => {
         this.enterEnabled.set(true);
       }, 100);

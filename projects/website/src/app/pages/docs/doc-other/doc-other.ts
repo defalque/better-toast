@@ -65,7 +65,7 @@ type OtherDocSection = 'programmatic-dismiss' | 'on-dismiss-callback' | 'on-auto
 })
 export class DocOther {
   private readonly meta = inject(Meta);
-  protected readonly enterEnabled = signal(true);
+  protected readonly enterEnabled = signal(false);
 
   protected activeSection = signal<OtherDocSection>('programmatic-dismiss');
   protected readonly destroyRef = inject(DestroyRef);

@@ -6,7 +6,7 @@
   &::after {
     content: '';
     position: absolute;
-    width: 2px;
+    width: 3px;
     height: 2px;
     border-radius: 9999px;
     left: -17px;
@@ -23,7 +23,8 @@
 
   &:has(a[data-active='true'])::after {
     background-color: var(--color-black);
-    height: 18px;
+    height: 20px;
+    width: 3px;
     border-radius: 9999px;
   }
   &:has(a[data-active='true']):where(.dark, .dark *)::after {

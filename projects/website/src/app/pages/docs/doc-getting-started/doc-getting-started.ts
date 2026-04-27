@@ -69,6 +69,7 @@ type GettingStartedDocSection =
 export class DocGettingStarted {
   private readonly meta = inject(Meta);
   private copyResetTimeout: ReturnType<typeof setTimeout> | null = null;
+  protected readonly enterEnabled = signal(false);
 
   protected readonly installationCodeCopied = signal(false);
   protected readonly usageCodeCopied = signal(false);
@@ -152,8 +153,6 @@ export class DocGettingStarted {
       this.watchTocTargets();
     });
   }
-
-  protected readonly enterEnabled = signal(false);
 
   protected readonly toastInstallationSource = computed(() => {
     return hljs.highlight(TOAST_INSTALLATION_SOURCE, { language: 'bash' }).value;
