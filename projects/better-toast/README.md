@@ -1,64 +1,94 @@
 # better-toast
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
+Toast notifications for **Angular** (standalone components): stacked messages, variants, swipe-to-dismiss, accessibility-friendly live region, and a small `ToasterService` API.
 
-## Code scaffolding
+**Requirements:** Angular `^21.0.0` (`@angular/core`, `@angular/common`).
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Install
 
 ```bash
-ng generate --help
+npm install better-toast
 ```
 
-## Building
+## Add the toaster once
 
-To build the library, run:
+Place a single `<better-toaster>` near the root of your app (for example in the root component) so the stack can render.
 
-```bash
-ng build better-toast
+```typescript
+import { Component } from '@angular/core';
+import { BetterToaster } from 'better-toast';
+
+@Component({
+  selector: 'app-root',
+  imports: [BetterToaster],
+  template: `<better-toaster position="bottom-right" />`,
+})
+export class App {}
 ```
 
-This command will compile your project, and the build artifacts will be placed in the `dist/` directory.
+Common inputs (all optional except using defaults):
 
-### Publishing the Library
+| Input                     | Description                                                                                                                        |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `duration`                | Default auto-dismiss in ms for toasts that omit `durationMs` (also supports the literal `duration="Infinity"` for manual dismiss). |
+| `position`                | `top-left` \| `top-center` \| `top-right` \| `bottom-left` \| `bottom-center` \| `bottom-right` (default `bottom-right`).          |
+| `richColors`              | When `true`, semantic background/border colors for success/error/info/warning.                                                     |
+| `theme`                   | `light` \| `dark` \| `system` (default).                                                                                           |
+| `closeButton`             | Show per-toast dismiss control (default `true`).                                                                                   |
+| `offset` / `mobileOffset` | Viewport inset for the stack (string or per-side object).                                                                          |
 
-Once the project is built, you can publish your library by following these steps:
+Styles ship with the components; you do not need to import a separate CSS file for the default look.
 
-1. Navigate to the `dist` directory:
+## Show toasts from anywhere
 
-   ```bash
-   cd dist/better-toast
-   ```
+Inject `ToasterService` (`providedIn: 'root'`) and call the helpers. Each method returns a **toast id** you can pass to `dismiss(id)`.
 
-2. Run the `npm publish` command to publish your library to the npm registry:
-   ```bash
-   npm publish
-   ```
+```typescript
+import { Component, inject } from '@angular/core';
+import { ToasterService } from 'better-toast';
 
-## Running unit tests
+@Component({
+  selector: 'app-example',
+  template: `<button type="button" (click)="notify()">Save</button>`,
+})
+export class ExampleComponent {
+  private readonly toaster = inject(ToasterService);
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
+  notify(): void {
+    this.toaster.success('Saved successfully');
+  }
+}
 ```
 
-## Running end-to-end tests
+### Variants and helpers
 
-For end-to-end (e2e) testing, run:
+- **Text:** `show`, `description`, `success`, `error`, `info`, `warning`, `loading`
+- **Actions:** `action(message, { action: { label, onClick } })`, `cancel(message, { cancel: { label, onClick } })`
+- **Custom UI:** `custom(Component, options)` (message area as a component), `headless(Component, options)` (full custom body, minimal chrome)
+- **Async:** `promise(userPromise, { loading, success, error })` — one toast goes from loading → success/error
+- **Control:** `dismiss(id)`, `clear()`
 
-```bash
-ng e2e
+Example with options:
+
+```typescript
+this.toaster.error('Something went wrong', {
+  description: 'Try again in a few minutes.',
+  durationMs: 6000,
+});
+
+const id = this.toaster.loading('Working…');
+// later:
+this.toaster.dismiss(id);
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Constants re-exported for typing and defaults include `DEFAULT_TOAST_DURATION_MS`, `TOAST_DURATION_MANUAL_DISMISS`, `TOAST_VARIANTS`, `TOASTER_POSITIONS`, and default ARIA label helpers.
 
-## Additional Resources
+## API surface
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Everything is exported from the package entry point `better-toast`:
+
+- **Component:** `BetterToaster` (selector `better-toaster`)
+- **Service:** `ToasterService`
+- **Types:** `ToastOptions`, `ToastVariant`, `ToasterPosition`, and the other types listed in the package’s `public-api.ts`
+
+For full behavior (icons, headless mode, class names, accessibility labels), see the source and TSDoc under `projects/better-toast/src`.
