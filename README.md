@@ -1,59 +1,80 @@
 # better-toast workspace
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.2.
+Angular workspace for **better-toast**, a standalone toast notification library with stacked messages, variants, swipe-to-dismiss, accessible live regions, and a small service API.
 
-## Development server
+## Projects
 
-To start a local development server, run:
+- `projects/better-toast` - publishable Angular library package.
+- `projects/demo` - local playground for trying toast behavior while developing.
+- `projects/website` - documentation website with SSR support.
 
-```bash
-ng serve
-```
+For consumer installation and API examples, see `projects/better-toast/README.md`.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Requirements
 
-## Code scaffolding
+- Node.js compatible with Angular 21.
+- npm `11.12.1` or newer.
+- Angular `^21.0.0` for consumers of the `better-toast` package.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Install workspace dependencies:
 
 ```bash
-ng generate --help
+npm install
 ```
 
-## Building
+## Development
 
-To build the project run:
+Run the default Angular dev server:
 
 ```bash
-ng build
+npm start
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Serve a specific app when needed:
 
 ```bash
-ng test
+npm run ng -- serve demo
+npm run ng -- serve website
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+Build everything with the default Angular target:
 
 ```bash
-ng e2e
+npm run build
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Build only the library:
 
-## Additional Resources
+```bash
+npm run ng -- build better-toast
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Build and watch during local development:
+
+```bash
+npm run watch
+```
+
+## Testing
+
+Run the workspace test target:
+
+```bash
+npm test
+```
+
+Run the library tests once:
+
+```bash
+npm run test:better-toast
+```
+
+## Package
+
+The package entry point exports `BetterToaster`, `ToasterService`, public toast types, defaults, and constants from `better-toast`.
+
+After building the library, the package output is written under `dist/better-toast`.
+
+## Documentation
+
+The website project contains the full docs and examples under `projects/website/src/app/pages/docs`. The library README contains the npm-facing quickstart and API overview.

@@ -1,6 +1,25 @@
 {
   "name": "better-toast",
   "version": "0.0.1",
+  "description": "Toast notifications for Angular with stacked messages, variants, swipe-to-dismiss, live regions, and a small service API.",
+  "keywords": [
+    "angular",
+    "toast",
+    "notifications",
+    "toaster",
+    "standalone-components"
+  ],
+  "author": "Marco De Falco",
+  "license": "MIT",
+  "homepage": "https://github.com/defalque/better-toast#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/defalque/better-toast.git",
+    "directory": "projects/better-toast"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/better-toast/issues"
+  },
   "peerDependencies": {
     "@angular/common": "^21.0.0",
     "@angular/core": "^21.0.0"
