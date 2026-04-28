@@ -6,6 +6,7 @@ import { DocBetterToaster } from './pages/docs/doc-better-toaster/doc-better-toa
 import { DocToastTypes } from './pages/docs/doc-toast-types/doc-toast-types';
 import { DocOther } from './pages/docs/doc-other/doc-other';
 import { DocStyling } from './pages/docs/doc-styling/doc-styling';
+import { DocInfo } from './pages/docs/doc-info/doc-info';
 
 export const routes: Routes = [
   {
@@ -42,6 +43,16 @@ export const routes: Routes = [
         path: 'styling',
         component: DocStyling,
         title: 'Styling - Better Toast',
+      },
+      {
+        path: 'info',
+        redirectTo: 'considerations',
+        pathMatch: 'full',
+      },
+      {
+        path: 'considerations',
+        component: DocInfo,
+        title: 'Considerations - Better Toast',
       },
     ],
   },

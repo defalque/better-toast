@@ -1,0 +1,140 @@
+<div class="flex w-full gap-2">
+  <div
+    class="doc-container divide-y divide-dashed divide-zinc-200 dark:divide-zinc-600/50 overflow-x-auto"
+  >
+    <div class="pb-16">
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+        Considerations
+      </h1>
+      <p class="text-zinc-700 dark:text-zinc-300 mt-4">
+        General considerations when using Better Toast.
+      </p>
+
+      <div class="space-y-4 pt-20" id="bundle-size">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Bundle size
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+          A great web experience doesn't just look and move beautifully, it should load quickly,
+          too.<br /><br />
+          If you're bundlephobic,
+          <a
+            href="https://bundlephobia.com/package/better-toast"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-black dark:text-white underline cursor-pointer underline-offset-2"
+            >Bundlephobia</a
+          >
+          has the numbers - check minified size, gzip, and dependency graph before you commit.
+        </p>
+      </div>
+
+      <div class="space-y-4 pt-20" id="caveats">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Caveats
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+          Toast enter animations use the CSS
+          <code class="p-code-snippet">@starting-style</code> at-rule. This feature is supported in
+          modern evergreen browsers, with coverage continuing to improve. For up-to-date
+          compatibility details, refer to
+          <a
+            href="https://caniuse.com/css-starting-style"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-black dark:text-white underline cursor-pointer underline-offset-2"
+            >Can I use</a
+          >.<br /><br />
+          In environments where the at-rule is not yet supported, toast notifications will still
+          render correctly, but without the entrance animation.
+        </p>
+      </div>
+    </div>
+
+    <div class="flex justify-between my-6">
+      <a href="/docs/getting-started" class="flex items-end gap-2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="var(--color-zinc-500)"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="size-4.5"
+        >
+          <path d="m15 18-6-6 6-6" />
+        </svg>
+        <div class="flex flex-col items-start">
+          <p class="text-zinc-600 dark:text-zinc-400 text-[13px]">Previous</p>
+          <p class="text-zinc-600 dark:text-zinc-200 text-sm font-medium">Getting Started</p>
+        </div>
+      </a>
+
+      <a href="/docs/better-toaster" class="flex items-end gap-2">
+        <div class="flex flex-col items-end">
+          <p class="text-zinc-600 dark:text-zinc-400 text-[13px]">Next</p>
+          <p class="text-zinc-600 dark:text-zinc-200 text-sm font-medium">Better Toaster</p>
+        </div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="var(--color-zinc-500)"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="size-4.5"
+        >
+          <path d="m9 18 6-6-6-6" />
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="toc">
+    <div class="flex items-baseline gap-2">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="var(--color-zinc-500)"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="size-4"
+      >
+        <path d="M4 14h6" />
+        <path d="M4 2h10" />
+        <rect x="4" y="18" width="16" height="4" rx="1" />
+        <rect x="4" y="6" width="16" height="4" rx="1" />
+      </svg>
+      <span class="text-zinc-500">On this page</span>
+    </div>
+
+    <ul class="space-y-2 ml-6 toc-content relative">
+      <div
+        class="absolute top-0 -left-4 w-px h-full border-l border-dashed border-zinc-200 dark:border-zinc-600/50 -z-10"
+      ></div>
+
+      <li>
+        <a
+          href="/docs/considerations#bundle-size"
+          [attr.data-active]="activeSection() === 'bundle-size'"
+          [class]="tocLinkClass('bundle-size')"
+          (click)="activeSection.set('bundle-size')"
+          >Bundle size</a
+        >
+      </li>
+      <li>
+        <a
+          href="/docs/considerations#caveats"
+          [attr.data-active]="activeSection() === 'caveats'"
+          [class]="tocLinkClass('caveats')"
+          (click)="activeSection.set('caveats')"
+          >Caveats</a
+        >
+      </li>
+    </ul>
+  </div>
+</div>

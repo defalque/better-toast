@@ -10,71 +10,6 @@
         How to style Better Toast beyond the default theme.
       </p>
 
-      <div class="space-y-4 pt-20" id="global-styles">
-        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
-          Global styles
-        </h2>
-        <p class="text-zinc-700 dark:text-zinc-300">
-          If you only need to make smaller changes like changing the background color, you can use
-          the <code class="p-code-snippet">style</code> option in the
-          <code class="p-code-snippet">toastOptions</code>
-          input. This way, every toast will have the same styling.
-        </p>
-        <div>
-          <pre
-            class="landing-page-pre"
-          ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="globalStylesSource()"></code></pre>
-        </div>
-        <p class="text-zinc-700 dark:text-zinc-300">
-          You can also use the same option to style a specific toast.
-        </p>
-        <div>
-          <pre
-            class="landing-page-pre"
-          ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="specificStylesSource()"></code></pre>
-        </div>
-      </div>
-
-      <div class="space-y-4 pt-20" id="styling-specific-elements">
-        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
-          Styling specific elements
-        </h2>
-        <p class="text-zinc-700 dark:text-zinc-300">
-          The preferred way to style the toasts with classes is through the
-          <a
-            href="/docs/styling#headless"
-            class="text-black dark:text-white underline cursor-pointer underline-offset-2"
-            >headless</a
-          >
-          approach. However, if you only need to change a few things you can apply a class to each
-          element within the toast using the <code class="p-code-snippet">classNames</code> option
-          in the <code class="p-code-snippet">toastOptions</code> input. You will need to use
-          <code class="p-code-snippet">!important</code> in order to override the default styles.
-        </p>
-        <div>
-          <pre
-            class="landing-page-pre"
-          ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="stylingSpecificElementsSource()"></code></pre>
-        </div>
-        <p class="text-zinc-700 dark:text-zinc-300">
-          This technique can also be used with Tailwind, but to make sure the styles are applied
-          correctly, you need to mark them as <code class="p-code-snippet">!important</code>.
-        </p>
-        <div>
-          <pre
-            class="landing-page-pre"
-          ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="stylingSpecificElementsTailwindSource()"></code></pre>
-        </div>
-        <p class="text-zinc-700 dark:text-zinc-300">
-          You can also use the same option to style a specific element of a specific toast.
-        </p>
-        <div>
-          <pre
-            class="landing-page-pre"
-          ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="stylingSpecificElementSource()"></code></pre>
-        </div>
-      </div>
-
       <div class="space-y-4 pt-20" id="headless">
         <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
           Headless
@@ -150,6 +85,71 @@
           }
         </div>
       </div>
+
+      <div class="space-y-4 pt-20" id="global-styles">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Global styles
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300">
+          If you only need to make smaller changes like changing the background color, you can use
+          the <code class="p-code-snippet">style</code> option in the
+          <code class="p-code-snippet">toastOptions</code>
+          input. This way, every toast will have the same styling.
+        </p>
+        <div>
+          <pre
+            class="landing-page-pre"
+          ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="globalStylesSource()"></code></pre>
+        </div>
+        <p class="text-zinc-700 dark:text-zinc-300">
+          You can also use the same option to style a specific toast.
+        </p>
+        <div>
+          <pre
+            class="landing-page-pre"
+          ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="specificStylesSource()"></code></pre>
+        </div>
+      </div>
+
+      <div class="space-y-4 pt-20" id="styling-specific-elements">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Styling specific elements
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300">
+          The preferred way to style the toasts with classes is through the
+          <a
+            href="/docs/styling#headless"
+            class="text-black dark:text-white underline cursor-pointer underline-offset-2"
+            >headless</a
+          >
+          approach. However, if you only need to change a few things you can apply a class to each
+          element within the toast using the <code class="p-code-snippet">classNames</code> option
+          in the <code class="p-code-snippet">toastOptions</code> input. You will need to use
+          <code class="p-code-snippet">!important</code> in order to override the default styles.
+        </p>
+        <div>
+          <pre
+            class="landing-page-pre"
+          ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="stylingSpecificElementsSource()"></code></pre>
+        </div>
+        <p class="text-zinc-700 dark:text-zinc-300">
+          This technique can also be used with Tailwind, but to make sure the styles are applied
+          correctly, you need to mark them as <code class="p-code-snippet">!important</code>.
+        </p>
+        <div>
+          <pre
+            class="landing-page-pre"
+          ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="stylingSpecificElementsTailwindSource()"></code></pre>
+        </div>
+        <p class="text-zinc-700 dark:text-zinc-300">
+          You can also use the same option to style a specific element of a specific toast.
+        </p>
+        <div>
+          <pre
+            class="landing-page-pre"
+          ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="stylingSpecificElementSource()"></code></pre>
+        </div>
+      </div>
     </div>
 
     <div class="flex justify-start my-6">
@@ -201,6 +201,15 @@
 
       <li>
         <a
+          href="/docs/styling#headless"
+          [attr.data-active]="activeSection() === 'headless'"
+          [class]="tocLinkClass('headless')"
+          (click)="activeSection.set('headless')"
+          >Headless</a
+        >
+      </li>
+      <li>
+        <a
           href="/docs/styling#global-styles"
           [attr.data-active]="activeSection() === 'global-styles'"
           [class]="tocLinkClass('global-styles')"
@@ -215,15 +224,6 @@
           [class]="tocLinkClass('styling-specific-elements')"
           (click)="activeSection.set('styling-specific-elements')"
           >Styling specific elements</a
-        >
-      </li>
-      <li>
-        <a
-          href="/docs/styling#headless"
-          [attr.data-active]="activeSection() === 'headless'"
-          [class]="tocLinkClass('headless')"
-          (click)="activeSection.set('headless')"
-          >Headless</a
         >
       </li>
     </ul>

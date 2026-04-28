@@ -242,54 +242,13 @@
           ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="toastTypesSource()"></code></pre>
         </div>
       </div>
-
-      <div class="space-y-4 pt-20" id="bundle-size">
-        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
-          Bundle size
-        </h2>
-        <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
-          A great web experience doesn't just look and move beautifully, it should load quickly,
-          too.<br /><br />
-          If you're bundlephobic,
-          <a
-            href="https://bundlephobia.com/package/better-toast@0.0.1"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-black dark:text-white underline cursor-pointer underline-offset-2"
-            >Bundlephobia</a
-          >
-          has the numbers: check minified size, gzip, and dependency graph before you commit.
-        </p>
-      </div>
-
-      <div class="space-y-4 pt-20" id="caveats">
-        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
-          Caveats
-        </h2>
-        <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
-          Toast enter animations use the CSS
-          <code class="p-code-snippet">@starting-style</code> at-rule. This feature is supported in
-          modern evergreen browsers, with coverage continuing to improve. For up-to-date
-          compatibility details, refer to
-          <a
-            href="[https://caniuse.com/?search=starting-style](https://caniuse.com/?search=starting-style)"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-black dark:text-white underline cursor-pointer underline-offset-2"
-          >
-            Can I use </a
-          >.<br /><br />
-          In environments where the at-rule is not yet supported, toast notifications will still
-          render correctly, but without the entrance animation.
-        </p>
-      </div>
     </div>
 
     <div class="flex justify-end my-6">
-      <a href="/docs/better-toaster" class="flex items-end gap-2">
+      <a href="/docs/considerations" class="flex items-end gap-2">
         <div class="flex flex-col items-end">
           <p class="text-zinc-600 dark:text-zinc-400 text-[13px]">Next</p>
-          <p class="text-zinc-600 dark:text-zinc-200 text-sm font-medium">Better Toaster</p>
+          <p class="text-zinc-600 dark:text-zinc-200 text-sm font-medium">Considerations</p>
         </div>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -357,24 +316,6 @@
           [class]="tocLinkClass('render-a-toast')"
           (click)="activeSection.set('render-a-toast')"
           >Render a toast</a
-        >
-      </li>
-      <li>
-        <a
-          href="/docs/getting-started#bundle-size"
-          [attr.data-active]="activeSection() === 'bundle-size'"
-          [class]="tocLinkClass('bundle-size')"
-          (click)="activeSection.set('bundle-size')"
-          >Bundle size</a
-        >
-      </li>
-      <li>
-        <a
-          href="/docs/getting-started#caveats"
-          [attr.data-active]="activeSection() === 'caveats'"
-          [class]="tocLinkClass('caveats')"
-          (click)="activeSection.set('caveats')"
-          >Caveats</a
         >
       </li>
     </ul>
