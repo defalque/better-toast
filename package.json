@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:website": "ng build website --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:better-toast": "ng test better-toast --no-watch",
