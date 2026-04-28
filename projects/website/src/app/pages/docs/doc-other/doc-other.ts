@@ -107,7 +107,7 @@ export class DocOther {
         }
       },
       {
-        rootMargin: '-120px 0px -70% 0px',
+        rootMargin: '-180px 0px -43% 0px',
         threshold: 0,
       },
     );
@@ -188,12 +188,18 @@ this.toaster.clear();`,
     await this.copyToClipboard(ON_AUTO_CLOSE_CALLBACK_SOURCE, this.onAutoCloseCallbackCodeCopied);
   }
 
-  protected renderToast(): void {
+  protected onDismissRenderToast() {
     this.toaster.show('This is a toast', {
       durationMs: 3000,
       onDismiss: () => {
         console.log('Toast dismissed');
       },
+    });
+  }
+
+  protected onAutoCloseRenderToast() {
+    this.toaster.show('This is a toast', {
+      durationMs: 3000,
       onAutoClose: () => {
         console.log('Toast auto closed');
       },

@@ -590,7 +590,7 @@ export class DocToastTypes {
         }
       },
       {
-        rootMargin: '-120px 0px -70% 0px',
+        rootMargin: '-180px 0px -70% 0px',
         threshold: 0,
       },
     );

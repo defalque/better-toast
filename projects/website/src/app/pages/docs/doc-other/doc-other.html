@@ -38,6 +38,92 @@
         </div>
       </div>
 
+      <div class="space-y-4 pt-20" id="on-auto-close-callback">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          onAutoClose callback
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+          You can pass a callback function to the
+          <code class="p-code-snippet">onAutoClose</code> option to be called when the toast
+          disappears automatically after its timeout (controlled by the
+          <code class="p-code-snippet">durationMs</code> input).
+        </p>
+
+        <div class="mt-7 space-y-6">
+          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5 relative">
+            <div
+              class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-300/50 dark:bg-zinc-800/80 -z-10"
+            ></div>
+            <div class="flex items-center gap-4 relative tab">
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  onAutoCloseCallbackTab() === 'preview'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="onAutoCloseCallbackTab.set('preview')"
+                [attr.data-active]="onAutoCloseCallbackTab() === 'preview'"
+              >
+                Preview
+              </button>
+              <button
+                type="button"
+                class="font-medium  cursor-pointer {{
+                  onAutoCloseCallbackTab() === 'code'
+                    ? 'text-black dark:text-zinc-100'
+                    : 'text-zinc-600 dark:text-zinc-400'
+                }}"
+                (click)="onAutoCloseCallbackTab.set('code')"
+                [attr.data-active]="onAutoCloseCallbackTab() === 'code'"
+              >
+                Code
+              </button>
+            </div>
+            <button
+              type="button"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
+              (click)="copyOnAutoCloseCallbackCode()"
+            >
+              @if (onAutoCloseCallbackCodeCopied()) {
+                <span
+                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
+                  animate.enter="enter"
+                  animate.leave="leave"
+                  >Copied!</span
+                >
+              } @else {
+                <span
+                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
+                  [animate.enter]="enterEnabled() ? 'enter' : null"
+                  animate.leave="leave"
+                  >Copy code</span
+                >
+              }
+            </button>
+          </div>
+          @if (onAutoCloseCallbackTab() === 'preview') {
+            <pre
+              class="landing-page-pre h-80!"
+            ><code class="dark:text-white! grid! place-items-center! h-full!">
+                      <button (click)="onAutoCloseRenderToast()" type="button" class="toast-button">Render a toast</button>
+                    </code></pre>
+          } @else {
+            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+                      class=" landing-page-code language-typescript dark:text-white!"
+                      [innerHTML]="onAutoCloseCallbackSource()"
+                    ></code></pre>
+          }
+        </div>
+
+        <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+          If the user closes the toast, swipes it away, or you remove it with
+          <code class="p-code-snippet">dismiss()</code> or
+          <code class="p-code-snippet">clear()</code>, the library invokes
+          <code class="p-code-snippet">onDismiss</code> instead (if it is provided).
+        </p>
+      </div>
+
       <div class="space-y-4 pt-20" id="on-dismiss-callback">
         <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
           onDismiss callback
@@ -104,7 +190,7 @@
             <pre
               class="landing-page-pre h-80!"
             ><code class="dark:text-white! grid! place-items-center! h-full!">
-                      <button (click)="renderToast()" type="button" class="toast-button">Render a toast</button>
+                      <button (click)="onDismissRenderToast()" type="button" class="toast-button">Render a toast</button>
                     </code></pre>
           } @else {
             <pre class="landing-page-pre h-80! overflow-y-auto!"><code
@@ -113,83 +199,11 @@
                     ></code></pre>
           }
         </div>
-      </div>
-
-      <div class="space-y-4 pt-20" id="on-auto-close-callback">
-        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
-          onAutoClose callback
-        </h2>
         <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
-          You can pass a callback function to the
-          <code class="p-code-snippet">onAutoClose</code> option to be called when the toast
-          disappears automatically after its timeout (durationMs input).
+          When the toast auto-dismisses
+          <code class="p-code-snippet">onDismiss</code> is not called; if you passed an
+          <code class="p-code-snippet">onAutoClose</code> handler, the library invokes it instead.
         </p>
-        <div class="mt-7 space-y-6">
-          <div class="flex items-center justify-between gap-2 text-[13px] px-0.5 relative">
-            <div
-              class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-300/50 dark:bg-zinc-800/80 -z-10"
-            ></div>
-            <div class="flex items-center gap-4 relative tab">
-              <button
-                type="button"
-                class="font-medium  cursor-pointer {{
-                  onAutoCloseCallbackTab() === 'preview'
-                    ? 'text-black dark:text-zinc-100'
-                    : 'text-zinc-600 dark:text-zinc-400'
-                }}"
-                (click)="onAutoCloseCallbackTab.set('preview')"
-                [attr.data-active]="onAutoCloseCallbackTab() === 'preview'"
-              >
-                Preview
-              </button>
-              <button
-                type="button"
-                class="font-medium  cursor-pointer {{
-                  onAutoCloseCallbackTab() === 'code'
-                    ? 'text-black dark:text-zinc-100'
-                    : 'text-zinc-600 dark:text-zinc-400'
-                }}"
-                (click)="onAutoCloseCallbackTab.set('code')"
-                [attr.data-active]="onAutoCloseCallbackTab() === 'code'"
-              >
-                Code
-              </button>
-            </div>
-            <button
-              type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
-              (click)="copyOnAutoCloseCallbackCode()"
-            >
-              @if (onAutoCloseCallbackCodeCopied()) {
-                <span
-                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
-                  animate.enter="enter"
-                  animate.leave="leave"
-                  >Copied!</span
-                >
-              } @else {
-                <span
-                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
-                  [animate.enter]="enterEnabled() ? 'enter' : null"
-                  animate.leave="leave"
-                  >Copy code</span
-                >
-              }
-            </button>
-          </div>
-          @if (onAutoCloseCallbackTab() === 'preview') {
-            <pre
-              class="landing-page-pre h-80!"
-            ><code class="dark:text-white! grid! place-items-center! h-full!">
-                      <button (click)="renderToast()" type="button" class="toast-button">Render a toast</button>
-                    </code></pre>
-          } @else {
-            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
-                      class=" landing-page-code language-typescript dark:text-white!"
-                      [innerHTML]="onAutoCloseCallbackSource()"
-                    ></code></pre>
-          }
-        </div>
       </div>
     </div>
 
@@ -270,20 +284,20 @@
       </li>
       <li>
         <a
-          href="/docs/other#on-dismiss-callback"
-          [attr.data-active]="activeSection() === 'on-dismiss-callback'"
-          [class]="tocLinkClass('on-dismiss-callback')"
-          (click)="activeSection.set('on-dismiss-callback')"
-          >onDismiss callback</a
-        >
-      </li>
-      <li>
-        <a
           href="/docs/other#on-auto-close-callback"
           [attr.data-active]="activeSection() === 'on-auto-close-callback'"
           [class]="tocLinkClass('on-auto-close-callback')"
           (click)="activeSection.set('on-auto-close-callback')"
           >onAutoClose callback</a
+        >
+      </li>
+      <li>
+        <a
+          href="/docs/other#on-dismiss-callback"
+          [attr.data-active]="activeSection() === 'on-dismiss-callback'"
+          [class]="tocLinkClass('on-dismiss-callback')"
+          (click)="activeSection.set('on-dismiss-callback')"
+          >onDismiss callback</a
         >
       </li>
     </ul>
