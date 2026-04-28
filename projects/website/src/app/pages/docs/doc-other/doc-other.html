@@ -268,38 +268,40 @@
       <span class="text-zinc-500">On this page</span>
     </div>
 
-    <ul class="space-y-2 ml-6 toc-content relative">
+    <div class="ml-6 toc-content relative">
       <div
         class="absolute top-0 -left-4 w-px h-full border-l border-dashed border-zinc-200 dark:border-zinc-600/50 -z-10"
       ></div>
 
-      <li>
-        <a
-          href="/docs/other#programmatic-dismiss"
-          [attr.data-active]="activeSection() === 'programmatic-dismiss'"
-          [class]="tocLinkClass('programmatic-dismiss')"
-          (click)="activeSection.set('programmatic-dismiss')"
-          >Programmatic dismiss</a
-        >
-      </li>
-      <li>
-        <a
-          href="/docs/other#on-auto-close-callback"
-          [attr.data-active]="activeSection() === 'on-auto-close-callback'"
-          [class]="tocLinkClass('on-auto-close-callback')"
-          (click)="activeSection.set('on-auto-close-callback')"
-          >onAutoClose callback</a
-        >
-      </li>
-      <li>
-        <a
-          href="/docs/other#on-dismiss-callback"
-          [attr.data-active]="activeSection() === 'on-dismiss-callback'"
-          [class]="tocLinkClass('on-dismiss-callback')"
-          (click)="activeSection.set('on-dismiss-callback')"
-          >onDismiss callback</a
-        >
-      </li>
-    </ul>
+      <ul class="space-y-2">
+        <li>
+          <a
+            href="/docs/other#programmatic-dismiss"
+            [attr.data-active]="activeSection() === 'programmatic-dismiss'"
+            [class]="tocLinkClass('programmatic-dismiss')"
+            (click)="activeSection.set('programmatic-dismiss')"
+            >Programmatic dismiss</a
+          >
+        </li>
+        <li>
+          <a
+            href="/docs/other#on-auto-close-callback"
+            [attr.data-active]="activeSection() === 'on-auto-close-callback'"
+            [class]="tocLinkClass('on-auto-close-callback')"
+            (click)="activeSection.set('on-auto-close-callback')"
+            >onAutoClose callback</a
+          >
+        </li>
+        <li>
+          <a
+            href="/docs/other#on-dismiss-callback"
+            [attr.data-active]="activeSection() === 'on-dismiss-callback'"
+            [class]="tocLinkClass('on-dismiss-callback')"
+            (click)="activeSection.set('on-dismiss-callback')"
+            >onDismiss callback</a
+          >
+        </li>
+      </ul>
+    </div>
   </div>
 </div>

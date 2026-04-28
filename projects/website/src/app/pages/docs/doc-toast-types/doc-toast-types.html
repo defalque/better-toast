@@ -1212,119 +1212,121 @@
       <span class="text-zinc-500">On this page</span>
     </div>
 
-    <ul class="space-y-2 ml-6 toc-content relative">
+    <div class="ml-6 toc-content relative">
       <div
         class="absolute top-0 -left-4 w-px h-full border-l border-dashed border-zinc-200 dark:border-zinc-600/50 -z-10"
       ></div>
 
-      <li>
-        <a
-          [attr.data-active]="activeSection() === 'rendering-a-toast'"
-          href="/docs/toast-types#rendering-a-toast"
-          (click)="activeSection.set('rendering-a-toast')"
-          [class]="tocLinkClass('rendering-a-toast')"
-          >Rendering a toast</a
-        >
-      </li>
-      <li>
-        <a
-          [attr.data-active]="activeSection() === 'success'"
-          href="/docs/toast-types#success"
-          (click)="activeSection.set('success')"
-          [class]="tocLinkClass('success')"
-          >Success</a
-        >
-      </li>
-      <li>
-        <a
-          [attr.data-active]="activeSection() === 'error'"
-          href="/docs/toast-types#error"
-          (click)="activeSection.set('error')"
-          [class]="tocLinkClass('error')"
-          >Error</a
-        >
-      </li>
-      <li>
-        <a
-          [attr.data-active]="activeSection() === 'info'"
-          href="/docs/toast-types#info"
-          (click)="activeSection.set('info')"
-          [class]="tocLinkClass('info')"
-          >Info</a
-        >
-      </li>
-      <li>
-        <a
-          [attr.data-active]="activeSection() === 'warning'"
-          href="/docs/toast-types#warning"
-          (click)="activeSection.set('warning')"
-          [class]="tocLinkClass('warning')"
-          >Warning</a
-        >
-      </li>
-      <li>
-        <a
-          [attr.data-active]="activeSection() === 'loading'"
-          href="/docs/toast-types#loading"
-          (click)="activeSection.set('loading')"
-          [class]="tocLinkClass('loading')"
-          >Loading</a
-        >
-      </li>
-      <li>
-        <a
-          [attr.data-active]="activeSection() === 'action'"
-          href="/docs/toast-types#action"
-          (click)="activeSection.set('action')"
-          [class]="tocLinkClass('action')"
-          >Action</a
-        >
-      </li>
-      <li>
-        <a
-          [attr.data-active]="activeSection() === 'cancel'"
-          href="/docs/toast-types#cancel"
-          (click)="activeSection.set('cancel')"
-          [class]="tocLinkClass('cancel')"
-          >Cancel</a
-        >
-      </li>
-      <li>
-        <a
-          [attr.data-active]="activeSection() === 'promise'"
-          href="/docs/toast-types#promise"
-          (click)="activeSection.set('promise')"
-          [class]="tocLinkClass('promise')"
-          >Promise</a
-        >
-      </li>
-      <li>
-        <a
-          [attr.data-active]="activeSection() === 'custom'"
-          href="/docs/toast-types#custom"
-          (click)="activeSection.set('custom')"
-          [class]="tocLinkClass('custom')"
-          >Custom</a
-        >
-      </li>
-      <li>
-        <a
-          [attr.data-active]="activeSection() === 'headless'"
-          href="/docs/toast-types#headless"
-          (click)="activeSection.set('headless')"
-          [class]="tocLinkClass('headless')"
-          >Headless</a
-        >
-      </li>
-      <li>
-        <a
-          [attr.data-active]="activeSection() === 'api-reference'"
-          href="/docs/toast-types#api-reference"
-          (click)="activeSection.set('api-reference')"
-          [class]="tocLinkClass('api-reference')"
-          >API Reference</a
-        >
-      </li>
-    </ul>
+      <ul class="space-y-2">
+        <li>
+          <a
+            [attr.data-active]="activeSection() === 'rendering-a-toast'"
+            href="/docs/toast-types#rendering-a-toast"
+            (click)="activeSection.set('rendering-a-toast')"
+            [class]="tocLinkClass('rendering-a-toast')"
+            >Rendering a toast</a
+          >
+        </li>
+        <li>
+          <a
+            [attr.data-active]="activeSection() === 'success'"
+            href="/docs/toast-types#success"
+            (click)="activeSection.set('success')"
+            [class]="tocLinkClass('success')"
+            >Success</a
+          >
+        </li>
+        <li>
+          <a
+            [attr.data-active]="activeSection() === 'error'"
+            href="/docs/toast-types#error"
+            (click)="activeSection.set('error')"
+            [class]="tocLinkClass('error')"
+            >Error</a
+          >
+        </li>
+        <li>
+          <a
+            [attr.data-active]="activeSection() === 'info'"
+            href="/docs/toast-types#info"
+            (click)="activeSection.set('info')"
+            [class]="tocLinkClass('info')"
+            >Info</a
+          >
+        </li>
+        <li>
+          <a
+            [attr.data-active]="activeSection() === 'warning'"
+            href="/docs/toast-types#warning"
+            (click)="activeSection.set('warning')"
+            [class]="tocLinkClass('warning')"
+            >Warning</a
+          >
+        </li>
+        <li>
+          <a
+            [attr.data-active]="activeSection() === 'loading'"
+            href="/docs/toast-types#loading"
+            (click)="activeSection.set('loading')"
+            [class]="tocLinkClass('loading')"
+            >Loading</a
+          >
+        </li>
+        <li>
+          <a
+            [attr.data-active]="activeSection() === 'action'"
+            href="/docs/toast-types#action"
+            (click)="activeSection.set('action')"
+            [class]="tocLinkClass('action')"
+            >Action</a
+          >
+        </li>
+        <li>
+          <a
+            [attr.data-active]="activeSection() === 'cancel'"
+            href="/docs/toast-types#cancel"
+            (click)="activeSection.set('cancel')"
+            [class]="tocLinkClass('cancel')"
+            >Cancel</a
+          >
+        </li>
+        <li>
+          <a
+            [attr.data-active]="activeSection() === 'promise'"
+            href="/docs/toast-types#promise"
+            (click)="activeSection.set('promise')"
+            [class]="tocLinkClass('promise')"
+            >Promise</a
+          >
+        </li>
+        <li>
+          <a
+            [attr.data-active]="activeSection() === 'custom'"
+            href="/docs/toast-types#custom"
+            (click)="activeSection.set('custom')"
+            [class]="tocLinkClass('custom')"
+            >Custom</a
+          >
+        </li>
+        <li>
+          <a
+            [attr.data-active]="activeSection() === 'headless'"
+            href="/docs/toast-types#headless"
+            (click)="activeSection.set('headless')"
+            [class]="tocLinkClass('headless')"
+            >Headless</a
+          >
+        </li>
+        <li>
+          <a
+            [attr.data-active]="activeSection() === 'api-reference'"
+            href="/docs/toast-types#api-reference"
+            (click)="activeSection.set('api-reference')"
+            [class]="tocLinkClass('api-reference')"
+            >API Reference</a
+          >
+        </li>
+      </ul>
+    </div>
   </div>
 </div>

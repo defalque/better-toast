@@ -286,38 +286,40 @@
       <span class="text-zinc-500">On this page</span>
     </div>
 
-    <ul class="space-y-2 ml-6 toc-content relative">
+    <div class="ml-6 toc-content relative">
       <div
         class="absolute top-0 -left-4 w-px h-full border-l border-dashed border-zinc-200 dark:border-zinc-600/50 -z-10"
       ></div>
 
-      <li>
-        <a
-          href="/docs/getting-started#installation"
-          [attr.data-active]="activeSection() === 'installation'"
-          [class]="tocLinkClass('installation')"
-          (click)="activeSection.set('installation')"
-          >Installation</a
-        >
-      </li>
-      <li>
-        <a
-          href="/docs/getting-started#add-better-toaster-to-your-app"
-          [attr.data-active]="activeSection() === 'add-better-toaster-to-your-app'"
-          [class]="tocLinkClass('add-better-toaster-to-your-app')"
-          (click)="activeSection.set('add-better-toaster-to-your-app')"
-          >Add better-toaster to your app</a
-        >
-      </li>
-      <li>
-        <a
-          href="/docs/getting-started#render-a-toast"
-          [attr.data-active]="activeSection() === 'render-a-toast'"
-          [class]="tocLinkClass('render-a-toast')"
-          (click)="activeSection.set('render-a-toast')"
-          >Render a toast</a
-        >
-      </li>
-    </ul>
+      <ul class="space-y-2">
+        <li>
+          <a
+            href="/docs/getting-started#installation"
+            [attr.data-active]="activeSection() === 'installation'"
+            [class]="tocLinkClass('installation')"
+            (click)="activeSection.set('installation')"
+            >Installation</a
+          >
+        </li>
+        <li>
+          <a
+            href="/docs/getting-started#add-better-toaster-to-your-app"
+            [attr.data-active]="activeSection() === 'add-better-toaster-to-your-app'"
+            [class]="tocLinkClass('add-better-toaster-to-your-app')"
+            (click)="activeSection.set('add-better-toaster-to-your-app')"
+            >Add better-toaster to your app</a
+          >
+        </li>
+        <li>
+          <a
+            href="/docs/getting-started#render-a-toast"
+            [attr.data-active]="activeSection() === 'render-a-toast'"
+            [class]="tocLinkClass('render-a-toast')"
+            (click)="activeSection.set('render-a-toast')"
+            >Render a toast</a
+          >
+        </li>
+      </ul>
+    </div>
   </div>
 </div>

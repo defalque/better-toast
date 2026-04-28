@@ -112,29 +112,31 @@
       <span class="text-zinc-500">On this page</span>
     </div>
 
-    <ul class="space-y-2 ml-6 toc-content relative">
+    <div class="ml-6 toc-content relative">
       <div
         class="absolute top-0 -left-4 w-px h-full border-l border-dashed border-zinc-200 dark:border-zinc-600/50 -z-10"
       ></div>
 
-      <li>
-        <a
-          href="/docs/considerations#bundle-size"
-          [attr.data-active]="activeSection() === 'bundle-size'"
-          [class]="tocLinkClass('bundle-size')"
-          (click)="activeSection.set('bundle-size')"
-          >Bundle size</a
-        >
-      </li>
-      <li>
-        <a
-          href="/docs/considerations#caveats"
-          [attr.data-active]="activeSection() === 'caveats'"
-          [class]="tocLinkClass('caveats')"
-          (click)="activeSection.set('caveats')"
-          >Caveats</a
-        >
-      </li>
-    </ul>
+      <ul class="space-y-2">
+        <li>
+          <a
+            href="/docs/considerations#bundle-size"
+            [attr.data-active]="activeSection() === 'bundle-size'"
+            [class]="tocLinkClass('bundle-size')"
+            (click)="activeSection.set('bundle-size')"
+            >Bundle size</a
+          >
+        </li>
+        <li>
+          <a
+            href="/docs/considerations#caveats"
+            [attr.data-active]="activeSection() === 'caveats'"
+            [class]="tocLinkClass('caveats')"
+            (click)="activeSection.set('caveats')"
+            >Caveats</a
+          >
+        </li>
+      </ul>
+    </div>
   </div>
 </div>

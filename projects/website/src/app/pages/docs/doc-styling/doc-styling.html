@@ -194,38 +194,40 @@
       <span class="text-zinc-500">On this page</span>
     </div>
 
-    <ul class="space-y-2 ml-6 toc-content relative">
+    <div class="ml-6 toc-content relative">
       <div
         class="absolute top-0 -left-4 w-px h-full border-l border-dashed border-zinc-200 dark:border-zinc-600/50 -z-10"
       ></div>
 
-      <li>
-        <a
-          href="/docs/styling#headless"
-          [attr.data-active]="activeSection() === 'headless'"
-          [class]="tocLinkClass('headless')"
-          (click)="activeSection.set('headless')"
-          >Headless</a
-        >
-      </li>
-      <li>
-        <a
-          href="/docs/styling#global-styles"
-          [attr.data-active]="activeSection() === 'global-styles'"
-          [class]="tocLinkClass('global-styles')"
-          (click)="activeSection.set('global-styles')"
-          >Global styles</a
-        >
-      </li>
-      <li>
-        <a
-          href="/docs/styling#styling-specific-elements"
-          [attr.data-active]="activeSection() === 'styling-specific-elements'"
-          [class]="tocLinkClass('styling-specific-elements')"
-          (click)="activeSection.set('styling-specific-elements')"
-          >Styling specific elements</a
-        >
-      </li>
-    </ul>
+      <ul class="space-y-2">
+        <li>
+          <a
+            href="/docs/styling#headless"
+            [attr.data-active]="activeSection() === 'headless'"
+            [class]="tocLinkClass('headless')"
+            (click)="activeSection.set('headless')"
+            >Headless</a
+          >
+        </li>
+        <li>
+          <a
+            href="/docs/styling#global-styles"
+            [attr.data-active]="activeSection() === 'global-styles'"
+            [class]="tocLinkClass('global-styles')"
+            (click)="activeSection.set('global-styles')"
+            >Global styles</a
+          >
+        </li>
+        <li>
+          <a
+            href="/docs/styling#styling-specific-elements"
+            [attr.data-active]="activeSection() === 'styling-specific-elements'"
+            [class]="tocLinkClass('styling-specific-elements')"
+            (click)="activeSection.set('styling-specific-elements')"
+            >Styling specific elements</a
+          >
+        </li>
+      </ul>
+    </div>
   </div>
 </div>

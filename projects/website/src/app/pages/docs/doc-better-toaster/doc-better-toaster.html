@@ -456,101 +456,103 @@
       <span class="text-zinc-500">On this page</span>
     </div>
 
-    <ul class="space-y-2 ml-6 toc-content relative">
+    <div class="ml-6 toc-content relative">
       <div
         class="absolute top-0 -left-4 w-px h-full border-l border-dashed border-zinc-200 dark:border-zinc-600/50 -z-10"
       ></div>
 
-      <li>
-        <a
-          href="/docs/better-toaster#customization"
-          [attr.data-active]="activeSection() === 'customization'"
-          [class]="tocLinkClass('customization')"
-          (click)="activeSection.set('customization')"
-          >Customization</a
-        >
-      </li>
-      <li>
-        <a
-          href="/docs/better-toaster#position"
-          [attr.data-active]="activeSection() === 'position'"
-          [class]="tocLinkClass('position')"
-          (click)="activeSection.set('position')"
-          >Position</a
-        >
-      </li>
-      <li>
-        <a
-          href="/docs/better-toaster#duration"
-          [attr.data-active]="activeSection() === 'duration'"
-          [class]="tocLinkClass('duration')"
-          (click)="activeSection.set('duration')"
-          >Duration</a
-        >
-      </li>
-      <li>
-        <a
-          href="/docs/better-toaster#offsets"
-          [attr.data-active]="activeSection() === 'offsets'"
-          [class]="tocLinkClass('offsets')"
-          (click)="activeSection.set('offsets')"
-          >Offsets</a
-        >
-      </li>
-      <li>
-        <a
-          href="/docs/better-toaster#theme"
-          [attr.data-active]="activeSection() === 'theme'"
-          [class]="tocLinkClass('theme')"
-          (click)="activeSection.set('theme')"
-          >Theme</a
-        >
-      </li>
-      <li>
-        <a
-          href="/docs/better-toaster#rich-colors"
-          [attr.data-active]="activeSection() === 'rich-colors'"
-          [class]="tocLinkClass('rich-colors')"
-          (click)="activeSection.set('rich-colors')"
-          >Rich colors</a
-        >
-      </li>
-      <li>
-        <a
-          href="/docs/better-toaster#close-button"
-          [attr.data-active]="activeSection() === 'close-button'"
-          [class]="tocLinkClass('close-button')"
-          (click)="activeSection.set('close-button')"
-          >Close button</a
-        >
-      </li>
-      <li>
-        <a
-          href="/docs/better-toaster#icons"
-          [attr.data-active]="activeSection() === 'icons'"
-          [class]="tocLinkClass('icons')"
-          (click)="activeSection.set('icons')"
-          >Icons</a
-        >
-      </li>
-      <li>
-        <a
-          href="/docs/better-toaster#accessibility-labels"
-          [attr.data-active]="activeSection() === 'accessibility-labels'"
-          [class]="tocLinkClass('accessibility-labels')"
-          (click)="activeSection.set('accessibility-labels')"
-          >Accessibility labels</a
-        >
-      </li>
-      <li>
-        <a
-          href="/docs/better-toaster#api-reference"
-          [attr.data-active]="activeSection() === 'api-reference'"
-          [class]="tocLinkClass('api-reference')"
-          (click)="activeSection.set('api-reference')"
-          >API Reference</a
-        >
-      </li>
-    </ul>
+      <ul class="space-y-2">
+        <li>
+          <a
+            href="/docs/better-toaster#customization"
+            [attr.data-active]="activeSection() === 'customization'"
+            [class]="tocLinkClass('customization')"
+            (click)="activeSection.set('customization')"
+            >Customization</a
+          >
+        </li>
+        <li>
+          <a
+            href="/docs/better-toaster#position"
+            [attr.data-active]="activeSection() === 'position'"
+            [class]="tocLinkClass('position')"
+            (click)="activeSection.set('position')"
+            >Position</a
+          >
+        </li>
+        <li>
+          <a
+            href="/docs/better-toaster#duration"
+            [attr.data-active]="activeSection() === 'duration'"
+            [class]="tocLinkClass('duration')"
+            (click)="activeSection.set('duration')"
+            >Duration</a
+          >
+        </li>
+        <li>
+          <a
+            href="/docs/better-toaster#offsets"
+            [attr.data-active]="activeSection() === 'offsets'"
+            [class]="tocLinkClass('offsets')"
+            (click)="activeSection.set('offsets')"
+            >Offsets</a
+          >
+        </li>
+        <li>
+          <a
+            href="/docs/better-toaster#theme"
+            [attr.data-active]="activeSection() === 'theme'"
+            [class]="tocLinkClass('theme')"
+            (click)="activeSection.set('theme')"
+            >Theme</a
+          >
+        </li>
+        <li>
+          <a
+            href="/docs/better-toaster#rich-colors"
+            [attr.data-active]="activeSection() === 'rich-colors'"
+            [class]="tocLinkClass('rich-colors')"
+            (click)="activeSection.set('rich-colors')"
+            >Rich colors</a
+          >
+        </li>
+        <li>
+          <a
+            href="/docs/better-toaster#close-button"
+            [attr.data-active]="activeSection() === 'close-button'"
+            [class]="tocLinkClass('close-button')"
+            (click)="activeSection.set('close-button')"
+            >Close button</a
+          >
+        </li>
+        <li>
+          <a
+            href="/docs/better-toaster#icons"
+            [attr.data-active]="activeSection() === 'icons'"
+            [class]="tocLinkClass('icons')"
+            (click)="activeSection.set('icons')"
+            >Icons</a
+          >
+        </li>
+        <li>
+          <a
+            href="/docs/better-toaster#accessibility-labels"
+            [attr.data-active]="activeSection() === 'accessibility-labels'"
+            [class]="tocLinkClass('accessibility-labels')"
+            (click)="activeSection.set('accessibility-labels')"
+            >Accessibility labels</a
+          >
+        </li>
+        <li>
+          <a
+            href="/docs/better-toaster#api-reference"
+            [attr.data-active]="activeSection() === 'api-reference'"
+            [class]="tocLinkClass('api-reference')"
+            (click)="activeSection.set('api-reference')"
+            >API Reference</a
+          >
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
