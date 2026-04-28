@@ -55,7 +55,9 @@ export class App {
 type GettingStartedDocSection =
   | 'installation'
   | 'add-better-toaster-to-your-app'
-  | 'render-a-toast';
+  | 'render-a-toast'
+  | 'caveats'
+  | 'bundle-size';
 
 @Component({
   selector: 'app-doc-getting-started',
@@ -129,7 +131,13 @@ export class DocGettingStarted {
   }
 
   private isGettingStartedDocSection(id: string): id is GettingStartedDocSection {
-    return ['installation', 'add-better-toaster-to-your-app', 'render-a-toast'].includes(id);
+    return [
+      'installation',
+      'add-better-toaster-to-your-app',
+      'render-a-toast',
+      'caveats',
+      'bundle-size',
+    ].includes(id);
   }
 
   protected tocLinkClass(section: GettingStartedDocSection): string {
