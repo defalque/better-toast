@@ -1,6 +1,6 @@
 {
   "name": "better-toast",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Elegant toast notifications for Angular v21+ with stacked messages, variants, swipe-to-dismiss and a small service API.",
   "keywords": [
     "angular",
@@ -11,7 +11,7 @@
   ],
   "author": "Marco De Falco",
   "license": "MIT",
-  "homepage": "https://github.com/defalque/better-toast#readme",
+  "homepage": "https://better-toast.vercel.app",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/defalque/better-toast.git",

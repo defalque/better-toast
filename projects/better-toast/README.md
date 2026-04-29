@@ -1,8 +1,12 @@
-# better-toast
+# Better Toast
 
-Toast notifications for **Angular** (standalone components): stacked messages, variants, swipe-to-dismiss, accessibility-friendly live region, and a small `ToasterService` API.
+[Better Toast](https://better-toast.vercel.app) is a toast notification library for **Angular** v21+: stacked messages, variants, swipe-to-dismiss, entry and exit animations, accessibility-friendly live region, and a small `ToasterService` API.
 
 **Requirements:** Angular `^21.0.0` (`@angular/core`, `@angular/common`).
+
+## Documentation
+
+You can find the full documentation on the [Better Toast](https://better-toast.vercel.app) website.
 
 ## Install
 
@@ -10,7 +14,7 @@ Toast notifications for **Angular** (standalone components): stacked messages, v
 npm install better-toast
 ```
 
-## Add the toaster once
+## Usage
 
 Place a single `<better-toaster>` near the root of your app (for example in the root component) so the stack can render.
 
@@ -21,7 +25,7 @@ import { BetterToaster } from 'better-toast';
 @Component({
   selector: 'app-root',
   imports: [BetterToaster],
-  template: `<better-toaster position="bottom-right" />`,
+  template: `<better-toaster />`,
 })
 export class App {}
 ```
@@ -41,7 +45,7 @@ Styles ship with the components; you do not need to import a separate CSS file f
 
 ## Show toasts from anywhere
 
-Inject `ToasterService` (`providedIn: 'root'`) and call the helpers. Each method returns a **toast id** you can pass to `dismiss(id)`.
+Inject `ToasterService` and call the helpers. Each method returns a **toast id** you can pass to `dismiss(id)`.
 
 ```typescript
 import { Component, inject } from '@angular/core';

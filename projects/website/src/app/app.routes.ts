@@ -30,7 +30,7 @@ export const routes: Routes = [
         title: 'Better Toaster - Better Toast',
       },
       {
-        path: 'toast-types',
+        path: 'toast',
         component: DocToastTypes,
         title: 'Toast - Better Toast',
       },

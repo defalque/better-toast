@@ -8,6 +8,7 @@ import {
   signal,
 } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
+import { RouterLink } from '@angular/router';
 import hljs from 'highlight.js';
 import bash from 'highlight.js/lib/languages/bash';
 import typescript from 'highlight.js/lib/languages/typescript';
@@ -61,6 +62,7 @@ type GettingStartedDocSection =
   selector: 'app-doc-getting-started',
   templateUrl: './doc-getting-started.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [RouterLink],
   styleUrl: './doc-getting-started.css',
   host: {
     class: 'block w-full min-w-0 max-w-5xl mx-auto',
