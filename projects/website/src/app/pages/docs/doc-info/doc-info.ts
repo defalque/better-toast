@@ -42,8 +42,7 @@ export class DocInfo {
 
     const updateActiveFromScroll = (): void => {
       const scrollable = document.documentElement;
-      const nearBottom =
-        window.scrollY + window.innerHeight >= scrollable.scrollHeight - 8;
+      const nearBottom = window.scrollY + window.innerHeight >= scrollable.scrollHeight - 8;
 
       if (nearBottom) {
         this.activeSection.set(sections[sections.length - 1].id);

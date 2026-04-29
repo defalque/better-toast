@@ -1,6 +1,5 @@
 import {
   DOCUMENT,
-  Inject,
   Injectable,
   PLATFORM_ID,
   computed,
@@ -17,6 +16,21 @@ const STORAGE_KEY = 'theme';
 const FAVICON_BY_THEME: Record<ResolvedTheme, string> = {
   light: '/favicon-light.ico',
   dark: '/favicon-dark.ico',
+};
+
+const APPLE_TOUCH_ICON_BY_THEME: Record<ResolvedTheme, string> = {
+  light: '/apple-touch-icon-light.png',
+  dark: '/apple-touch-icon-dark.png',
+};
+
+const THEME_COLOR_BY_THEME: Record<ResolvedTheme, string> = {
+  light: '#ffffff',
+  dark: '#0a0a0a',
+};
+
+const OG_SHARE_IMAGE_PATH: Record<ResolvedTheme, string> = {
+  light: '/og-light.png',
+  dark: '/og-dark.png',
 };
 
 @Injectable({ providedIn: 'root' })
@@ -68,6 +82,16 @@ export class ThemeService {
 
   private updateFavicon(theme: ResolvedTheme): void {
     this.document.getElementById('app-favicon')?.setAttribute('href', FAVICON_BY_THEME[theme]);
+    this.document
+      .getElementById('app-apple-touch-icon')
+      ?.setAttribute('href', APPLE_TOUCH_ICON_BY_THEME[theme]);
+    this.document
+      .getElementById('app-theme-color')
+      ?.setAttribute('content', THEME_COLOR_BY_THEME[theme]);
+    const origin = window.location.origin;
+    const ogUrl = origin + OG_SHARE_IMAGE_PATH[theme];
+    this.document.getElementById('app-og-image')?.setAttribute('content', ogUrl);
+    this.document.getElementById('app-twitter-image')?.setAttribute('content', ogUrl);
   }
 
   private readStoredPreference(): ThemePreference | null {
