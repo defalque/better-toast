@@ -16,14 +16,14 @@
       property="og:description"
       content="Elegant toast notifications library for Angular v21+."
     />
-    <meta id="app-og-image" property="og:image" content="/og-light.png" />
+    <meta property="og:image" content="/og-light.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Better Toast" />
     <meta
       name="twitter:description"
       content="Elegant toast notifications library for Angular v21+."
     />
-    <meta id="app-twitter-image" name="twitter:image" content="/og-light.png" />
+    <meta name="twitter:image" content="/og-light.png" />
 
     <script>
       // Applies the persisted theme before Angular hydrates to avoid a flash of the wrong theme.
@@ -52,11 +52,6 @@
           document
             .getElementById('app-theme-color')
             ?.setAttribute('content', resolved === 'dark' ? '#0a0a0a' : '#ffffff');
-          var origin = window.location.origin || '';
-          var ogShare =
-            origin + (resolved === 'dark' ? '/og-dark.png' : '/og-light.png');
-          document.getElementById('app-og-image')?.setAttribute('content', ogShare);
-          document.getElementById('app-twitter-image')?.setAttribute('content', ogShare);
         } catch (e) {}
       })();
     </script>

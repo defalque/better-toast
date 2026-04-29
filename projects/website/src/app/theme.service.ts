@@ -28,11 +28,6 @@ const THEME_COLOR_BY_THEME: Record<ResolvedTheme, string> = {
   dark: '#0a0a0a',
 };
 
-const OG_SHARE_IMAGE_PATH: Record<ResolvedTheme, string> = {
-  light: '/og-light.png',
-  dark: '/og-dark.png',
-};
-
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
   private readonly isBrowser: boolean;
@@ -88,10 +83,6 @@ export class ThemeService {
     this.document
       .getElementById('app-theme-color')
       ?.setAttribute('content', THEME_COLOR_BY_THEME[theme]);
-    const origin = window.location.origin;
-    const ogUrl = origin + OG_SHARE_IMAGE_PATH[theme];
-    this.document.getElementById('app-og-image')?.setAttribute('content', ogUrl);
-    this.document.getElementById('app-twitter-image')?.setAttribute('content', ogUrl);
   }
 
   private readStoredPreference(): ThemePreference | null {

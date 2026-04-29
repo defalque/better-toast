@@ -28,7 +28,8 @@
   transition:
     opacity 0.4s ease,
     transform 0.4s ease,
-    scale 0.4s ease;
+    scale 0.4s ease,
+    box-shadow 0.2s ease;
 }
 
 /* Loading toasts are not swipe-dismissed; allow normal touch scrolling on the page. */

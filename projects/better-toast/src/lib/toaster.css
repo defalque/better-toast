@@ -28,9 +28,8 @@
 .toast-container {
   --toast-bg: light-dark(oklch(100% 0 0), oklch(10% 0 0));
   --toast-color: light-dark(oklch(30% 0 0), oklch(98% 0 0));
-  --toast-border-color: light-dark(oklch(92% 0.004 286.32 / 0.65), oklch(37% 0.013 285.805 / 0.75));
-  /* box-shadow is a composite value, not a color, so light-dark() can't be used here. */
-  --toast-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --toast-border-color: light-dark(hsl(0, 0%, 93%), hsl(0, 0%, 20%));
+  --toast-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 
   --toast-success-bg: light-dark(oklch(97.9% 0.021 166.113), oklch(26.2% 0.051 172.552));
   --toast-success-text: light-dark(oklch(59.6% 0.145 163.225), oklch(92.5% 0.084 155.995));
@@ -82,14 +81,13 @@
 
 /* box-shadow is composite, so it can't share light-dark(); override only when dark. */
 .toast-container[data-theme='dark'] {
-  --toast-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.5);
+  --toast-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
 @media (prefers-color-scheme: dark) {
   .toast-container[data-theme='system'] {
-    --toast-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.5);
+    --toast-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   }
 }
-
 .toast-container[data-position^='top'] {
   top: var(--toast-offset-mobile-top);
   left: var(--toast-offset-mobile-left);
