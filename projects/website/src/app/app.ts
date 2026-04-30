@@ -23,15 +23,11 @@ export class App {
     },
   };
 
-  // ngOnInit(): void {
-  //   this.toaster.show('Hello, world!');
-  // }
+  /* ngOnInit(): void {
+    this.toaster.success('Hello, world! From ngOnInit');
+  } */
 
-  // ngAfterViewInit(): void {
-  //   this.toaster.show('Hello, world!', {
-  //     classNames: {
-  //       toast: 'bg-red-500! text-white!',
-  //     },
-  //   });
-  // }
+  /* ngAfterViewInit(): void {
+    this.toaster.success('Hello, world! From ngAfterViewInit');
+  } */
 }

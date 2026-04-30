@@ -1,7 +1,7 @@
 import { afterNextRender, Component, DestroyRef, inject, signal } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 
-type InfoDocSection = 'bundle-size' | 'caveats';
+type InfoDocSection = 'bundle-size' | 'caveats' | 'toaster-input-timing';
 
 @Component({
   selector: 'app-doc-info',
@@ -69,7 +69,7 @@ export class DocInfo {
   }
 
   private isInfoDocSection(id: string): id is InfoDocSection {
-    return ['bundle-size', 'caveats'].includes(id);
+    return ['bundle-size', 'caveats', 'toaster-input-timing'].includes(id);
   }
 
   protected tocLinkClass(section: InfoDocSection): string {
@@ -82,7 +82,7 @@ export class DocInfo {
     this.meta.updateTag({
       name: 'description',
       content:
-        'Considerations for Better Toast: bundle size, browser compatibility, and CSS @starting-style support for entrance animations.',
+        'Considerations for Better Toast: bundle size, browser compatibility, @starting-style caveats, and when the better-toaster duration input applies (after view init).',
     });
 
     afterNextRender(() => {

@@ -49,6 +49,27 @@
           render correctly, but without the entrance animation.
         </p>
       </div>
+
+      <div class="space-y-4 pt-20" id="toaster-input-timing">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Toaster duration and lifecycle
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+          On the component that displays <code class="p-code-snippet">better-toaster</code>, showing
+          a toast in <code class="p-code-snippet">constructor</code> or
+          <code class="p-code-snippet">ngOnInit</code> can happen before the
+          <code class="p-code-snippet">duration</code> input is bound, so the first toast may use
+          the library's default duration until the view is ready.<br />
+          To avoid that mismatch, pass <code class="p-code-snippet">durationMs</code> in the
+          <code class="p-code-snippet">toastOptions</code> object when showing the toast and use the
+          same value as your <code class="p-code-snippet">better-toaster</code>'s
+          <code class="p-code-snippet">duration</code> binding.
+        </p>
+        <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+          When the toast comes from a component nested further down in the same view tree, or from a
+          service, you usually will not hit this duration-binding timing issue.
+        </p>
+      </div>
     </div>
 
     <div class="flex justify-between my-6">
@@ -134,6 +155,15 @@
             [class]="tocLinkClass('caveats')"
             (click)="activeSection.set('caveats')"
             >Caveats</a
+          >
+        </li>
+        <li>
+          <a
+            href="/docs/considerations#toaster-input-timing"
+            [attr.data-active]="activeSection() === 'toaster-input-timing'"
+            [class]="tocLinkClass('toaster-input-timing')"
+            (click)="activeSection.set('toaster-input-timing')"
+            >Toaster duration and lifecycle</a
           >
         </li>
       </ul>
