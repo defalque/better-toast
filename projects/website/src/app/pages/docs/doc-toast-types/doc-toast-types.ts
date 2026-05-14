@@ -13,6 +13,7 @@ import { CustomIcon } from './components/custom-icon/custom-icon';
 import { HeadlessComponent } from '../../../components/headless-component/headless-component';
 import { HomeCustomToastBody } from './components/custom-toast-body/custom-toast-body';
 import { Meta } from '@angular/platform-browser';
+import { RouterLink } from '@angular/router';
 
 hljs.registerLanguage('typescript', typescript);
 
@@ -338,7 +339,7 @@ export class CustomToast {
 
 @Component({
   selector: 'app-doc-toast-types',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './doc-toast-types.html',
   styleUrl: './doc-toast-types.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

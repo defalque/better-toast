@@ -3,6 +3,7 @@ import { Meta } from '@angular/platform-browser';
 import { ToasterService } from 'better-toast';
 import hljs from 'highlight.js';
 import typescript from 'highlight.js/lib/languages/typescript';
+import { RouterLink } from '@angular/router';
 
 hljs.registerLanguage('typescript', typescript);
 
@@ -56,7 +57,7 @@ type OtherDocSection = 'programmatic-dismiss' | 'on-dismiss-callback' | 'on-auto
 
 @Component({
   selector: 'app-doc-other',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './doc-other.html',
   styleUrl: './doc-other.css',
   host: {

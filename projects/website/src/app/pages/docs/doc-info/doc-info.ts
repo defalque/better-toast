@@ -1,11 +1,12 @@
 import { afterNextRender, Component, DestroyRef, inject, signal } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
+import { RouterLink } from '@angular/router';
 
 type InfoDocSection = 'bundle-size' | 'caveats' | 'toaster-input-timing';
 
 @Component({
   selector: 'app-doc-info',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './doc-info.html',
   styleUrl: './doc-info.css',
   host: {

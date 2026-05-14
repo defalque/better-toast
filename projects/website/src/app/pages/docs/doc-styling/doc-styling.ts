@@ -5,6 +5,7 @@ import hljs from 'highlight.js';
 import typescript from 'highlight.js/lib/languages/typescript';
 import xml from 'highlight.js/lib/languages/xml';
 import { HeadlessComponent } from '../../../components/headless-component/headless-component';
+import { RouterLink } from '@angular/router';
 
 hljs.registerLanguage('xml', xml);
 hljs.registerLanguage('typescript', typescript);
@@ -106,7 +107,7 @@ type StylingDocSection = 'global-styles' | 'styling-specific-elements' | 'headle
 
 @Component({
   selector: 'app-doc-styling',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './doc-styling.html',
   styleUrl: './doc-styling.css',
   host: {

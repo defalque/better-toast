@@ -2,6 +2,7 @@ import { afterNextRender, Component, computed, DestroyRef, inject, signal } from
 import { Meta } from '@angular/platform-browser';
 import hljs from 'highlight.js';
 import xml from 'highlight.js/lib/languages/xml';
+import { RouterLink } from '@angular/router';
 
 hljs.registerLanguage('xml', xml);
 
@@ -19,7 +20,7 @@ type BetterToasterDocSection =
 
 @Component({
   selector: 'app-doc-better-toaster',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './doc-better-toaster.html',
   styleUrl: './doc-better-toaster.css',
   host: {
