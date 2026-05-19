@@ -68,11 +68,17 @@
           @if (headlessToastTab() === 'preview') {
             <pre
               class="landing-page-pre h-80!"
+              aria-label="Preview of the headless toast example"
+              role="tabpanel"
             ><code class="dark:text-white! grid! place-items-center! h-full!">
                       <button (click)="renderHeadlessToast()" type="button" class="toast-button">Render a headless toast</button>
                     </code></pre>
           } @else {
-            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+            <pre
+              class="landing-page-pre h-80! overflow-y-auto!"
+              aria-label="Code for the headless toast example"
+              role="tabpanel"
+            ><code
                       class=" landing-page-code language-typescript dark:text-white!"
                       [innerHTML]="headlessSource()"
                     ></code></pre>

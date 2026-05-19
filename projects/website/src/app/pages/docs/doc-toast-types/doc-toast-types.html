@@ -85,11 +85,17 @@
           @if (toastTab() === 'preview') {
             <pre
               class="landing-page-pre h-80!"
+              aria-label="Preview of the toast example"
+              role="tabpanel"
             ><code class="dark:text-white! grid! place-items-center! h-full!">
                 <button (click)="renderToast('This is a toast')" type="button" class="toast-button">Render a toast</button>
               </code></pre>
           } @else {
-            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+            <pre
+              class="landing-page-pre h-80! overflow-y-auto!"
+              aria-label="Code for the toast example"
+              role="tabpanel"
+            ><code
                 class=" landing-page-code language-typescript dark:text-white!"
                 [innerHTML]="renderToastSource()"
               ></code></pre>
@@ -154,12 +160,18 @@
           @if (toastWithOptionsTab() === 'preview') {
             <pre
               class="landing-page-pre h-80!"
+              aria-label="Preview of the toast with options example"
+              role="tabpanel"
             ><code class="dark:text-white! grid! place-items-center! h-full!">
               
               <button (click)="renderToastWithOptions()" type="button" class="toast-button">Render a toast</button>
             </code></pre>
           } @else {
-            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+            <pre
+              class="landing-page-pre h-80! overflow-y-auto!"
+              aria-label="Code for the toast with options example"
+              role="tabpanel"
+            ><code
               class=" landing-page-code language-typescript dark:text-white!"
               [innerHTML]="toastWithOptionsSource()"
             ></code></pre>
@@ -228,11 +240,17 @@
           @if (successToastTab() === 'preview') {
             <pre
               class="landing-page-pre h-80!"
+              aria-label="Preview of the success toast example"
+              role="tabpanel"
             ><code class="dark:text-white! grid! place-items-center! h-full!">
                   <button (click)="renderSuccessToast()" type="button" class="toast-button">Render a success toast</button>
                 </code></pre>
           } @else {
-            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+            <pre
+              class="landing-page-pre h-80! overflow-y-auto!"
+              aria-label="Code for the success toast example"
+              role="tabpanel"
+            ><code
                   class=" landing-page-code language-typescript dark:text-white!"
                   [innerHTML]="renderSuccessToastSource()"
                 ></code></pre>
@@ -299,11 +317,17 @@
           @if (errorToastTab() === 'preview') {
             <pre
               class="landing-page-pre h-80!"
+              aria-label="Preview of the error toast example"
+              role="tabpanel"
             ><code class="dark:text-white! grid! place-items-center! h-full!">
                     <button (click)="renderErrorToast()" type="button" class="toast-button">Render a error toast</button>
                   </code></pre>
           } @else {
-            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+            <pre
+              class="landing-page-pre h-80! overflow-y-auto!"
+              aria-label="Code for the error toast example"
+              role="tabpanel"
+            ><code
                     class=" landing-page-code language-typescript dark:text-white!"
                     [innerHTML]="renderErrorToastSource()"
                   ></code></pre>
@@ -370,11 +394,17 @@
           @if (infoToastTab() === 'preview') {
             <pre
               class="landing-page-pre h-80!"
+              aria-label="Preview of the info toast example"
+              role="tabpanel"
             ><code class="dark:text-white! grid! place-items-center! h-full!">
                     <button (click)="renderInfoToast()" type="button" class="toast-button">Render an info toast</button>
                   </code></pre>
           } @else {
-            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+            <pre
+              class="landing-page-pre h-80! overflow-y-auto!"
+              aria-label="Code for the info toast example"
+              role="tabpanel"
+            ><code
                     class=" landing-page-code language-typescript dark:text-white!"
                     [innerHTML]="renderInfoToastSource()"
                   ></code></pre>
@@ -443,11 +473,17 @@
           @if (warningToastTab() === 'preview') {
             <pre
               class="landing-page-pre h-80!"
+              aria-label="Preview of the warning toast example"
+              role="tabpanel"
             ><code class="dark:text-white! grid! place-items-center! h-full!">
                       <button (click)="renderWarningToast()" type="button" class="toast-button">Render a warning toast</button>
                   </code></pre>
           } @else {
-            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+            <pre
+              class="landing-page-pre h-80! overflow-y-auto!"
+              aria-label="Code for the warning toast example"
+              role="tabpanel"
+            ><code
                     class=" landing-page-code language-typescript dark:text-white!"
                     [innerHTML]="renderWarningToastSource()"
                   ></code></pre>
@@ -517,11 +553,17 @@
           @if (loadingToastTab() === 'preview') {
             <pre
               class="landing-page-pre h-80!"
+              aria-label="Preview of the loading toast example"
+              role="tabpanel"
             ><code class="dark:text-white! grid! place-items-center! h-full!">
                     <button (click)="renderLoadingToast()" type="button" class="toast-button">Render a loading toast</button>
                   </code></pre>
           } @else {
-            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+            <pre
+              class="landing-page-pre h-80! overflow-y-auto!"
+              aria-label="Code for the loading toast example"
+              role="tabpanel"
+            ><code
                     class=" landing-page-code language-typescript dark:text-white!"
                     [innerHTML]="renderLoadingToastSource()"
                   ></code></pre>
@@ -592,11 +634,17 @@
           @if (actionToastTab() === 'preview') {
             <pre
               class="landing-page-pre h-80!"
+              aria-label="Preview of the action toast example"
+              role="tabpanel"
             ><code class="dark:text-white! grid! place-items-center! h-full!">
                       <button (click)="renderActionToast()" type="button" class="toast-button">Render a toast with an action</button>
                     </code></pre>
           } @else {
-            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+            <pre
+              class="landing-page-pre h-80! overflow-y-auto!"
+              aria-label="Code for the action toast example"
+              role="tabpanel"
+            ><code
                       class=" landing-page-code language-typescript dark:text-white!"
                       [innerHTML]="renderActionToastSource()"
                     ></code></pre>
@@ -670,11 +718,17 @@
           @if (cancelToastTab() === 'preview') {
             <pre
               class="landing-page-pre h-80!"
+              aria-label="Preview of the cancel toast example"
+              role="tabpanel"
             ><code class="dark:text-white! grid! place-items-center! h-full!">
                       <button (click)="renderCancelToast()" type="button" class="toast-button">Render a cancel toast</button>
                     </code></pre>
           } @else {
-            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+            <pre
+              class="landing-page-pre h-80! overflow-y-auto!"
+              aria-label="Code for the cancel toast example"
+              role="tabpanel"
+            ><code
                       class=" landing-page-code language-typescript dark:text-white!"
                       [innerHTML]="renderCancelToastSource()"
                     ></code></pre>
@@ -747,11 +801,17 @@
           @if (promiseToastTab() === 'preview') {
             <pre
               class="landing-page-pre h-80!"
+              aria-label="Preview of the promise toast example"
+              role="tabpanel"
             ><code class="dark:text-white! grid! place-items-center! h-full!">
                       <button (click)="renderPromiseToast()" type="button" class="toast-button">Render a promise toast</button>
                     </code></pre>
           } @else {
-            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+            <pre
+              class="landing-page-pre h-80! overflow-y-auto!"
+              aria-label="Code for the promise toast example"
+              role="tabpanel"
+            ><code
                       class=" landing-page-code language-typescript dark:text-white!"
                       [innerHTML]="renderPromiseToastSource()"
                     ></code></pre>
@@ -818,11 +878,17 @@
           @if (customToastTab() === 'preview') {
             <pre
               class="landing-page-pre h-80!"
+              aria-label="Preview of the custom toast example"
+              role="tabpanel"
             ><code class="dark:text-white! grid! place-items-center! h-full!">
                       <button (click)="renderCustomToast()" type="button" class="toast-button">Render a custom toast</button>
                     </code></pre>
           } @else {
-            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+            <pre
+              class="landing-page-pre h-80! overflow-y-auto!"
+              aria-label="Code for the custom toast example"
+              role="tabpanel"
+            ><code
                       class=" landing-page-code language-typescript dark:text-white!"
                       [innerHTML]="renderCustomToastSource()"
                     ></code></pre>
@@ -897,11 +963,17 @@
           @if (headlessToastTab() === 'preview') {
             <pre
               class="landing-page-pre h-80!"
+              aria-label="Preview of the headless toast example"
+              role="tabpanel"
             ><code class="dark:text-white! grid! place-items-center! h-full!">
                       <button (click)="renderHeadlessToast()" type="button" class="toast-button">Render a headless toast</button>
                     </code></pre>
           } @else {
-            <pre class="landing-page-pre h-80! overflow-y-auto!"><code
+            <pre
+              class="landing-page-pre h-80! overflow-y-auto!"
+              aria-label="Code for the headless toast example"
+              role="tabpanel"
+            ><code
                       class=" landing-page-code language-typescript dark:text-white!"
                       [innerHTML]="renderHeadlessToastSource()"
                     ></code></pre>
