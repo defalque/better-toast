@@ -11,7 +11,7 @@
       [attr.aria-label]="opt.label + ' theme'"
       [title]="opt.label"
       (click)="select(opt.value)"
-      class="relative grid place-items-center size-6 rounded-full cursor-pointer transition-colors focus"
+      class="relative grid place-items-center size-6 rounded-full cursor-pointer focus"
       [class.bg-zinc-200]="theme.preference() === opt.value"
       [class.dark:bg-zinc-800]="theme.preference() === opt.value"
       [class.text-zinc-900]="theme.preference() === opt.value"
