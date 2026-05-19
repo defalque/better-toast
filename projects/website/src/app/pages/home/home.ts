@@ -153,6 +153,7 @@ export class Home {
   });
 
   protected readonly activeTypeDemo = signal<ToastType>('default');
+  protected readonly activeRichColorDemo = signal<RichColorType>('success');
   /** highlight.js HTML for the active type example. */
   protected readonly activeTypeDemoHtml = computed(() => {
     return hljs.highlight(TOAST_TYPE_SOURCE[this.activeTypeDemo()], { language: 'typescript' })
@@ -243,6 +244,7 @@ export class Home {
   }
 
   protected runRichColorsDemo(id: RichColorType): void {
+    this.activeRichColorDemo.set(id);
     this.helper.richColors.set(true);
     switch (id) {
       case 'success':

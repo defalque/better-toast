@@ -23,28 +23,37 @@
             <div
               class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-300/50 dark:bg-zinc-800/80 -z-10"
             ></div>
-            <div class="flex items-center gap-4 tab relative">
+            <div
+              class="flex items-center gap-4 relative tab"
+              role="tablist"
+              tabindex="0"
+              aria-label="Basic toast example tabs"
+            >
               <button
-                [attr.data-active]="toastTab() === 'preview'"
                 type="button"
+                role="tab"
+                aria-selected="{{ toastTab() === 'preview' }}"
                 class="font-medium  cursor-pointer {{
                   toastTab() === 'preview'
                     ? 'text-black dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="toastTab.set('preview')"
+                [attr.data-active]="toastTab() === 'preview'"
               >
                 Preview
               </button>
               <button
-                [attr.data-active]="toastTab() === 'code'"
                 type="button"
+                role="tab"
+                aria-selected="{{ toastTab() === 'code' }}"
                 class="font-medium  cursor-pointer {{
                   toastTab() === 'code'
                     ? 'text-black dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="toastTab.set('code')"
+                [attr.data-active]="toastTab() === 'code'"
               >
                 Code
               </button>
@@ -52,10 +61,11 @@
 
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative _w-34"
               (click)="copyToastCode()"
             >
-              @if (toastCodeCopied()) {
+              {{ toastCodeCopied() ? 'Copied!' : 'Copy code' }}
+              <!-- @if (toastCodeCopied()) {
                 <span
                   class="absolute top-1/2 right-0.5 -translate-y-1/2"
                   animate.enter="enter"
@@ -69,7 +79,7 @@
                   animate.leave="leave"
                   >Copy code</span
                 >
-              }
+              } -->
             </button>
           </div>
 
@@ -98,28 +108,37 @@
             <div
               class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-300/50 dark:bg-zinc-800/80 -z-10"
             ></div>
-            <div class="flex items-center gap-4 tab relative">
+            <div
+              class="flex items-center gap-4 relative tab"
+              role="tablist"
+              tabindex="0"
+              aria-label="Toast with options example tabs"
+            >
               <button
-                [attr.data-active]="toastWithOptionsTab() === 'preview'"
                 type="button"
+                role="tab"
+                aria-selected="{{ toastWithOptionsTab() === 'preview' }}"
                 class="font-medium  cursor-pointer {{
                   toastWithOptionsTab() === 'preview'
                     ? 'text-black dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="toastWithOptionsTab.set('preview')"
+                [attr.data-active]="toastWithOptionsTab() === 'preview'"
               >
                 Preview
               </button>
               <button
-                [attr.data-active]="toastWithOptionsTab() === 'code'"
                 type="button"
+                role="tab"
+                aria-selected="{{ toastWithOptionsTab() === 'code' }}"
                 class="font-medium  cursor-pointer {{
                   toastWithOptionsTab() === 'code'
                     ? 'text-black dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="toastWithOptionsTab.set('code')"
+                [attr.data-active]="toastWithOptionsTab() === 'code'"
               >
                 Code
               </button>
@@ -127,24 +146,10 @@
 
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative"
               (click)="copyToastWithOptionsCode()"
             >
-              @if (toastWithOptionsCodeCopied()) {
-                <span
-                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
-                  animate.enter="enter"
-                  animate.leave="leave"
-                  >Copied!</span
-                >
-              } @else {
-                <span
-                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
-                  [animate.enter]="enterEnabled() ? 'enter' : null"
-                  animate.leave="leave"
-                  >Copy code</span
-                >
-              }
+              {{ toastWithOptionsCodeCopied() ? 'Copied!' : 'Copy code' }}
             </button>
           </div>
 
@@ -178,28 +183,37 @@
             <div
               class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-300/50 dark:bg-zinc-800/80 -z-10"
             ></div>
-            <div class="flex items-center gap-4 tab relative">
+            <div
+              class="flex items-center gap-4 relative tab"
+              role="tablist"
+              tabindex="0"
+              aria-label="Success toast example tabs"
+            >
               <button
-                [attr.data-active]="successToastTab() === 'preview'"
                 type="button"
+                role="tab"
+                aria-selected="{{ successToastTab() === 'preview' }}"
                 class="font-medium  cursor-pointer {{
                   successToastTab() === 'preview'
                     ? 'text-black dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="successToastTab.set('preview')"
+                [attr.data-active]="successToastTab() === 'preview'"
               >
                 Preview
               </button>
               <button
-                [attr.data-active]="successToastTab() === 'code'"
                 type="button"
+                role="tab"
+                aria-selected="{{ successToastTab() === 'code' }}"
                 class="font-medium  cursor-pointer {{
                   successToastTab() === 'code'
                     ? 'text-black dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="successToastTab.set('code')"
+                [attr.data-active]="successToastTab() === 'code'"
               >
                 Code
               </button>
@@ -207,24 +221,10 @@
 
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative"
               (click)="copySuccessToastCode()"
             >
-              @if (successToastCodeCopied()) {
-                <span
-                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
-                  animate.enter="enter"
-                  animate.leave="leave"
-                  >Copied!</span
-                >
-              } @else {
-                <span
-                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
-                  [animate.enter]="enterEnabled() ? 'enter' : null"
-                  animate.leave="leave"
-                  >Copy code</span
-                >
-              }
+              {{ successToastCodeCopied() ? 'Copied!' : 'Copy code' }}
             </button>
           </div>
 
@@ -255,28 +255,37 @@
             <div
               class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-300/50 dark:bg-zinc-800/80 -z-10"
             ></div>
-            <div class="flex items-center gap-4 tab relative">
+            <div
+              class="flex items-center gap-4 relative tab"
+              role="tablist"
+              tabindex="0"
+              aria-label="Error toast example tabs"
+            >
               <button
-                [attr.data-active]="errorToastTab() === 'preview'"
                 type="button"
+                role="tab"
+                aria-selected="{{ errorToastTab() === 'preview' }}"
                 class="font-medium  cursor-pointer {{
                   errorToastTab() === 'preview'
                     ? 'text-black dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="errorToastTab.set('preview')"
+                [attr.data-active]="errorToastTab() === 'preview'"
               >
                 Preview
               </button>
               <button
-                [attr.data-active]="errorToastTab() === 'code'"
                 type="button"
+                role="tab"
+                aria-selected="{{ errorToastTab() === 'code' }}"
                 class="font-medium  cursor-pointer {{
                   errorToastTab() === 'code'
                     ? 'text-black dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="errorToastTab.set('code')"
+                [attr.data-active]="errorToastTab() === 'code'"
               >
                 Code
               </button>
@@ -284,24 +293,10 @@
 
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative"
               (click)="copyErrorToastCode()"
             >
-              @if (errorToastCodeCopied()) {
-                <span
-                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
-                  animate.enter="enter"
-                  animate.leave="leave"
-                  >Copied!</span
-                >
-              } @else {
-                <span
-                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
-                  [animate.enter]="enterEnabled() ? 'enter' : null"
-                  animate.leave="leave"
-                  >Copy code</span
-                >
-              }
+              {{ errorToastCodeCopied() ? 'Copied!' : 'Copy code' }}
             </button>
           </div>
 
@@ -332,28 +327,37 @@
             <div
               class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-300/50 dark:bg-zinc-800/80 -z-10"
             ></div>
-            <div class="flex items-center gap-4 tab relative">
+            <div
+              class="flex items-center gap-4 relative tab"
+              role="tablist"
+              tabindex="0"
+              aria-label="Info toast example tabs"
+            >
               <button
-                [attr.data-active]="infoToastTab() === 'preview'"
                 type="button"
+                role="tab"
+                aria-selected="{{ infoToastTab() === 'preview' }}"
                 class="font-medium  cursor-pointer {{
                   infoToastTab() === 'preview'
                     ? 'text-black dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="infoToastTab.set('preview')"
+                [attr.data-active]="infoToastTab() === 'preview'"
               >
                 Preview
               </button>
               <button
-                [attr.data-active]="infoToastTab() === 'code'"
                 type="button"
+                role="tab"
+                aria-selected="{{ infoToastTab() === 'code' }}"
                 class="font-medium  cursor-pointer {{
                   infoToastTab() === 'code'
                     ? 'text-black dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="infoToastTab.set('code')"
+                [attr.data-active]="infoToastTab() === 'code'"
               >
                 Code
               </button>
@@ -361,24 +365,10 @@
 
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative"
               (click)="copyInfoToastCode()"
             >
-              @if (infoToastCodeCopied()) {
-                <span
-                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
-                  animate.enter="enter"
-                  animate.leave="leave"
-                  >Copied!</span
-                >
-              } @else {
-                <span
-                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
-                  [animate.enter]="enterEnabled() ? 'enter' : null"
-                  animate.leave="leave"
-                  >Copy code</span
-                >
-              }
+              {{ infoToastCodeCopied() ? 'Copied!' : 'Copy code' }}
             </button>
           </div>
 
@@ -411,28 +401,37 @@
             <div
               class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-300/50 dark:bg-zinc-800/80 -z-10"
             ></div>
-            <div class="flex items-center gap-4 tab relative">
+            <div
+              class="flex items-center gap-4 relative tab"
+              role="tablist"
+              tabindex="0"
+              aria-label="Warning toast example tabs"
+            >
               <button
-                [attr.data-active]="warningToastTab() === 'preview'"
                 type="button"
+                role="tab"
+                aria-selected="{{ warningToastTab() === 'preview' }}"
                 class="font-medium  cursor-pointer {{
                   warningToastTab() === 'preview'
                     ? 'text-black dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="warningToastTab.set('preview')"
+                [attr.data-active]="warningToastTab() === 'preview'"
               >
                 Preview
               </button>
               <button
-                [attr.data-active]="warningToastTab() === 'code'"
                 type="button"
+                role="tab"
+                aria-selected="{{ warningToastTab() === 'code' }}"
                 class="font-medium  cursor-pointer {{
                   warningToastTab() === 'code'
                     ? 'text-black dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="warningToastTab.set('code')"
+                [attr.data-active]="warningToastTab() === 'code'"
               >
                 Code
               </button>
@@ -440,24 +439,10 @@
 
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative"
               (click)="copyWarningToastCode()"
             >
-              @if (warningToastCodeCopied()) {
-                <span
-                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
-                  animate.enter="enter"
-                  animate.leave="leave"
-                  >Copied!</span
-                >
-              } @else {
-                <span
-                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
-                  [animate.enter]="enterEnabled() ? 'enter' : null"
-                  animate.leave="leave"
-                  >Copy code</span
-                >
-              }
+              {{ warningToastCodeCopied() ? 'Copied!' : 'Copy code' }}
             </button>
           </div>
 
@@ -491,28 +476,37 @@
             <div
               class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-300/50 dark:bg-zinc-800/80 -z-10"
             ></div>
-            <div class="flex items-center gap-4 tab relative">
+            <div
+              class="flex items-center gap-4 relative tab"
+              role="tablist"
+              tabindex="0"
+              aria-label="Loading toast example tabs"
+            >
               <button
-                [attr.data-active]="loadingToastTab() === 'preview'"
                 type="button"
+                role="tab"
+                aria-selected="{{ loadingToastTab() === 'preview' }}"
                 class="font-medium  cursor-pointer {{
                   loadingToastTab() === 'preview'
                     ? 'text-black dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="loadingToastTab.set('preview')"
+                [attr.data-active]="loadingToastTab() === 'preview'"
               >
                 Preview
               </button>
               <button
-                [attr.data-active]="loadingToastTab() === 'code'"
                 type="button"
+                role="tab"
+                aria-selected="{{ loadingToastTab() === 'code' }}"
                 class="font-medium  cursor-pointer {{
                   loadingToastTab() === 'code'
                     ? 'text-black dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="loadingToastTab.set('code')"
+                [attr.data-active]="loadingToastTab() === 'code'"
               >
                 Code
               </button>
@@ -520,24 +514,10 @@
 
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative"
               (click)="copyLoadingToastCode()"
             >
-              @if (loadingToastCodeCopied()) {
-                <span
-                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
-                  animate.enter="enter"
-                  animate.leave="leave"
-                  >Copied!</span
-                >
-              } @else {
-                <span
-                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
-                  [animate.enter]="enterEnabled() ? 'enter' : null"
-                  animate.leave="leave"
-                  >Copy code</span
-                >
-              }
+              {{ loadingToastCodeCopied() ? 'Copied!' : 'Copy code' }}
             </button>
           </div>
 
@@ -572,28 +552,37 @@
             <div
               class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-300/50 dark:bg-zinc-800/80 -z-10"
             ></div>
-            <div class="flex items-center gap-4 tab relative">
+            <div
+              class="flex items-center gap-4 relative tab"
+              role="tablist"
+              tabindex="0"
+              aria-label="Action toast example tabs"
+            >
               <button
-                [attr.data-active]="actionToastTab() === 'preview'"
                 type="button"
+                role="tab"
+                aria-selected="{{ actionToastTab() === 'preview' }}"
                 class="font-medium  cursor-pointer {{
                   actionToastTab() === 'preview'
                     ? 'text-black dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="actionToastTab.set('preview')"
+                [attr.data-active]="actionToastTab() === 'preview'"
               >
                 Preview
               </button>
               <button
-                [attr.data-active]="actionToastTab() === 'code'"
                 type="button"
+                role="tab"
+                aria-selected="{{ actionToastTab() === 'code' }}"
                 class="font-medium  cursor-pointer {{
                   actionToastTab() === 'code'
                     ? 'text-black dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="actionToastTab.set('code')"
+                [attr.data-active]="actionToastTab() === 'code'"
               >
                 Code
               </button>
@@ -601,24 +590,10 @@
 
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative"
               (click)="copyActionToastCode()"
             >
-              @if (actionToastCodeCopied()) {
-                <span
-                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
-                  animate.enter="enter"
-                  animate.leave="leave"
-                  >Copied!</span
-                >
-              } @else {
-                <span
-                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
-                  [animate.enter]="enterEnabled() ? 'enter' : null"
-                  animate.leave="leave"
-                  >Copy code</span
-                >
-              }
+              {{ actionToastCodeCopied() ? 'Copied!' : 'Copy code' }}
             </button>
           </div>
 
@@ -658,52 +633,47 @@
             <div
               class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-300/50 dark:bg-zinc-800/80 -z-10"
             ></div>
-            <div class="flex items-center gap-4 tab relative">
+            <div
+              class="flex items-center gap-4 relative tab"
+              role="tablist"
+              tabindex="0"
+              aria-label="Cancel toast example tabs"
+            >
               <button
-                [attr.data-active]="cancelToastTab() === 'preview'"
                 type="button"
+                role="tab"
+                aria-selected="{{ cancelToastTab() === 'preview' }}"
                 class="font-medium  cursor-pointer {{
                   cancelToastTab() === 'preview'
                     ? 'text-black dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="cancelToastTab.set('preview')"
+                [attr.data-active]="cancelToastTab() === 'preview'"
               >
                 Preview
               </button>
               <button
-                [attr.data-active]="cancelToastTab() === 'code'"
                 type="button"
+                role="tab"
+                aria-selected="{{ cancelToastTab() === 'code' }}"
                 class="font-medium  cursor-pointer {{
                   cancelToastTab() === 'code'
                     ? 'text-black dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="cancelToastTab.set('code')"
+                [attr.data-active]="cancelToastTab() === 'code'"
               >
                 Code
               </button>
             </div>
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative"
               (click)="copyCancelToastCode()"
             >
-              @if (cancelToastCodeCopied()) {
-                <span
-                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
-                  animate.enter="enter"
-                  animate.leave="leave"
-                  >Copied!</span
-                >
-              } @else {
-                <span
-                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
-                  [animate.enter]="enterEnabled() ? 'enter' : null"
-                  animate.leave="leave"
-                  >Copy code</span
-                >
-              }
+              {{ cancelToastCodeCopied() ? 'Copied!' : 'Copy code' }}
             </button>
           </div>
           @if (cancelToastTab() === 'preview') {
@@ -741,52 +711,47 @@
             <div
               class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-300/50 dark:bg-zinc-800/80 -z-10"
             ></div>
-            <div class="flex items-center gap-4 tab relative">
+            <div
+              class="flex items-center gap-4 relative tab"
+              role="tablist"
+              tabindex="0"
+              aria-label="Promise toast example tabs"
+            >
               <button
-                [attr.data-active]="promiseToastTab() === 'preview'"
                 type="button"
+                role="tab"
+                aria-selected="{{ promiseToastTab() === 'preview' }}"
                 class="font-medium  cursor-pointer {{
                   promiseToastTab() === 'preview'
                     ? 'text-black dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="promiseToastTab.set('preview')"
+                [attr.data-active]="promiseToastTab() === 'preview'"
               >
                 Preview
               </button>
               <button
-                [attr.data-active]="promiseToastTab() === 'code'"
                 type="button"
+                role="tab"
+                aria-selected="{{ promiseToastTab() === 'code' }}"
                 class="font-medium  cursor-pointer {{
                   promiseToastTab() === 'code'
                     ? 'text-black dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="promiseToastTab.set('code')"
+                [attr.data-active]="promiseToastTab() === 'code'"
               >
                 Code
               </button>
             </div>
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative"
               (click)="copyPromiseToastCode()"
             >
-              @if (promiseToastCodeCopied()) {
-                <span
-                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
-                  animate.enter="enter"
-                  animate.leave="leave"
-                  >Copied!</span
-                >
-              } @else {
-                <span
-                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
-                  [animate.enter]="enterEnabled() ? 'enter' : null"
-                  animate.leave="leave"
-                  >Copy code</span
-                >
-              }
+              {{ promiseToastCodeCopied() ? 'Copied!' : 'Copy code' }}
             </button>
           </div>
           @if (promiseToastTab() === 'preview') {
@@ -818,52 +783,47 @@
             <div
               class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-300/50 dark:bg-zinc-800/80 -z-10"
             ></div>
-            <div class="flex items-center gap-4 tab relative">
+            <div
+              class="flex items-center gap-4 relative tab"
+              role="tablist"
+              tabindex="0"
+              aria-label="Custom toast example tabs"
+            >
               <button
-                [attr.data-active]="customToastTab() === 'preview'"
                 type="button"
+                role="tab"
+                aria-selected="{{ customToastTab() === 'preview' }}"
                 class="font-medium  cursor-pointer {{
                   customToastTab() === 'preview'
                     ? 'text-black dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="customToastTab.set('preview')"
+                [attr.data-active]="customToastTab() === 'preview'"
               >
                 Preview
               </button>
               <button
-                [attr.data-active]="customToastTab() === 'code'"
                 type="button"
+                role="tab"
+                aria-selected="{{ customToastTab() === 'code' }}"
                 class="font-medium  cursor-pointer {{
                   customToastTab() === 'code'
                     ? 'text-black dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="customToastTab.set('code')"
+                [attr.data-active]="customToastTab() === 'code'"
               >
                 Code
               </button>
             </div>
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative"
               (click)="copyCustomToastCode()"
             >
-              @if (customToastCodeCopied()) {
-                <span
-                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
-                  animate.enter="enter"
-                  animate.leave="leave"
-                  >Copied!</span
-                >
-              } @else {
-                <span
-                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
-                  [animate.enter]="enterEnabled() ? 'enter' : null"
-                  animate.leave="leave"
-                  >Copy code</span
-                >
-              }
+              {{ customToastCodeCopied() ? 'Copied!' : 'Copy code' }}
             </button>
           </div>
           @if (customToastTab() === 'preview') {
@@ -903,52 +863,47 @@
             <div
               class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-300/50 dark:bg-zinc-800/80 -z-10"
             ></div>
-            <div class="flex items-center gap-4 tab relative">
+            <div
+              class="flex items-center gap-4 relative tab"
+              role="tablist"
+              tabindex="0"
+              aria-label="Headless toast example tabs"
+            >
               <button
-                [attr.data-active]="headlessToastTab() === 'preview'"
                 type="button"
+                role="tab"
+                aria-selected="{{ headlessToastTab() === 'preview' }}"
                 class="font-medium  cursor-pointer {{
                   headlessToastTab() === 'preview'
                     ? 'text-black dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="headlessToastTab.set('preview')"
+                [attr.data-active]="headlessToastTab() === 'preview'"
               >
                 Preview
               </button>
               <button
-                [attr.data-active]="headlessToastTab() === 'code'"
                 type="button"
+                role="tab"
+                aria-selected="{{ headlessToastTab() === 'code' }}"
                 class="font-medium  cursor-pointer {{
                   headlessToastTab() === 'code'
                     ? 'text-black dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400'
                 }}"
                 (click)="headlessToastTab.set('code')"
+                [attr.data-active]="headlessToastTab() === 'code'"
               >
                 Code
               </button>
             </div>
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative"
               (click)="copyHeadlessToastCode()"
             >
-              @if (headlessToastCodeCopied()) {
-                <span
-                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
-                  animate.enter="enter"
-                  animate.leave="leave"
-                  >Copied!</span
-                >
-              } @else {
-                <span
-                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
-                  [animate.enter]="enterEnabled() ? 'enter' : null"
-                  animate.leave="leave"
-                  >Copy code</span
-                >
-              }
+              {{ headlessToastCodeCopied() ? 'Copied!' : 'Copy code' }}
             </button>
           </div>
           @if (headlessToastTab() === 'preview') {

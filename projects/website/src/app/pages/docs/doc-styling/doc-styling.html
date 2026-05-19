@@ -23,9 +23,16 @@
             <div
               class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-300/50 dark:bg-zinc-800/80 -z-10"
             ></div>
-            <div class="flex items-center gap-4 relative tab">
+            <div
+              class="flex items-center gap-4 relative tab"
+              role="tablist"
+              tabindex="0"
+              aria-label="Headless toast tabs"
+            >
               <button
                 type="button"
+                role="tab"
+                aria-selected="{{ headlessToastTab() === 'preview' }}"
                 class="font-medium  cursor-pointer {{
                   headlessToastTab() === 'preview'
                     ? 'text-black dark:text-zinc-100'
@@ -38,6 +45,8 @@
               </button>
               <button
                 type="button"
+                role="tab"
+                aria-selected="{{ headlessToastTab() === 'code' }}"
                 class="font-medium  cursor-pointer {{
                   headlessToastTab() === 'code'
                     ? 'text-black dark:text-zinc-100'
@@ -51,24 +60,10 @@
             </div>
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative"
               (click)="copyCustomToastCode()"
             >
-              @if (headlessCodeCopied()) {
-                <span
-                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
-                  animate.enter="enter"
-                  animate.leave="leave"
-                  >Copied!</span
-                >
-              } @else {
-                <span
-                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
-                  [animate.enter]="enterEnabled() ? 'enter' : null"
-                  animate.leave="leave"
-                  >Copy code</span
-                >
-              }
+              {{ headlessCodeCopied() ? 'Copied!' : 'Copy code' }}
             </button>
           </div>
           @if (headlessToastTab() === 'preview') {

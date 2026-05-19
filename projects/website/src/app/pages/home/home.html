@@ -288,9 +288,20 @@
         You can customize the type of toast you want to render, and pass an options object as the
         second argument.
       </p>
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 items-center justify-center">
+      <div
+        class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 items-center justify-center"
+        role="tablist"
+        tabindex="0"
+        aria-label="Toast type demo tabs"
+      >
         @for (type of toastTypes; track type) {
-          <button type="button" class="landing-page-button focus" (click)="runTypeDemo(type)">
+          <button
+            type="button"
+            role="tab"
+            aria-selected="{{ activeTypeDemo() === type }}"
+            class="landing-page-button focus"
+            (click)="runTypeDemo(type)"
+          >
             {{ type.charAt(0).toUpperCase() + type.slice(1) }}
           </button>
         }
@@ -307,10 +318,17 @@
         You can customize the position of the toaster. Swipe direction and enter/exit animations
         change depending on the position.
       </p>
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 items-center justify-center">
+      <div
+        class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 items-center justify-center"
+        role="tablist"
+        tabindex="0"
+        aria-label="Toaster position demo tabs"
+      >
         @for (pos of toasterPositions; track pos) {
           <button
             type="button"
+            role="tab"
+            aria-selected="{{ helper.position() === pos }}"
             class="landing-page-button focus"
             [class.bg-zinc-200]="helper.position() === pos"
             [class.bg-zinc-50]="helper.position() !== pos"
@@ -333,14 +351,21 @@
         <code class="p-code-snippet">true</code>, success, error, info, and warning variants adopt
         semantic background and border colors.
       </p>
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 items-center justify-center">
+      <div
+        class="grid grid-cols-2 lg:grid-cols-4 gap-2 items-center justify-center"
+        role="tablist"
+        tabindex="0"
+        aria-label="Rich colors demo tabs"
+      >
         @for (type of richColorTypes; track type) {
           <button
             type="button"
+            role="tab"
+            aria-selected="{{ activeRichColorDemo() === type }}"
             class="landing-page-button focus"
             (click)="runRichColorsDemo(type)"
-            [class.bg-zinc-200]="helper.richColors()"
-            [class.bg-zinc-50]="!helper.richColors()"
+            [class.bg-zinc-200]="activeRichColorDemo() === type"
+            [class.bg-zinc-50]="activeRichColorDemo() !== type"
           >
             {{ type.charAt(0).toUpperCase() + type.slice(1) }}
           </button>

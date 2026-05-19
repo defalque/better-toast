@@ -54,9 +54,16 @@
             <div
               class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-300/50 dark:bg-zinc-800/80 -z-10"
             ></div>
-            <div class="flex items-center gap-4 relative tab">
+            <div
+              class="flex items-center gap-4 relative tab"
+              role="tablist"
+              tabindex="0"
+              aria-label="onAutoClose callback example tabs"
+            >
               <button
                 type="button"
+                role="tab"
+                aria-selected="{{ onAutoCloseCallbackTab() === 'preview' }}"
                 class="font-medium  cursor-pointer {{
                   onAutoCloseCallbackTab() === 'preview'
                     ? 'text-black dark:text-zinc-100'
@@ -69,6 +76,8 @@
               </button>
               <button
                 type="button"
+                role="tab"
+                aria-selected="{{ onAutoCloseCallbackTab() === 'code' }}"
                 class="font-medium  cursor-pointer {{
                   onAutoCloseCallbackTab() === 'code'
                     ? 'text-black dark:text-zinc-100'
@@ -82,24 +91,10 @@
             </div>
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative"
               (click)="copyOnAutoCloseCallbackCode()"
             >
-              @if (onAutoCloseCallbackCodeCopied()) {
-                <span
-                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
-                  animate.enter="enter"
-                  animate.leave="leave"
-                  >Copied!</span
-                >
-              } @else {
-                <span
-                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
-                  [animate.enter]="enterEnabled() ? 'enter' : null"
-                  animate.leave="leave"
-                  >Copy code</span
-                >
-              }
+              {{ onAutoCloseCallbackCodeCopied() ? 'Copied!' : 'Copy code' }}
             </button>
           </div>
           @if (onAutoCloseCallbackTab() === 'preview') {
@@ -138,9 +133,16 @@
             <div
               class="absolute bottom-[-8px] left-1 w-full h-px bg-zinc-300/50 dark:bg-zinc-800/80 -z-10"
             ></div>
-            <div class="flex items-center gap-4 relative tab">
+            <div
+              class="flex items-center gap-4 relative tab"
+              role="tablist"
+              tabindex="0"
+              aria-label="onDismiss callback example tabs"
+            >
               <button
                 type="button"
+                role="tab"
+                aria-selected="{{ onDismissCallbackTab() === 'preview' }}"
                 class="font-medium  cursor-pointer {{
                   onDismissCallbackTab() === 'preview'
                     ? 'text-black dark:text-zinc-100'
@@ -153,6 +155,8 @@
               </button>
               <button
                 type="button"
+                role="tab"
+                aria-selected="{{ onDismissCallbackTab() === 'code' }}"
                 class="font-medium  cursor-pointer {{
                   onDismissCallbackTab() === 'code'
                     ? 'text-black dark:text-zinc-100'
@@ -166,24 +170,10 @@
             </div>
             <button
               type="button"
-              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative w-34"
+              class="font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer relative"
               (click)="copyOnDismissCallbackCode()"
             >
-              @if (onDismissCallbackCodeCopied()) {
-                <span
-                  class="absolute top-1/2 right-0.5 -translate-y-1/2"
-                  animate.enter="enter"
-                  animate.leave="leave"
-                  >Copied!</span
-                >
-              } @else {
-                <span
-                  class="absolute top-1/2 left-1/2 -translate-y-1/2"
-                  [animate.enter]="enterEnabled() ? 'enter' : null"
-                  animate.leave="leave"
-                  >Copy code</span
-                >
-              }
+              {{ onDismissCallbackCodeCopied() ? 'Copied!' : 'Copy code' }}
             </button>
           </div>
           @if (onDismissCallbackTab() === 'preview') {
