@@ -1,4 +1,4 @@
-import { afterNextRender, Component, DestroyRef, inject, signal } from '@angular/core';
+import { afterNextRender, Component, DestroyRef, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 
@@ -9,6 +9,7 @@ type InfoDocSection = 'bundle-size' | 'caveats' | 'toaster-input-timing';
   imports: [RouterLink],
   templateUrl: './doc-info.html',
   styleUrl: './doc-info.css',
+  changeDetection: ChangeDetectionStrategy.Eager,
   host: {
     class: 'block w-full min-w-0 max-w-5xl mx-auto',
   },

@@ -1,9 +1,10 @@
-import { Component, computed, inject, input, signal, viewChild, ElementRef } from '@angular/core';
+import { Component, computed, inject, input, signal, viewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import { ToasterService } from 'better-toast';
 
 @Component({
   selector: 'app-custom-music-player-toast',
   imports: [],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div
       class="w-fit inset-shadow-md shadow-lg shadow-black/10 ring-1 ring-black/10 dark:ring-zinc-800/90 px-4 py-2 rounded-2xl bg-zinc-50/10 backdrop-blur-sm dark:bg-zinc-950/10"

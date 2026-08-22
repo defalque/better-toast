@@ -1,4 +1,4 @@
-import { Component, computed, DestroyRef, inject, input, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, input, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ToasterService } from 'better-toast';
 
 type UploadPhase = 'uploading' | 'complete';
@@ -6,6 +6,7 @@ type UploadPhase = 'uploading' | 'complete';
 @Component({
   selector: 'app-upload-progress-toast',
   imports: [],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div
       class="w-full min-w-72 max-w-sm relative rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-lg shadow-black/10 p-4"

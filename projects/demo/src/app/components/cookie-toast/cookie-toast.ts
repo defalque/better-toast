@@ -1,10 +1,11 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, ChangeDetectionStrategy } from '@angular/core';
 import { ToasterService } from 'better-toast';
 
 @Component({
   selector: 'app-cookie-toast',
   imports: [],
   templateUrl: './cookie-toast.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './cookie-toast.css',
 })
 export class CookieToast {

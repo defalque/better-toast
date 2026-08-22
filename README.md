@@ -12,9 +12,9 @@ For consumer installation and API examples, see `projects/better-toast/README.md
 
 ## Requirements
 
-- Node.js compatible with Angular 21.
+- Node.js compatible with Angular 22 (CI uses Node 22).
 - npm `11.12.1` or newer.
-- Angular `^21.0.0` for consumers of the `better-toast` package.
+- Angular `^21.0.0 || ^22.0.0` for consumers of the `better-toast` package (current major plus the previous major).
 
 Install workspace dependencies:
 
@@ -77,4 +77,4 @@ After building the library, the package output is written under `dist/better-toa
 
 ## Documentation
 
-The website project contains the full docs and examples will be deployed soon. The library README contains the npm-facing quickstart and API overview.
+The website is at [better-toast.vercel.app](https://better-toast.vercel.app). The library README contains the npm-facing quickstart and API overview.

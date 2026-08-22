@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ToasterService } from 'better-toast';
 
 type CustomToastActionState = 'idle' | 'loading' | 'done';
@@ -6,6 +6,7 @@ type CustomToastActionState = 'idle' | 'loading' | 'done';
 @Component({
   selector: 'app-custom-toast',
   imports: [],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="w-fit md:w-120 relative border p-4 shadow-xl bg-sky-50 dark:bg-sky-950">
       <div class="grid gap-2">
