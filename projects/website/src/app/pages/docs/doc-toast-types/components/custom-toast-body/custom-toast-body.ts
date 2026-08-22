@@ -1,8 +1,9 @@
-import { Component, input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-home-custom-toast-body',
   imports: [],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: ` <span>
     Check my website:
     <a

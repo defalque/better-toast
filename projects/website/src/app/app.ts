@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ToasterService, BetterToaster } from 'better-toast';
 import { HelperService } from './helper.service';
@@ -8,6 +8,7 @@ import { ThemeService } from './theme.service';
   selector: 'app-root',
   imports: [RouterOutlet, BetterToaster],
   templateUrl: './app.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app.css',
 })
 export class App {

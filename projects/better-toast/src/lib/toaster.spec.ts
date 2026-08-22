@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, ChangeDetectionStrategy } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
 
@@ -12,6 +12,7 @@ import {
 @Component({
   selector: 'bt-spec-success-icon',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '<span class="bt-spec-custom-success-icon" aria-hidden="true">★</span>',
 })
 class SpecSuccessIcon {}
@@ -19,6 +20,7 @@ class SpecSuccessIcon {}
 @Component({
   selector: 'bt-spec-default-icon',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '<span class="bt-spec-custom-default-icon" aria-hidden="true">D</span>',
 })
 class SpecDefaultIcon {}
@@ -26,6 +28,7 @@ class SpecDefaultIcon {}
 @Component({
   selector: 'bt-spec-custom-body',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '<p class="bt-spec-custom-body">Rich</p>',
 })
 class SpecCustomBody {
@@ -34,6 +37,7 @@ class SpecCustomBody {
 
 @Component({
   imports: [Toaster],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '<better-toaster [duration]="\'Infinity\'" />',
 })
 class StartupDurationHost {

@@ -1,4 +1,4 @@
-import { Component, model } from '@angular/core';
+import { Component, model, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { ThemeToggle } from '../../../components/theme-toggle/theme-toggle';
 import {
@@ -25,6 +25,7 @@ import {
     BetterDrawerPortal,
   ],
   templateUrl: './docs-shell.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './docs-shell.css',
 })
 export class DocsShell {

@@ -1,4 +1,4 @@
-import { afterNextRender, Component, DestroyRef, inject, signal } from '@angular/core';
+import { afterNextRender, Component, DestroyRef, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 import { ToasterService } from 'better-toast';
 import hljs from 'highlight.js';
@@ -110,6 +110,7 @@ type StylingDocSection = 'global-styles' | 'styling-specific-elements' | 'headle
   imports: [RouterLink],
   templateUrl: './doc-styling.html',
   styleUrl: './doc-styling.css',
+  changeDetection: ChangeDetectionStrategy.Eager,
   host: {
     class: 'block w-full min-w-0 max-w-5xl mx-auto',
   },

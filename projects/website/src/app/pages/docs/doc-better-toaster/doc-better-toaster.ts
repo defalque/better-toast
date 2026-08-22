@@ -1,4 +1,4 @@
-import { afterNextRender, Component, computed, DestroyRef, inject, signal } from '@angular/core';
+import { afterNextRender, Component, computed, DestroyRef, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 import hljs from 'highlight.js';
 import xml from 'highlight.js/lib/languages/xml';
@@ -23,6 +23,7 @@ type BetterToasterDocSection =
   imports: [RouterLink],
   templateUrl: './doc-better-toaster.html',
   styleUrl: './doc-better-toaster.css',
+  changeDetection: ChangeDetectionStrategy.Eager,
   host: {
     class: 'block w-full min-w-0 max-w-5xl mx-auto',
   },

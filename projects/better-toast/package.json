@@ -1,7 +1,7 @@
 {
   "name": "better-toast",
-  "version": "0.0.4",
-  "description": "Elegant toast notifications for Angular v21+ with stacked messages, variants, swipe-to-dismiss, entry and exit animations and a small service API.",
+  "version": "0.1.0",
+  "description": "Elegant toast notifications for Angular 21 and 22 with stacked messages, variants, swipe-to-dismiss, entry and exit animations and a small service API.",
   "keywords": [
     "angular",
     "toast",
@@ -21,8 +21,8 @@
     "url": "https://github.com/defalque/better-toast/issues"
   },
   "peerDependencies": {
-    "@angular/common": "^21.0.0",
-    "@angular/core": "^21.0.0"
+    "@angular/common": "^21.0.0 || ^22.0.0",
+    "@angular/core": "^21.0.0 || ^22.0.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"
