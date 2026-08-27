@@ -206,10 +206,8 @@ function resolveFrontToastHeightPx(
                 </svg>
               }
               @case ('loading') {
-                <div class="toast-icon-loading" aria-hidden="true"></div>
+                <div class="toast-icon-loading"></div>
               }
-              @case ('description') {}
-              @case ('default') {}
             }
           }
         </span>
