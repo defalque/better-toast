@@ -147,67 +147,39 @@ function resolveFrontToastHeightPx(
             <ng-container [betterToastOutlet]="toast()!.icon!" />
           } @else if (iconComponent(); as IconCmp) {
             <ng-container [betterToastOutlet]="IconCmp" />
+          } @else if (variant() === 'loading') {
+            <div class="toast-icon-loading"></div>
           } @else {
-            @switch (variant()) {
-              @case ('success') {
-                <svg
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="1.75"
-                >
+            <svg
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              [attr.stroke-width]="variant() === 'error' ? 2 : 1.75"
+            >
+              @switch (variant()) {
+                @case ('success') {
                   <circle cx="12" cy="12" r="9" />
                   <path d="M8.48 12.22 10.9 14.64 15.74 9.14" />
-                </svg>
-              }
-              @case ('error') {
-                <svg
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
+                }
+                @case ('error') {
                   <circle cx="12" cy="12" r="10" />
                   <line x1="9" y1="9" x2="15" y2="15" />
                   <line x1="15" y1="9" x2="9" y2="15" />
-                </svg>
-              }
-              @case ('info') {
-                <svg
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
+                }
+                @case ('info') {
                   <circle cx="12" cy="12" r="10" />
                   <line x1="12" y1="16" x2="12" y2="12" />
                   <line x1="12" y1="8" x2="12.01" y2="8" />
-                </svg>
-              }
-              @case ('warning') {
-                <svg
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="1.75"
-                >
+                }
+                @case ('warning') {
                   <path
                     d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
                   />
-                </svg>
+                }
               }
-              @case ('loading') {
-                <div class="toast-icon-loading"></div>
-              }
-            }
+            </svg>
           }
         </span>
       }

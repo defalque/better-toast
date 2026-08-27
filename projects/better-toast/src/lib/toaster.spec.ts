@@ -437,6 +437,36 @@ describe('better-toast', () => {
     expect(toaster.toasts().length).toBe(1);
   });
 
+  it('renders built-in SVG icons and a loading spinner', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    toaster.success('ok', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const success = fixture.nativeElement.querySelector('li.toast') as HTMLElement;
+    expect(success.querySelector('.toast-icon svg circle')).toBeTruthy();
+    expect(success.querySelector('.toast-icon svg path')).toBeTruthy();
+    toaster.clear();
+
+    toaster.error('bad', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const error = fixture.nativeElement.querySelector('li.toast') as HTMLElement;
+    expect(error.querySelectorAll('.toast-icon svg line').length).toBe(2);
+    toaster.clear();
+
+    toaster.loading('wait', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const loading = fixture.nativeElement.querySelector('li.toast') as HTMLElement;
+    expect(loading.querySelector('.toast-icon-loading')).toBeTruthy();
+    expect(loading.querySelector('.toast-icon svg')).toBeNull();
+  });
+
   it('swipe-dismisses a default toast when dragged past the close threshold', async () => {
     TestBed.configureTestingModule({ imports: [Toaster] });
     const fixture = TestBed.createComponent(Toaster);
