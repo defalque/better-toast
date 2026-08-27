@@ -1,41 +1,52 @@
 import {
   Directive,
-  Input,
-  type OnChanges,
-  type SimpleChanges,
+  type ComponentRef,
   type Type,
   ViewContainerRef,
+  effect,
   inject,
+  input,
+  untracked,
 } from '@angular/core';
 
 /**
  * Tiny dynamic-component host used for headless toasts, custom bodies, and icon overrides.
- * Intentionally smaller than `NgComponentOutlet` (no ngModule / projector / injector inputs).
+ * Uses signal inputs and recreates the guest only when the component type changes.
  */
 @Directive({
   selector: '[betterToastOutlet]',
 })
-export class BetterToastOutlet implements OnChanges {
+export class BetterToastOutlet {
   private readonly viewContainer = inject(ViewContainerRef);
 
-  @Input({ required: true }) betterToastOutlet!: Type<unknown>;
-  @Input() betterToastOutletInputs?: Record<string, unknown>;
+  readonly betterToastOutlet = input.required<Type<unknown>>();
+  readonly betterToastOutletInputs = input<Record<string, unknown>>();
 
-  private ref?: ReturnType<ViewContainerRef['createComponent']>;
+  private ref?: ComponentRef<unknown>;
+  private currentType: Type<unknown> | undefined;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['betterToastOutlet']) {
+  constructor() {
+    effect(() => {
+      const component = this.betterToastOutlet();
+      const inputs = this.betterToastOutletInputs();
+      untracked(() => this.sync(component, inputs));
+    });
+  }
+
+  private sync(component: Type<unknown>, inputs: Record<string, unknown> | undefined): void {
+    if (this.currentType !== component) {
       this.viewContainer.clear();
       this.ref = undefined;
-      if (this.betterToastOutlet) {
-        this.ref = this.viewContainer.createComponent(this.betterToastOutlet);
+      this.currentType = component;
+      if (component) {
+        this.ref = this.viewContainer.createComponent(component);
       }
     }
-    if (!this.ref || !this.betterToastOutletInputs) {
+    if (!this.ref || !inputs) {
       return;
     }
-    for (const name of Object.keys(this.betterToastOutletInputs)) {
-      this.ref.setInput(name, this.betterToastOutletInputs[name]);
+    for (const name of Object.keys(inputs)) {
+      this.ref.setInput(name, inputs[name]);
     }
   }
 }

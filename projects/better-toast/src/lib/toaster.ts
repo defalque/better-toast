@@ -7,7 +7,6 @@ import {
   ElementRef,
   inject,
   input,
-  OnInit,
   output,
   signal,
 } from '@angular/core';
@@ -633,7 +632,7 @@ export class BetterToastItem {
   `,
   styleUrl: './toaster.css',
 })
-export class BetterToaster implements OnInit {
+export class BetterToaster {
   protected readonly toaster = inject(ToasterService);
 
   /**
@@ -643,11 +642,7 @@ export class BetterToaster implements OnInit {
    */
   readonly durationMs = input<number, ToasterDuration>(DEFAULT_TOAST_DURATION_MS, {
     alias: 'duration',
-    transform: (value) => {
-      const durationMs = parseToasterDurationMs(value);
-      this.toaster.setDefaultDurationMs(durationMs);
-      return durationMs;
-    },
+    transform: parseToasterDurationMs,
   });
   /** Where the stack is anchored on the viewport. */
   readonly position = input<ToasterPosition>('bottom-right');
@@ -717,6 +712,9 @@ export class BetterToaster implements OnInit {
   protected readonly layoutExpanded = computed(() => !this.stacked() || this.expanded());
 
   constructor() {
+    effect(() => {
+      this.toaster.setDefaultDurationMs(this.durationMs());
+    });
     effect(() => {
       if (this.toaster.toasts().length === 0) {
         this.hovering.set(false);
@@ -850,12 +848,5 @@ export class BetterToaster implements OnInit {
     for (const toast of this.toaster.toasts()) {
       this.toaster.resumeAutoDismiss(toast.id);
     }
-  }
-
-  /**
-   * Initializes the toaster service with the default duration.
-   */
-  ngOnInit(): void {
-    this.toaster.setDefaultDurationMs(this.durationMs());
   }
 }

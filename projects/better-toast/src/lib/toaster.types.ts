@@ -174,7 +174,7 @@ export type ToastCancelMethodOptions = Omit<ToastOptions, 'icon' | 'classNames'>
 /**
  * Options for {@link ToasterService.custom}.
  * {@link CustomToastOptions.inputs} is merged into the body component (same pattern as {@link HeadlessToastOptions.inputs});
- * **`toastId`** is always injected after your inputs. The component must declare a matching `input()` / `@Input()` for **`toastId`**
+ * **`toastId`** is always injected after your inputs. The component should declare `toastId` with `input()`.
  * so the outlet can bind it (same requirement as {@link ToasterService.headless}).
  */
 export interface CustomToastOptions extends ToastOptions {
@@ -245,7 +245,7 @@ export interface ToastOptions {
  */
 export interface HeadlessToastOptions extends Omit<ToastOptions, 'icon' | 'style'> {
   /**
-   * Values passed to the component’s `input()` / `@Input()` bindings.
+   * Values passed to the component’s `input()` bindings.
    */
   inputs?: Record<string, unknown>;
 }

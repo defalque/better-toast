@@ -231,7 +231,7 @@ export class ToasterService {
    * Show a toast whose **message area** is a standalone Angular component while keeping normal toast chrome
    * (surface, icon column when applicable, close button, stack motion).
    *
-   * Pass {@link CustomToastOptions.inputs} for `input()` / `@Input()` on that component.
+   * Pass {@link CustomToastOptions.inputs} for `input()` on that component.
    * The component also receives **`toastId`** (matches the returned id) for programmatic dismiss.
    *
    * @param component The component class (must work with `ViewContainerRef.createComponent`).
