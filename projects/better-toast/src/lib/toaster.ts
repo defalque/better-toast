@@ -138,7 +138,7 @@ function resolveFrontToastHeightPx(
     @if (toast()?.component) {
       <ng-container
         [betterToastOutlet]="toast()!.component!"
-        [betterToastOutletInputs]="componentOutletInputs()"
+        [betterToastOutletInputs]="toast()?.componentInputs"
       />
     } @else {
       @if (shouldShowIconColumn()) {
@@ -218,7 +218,7 @@ function resolveFrontToastHeightPx(
             <div class="msg" [class]="resolvedClassNames()?.message">
               <ng-container
                 [betterToastOutlet]="toast()!.contentComponent!"
-                [betterToastOutletInputs]="contentComponentOutletInputs()"
+                [betterToastOutletInputs]="toast()?.contentComponentInputs"
               />
             </div>
           } @else {
@@ -235,7 +235,7 @@ function resolveFrontToastHeightPx(
           <div class="msg" [class]="resolvedClassNames()?.message">
             <ng-container
               [betterToastOutlet]="toast()!.contentComponent!"
-              [betterToastOutletInputs]="contentComponentOutletInputs()"
+                [betterToastOutletInputs]="toast()?.contentComponentInputs"
             />
           </div>
         } @else {
@@ -406,14 +406,6 @@ export class BetterToastItem {
 
     return true;
   });
-  /** Bound to {@link ToasterItem.componentInputs} for headless toasts. */
-  protected readonly componentOutletInputs = computed(
-    (): Record<string, unknown> => this.toast()?.componentInputs ?? {},
-  );
-  /** Bound to {@link ToasterItem.contentComponentInputs} for {@link ToasterService.custom} body components. */
-  protected readonly contentComponentOutletInputs = computed(
-    (): Record<string, unknown> => this.toast()?.contentComponentInputs ?? {},
-  );
   /** When true, host uses no default toast chrome (border, padding, surface) — only stack + motion. */
   protected readonly isHeadless = computed(() => this.toast()?.component != null);
   /**
