@@ -263,7 +263,7 @@ function resolveFrontToastHeightPx(
       }
     }
 
-    @if (showCloseButton()) {
+    @if (closeButton() && !isHeadless() && (stackFront() || stackExpanded())) {
       <button
         type="button"
         class="close-btn"
@@ -439,7 +439,7 @@ export class BetterToastItem {
   private readonly swipeCloseThreshold = 30;
 
   /** Transform applied when swipe-dismiss completes (matches leave direction / headless centering). */
-  protected readonly swipeDismissTransform = computed(() => {
+  private swipeDismissTransform(): string {
     const pos = this.stackPosition();
     const down = this.swipeDirection() === 'down';
     const y = down ? '130%' : '-130%';
@@ -447,7 +447,7 @@ export class BetterToastItem {
       return `translateX(-50%) translateY(${y})`;
     }
     return `translateY(${y})`;
-  });
+  }
 
   /** Prevents swipe-to-dismiss from starting when pressing the row action / cancel control. */
   onRowButtonPointerDown(event: PointerEvent): void {
