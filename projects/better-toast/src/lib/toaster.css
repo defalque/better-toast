@@ -64,7 +64,6 @@
   --toast-action-border: light-dark(var(--color-black), var(--color-white));
 
   --toast-cancel-bg: light-dark(oklch(86.9% 0.005 56.366 / 0.3), oklch(26.8% 0.007 34.298 / 0.85));
-  --toast-cancel-text: var(--toast-color);
   --toast-cancel-border: light-dark(
     oklch(86.9% 0.005 56.366 / 0.1),
     oklch(26.8% 0.007 34.298 / 0.5)
