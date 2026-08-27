@@ -79,15 +79,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* box-shadow is composite, so it can't share light-dark(); override only when dark. */
-.toast-container[data-theme='dark'] {
-  --toast-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-}
-@media (prefers-color-scheme: dark) {
-  .toast-container[data-theme='system'] {
-    --toast-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  }
-}
 .toast-container[data-position^='top'] {
   top: var(--toast-offset-mobile-top);
   left: var(--toast-offset-mobile-left);
