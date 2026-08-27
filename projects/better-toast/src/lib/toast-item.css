@@ -362,23 +362,6 @@
   border-color: var(--toast-cancel-border);
 }
 
-.toast-custom {
-  flex: 1;
-  min-width: 0;
-  width: 100%;
-  font-size: 0.825rem;
-  font-weight: 400;
-  line-height: calc(1.25 / 0.875);
-}
-
-.toast-custom :first-child {
-  margin-top: 0;
-}
-
-.toast-custom :last-child {
-  margin-bottom: 0;
-}
-
 .close-btn {
   position: absolute;
   top: -0.3875rem;
