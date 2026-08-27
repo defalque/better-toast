@@ -439,7 +439,15 @@ export class ToasterService {
         variant: 'default',
         component,
         componentInputs: { ...(options?.inputs ?? {}), toastId: id },
-        ...chromeFromOptions(options),
+        ...chromeFromOptions(
+          options
+            ? {
+                classNames: options.classNames,
+                onDismiss: options.onDismiss,
+                onAutoClose: options.onAutoClose,
+              }
+            : undefined,
+        ),
       },
       durationMs,
     );
