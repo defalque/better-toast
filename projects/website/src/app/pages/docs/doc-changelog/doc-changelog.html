@@ -1,0 +1,229 @@
+<div class="flex w-full gap-2">
+  <div
+    class="doc-container divide-y divide-dashed divide-zinc-200 dark:divide-zinc-600/50 overflow-x-auto"
+  >
+    <div class="pb-16">
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+        Changelog
+      </h1>
+      <p class="text-zinc-700 dark:text-zinc-300 mt-4">
+        Release history for the better-toast library.
+      </p>
+
+      <div class="space-y-4 pt-20 scroll-mt-8" id="0.2.0">
+        <div class="grid grid-cols-1 md:grid-cols-[1fr_3fr] gap-3 sm:gap-x-6">
+          <time
+            class="text-sm sm:text-base font-normal text-zinc-500 dark:text-zinc-400 mt-0.5"
+            datetime="2026-08-27"
+            >August 27, 2026</time
+          >
+          <div class="space-y-6">
+            <h2
+              class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 flex flex-wrap items-baseline gap-x-3 gap-y-1"
+            >
+              <span>0.2.0</span>
+            </h2>
+            <img
+              ngSrc="changelog-stacked-toasts.png"
+              width="763"
+              height="230"
+              alt="Collapsed card stack with the latest toast in front"
+              class="w-full h-auto rounded-xl border border-black/5 shadow-xs dark:border-zinc-700 bg-white"
+            />
+
+            <div class="space-y-2">
+              <h3 class="text-base font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+                Changed
+              </h3>
+              <div class="space-y-5 text-zinc-700 dark:text-zinc-300 text-pretty leading-relaxed">
+                <p>
+                  Collapsed card stack is now the default. Extra toasts collapse into a 3-layer
+                  stack (latest in front). Hover, focus, or a press on touch expands the full list.
+                </p>
+                <p>
+                  Upgrading from 0.1.0 changes the layout without a template change. Set
+                  <code class="p-code-snippet">[stacked]="false"</code> to keep every toast fully
+                  visible.
+                </p>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <h3 class="text-base font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+                Added
+              </h3>
+              <p class="text-zinc-700 dark:text-zinc-300 text-pretty leading-relaxed">
+                <code class="p-code-snippet">stacked</code> input on
+                <code class="p-code-snippet">&lt;better-toaster&gt;</code>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-4 pt-20 scroll-mt-8" id="0.1.0">
+        <div class="grid grid-cols-1 md:grid-cols-[1fr_3fr] gap-3 sm:gap-x-6">
+          <time
+            class="text-sm sm:text-base font-normal text-zinc-500 dark:text-zinc-400 mt-0.5"
+            datetime="2026-08-22"
+            >August 22, 2026</time
+          >
+          <div class="space-y-6">
+            <h2
+              class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 flex flex-wrap items-baseline gap-x-3 gap-y-1"
+            >
+              <span>0.1.0</span>
+            </h2>
+
+            <div class="space-y-2">
+              <h3 class="text-base font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+                Added
+              </h3>
+              <p class="text-zinc-700 dark:text-zinc-300 text-pretty leading-relaxed">
+                Angular 22 support. Peer dependencies are now
+                <code class="p-code-snippet">@angular/core</code> /
+                <code class="p-code-snippet">@angular/common</code> <br />
+                <code class="p-code-snippet">^21.0.0 || ^22.0.0</code>.
+              </p>
+            </div>
+
+            <div class="space-y-2">
+              <h3 class="text-base font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+                Support
+              </h3>
+              <div class="space-y-5 text-zinc-700 dark:text-zinc-300 text-pretty leading-relaxed">
+                <p>
+                  This release was developed and tested on Angular 22. Angular 21 remains declared;
+                  a dedicated Angular 21 CI job is a follow-up.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-4 pt-20 scroll-mt-8" id="0.0.4">
+        <div class="grid grid-cols-1 md:grid-cols-[1fr_3fr] gap-3 sm:gap-x-6">
+          <time
+            class="text-sm sm:text-base font-normal text-zinc-500 dark:text-zinc-400 mt-0.5"
+            datetime="2026-04-29"
+            >April 29, 2026</time
+          >
+          <div class="space-y-6">
+            <h2
+              class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 flex flex-wrap items-baseline gap-x-3 gap-y-1"
+            >
+              <span>0.0.4</span>
+            </h2>
+
+            <div class="space-y-2">
+              <h3 class="text-base font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+                Added
+              </h3>
+              <p class="text-zinc-700 dark:text-zinc-300 text-pretty leading-relaxed">
+                Initial stable release of Better Toast.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-between my-6">
+      <a [routerLink]="['/docs/considerations']" class="flex items-end gap-2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="var(--color-zinc-500)"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="size-4.5"
+        >
+          <path d="m15 18-6-6 6-6" />
+        </svg>
+        <div class="flex flex-col items-start">
+          <p class="text-zinc-600 dark:text-zinc-400 text-[13px]">Previous</p>
+          <p class="text-zinc-600 dark:text-zinc-200 text-sm font-medium">Considerations</p>
+        </div>
+      </a>
+
+      <a [routerLink]="['/docs/better-toaster']" class="flex items-end gap-2">
+        <div class="flex flex-col items-end">
+          <p class="text-zinc-600 dark:text-zinc-400 text-[13px]">Next</p>
+          <p class="text-zinc-600 dark:text-zinc-200 text-sm font-medium">Better Toaster</p>
+        </div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="var(--color-zinc-500)"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="size-4.5"
+        >
+          <path d="m9 18 6-6-6-6" />
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="toc">
+    <div class="flex items-baseline gap-2">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="var(--color-zinc-500)"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="size-4"
+      >
+        <path d="M4 14h6" />
+        <path d="M4 2h10" />
+        <rect x="4" y="18" width="16" height="4" rx="1" />
+        <rect x="4" y="6" width="16" height="4" rx="1" />
+      </svg>
+      <span class="text-zinc-500">On this page</span>
+    </div>
+
+    <div class="ml-6 toc-content relative">
+      <div
+        class="absolute top-0 -left-4 w-px h-full border-l border-dashed border-zinc-200 dark:border-zinc-600/50 -z-10"
+      ></div>
+
+      <ul class="space-y-2">
+        <li>
+          <a
+            href="/docs/changelog#0.2.0"
+            [attr.data-active]="activeSection() === '0.2.0'"
+            [class]="tocLinkClass('0.2.0')"
+            (click)="activeSection.set('0.2.0')"
+            >0.2.0</a
+          >
+        </li>
+        <li>
+          <a
+            href="/docs/changelog#0.1.0"
+            [attr.data-active]="activeSection() === '0.1.0'"
+            [class]="tocLinkClass('0.1.0')"
+            (click)="activeSection.set('0.1.0')"
+            >0.1.0</a
+          >
+        </li>
+        <li>
+          <a
+            href="/docs/changelog#0.0.4"
+            [attr.data-active]="activeSection() === '0.0.4'"
+            [class]="tocLinkClass('0.0.4')"
+            (click)="activeSection.set('0.0.4')"
+            >0.0.4</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

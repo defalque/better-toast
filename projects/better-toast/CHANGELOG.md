@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.0
+## 0.2.0 - 2026-08-27
 
 ### Changed
 
@@ -10,7 +10,7 @@
 
 - `[stacked]` input on `<better-toaster>` (`true` by default).
 
-## 0.1.0
+## 0.1.0 - 2026-08-22
 
 ### Added
 
@@ -21,3 +21,9 @@
 - Current Angular major plus the previous major. When Angular 23 is current, Angular 21 will be dropped.
 
 This release was developed and tested on Angular 22. Angular 21 remains declared; a dedicated Angular 21 CI job is a follow-up.
+
+## 0.0.4 - 2026-04-29
+
+### Added
+
+- Initial stable release of Better Toast.

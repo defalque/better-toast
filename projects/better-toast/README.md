@@ -10,6 +10,8 @@
 
 You can find the full documentation on the [Better Toast](https://better-toast.vercel.app) website.
 
+The [changelog](https://better-toast.vercel.app/docs/changelog) lists what changed in each release.
+
 ## Install
 
 ```bash

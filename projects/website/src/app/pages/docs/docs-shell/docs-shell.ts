@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common';
 import { Component, model, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { ThemeToggle } from '../../../components/theme-toggle/theme-toggle';
@@ -13,6 +14,7 @@ import {
 @Component({
   selector: 'app-docs-shell',
   imports: [
+    NgOptimizedImage,
     RouterOutlet,
     RouterLink,
     RouterLinkActive,
