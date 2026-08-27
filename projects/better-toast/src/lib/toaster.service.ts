@@ -40,6 +40,25 @@ export function parseToasterDurationMs(value: ToasterDuration): number {
   return value;
 }
 
+function newToastId(): string {
+  return globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
+}
+
+function chromeFromOptions(options?: ToastOptions): Partial<ToasterItem> {
+  if (!options) {
+    return {};
+  }
+  const { icon, style, classNames, description, onDismiss, onAutoClose } = options;
+  return {
+    ...(icon !== undefined ? { icon } : {}),
+    ...(style !== undefined ? { style } : {}),
+    ...(classNames !== undefined ? { classNames } : {}),
+    ...(description !== undefined ? { description } : {}),
+    ...(onDismiss !== undefined ? { onDismiss } : {}),
+    ...(onAutoClose !== undefined ? { onAutoClose } : {}),
+  };
+}
+
 function shouldScheduleAutoDismiss(durationMs: number): boolean {
   return Number.isFinite(durationMs) && durationMs > 0;
 }
@@ -361,6 +380,12 @@ export class ToasterService {
     }
   }
 
+  private pushToast(item: ToasterItem, durationMs: number): string {
+    this._toasts.update((list) => [...list, item]);
+    this.scheduleAutoDismiss(item.id, durationMs);
+    return item.id;
+  }
+
   private add(
     message: string,
     variant: ToastVariant,
@@ -368,28 +393,17 @@ export class ToasterService {
     options?: ToastOptions,
     toastAction?: NonNullable<ToasterItem['toastAction']>,
   ): string {
-    const id = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
-    const icon = options?.icon;
-    const style = options?.style;
-    const classNames = options?.classNames;
-    const onDismiss = options?.onDismiss;
-    const onAutoClose = options?.onAutoClose;
-    const description = options?.description;
-    const item: ToasterItem = {
-      id,
-      message,
-      variant,
-      ...(icon !== undefined ? { icon } : {}),
-      ...(style !== undefined ? { style } : {}),
-      ...(classNames !== undefined ? { classNames } : {}),
-      ...(description !== undefined ? { description } : {}),
-      ...(onDismiss !== undefined ? { onDismiss } : {}),
-      ...(onAutoClose !== undefined ? { onAutoClose } : {}),
-      ...(toastAction !== undefined ? { toastAction } : {}),
-    };
-    this._toasts.update((list) => [...list, item]);
-    this.scheduleAutoDismiss(id, durationMs);
-    return id;
+    const id = newToastId();
+    return this.pushToast(
+      {
+        id,
+        message,
+        variant,
+        ...chromeFromOptions(options),
+        ...(toastAction !== undefined ? { toastAction } : {}),
+      },
+      durationMs,
+    );
   }
 
   private addContentComponent(
@@ -398,35 +412,18 @@ export class ToasterService {
     durationMs: number,
     options?: CustomToastOptions,
   ): string {
-    const id = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
-    const componentInputs: Record<string, unknown> = {
-      ...(options?.inputs ?? {}),
-      toastId: id,
-    };
-    const icon = options?.icon;
-    const style = options?.style;
-    const classNames = options?.classNames;
-    const onDismiss = options?.onDismiss;
-    const onAutoClose = options?.onAutoClose;
-    const description = options?.description;
-
-    const item: ToasterItem = {
-      id,
-      message: '',
-      variant,
-      contentComponent: component,
-      contentComponentInputs: componentInputs,
-      ...(icon !== undefined ? { icon } : {}),
-      ...(style !== undefined ? { style } : {}),
-      ...(classNames !== undefined ? { classNames } : {}),
-      ...(description !== undefined ? { description } : {}),
-      ...(onDismiss !== undefined ? { onDismiss } : {}),
-      ...(onAutoClose !== undefined ? { onAutoClose } : {}),
-    };
-
-    this._toasts.update((list) => [...list, item]);
-    this.scheduleAutoDismiss(id, durationMs);
-    return id;
+    const id = newToastId();
+    return this.pushToast(
+      {
+        id,
+        message: '',
+        variant,
+        contentComponent: component,
+        contentComponentInputs: { ...(options?.inputs ?? {}), toastId: id },
+        ...chromeFromOptions(options),
+      },
+      durationMs,
+    );
   }
 
   private addComponent(
@@ -434,33 +431,18 @@ export class ToasterService {
     durationMs: number,
     options?: HeadlessToastOptions,
   ): string {
-    const id = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
-
-    const componentInputs: Record<string, unknown> = {
-      ...(options?.inputs ?? {}),
-      toastId: id,
-    };
-
-    const classNames = options?.classNames;
-    const onDismiss = options?.onDismiss;
-    const onAutoClose = options?.onAutoClose;
-
-    const item: ToasterItem = {
-      id,
-      message: '',
-      variant: 'default',
-      component,
-      componentInputs,
-      ...(classNames !== undefined ? { classNames } : {}),
-      ...(onDismiss !== undefined ? { onDismiss } : {}),
-      ...(onAutoClose !== undefined ? { onAutoClose } : {}),
-    };
-
-    this._toasts.update((list) => [...list, item]);
-
-    this.scheduleAutoDismiss(id, durationMs);
-
-    return id;
+    const id = newToastId();
+    return this.pushToast(
+      {
+        id,
+        message: '',
+        variant: 'default',
+        component,
+        componentInputs: { ...(options?.inputs ?? {}), toastId: id },
+        ...chromeFromOptions(options),
+      },
+      durationMs,
+    );
   }
 
   private updateToast(
