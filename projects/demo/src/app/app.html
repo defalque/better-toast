@@ -88,6 +88,13 @@
         <button
           type="button"
           class="border border-zinc-200 dark:border-zinc-800/80 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-200/70 dark:hover:bg-zinc-800 bg-zinc-50 dark:bg-zinc-950/50 transition-all active:scale-95 cursor-pointer"
+          (click)="selectedToastDemo.set('customIcon'); showCustomIconToast()"
+        >
+          Custom icon
+        </button>
+        <button
+          type="button"
+          class="border border-zinc-200 dark:border-zinc-800/80 py-2.5 text-[0.85rem] font-medium rounded-md hover:bg-zinc-200/70 dark:hover:bg-zinc-800 bg-zinc-50 dark:bg-zinc-950/50 transition-all active:scale-95 cursor-pointer"
           (click)="selectedToastDemo.set('promise'); showPromiseToast()"
         >
           Promise
@@ -173,6 +180,51 @@
         class="text-xs text-zinc-700 dark:text-zinc-100 p-4 bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800/80 rounded-md"
       >
         &lt;<strong>better-toaster</strong> position="{{ toasterPosition() }}" /&gt;
+      </code>
+    </div>
+
+    <div class="grid gap-6">
+      <div class="space-y-2">
+        <div class="flex items-center gap-3">
+          <h2 class="text-lg font-semibold tracking-tight">Stacked</h2>
+          <div class="flex items-center gap-3">
+            <button
+              type="button"
+              role="switch"
+              [attr.aria-checked]="stacked()"
+              [attr.aria-label]="stacked() ? 'Stacked on' : 'Stacked off'"
+              (click)="toggleStacked()"
+              class="relative border-2 inline-flex h-6 w-10 shrink-0 cursor-pointer rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 dark:focus-visible:ring-zinc-500 dark:focus-visible:ring-offset-zinc-950 {{
+                stacked()
+                  ? 'bg-zinc-600 dark:bg-zinc-600 border-zinc-600 dark:border-zinc-600'
+                  : 'bg-zinc-200 dark:bg-zinc-950/50 border-zinc-200 dark:border-zinc-950/50'
+              }}"
+            >
+              <span
+                aria-hidden="true"
+                class="pointer-events-none absolute top-1/2 left-1 -translate-y-1/2 inline-block h-4 w-4 rounded-full bg-white shadow-md ring-0 transition-transform duration-200 ease-out motion-reduce:transition-none"
+                [class.translate-x-3]="stacked()"
+              ></span>
+            </button>
+          </div>
+        </div>
+        <p class="text-sm text-zinc-700 dark:text-zinc-300">
+          When set to
+          <code
+            class="font-mono text-[13px] bg-zinc-100 dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-1"
+            >true</code
+          >, extra toasts collapse into a card stack. Hover, focus, or a press on touch expands the
+          list. When
+          <code
+            class="font-mono text-[13px] bg-zinc-100 dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800/80 rounded-md px-1"
+            >false</code
+          >, every toast stays fully visible.
+        </p>
+      </div>
+      <code
+        class="text-xs text-zinc-700 dark:text-zinc-100 p-4 bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800/80 rounded-md"
+      >
+        &lt;<strong>better-toaster</strong> [stacked]="{{ stacked() }}" /&gt;
       </code>
     </div>
 
@@ -486,6 +538,7 @@
 
 <better-toaster
   [position]="toasterPosition()"
+  [stacked]="stacked()"
   [offset]="toasterOffset()"
   [mobileOffset]="toasterMobileOffset()"
   [richColors]="richColors()"

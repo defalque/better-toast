@@ -4,6 +4,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   ElementRef,
   inject,
   input,
@@ -33,9 +34,33 @@ import {
 } from './toaster.types';
 
 const GAP = 16;
+/**
+ * Visible layers in the collapsed stack. Older toasts stay in the list and appear on hover.
+ * CSS hides the rest with `:nth-last-child(n + 4)` — keep that selector in sync.
+ */
+const VISIBLE_TOASTS = 3;
 
 function swipeDirectionForPosition(position: ToasterPosition): 'down' | 'up' {
   return position.startsWith('bottom') ? 'down' : 'up';
+}
+
+/** True when the event target is a toast row (not the list itself, which can steal focus on dismiss). */
+function isInsideToastItem(target: EventTarget | null): boolean {
+  if (target instanceof Element) {
+    return target.closest('.toast') != null;
+  }
+  if (target instanceof Node && target.parentElement) {
+    return target.parentElement.closest('.toast') != null;
+  }
+  return false;
+}
+
+/**
+ * Touch and pen pointers do not hover. `pointerleave` fires on lift, which would collapse
+ * the stack before a second tap can reach a toast behind the front card.
+ */
+function isNonHoverPointer(event: PointerEvent): boolean {
+  return event.pointerType === 'touch' || event.pointerType === 'pen';
 }
 
 function resolveToasterOffsetSide(
@@ -71,6 +96,20 @@ function mergeToastClassNames(
   return { ...base, ...override };
 }
 
+/** Newest measured height in the stack. Skips the front toast until it has been measured. */
+function resolveFrontToastHeightPx(
+  toasts: readonly { readonly id: string }[],
+  heights: Record<string, number>,
+): number | undefined {
+  for (let i = toasts.length - 1; i >= 0; i--) {
+    const height = heights[toasts[i].id];
+    if (height) {
+      return height;
+    }
+  }
+  return undefined;
+}
+
 @Component({
   selector: 'li[betterToastItem]',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -85,7 +124,7 @@ function mergeToastClassNames(
     '[attr.data-headless]': 'isHeadless() ? "true" : null',
     '[attr.data-swipe-direction]': 'swipeDirection()',
     '[attr.data-theme]': 'theme()',
-    '[style.--offset]': 'offset() + "px"',
+    '[style.--initial-height]': 'initialHeightCss()',
     '[style]': 'isHeadless() ? undefined : hostStyle()',
     '[animate.leave]': '"leave"',
     '(pointerdown)': 'onPointerDown($event)',
@@ -93,7 +132,7 @@ function mergeToastClassNames(
     '(pointerup)': 'onPointerUp()',
     '(pointercancel)': 'onPointerCancel()',
     '(pointerenter)': 'onPointerEnter()',
-    '(pointerleave)': 'onPointerLeave()',
+    '(pointerleave)': 'onPointerLeave($event)',
   },
   template: `
     @if (toast()?.component) {
@@ -255,11 +294,13 @@ function mergeToastClassNames(
       }
     }
 
-    @if (closeButton() && !isHeadless()) {
+    @if (showCloseButton()) {
       <button
         type="button"
         class="close-btn"
         [class]="resolvedClassNames()?.closeButton"
+        [animate.enter]="closeButtonEnterClass()"
+        [animate.leave]="closeButtonLeaveClass()"
         (click)="toaster.dismiss(toast()?.id ?? '')"
         [attr.aria-label]="dismissButtonAriaLabel()"
       >
@@ -298,8 +339,6 @@ export class BetterToastItem {
   toasterClassNames = input<ToastChromeClassNames | undefined>();
   /** Which icon and color treatment to show for this row. */
   variant = input<ToastVariant>('default');
-  /** Vertical stack offset in px; bound to `--offset` on the host for layout. */
-  offset = input.required<number>();
   /** When false, the dismiss control is not rendered (toasts may still auto-dismiss or be cleared via the service). */
   closeButton = input(true);
   /**
@@ -314,6 +353,12 @@ export class BetterToastItem {
   dismissButtonAriaLabel = input<string>(DEFAULT_TOASTER_ARIA_DISMISS_BUTTON);
   /** Stack anchor from `<better-toaster [position]>` — drives swipe axis and `data-swipe-direction`. */
   stackPosition = input<ToasterPosition>('bottom-right');
+  /** True while the stack is hovered or focus is inside it (expanded layout). */
+  stackExpanded = input(false);
+  /** True when this toast is the newest (front) layer in the stack. */
+  stackFront = input(false);
+  /** Tells the parent whether the pointer is still over the toast stack. */
+  stackHover = output<boolean>();
   /**
    * Color palette from `<better-toaster [theme]>`; mirrored on the host as `data-theme`
    * so item-scoped CSS can react to the chosen mode without `:host-context()`.
@@ -321,6 +366,13 @@ export class BetterToastItem {
   theme = input<ToasterTheme>('system');
   /** Emits the measured host height in px once after the first render so the parent can stack siblings. */
   heightChange = output<number>();
+  /** Natural host height in px, captured once after first paint (used to restore height on expand). */
+  private readonly initialHeight = signal<number | undefined>(undefined);
+  /** Bound as `--initial-height` so collapsed layers can return to their own size. */
+  protected readonly initialHeightCss = computed(() => {
+    const height = this.initialHeight();
+    return height ? `${height}px` : null;
+  });
 
   /**
    * Stacked title + optional secondary line: {@link ToastVariant} **`description`**, or any variant with
@@ -393,6 +445,21 @@ export class BetterToastItem {
   );
   /** When true, host uses no default toast chrome (border, padding, surface) — only stack + motion. */
   protected readonly isHeadless = computed(() => this.toast()?.component != null);
+  /**
+   * Dismiss control stays on the front toast. Stacked toasts mount it only while the stack is
+   * expanded so `animate.enter` / `animate.leave` can run without moving the front control.
+   */
+  protected readonly showCloseButton = computed(
+    () => this.closeButton() && !this.isHeadless() && (this.stackFront() || this.stackExpanded()),
+  );
+  /** Enter class for stacked close buttons; the front control does not animate in. */
+  protected readonly closeButtonEnterClass = computed(() =>
+    this.stackFront() ? null : 'close-enter',
+  );
+  /** Leave class for stacked close buttons; the front control does not animate out. */
+  protected readonly closeButtonLeaveClass = computed(() =>
+    this.stackFront() ? null : 'close-leave',
+  );
   /** `down` when anchored to the bottom (dismiss by swiping down), `up` when anchored to the top. */
   protected readonly swipeDirection = computed(() =>
     swipeDirectionForPosition(this.stackPosition()),
@@ -404,6 +471,7 @@ export class BetterToastItem {
   constructor() {
     afterNextRender(() => {
       const height = this.host.nativeElement.offsetHeight;
+      this.initialHeight.set(height);
       this.heightChange.emit(height);
     });
   }
@@ -446,15 +514,26 @@ export class BetterToastItem {
    * Pauses auto-dismiss when the pointer enters the toast.
    */
   onPointerEnter() {
+    this.stackHover.emit(true);
     const id = this.toast()?.id;
     if (id) {
       this.toaster.pauseAutoDismiss(id);
     }
   }
   /**
-   * Resumes auto-dismiss when the pointer leaves the toast.
+   * Resumes auto-dismiss when a hover pointer leaves the toast stack.
+   * Moving onto a sibling toast keeps the stack expanded.
+   * Touch/pen leave is ignored: the stack stays expanded until a tap outside.
    */
-  onPointerLeave() {
+  onPointerLeave(event: PointerEvent) {
+    if (isNonHoverPointer(event)) {
+      return;
+    }
+    const stillInStack = isInsideToastItem(event.relatedTarget);
+    this.stackHover.emit(stillInStack);
+    if (stillInStack || this.stackExpanded()) {
+      return;
+    }
     const id = this.toast()?.id;
     if (id) {
       this.toaster.resumeAutoDismiss(id);
@@ -561,6 +640,8 @@ export class BetterToastItem {
 
 /**
  * Renders the toaster stack. Add once near the root of your app (e.g. in `App`).
+ * With `[stacked]="true"` (default), extra toasts collapse into a 3-layer card stack (latest in front); hover, focus, or a press on touch expands the full list.
+ * Set `[stacked]="false"` to keep every toast fully visible, spaced by height plus gap.
  * Variant-colored surfaces are off by default; set `[richColors]="true"` to enable them.
  * Set `[duration]` for auto-dismiss when service helpers omit their duration argument.
  * Use **`duration="Infinity"`** (that exact literal) or `[duration]="…"` with a number / {@link TOAST_DURATION_MANUAL_DISMISS} for persist until dismissed; `0` still works.
@@ -577,6 +658,9 @@ export class BetterToastItem {
   selector: 'better-toaster',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [BetterToastItem],
+  host: {
+    '(document:pointerdown)': 'onDocumentPointerDown($event)',
+  },
   template: `
     <section
       [attr.aria-label]="notificationsRegionAriaLabel()"
@@ -595,10 +679,16 @@ export class BetterToastItem {
         [style.--toast-offset-mobile-right]="mobileOffsetRight()"
         [style.--toast-offset-mobile-bottom]="mobileOffsetBottom()"
         [style.--toast-offset-mobile-left]="mobileOffsetLeft()"
+        [style.--toast-gap]="stackGapPx + 'px'"
+        [style.--front-toast-height]="frontToastHeightCss()"
         [attr.data-position]="position()"
         [attr.data-rich-colors]="richColors()"
         [attr.data-theme]="theme()"
+        [attr.data-stacked]="stacked() ? 'true' : 'false'"
+        [attr.data-expanded]="layoutExpanded() ? 'true' : 'false'"
         tabindex="-1"
+        (focusin)="onStackFocusIn($event)"
+        (focusout)="onStackFocusOut($event)"
       >
         @for (toast of toaster.toasts(); track toast.id) {
           <li
@@ -608,14 +698,22 @@ export class BetterToastItem {
             [toasterClassNames]="toastOptions()?.classNames"
             [variant]="toast.variant"
             [customIcons]="icons()"
-            [offset]="offsets()[toast.id]"
             [closeButton]="closeButton()"
             [dismissButtonAriaLabel]="dismissButtonAriaLabel()"
             [stackPosition]="position()"
+            [stackExpanded]="layoutExpanded()"
+            [stackFront]="$last"
             [theme]="theme()"
             (heightChange)="onHeightChange(toast.id, $event)"
+            (stackHover)="onItemStackHover($event)"
+            [style.--index]="$count - 1 - $index"
+            [style.--offset]="toastOffsetCss(toast.id)"
             [attr.data-position]="position()"
             [attr.data-rich-colors]="richColors()"
+            [attr.data-expanded]="layoutExpanded() ? 'true' : 'false'"
+            [attr.data-front]="$last ? 'true' : null"
+            [attr.aria-hidden]="hiddenToastIds().has(toast.id) ? 'true' : null"
+            [attr.inert]="hiddenToastIds().has(toast.id) ? true : null"
           ></li>
         }
       </ol>
@@ -641,6 +739,11 @@ export class BetterToaster implements OnInit {
   });
   /** Where the stack is anchored on the viewport. */
   readonly position = input<ToasterPosition>('bottom-right');
+  /**
+   * When true (default), extra toasts collapse into a 3-layer card stack; hover, focus, or a press on touch expands the list.
+   * When false, every toast stays fully visible, spaced by measured height plus gap.
+   */
+  readonly stacked = input(true);
   /**
    * Viewport inset for the toast stack: a single CSS value for all sides, or an object with any of `top` / `right` / `bottom` / `left`.
    * Binds `--toast-offset-top` / `right` / `bottom` / `left` on `.toast-container`.
@@ -685,6 +788,38 @@ export class BetterToaster implements OnInit {
 
   /** Measured height in px per toast id, updated when a toast item reports `heightChange`. */
   readonly heights = signal<Record<string, number>>({} as Record<string, number>);
+  /** Gap between expanded toasts; kept in sync with layout math and the CSS hit-area. */
+  protected readonly stackGapPx = GAP;
+  /** Height of the newest measured toast, used so collapsed layers share one silhouette. */
+  protected readonly frontToastHeightCss = computed(() => {
+    const height = resolveFrontToastHeightPx(this.toaster.toasts(), this.heights());
+    return height ? `${height}px` : null;
+  });
+  /** Pointer is over a toast (or moving between toasts in the stack). */
+  private readonly hovering = signal(false);
+  /** Keyboard focus is inside the toast list. */
+  private readonly focusWithin = signal(false);
+  /** Hover or focus: expands a stacked list and pauses auto-dismiss. */
+  protected readonly expanded = computed(() => this.hovering() || this.focusWithin());
+  /** Layout uses the expanded list while stacked is off, or while the stack is hovered / focused. */
+  protected readonly layoutExpanded = computed(() => !this.stacked() || this.expanded());
+
+  constructor() {
+    effect(() => {
+      if (this.toaster.toasts().length === 0) {
+        this.hovering.set(false);
+        this.focusWithin.set(false);
+      }
+    });
+    effect(() => {
+      if (!this.expanded()) {
+        return;
+      }
+      for (const toast of this.toaster.toasts()) {
+        this.toaster.pauseAutoDismiss(toast.id);
+      }
+    });
+  }
 
   /** Resolved `aria-label` for the outer `<section>` live region. */
   protected readonly notificationsRegionAriaLabel = computed(
@@ -725,10 +860,11 @@ export class BetterToaster implements OnInit {
   );
 
   /**
-   * Vertical offset in px for each toast id so stacked toasts do not overlap.
-   * Walks newest-to-oldest (end of the list first): the latest toast has offset 0; each older toast sits above by the sum of heights below plus the inter-toast gap.
+   * `--index` is the stack depth: last item is 0 (front), older items count up.
+   * Collapsed peek, scale, front, and hidden layers are CSS from that index / `:last-child`.
+   * Expanded offset still needs measured heights: each toast sits at the sum of those in front plus gap.
    */
-  readonly offsets = computed(() => {
+  protected readonly expandedOffsets = computed(() => {
     const toastsList = this.toaster.toasts();
     const heights = this.heights();
     const result: Record<string, number> = {};
@@ -743,9 +879,91 @@ export class BetterToaster implements OnInit {
     return result;
   });
 
-  /** Merges a toast item’s reported height into `heights` so `offsets` can recompute. */
+  /** Oldest toasts past the 3 visible collapsed layers. */
+  protected readonly hiddenToastIds = computed(() => {
+    if (this.layoutExpanded()) {
+      return new Set<string>();
+    }
+    const toasts = this.toaster.toasts();
+    const hidden = new Set<string>();
+    const cutoff = toasts.length - VISIBLE_TOASTS;
+    for (let i = 0; i < cutoff; i++) {
+      hidden.add(toasts[i].id);
+    }
+    return hidden;
+  });
+
+  /** Expanded stack only: measured height + gap. Collapsed `--offset` comes from `--index` in CSS. */
+  protected toastOffsetCss(toastId: string): string | null {
+    if (!this.layoutExpanded()) {
+      return null;
+    }
+    return `${this.expandedOffsets()[toastId] ?? 0}px`;
+  }
+
+  /** Merges a toast item’s reported height into `heights` so expanded offsets can recompute. */
   onHeightChange(toastId: string, height: number) {
     this.heights.update((h) => ({ ...h, [toastId]: height }));
+  }
+
+  /** Expands the stack and pauses auto-dismiss while the pointer is over any toast. */
+  onItemStackHover(hovering: boolean): void {
+    this.hovering.set(hovering);
+    if (hovering || this.focusWithin()) {
+      this.pauseAllAutoDismiss();
+    } else {
+      this.resumeAllAutoDismiss();
+    }
+  }
+
+  /**
+   * Collapses a touch/pen sticky expand when the next press is outside the stack.
+   * Hover pointers already collapse on `pointerleave`.
+   */
+  onDocumentPointerDown(event: PointerEvent): void {
+    if (!this.hovering() || isInsideToastItem(event.target)) {
+      return;
+    }
+    this.hovering.set(false);
+    if (!this.focusWithin()) {
+      this.resumeAllAutoDismiss();
+    }
+  }
+
+  /** Expands the stack when a toast (or dismiss control) receives keyboard focus. */
+  onStackFocusIn(event: FocusEvent): void {
+    if (!isInsideToastItem(event.target)) {
+      if (event.target instanceof HTMLElement) {
+        event.target.blur();
+      }
+      return;
+    }
+    this.focusWithin.set(true);
+    this.pauseAllAutoDismiss();
+  }
+
+  /** Collapses when focus leaves the list, unless the pointer is still over it. */
+  onStackFocusOut(event: FocusEvent): void {
+    const next = event.relatedTarget;
+    if (isInsideToastItem(next)) {
+      return;
+    }
+    this.focusWithin.set(false);
+    if (!this.hovering()) {
+      this.resumeAllAutoDismiss();
+    }
+  }
+
+  private pauseAllAutoDismiss(): void {
+    for (const toast of this.toaster.toasts()) {
+      this.toaster.pauseAutoDismiss(toast.id);
+    }
+  }
+
+  private resumeAllAutoDismiss(): void {
+    for (const toast of this.toaster.toasts()) {
+      this.toaster.resumeAutoDismiss(toast.id);
+    }
   }
 
   /**

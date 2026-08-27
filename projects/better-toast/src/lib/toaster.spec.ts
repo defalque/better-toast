@@ -1,5 +1,5 @@
 import { Component, inject, input, ChangeDetectionStrategy } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
 
 import { BetterToaster as Toaster } from './toaster';
@@ -46,6 +46,13 @@ class StartupDurationHost {
   ngOnInit(): void {
     this.toaster.show('Startup toast', { durationMs: 'Infinity' });
   }
+}
+
+async function expandStack(fixture: ComponentFixture<unknown>): Promise<void> {
+  const toast = fixture.nativeElement.querySelector('li.toast') as HTMLElement | null;
+  toast?.dispatchEvent(new PointerEvent('pointerenter', { bubbles: true }));
+  fixture.detectChanges();
+  await fixture.whenStable();
 }
 
 describe('better-toast', () => {
@@ -561,7 +568,7 @@ describe('better-toast', () => {
     expect(fixture.nativeElement.querySelector('.close-btn')).toBeNull();
   });
 
-  it('shows the close button by default', async () => {
+  it('shows the close button on the front toast while the stack is collapsed', async () => {
     TestBed.configureTestingModule({ imports: [Toaster] });
     const fixture = TestBed.createComponent(Toaster);
     fixture.detectChanges();
@@ -572,7 +579,33 @@ describe('better-toast', () => {
     fixture.detectChanges();
     await fixture.whenStable();
 
-    expect(fixture.nativeElement.querySelector('.close-btn')).toBeTruthy();
+    const front = fixture.nativeElement.querySelector('li.toast') as HTMLElement;
+    expect(front.getAttribute('data-front')).toBe('true');
+    expect(front.querySelector('.close-btn')).toBeTruthy();
+  });
+
+  it('shows close buttons on stacked toasts only while the stack is expanded', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    toaster.show('one', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    toaster.show('two', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const hosts = [...fixture.nativeElement.querySelectorAll('li.toast')] as HTMLElement[];
+    const [older, front] = hosts;
+    expect(front.getAttribute('data-front')).toBe('true');
+    expect(front.querySelector('.close-btn')).toBeTruthy();
+    expect(older.querySelector('.close-btn')).toBeNull();
+
+    await expandStack(fixture);
+
+    expect(front.querySelector('.close-btn')).toBeTruthy();
+    expect(older.querySelector('.close-btn')).toBeTruthy();
   });
 
   it('hides the icon when options.icon is null', async () => {
@@ -857,5 +890,353 @@ describe('better-toast', () => {
     const btn = fixture.nativeElement.querySelector('.cancel-btn') as HTMLButtonElement;
     expect(btn.classList.contains('toast-cancel')).toBe(true);
     expect(btn.classList.contains('host-cancel')).toBe(false);
+  });
+
+  it('collapses extra toasts behind the latest and expands the stack on hover', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    toaster.show('one', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    toaster.show('two', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    toaster.show('three', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    toaster.show('four', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const hosts = [...fixture.nativeElement.querySelectorAll('li.toast')] as HTMLElement[];
+    expect(hosts).toHaveLength(4);
+
+    expect(hosts[3].getAttribute('data-front')).toBe('true');
+    expect(hosts[3].textContent).toContain('four');
+    expect(hosts[3].style.getPropertyValue('--index').trim()).toBe('0');
+    expect(hosts[2].style.getPropertyValue('--index').trim()).toBe('1');
+    expect(hosts[1].style.getPropertyValue('--index').trim()).toBe('2');
+    expect(hosts[0].style.getPropertyValue('--index').trim()).toBe('3');
+
+    expect(hosts[0].getAttribute('aria-hidden')).toBe('true');
+    expect(hosts[0].hasAttribute('inert')).toBe(true);
+    expect(hosts[1].getAttribute('aria-hidden')).toBeNull();
+    expect(hosts[2].getAttribute('aria-hidden')).toBeNull();
+    expect(hosts[3].getAttribute('aria-hidden')).toBeNull();
+
+    const container = fixture.nativeElement.querySelector('.toast-container') as HTMLElement;
+    expect(container.getAttribute('data-stacked')).toBe('true');
+    expect(container.getAttribute('data-expanded')).toBe('false');
+
+    hosts[3].dispatchEvent(new PointerEvent('pointerenter', { bubbles: true }));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(container.getAttribute('data-expanded')).toBe('true');
+    const expandedHosts = [...fixture.nativeElement.querySelectorAll('li.toast')] as HTMLElement[];
+    expect(expandedHosts.every((host) => host.getAttribute('aria-hidden') == null)).toBe(true);
+    expect(expandedHosts[0].hasAttribute('inert')).toBe(false);
+  });
+
+  it('lists every toast when stacked is false', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.componentRef.setInput('stacked', false);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    toaster.show('one', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    toaster.show('two', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    toaster.show('three', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    toaster.show('four', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const container = fixture.nativeElement.querySelector('.toast-container') as HTMLElement;
+    expect(container.getAttribute('data-stacked')).toBe('false');
+    expect(container.getAttribute('data-expanded')).toBe('true');
+
+    const hosts = [...fixture.nativeElement.querySelectorAll('li.toast')] as HTMLElement[];
+    expect(hosts).toHaveLength(4);
+    expect(hosts.every((host) => host.getAttribute('aria-hidden') == null)).toBe(true);
+    expect(hosts.every((host) => host.querySelector('.close-btn'))).toBe(true);
+
+    const [oldest, second, third, front] = toaster.toasts();
+    fixture.componentInstance.onHeightChange(oldest.id, 40);
+    fixture.componentInstance.onHeightChange(second.id, 50);
+    fixture.componentInstance.onHeightChange(third.id, 60);
+    fixture.componentInstance.onHeightChange(front.id, 70);
+    fixture.detectChanges();
+
+    const spaced = [...fixture.nativeElement.querySelectorAll('li.toast')] as HTMLElement[];
+    expect(spaced[3].style.getPropertyValue('--offset').trim()).toBe('0px');
+    expect(spaced[2].style.getPropertyValue('--offset').trim()).toBe('86px');
+    expect(spaced[1].style.getPropertyValue('--offset').trim()).toBe('162px');
+    expect(spaced[0].style.getPropertyValue('--offset').trim()).toBe('228px');
+  });
+
+  it('reveals hidden toasts when stacked is turned off', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    toaster.show('one', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    toaster.show('two', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    toaster.show('three', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    toaster.show('four', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const hosts = [...fixture.nativeElement.querySelectorAll('li.toast')] as HTMLElement[];
+    expect(hosts[0].getAttribute('aria-hidden')).toBe('true');
+
+    fixture.componentRef.setInput('stacked', false);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const revealed = [...fixture.nativeElement.querySelectorAll('li.toast')] as HTMLElement[];
+    expect(revealed.every((host) => host.getAttribute('aria-hidden') == null)).toBe(true);
+
+    const container = fixture.nativeElement.querySelector('.toast-container') as HTMLElement;
+    expect(container.getAttribute('data-expanded')).toBe('true');
+  });
+
+  it('keeps the stack expanded when the pointer moves onto a sibling toast', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    toaster.show('one', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    toaster.show('two', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const hosts = [...fixture.nativeElement.querySelectorAll('li.toast')] as HTMLElement[];
+    const container = fixture.nativeElement.querySelector('.toast-container') as HTMLElement;
+
+    hosts[1].dispatchEvent(new PointerEvent('pointerenter', { bubbles: true }));
+    fixture.detectChanges();
+    expect(container.getAttribute('data-expanded')).toBe('true');
+
+    hosts[1].dispatchEvent(
+      new PointerEvent('pointerleave', { bubbles: true, relatedTarget: hosts[0] }),
+    );
+    fixture.detectChanges();
+    expect(container.getAttribute('data-expanded')).toBe('true');
+  });
+
+  it('keeps the stack expanded after a touch press so stacked toasts can be dismissed', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    toaster.show('one', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    toaster.show('two', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    toaster.show('three', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    toaster.show('four', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const hosts = [...fixture.nativeElement.querySelectorAll('li.toast')] as HTMLElement[];
+    const container = fixture.nativeElement.querySelector('.toast-container') as HTMLElement;
+    const front = hosts[3];
+
+    front.dispatchEvent(new PointerEvent('pointerenter', { bubbles: true, pointerType: 'touch' }));
+    front.dispatchEvent(
+      new PointerEvent('pointerdown', { bubbles: true, pointerType: 'touch', pointerId: 1 }),
+    );
+    front.dispatchEvent(
+      new PointerEvent('pointerup', { bubbles: true, pointerType: 'touch', pointerId: 1 }),
+    );
+    front.dispatchEvent(new PointerEvent('pointerleave', { bubbles: true, pointerType: 'touch' }));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(container.getAttribute('data-expanded')).toBe('true');
+    expect(hosts.every((host) => host.getAttribute('aria-hidden') == null)).toBe(true);
+    expect(hosts[0].hasAttribute('inert')).toBe(false);
+
+    const oldestClose = hosts[0].querySelector('.close-btn') as HTMLButtonElement;
+    oldestClose.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(toaster.toasts().map((toast) => toast.message)).toEqual(['two', 'three', 'four']);
+    expect(container.getAttribute('data-expanded')).toBe('true');
+  });
+
+  it('collapses a touch-expanded stack when pressing outside it', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    toaster.show('one', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    toaster.show('two', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const hosts = [...fixture.nativeElement.querySelectorAll('li.toast')] as HTMLElement[];
+    const container = fixture.nativeElement.querySelector('.toast-container') as HTMLElement;
+    const front = hosts[1];
+
+    front.dispatchEvent(new PointerEvent('pointerenter', { bubbles: true, pointerType: 'touch' }));
+    front.dispatchEvent(new PointerEvent('pointerleave', { bubbles: true, pointerType: 'touch' }));
+    fixture.detectChanges();
+    expect(container.getAttribute('data-expanded')).toBe('true');
+
+    document.dispatchEvent(
+      new PointerEvent('pointerdown', { bubbles: true, pointerType: 'touch', pointerId: 2 }),
+    );
+    fixture.detectChanges();
+    expect(container.getAttribute('data-expanded')).toBe('false');
+  });
+
+  it('matches collapsed layers to the front toast height', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    toaster.show('older', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    toaster.show('front', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const [older, front] = toaster.toasts();
+    fixture.componentInstance.onHeightChange(older.id, 96);
+    fixture.componentInstance.onHeightChange(front.id, 52);
+    fixture.detectChanges();
+
+    const container = fixture.nativeElement.querySelector('.toast-container') as HTMLElement;
+    expect(container.style.getPropertyValue('--front-toast-height').trim()).toBe('52px');
+    expect(container.style.getPropertyValue('--toast-gap').trim()).toBe('16px');
+
+    const hosts = [...fixture.nativeElement.querySelectorAll('li.toast')] as HTMLElement[];
+    hosts[1].dispatchEvent(new PointerEvent('pointerenter', { bubbles: true }));
+    fixture.detectChanges();
+
+    expect(hosts[1].style.getPropertyValue('--offset').trim()).toBe('0px');
+    expect(hosts[0].style.getPropertyValue('--offset').trim()).toBe('68px');
+  });
+
+  it('keeps collapsed layers on the last measured front height until the new front is measured', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    toaster.show('older', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    toaster.show('front', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const [older, front] = toaster.toasts();
+    fixture.componentInstance.onHeightChange(older.id, 96);
+    fixture.componentInstance.onHeightChange(front.id, 52);
+    fixture.detectChanges();
+
+    const container = fixture.nativeElement.querySelector('.toast-container') as HTMLElement;
+    expect(container.style.getPropertyValue('--front-toast-height').trim()).toBe('52px');
+
+    toaster.show('newer', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+
+    expect(container.style.getPropertyValue('--front-toast-height').trim()).toBe('52px');
+
+    const newer = toaster.toasts().at(-1)!;
+    fixture.componentInstance.onHeightChange(newer.id, 80);
+    fixture.detectChanges();
+
+    expect(container.style.getPropertyValue('--front-toast-height').trim()).toBe('80px');
+  });
+
+  it('keeps two toasts visible in the collapsed stack', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    toaster.show('one', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    toaster.show('two', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const hosts = [...fixture.nativeElement.querySelectorAll('li.toast')] as HTMLElement[];
+    expect(hosts).toHaveLength(2);
+    expect(hosts[0].getAttribute('aria-hidden')).toBeNull();
+    expect(hosts[1].getAttribute('aria-hidden')).toBeNull();
+    expect(hosts[1].getAttribute('data-front')).toBe('true');
+  });
+
+  it('expands the stack when a toast receives focus', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    toaster.show('one', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    toaster.show('two', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    toaster.show('three', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    toaster.show('four', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const container = fixture.nativeElement.querySelector('.toast-container') as HTMLElement;
+    const front = [...fixture.nativeElement.querySelectorAll('li.toast')].at(-1) as HTMLElement;
+    expect(container.getAttribute('data-expanded')).toBe('false');
+
+    front.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(container.getAttribute('data-expanded')).toBe('true');
+  });
+
+  it('does not leave the stack expanded after the close button dismisses the last toast', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    toaster.show('one', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const container = fixture.nativeElement.querySelector('.toast-container') as HTMLElement;
+    const toast = fixture.nativeElement.querySelector('li.toast') as HTMLElement;
+
+    toast.dispatchEvent(new PointerEvent('pointerenter', { bubbles: true }));
+    fixture.detectChanges();
+    expect(container.getAttribute('data-expanded')).toBe('true');
+
+    const close = fixture.nativeElement.querySelector('.close-btn') as HTMLButtonElement;
+
+    close.focus();
+    fixture.detectChanges();
+    close.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    container.focus();
+    fixture.detectChanges();
+
+    toaster.show('two', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(toaster.toasts()).toHaveLength(1);
+    expect(container.getAttribute('data-expanded')).toBe('false');
   });
 });

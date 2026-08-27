@@ -1,6 +1,6 @@
 :host {
   --toast-width: 356px;
-  --toast-gap: 1rem;
+  --toast-gap: 16px;
   --toast-z-index: 99999;
   --toast-offset-top: 24px;
   --toast-offset-bottom: 24px;

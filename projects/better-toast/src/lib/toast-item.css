@@ -1,4 +1,19 @@
 :host {
+  --_chrome-bg: var(--toast-bg);
+  --_chrome-fg: var(--toast-color);
+  --_chrome-border: var(--toast-border-color);
+  --_icon-fill: light-dark(var(--toast-color), var(--toast-bg));
+  --_icon-stroke: light-dark(var(--toast-bg), var(--toast-color));
+  --_icon-color: var(--_icon-stroke);
+  --_toast-x: 0%;
+  --_toast-y: 0px;
+  --_toast-enter-y: 0px;
+  --_toast-leave-y: 0px;
+  --toast-line-height: 1.35;
+  --index: 0;
+  --collapsed-peek: 14px;
+  --offset: calc(var(--index, 0) * var(--collapsed-peek));
+
   display: flex;
   align-items: center;
   gap: 0.375rem;
@@ -8,149 +23,136 @@
   padding-inline: 0.75rem;
   padding-block: 1rem;
   box-sizing: border-box;
-  border: 1px solid var(--toast-border-color);
+  border: 1px solid var(--_chrome-border);
   border-radius: 0.5rem;
   box-shadow: var(--toast-shadow);
-  background: var(--toast-bg);
-  color: var(--toast-color);
-  --toast-line-height: 1.35;
+  background: var(--_chrome-bg);
+  color: var(--_chrome-fg);
   font:
     500 0.875rem / var(--toast-line-height) system-ui,
     sans-serif;
-
   pointer-events: auto;
   touch-action: none;
   user-select: none;
   position: absolute;
   opacity: 1;
-
+  height: var(--initial-height, auto);
   scale: 1;
+  z-index: calc(1000 - var(--index, 0));
+  transform: translateX(var(--_toast-x)) translateY(var(--_toast-y));
   transition:
     opacity 0.4s ease,
     transform 0.4s ease,
     scale 0.4s ease,
+    height 0.4s ease,
     box-shadow 0.2s ease;
+
+  @starting-style {
+    opacity: 0;
+    transform: translateX(var(--_toast-x)) translateY(var(--_toast-enter-y));
+  }
+}
+
+:host > *:not(.close-btn) {
+  transition: opacity 0.4s ease;
+}
+
+/* Fill the expanded gap so moving between toasts does not collapse the stack. */
+:host([data-expanded='true'])::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: calc(var(--toast-gap, 16px) + 1px);
+  bottom: 100%;
+  pointer-events: auto;
 }
 
 /* Loading toasts are not swipe-dismissed; allow normal touch scrolling on the page. */
 :host([data-variant='loading']) {
   touch-action: auto;
 }
-@media (width >= 40rem) {
-  :host {
-    width: var(--toast-width);
-  }
-}
 
 :host([data-position^='bottom']) {
   bottom: 0;
-  transform: translateY(calc(-1 * var(--offset, 0px)));
-
-  @starting-style {
-    opacity: 0;
-    transform: translateY(100%);
-  }
+  transform-origin: 50% 100%;
+  --_toast-y: calc(-1 * var(--offset, 0px));
+  --_toast-enter-y: 100%;
 }
+
 :host([data-position^='top']) {
   top: 0;
-  transform: translateY(calc(1 * var(--offset, 0px)));
-
-  @starting-style {
-    opacity: 0;
-    transform: translateY(-100%);
-  }
+  transform-origin: 50% 0;
+  --_toast-y: calc(1 * var(--offset, 0px));
+  --_toast-enter-y: -100%;
 }
 
-/* Headless: instead of fading the whole host, keep opacity stable and animate only transform for the card. */
-:host([data-headless='true'][data-position^='bottom']) {
-  @starting-style {
-    opacity: 1;
-  }
-}
-:host([data-headless='true'][data-position^='top']) {
-  @starting-style {
-    opacity: 1;
-  }
+:host([data-swipe-direction='down']) {
+  --_toast-leave-y: 100%;
 }
 
-:host([data-variant='default']) .toast-icon svg,
-:host([data-variant='default']) .toast-icon ::ng-deep svg,
-:host([data-variant='description']) .toast-icon svg,
-:host([data-variant='description']) .toast-icon ::ng-deep svg {
-  fill: light-dark(var(--toast-color), var(--toast-bg));
-  color: light-dark(var(--toast-bg), var(--toast-color));
+:host([data-swipe-direction='up']) {
+  --_toast-leave-y: -100%;
+}
+
+:host([data-expanded='false']) {
+  scale: calc(1 - var(--index, 0) * 0.05);
+}
+
+:host([data-expanded='false']:not(:last-child)) {
+  height: var(--front-toast-height);
+  overflow: hidden;
+}
+
+:host([data-expanded='false']:not(:last-child):not([data-headless='true'])) > *:not(.close-btn) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Keep 3 collapsed layers visible. Must match VISIBLE_TOASTS in toaster.ts. */
+:host([data-expanded='false']:nth-last-child(n + 4)) {
+  opacity: 0;
+  pointer-events: none;
 }
 
 :host([data-rich-colors='true'][data-variant='success']) {
-  background: var(--toast-success-bg);
-  color: var(--toast-success-text);
-  border-color: var(--toast-success-border);
-}
-/* Icon fill/color swap based on dark mode is driven by inherited color-scheme. */
-:host([data-rich-colors='false'][data-variant='success']) .toast-icon svg,
-:host([data-rich-colors='false'][data-variant='success']) .toast-icon ::ng-deep svg {
-  fill: light-dark(var(--toast-color), var(--toast-bg));
-  color: light-dark(var(--toast-bg), var(--toast-color));
-}
-:host([data-rich-colors='true'][data-variant='success']) .toast-icon svg,
-:host([data-rich-colors='true'][data-variant='success']) .toast-icon ::ng-deep svg {
-  fill: light-dark(var(--toast-success-text), var(--toast-success-bg));
-  stroke: light-dark(var(--toast-success-bg), var(--toast-success-text));
-  color: light-dark(var(--toast-success-bg), var(--toast-success-text));
+  --_chrome-bg: var(--toast-success-bg);
+  --_chrome-fg: var(--toast-success-text);
+  --_chrome-border: var(--toast-success-border);
 }
 
 :host([data-rich-colors='true'][data-variant='error']) {
-  background: var(--toast-error-bg);
-  color: var(--toast-error-text);
-  border-color: var(--toast-error-border);
-}
-:host([data-rich-colors='false'][data-variant='error']) .toast-icon svg,
-:host([data-rich-colors='false'][data-variant='error']) .toast-icon ::ng-deep svg {
-  fill: light-dark(var(--toast-color), var(--toast-bg));
-  color: light-dark(var(--toast-bg), var(--toast-color));
-}
-:host([data-rich-colors='true'][data-variant='error']) .toast-icon svg,
-:host([data-rich-colors='true'][data-variant='error']) .toast-icon ::ng-deep svg {
-  fill: light-dark(var(--toast-error-text), var(--toast-error-bg));
-  stroke: light-dark(var(--toast-error-bg), var(--toast-error-text));
-  color: light-dark(var(--toast-error-bg), var(--toast-error-text));
+  --_chrome-bg: var(--toast-error-bg);
+  --_chrome-fg: var(--toast-error-text);
+  --_chrome-border: var(--toast-error-border);
 }
 
 :host([data-rich-colors='true'][data-variant='info']) {
-  background: var(--toast-info-bg);
-  color: var(--toast-info-text);
-  border-color: var(--toast-info-border);
-}
-:host([data-rich-colors='false'][data-variant='info']) .toast-icon svg,
-:host([data-rich-colors='false'][data-variant='info']) .toast-icon ::ng-deep svg {
-  fill: light-dark(var(--toast-color), var(--toast-bg));
-  color: light-dark(var(--toast-bg), var(--toast-color));
-}
-:host([data-rich-colors='true'][data-variant='info']) .toast-icon svg,
-:host([data-rich-colors='true'][data-variant='info']) .toast-icon ::ng-deep svg {
-  fill: light-dark(var(--toast-info-text), var(--toast-info-bg));
-  stroke: light-dark(var(--toast-info-bg), var(--toast-info-text));
-  color: light-dark(var(--toast-info-bg), var(--toast-info-text));
+  --_chrome-bg: var(--toast-info-bg);
+  --_chrome-fg: var(--toast-info-text);
+  --_chrome-border: var(--toast-info-border);
 }
 
 :host([data-rich-colors='true'][data-variant='warning']) {
-  background: var(--toast-warning-bg);
-  color: var(--toast-warning-text);
-  border-color: var(--toast-warning-border);
-}
-:host([data-rich-colors='false'][data-variant='warning']) .toast-icon svg,
-:host([data-rich-colors='false'][data-variant='warning']) .toast-icon ::ng-deep svg {
-  fill: light-dark(var(--toast-color), var(--toast-bg));
-  color: light-dark(var(--toast-bg), var(--toast-color));
-}
-:host([data-rich-colors='true'][data-variant='warning']) .toast-icon svg,
-:host([data-rich-colors='true'][data-variant='warning']) .toast-icon ::ng-deep svg {
-  fill: light-dark(var(--toast-warning-text), var(--toast-warning-bg));
-  stroke: light-dark(var(--toast-warning-bg), var(--toast-warning-text));
-  color: light-dark(var(--toast-warning-bg), var(--toast-warning-text));
+  --_chrome-bg: var(--toast-warning-bg);
+  --_chrome-fg: var(--toast-warning-text);
+  --_chrome-border: var(--toast-warning-border);
 }
 
-/* Headless: we only keep the positioning, stacking, and enter/leave animations, the inner component owns all visuals.*/
+:host(
+  [data-rich-colors='true']:is(
+      [data-variant='success'],
+      [data-variant='error'],
+      [data-variant='info'],
+      [data-variant='warning']
+    )
+) {
+  --_icon-fill: light-dark(var(--_chrome-fg), var(--_chrome-bg));
+  --_icon-stroke: light-dark(var(--_chrome-bg), var(--_chrome-fg));
+  --_icon-color: var(--_icon-stroke);
+}
+
+/* Headless: keep positioning, stacking, and enter/leave; the inner component owns visuals. */
 :host([data-headless='true']) {
   width: max-content;
   max-width: calc(
@@ -166,84 +168,17 @@
   font: inherit;
   line-height: normal;
   --toast-line-height: inherit;
-}
-
-@media (width >= 40rem) {
-  :host([data-headless='true']) {
-    max-width: calc(100dvw - var(--toast-offset-left, 24px) - var(--toast-offset-right, 24px));
-  }
-}
-
-@media (width >= 40rem) {
-  /* Wider than default toast width: pin to the anchored edge so overflow extends into the page, not off-screen. */
-  :host([data-headless='true'][data-position$='-right']) {
-    left: auto;
-    right: 0;
-  }
-  :host([data-headless='true'][data-position$='-left']) {
-    left: 0;
-    right: auto;
-  }
-}
-
-:host([data-headless='true'][data-position='bottom-center']) {
-  left: 50%;
-  right: auto;
-  transform: translateX(-50%) translateY(calc(-1 * var(--offset, 0px)));
 
   @starting-style {
     opacity: 1;
-    transform: translateX(-50%) translateY(100%);
   }
 }
+
+:host([data-headless='true'][data-position='bottom-center']),
 :host([data-headless='true'][data-position='top-center']) {
   left: 50%;
   right: auto;
-  transform: translateX(-50%) translateY(calc(1 * var(--offset, 0px)));
-
-  @starting-style {
-    opacity: 1;
-    transform: translateX(-50%) translateY(-100%);
-  }
-}
-
-/* Narrow viewports: corner positions use a full-width stack; center headless toasts in the viewport. */
-@media (width < 40rem) {
-  :host([data-headless='true'][data-position^='bottom']) {
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%) translateY(calc(-1 * var(--offset, 0px)));
-
-    @starting-style {
-      opacity: 1;
-      transform: translateX(-50%) translateY(100%);
-    }
-  }
-
-  :host([data-headless='true'][data-position^='top']) {
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%) translateY(calc(1 * var(--offset, 0px)));
-
-    @starting-style {
-      opacity: 1;
-      transform: translateX(-50%) translateY(-100%);
-    }
-  }
-
-  :host([data-headless='true'][data-swipe-direction='down'].leave) {
-    transform: translateX(-50%) translateY(100%);
-  }
-
-  :host([data-headless='true'][data-swipe-direction='up'].leave) {
-    transform: translateX(-50%) translateY(-100%);
-  }
-}
-
-:host([data-headless='true'][data-rich-colors='true']) {
-  background: transparent;
-  color: inherit;
-  border-color: transparent;
+  --_toast-x: -50%;
 }
 
 :host([data-headless='true'][data-icon='false']) {
@@ -252,6 +187,37 @@
 
 :host([data-icon='false']) {
   padding-left: 0.925rem;
+}
+
+@media (width >= 40rem) {
+  :host {
+    width: var(--toast-width);
+  }
+
+  :host([data-headless='true']) {
+    max-width: calc(100dvw - var(--toast-offset-left, 24px) - var(--toast-offset-right, 24px));
+  }
+
+  /* Wider than default toast width: pin to the anchored edge so overflow extends into the page. */
+  :host([data-headless='true'][data-position$='-right']) {
+    left: auto;
+    right: 0;
+  }
+
+  :host([data-headless='true'][data-position$='-left']) {
+    left: 0;
+    right: auto;
+  }
+}
+
+/* Narrow viewports: corner headless toasts share the centered stack. */
+@media (width < 40rem) {
+  :host([data-headless='true'][data-position^='bottom']),
+  :host([data-headless='true'][data-position^='top']) {
+    left: 50%;
+    right: auto;
+    --_toast-x: -50%;
+  }
 }
 
 .toast-icon,
@@ -268,16 +234,19 @@
 .toast-icon ::ng-deep svg {
   display: block;
   margin-inline: auto;
-  fill: light-dark(var(--toast-color), var(--toast-bg));
-  stroke: light-dark(var(--toast-bg), var(--toast-color));
+  fill: var(--_icon-fill);
+  stroke: var(--_icon-stroke);
+  color: var(--_icon-color);
   width: 95%;
   height: 95%;
 }
+
 :host([data-theme='dark']) .toast-icon svg,
 :host([data-theme='dark']) .toast-icon ::ng-deep svg {
   width: 87.5%;
   height: 87.5%;
 }
+
 @media (prefers-color-scheme: dark) {
   :host([data-theme='system']) .toast-icon svg,
   :host([data-theme='system']) .toast-icon ::ng-deep svg {
@@ -313,6 +282,7 @@
   line-height: calc(1.25 / 0.875);
   letter-spacing: 0.01em;
 }
+
 @media (width < 40rem) {
   .msg {
     max-width: 90%;
@@ -334,7 +304,6 @@
   max-width: 100%;
 }
 
-/* No icon: keep title line slightly narrower when stacked with a description */
 :host([data-icon='false']) .stack .msg {
   max-width: 90%;
 }
@@ -348,6 +317,7 @@
   opacity: 0.9;
   max-width: 100%;
 }
+
 @media (width < 40rem) {
   .description {
     font-size: 0.8rem;
@@ -370,17 +340,14 @@
   white-space: nowrap;
   transition: transform 0.2s ease;
 }
+
 .toast-row-btn:focus-visible {
   outline: 2px solid var(--toast-color);
   outline-offset: 2px;
 }
+
 .toast-row-btn:active {
   transform: scale(0.95);
-}
-@media (prefers-reduced-motion: reduce) {
-  .toast-row-btn:active {
-    transform: none;
-  }
 }
 
 .action-btn {
@@ -403,9 +370,11 @@
   font-weight: 400;
   line-height: calc(1.25 / 0.875);
 }
+
 .toast-custom :first-child {
   margin-top: 0;
 }
+
 .toast-custom :last-child {
   margin-bottom: 0;
 }
@@ -416,10 +385,10 @@
   right: -0.3875rem;
   flex-shrink: 0;
   margin: -0.15rem -0.25rem -0.15rem 0;
-  border: 1px solid var(--toast-border-color);
+  border: 1px solid var(--_chrome-border);
   box-shadow: var(--toast-shadow);
-  background: var(--toast-bg);
-  color: var(--toast-color);
+  background: var(--_chrome-bg);
+  color: var(--_chrome-fg);
   cursor: pointer;
   line-height: 1;
   padding: 0.25rem 0.25rem;
@@ -427,32 +396,42 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  opacity: 1;
+  scale: 1;
+  filter: blur(0);
 }
 
-:host([data-rich-colors='true'][data-variant='success']) .close-btn {
-  border-color: var(--toast-success-border);
-  background: var(--toast-success-bg);
-  color: var(--toast-success-text);
+.close-btn.close-enter {
+  opacity: 1;
+  scale: 1;
+  filter: blur(0);
+  transition:
+    opacity 180ms cubic-bezier(0.19, 1, 0.22, 1),
+    scale 180ms cubic-bezier(0.19, 1, 0.22, 1),
+    filter 180ms cubic-bezier(0.19, 1, 0.22, 1);
+
+  @starting-style {
+    opacity: 0;
+    scale: 0.92;
+    filter: blur(4px);
+  }
 }
-:host([data-rich-colors='true'][data-variant='error']) .close-btn {
-  border-color: var(--toast-error-border);
-  background: var(--toast-error-bg);
-  color: var(--toast-error-text);
-}
-:host([data-rich-colors='true'][data-variant='info']) .close-btn {
-  border-color: var(--toast-info-border);
-  background: var(--toast-info-bg);
-  color: var(--toast-info-text);
-}
-:host([data-rich-colors='true'][data-variant='warning']) .close-btn {
-  border-color: var(--toast-warning-border);
-  background: var(--toast-warning-bg);
-  color: var(--toast-warning-text);
+
+.close-btn.close-leave {
+  opacity: 0;
+  scale: 0.92;
+  filter: blur(4px);
+  pointer-events: none;
+  transition:
+    opacity 150ms cubic-bezier(0.19, 1, 0.22, 1),
+    scale 150ms cubic-bezier(0.19, 1, 0.22, 1),
+    filter 150ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .close-btn:focus-visible {
   outline: 2px solid currentColor;
 }
+
 .close-btn svg {
   display: block;
   width: 0.825rem;
@@ -462,92 +441,48 @@
 :host(.leave) {
   opacity: 0;
   scale: 0.95;
-}
-
-:host([data-swipe-direction='down'].leave) {
-  transform: translateY(100%);
-}
-
-:host([data-headless='true'][data-position='bottom-center'].leave) {
-  transform: translateX(-50%) translateY(100%);
-}
-
-:host([data-swipe-direction='up'].leave) {
-  transform: translateY(-100%);
-}
-
-:host([data-headless='true'][data-position='top-center'].leave) {
-  transform: translateX(-50%) translateY(-100%);
+  transform: translateX(var(--_toast-x)) translateY(var(--_toast-leave-y));
 }
 
 @media (prefers-reduced-motion: reduce) {
   :host {
     transition: none;
   }
+
+  /* Same specificity as position/swipe token setters so enter/leave collapse to rest. */
+  :host([data-position]) {
+    --_toast-enter-y: var(--_toast-y);
+    --_toast-leave-y: var(--_toast-y);
+  }
+
+  :host > * {
+    transition: none;
+  }
+
   :host(.leave) {
     scale: 1;
   }
 
-  :host([data-position^='bottom']) {
+  .toast-row-btn:active {
+    transform: none;
+  }
+
+  .close-btn.close-enter {
+    scale: 1;
+    filter: none;
+    transition: opacity 150ms ease;
+
     @starting-style {
       opacity: 0;
-      transform: translateY(calc(-1 * var(--offset, 0px)));
-    }
-  }
-  :host([data-position^='top']) {
-    @starting-style {
-      opacity: 0;
-      transform: translateY(calc(1 * var(--offset, 0px)));
+      scale: 1;
+      filter: none;
     }
   }
 
-  :host([data-headless='true'][data-position='bottom-center']) {
-    @starting-style {
-      opacity: 1;
-      transform: translateX(-50%) translateY(calc(-1 * var(--offset, 0px)));
-    }
-  }
-  :host([data-headless='true'][data-position='top-center']) {
-    @starting-style {
-      opacity: 1;
-      transform: translateX(-50%) translateY(calc(1 * var(--offset, 0px)));
-    }
-  }
-
-  :host([data-swipe-direction='down'].leave) {
-    transform: translateY(calc(-1 * var(--offset, 0px)));
-  }
-  :host([data-swipe-direction='up'].leave) {
-    transform: translateY(calc(1 * var(--offset, 0px)));
-  }
-
-  :host([data-headless='true'][data-position='bottom-center'].leave) {
-    transform: translateX(-50%) translateY(calc(-1 * var(--offset, 0px)));
-  }
-  :host([data-headless='true'][data-position='top-center'].leave) {
-    transform: translateX(-50%) translateY(calc(1 * var(--offset, 0px)));
-  }
-
-  @media (width < 40rem) {
-    :host([data-headless='true'][data-position^='bottom']) {
-      @starting-style {
-        opacity: 1;
-        transform: translateX(-50%) translateY(calc(-1 * var(--offset, 0px)));
-      }
-    }
-    :host([data-headless='true'][data-swipe-direction='down'].leave) {
-      transform: translateX(-50%) translateY(calc(-1 * var(--offset, 0px)));
-    }
-
-    :host([data-headless='true'][data-position^='top']) {
-      @starting-style {
-        opacity: 1;
-        transform: translateX(-50%) translateY(calc(1 * var(--offset, 0px)));
-      }
-    }
-    :host([data-headless='true'][data-swipe-direction='up'].leave) {
-      transform: translateX(-50%) translateY(calc(1 * var(--offset, 0px)));
-    }
+  .close-btn.close-leave {
+    scale: 1;
+    filter: none;
+    transition: opacity 150ms ease;
   }
 
   .toast-icon-loading {

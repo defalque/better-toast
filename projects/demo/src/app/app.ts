@@ -35,6 +35,7 @@ type ToastDemoKind =
   | 'description'
   | 'warning'
   | 'custom'
+  | 'customIcon'
   | 'loading'
   | 'promise'
   | 'action'
@@ -162,6 +163,7 @@ export class App {
     }
   }
 
+  protected readonly stacked = signal(true);
   protected readonly richColors = signal(false);
 
   /** When false, toast rows omit the dismiss control (auto-dismiss / `dismiss()` still work). */
@@ -172,7 +174,7 @@ export class App {
 
   protected readonly toastDemoSnippets: Record<ToastDemoKind, string> = {
     default: `this.toaster.show('Default toast. A very super long message that should wrap.');`,
-    success: `this.toaster.success('Saved successfully', { icon: CustomSuccessIcon });`,
+    success: `this.toaster.success('Saved successfully');`,
     error: `this.toaster.error('Something went wrong', { icon: null });`,
     info: `this.toaster.info('Tip: you can stack multiple toasts');`,
     description: `this.toaster.description('Backup complete', {
@@ -183,6 +185,20 @@ export class App {
 // this.toaster.success('Saved', { description: 'Stored in Downloads.' });`,
     warning: `this.toaster.warning('Your session will expire soon');`,
     custom: `this.toaster.custom(CustomLinkToastBody);`,
+    customIcon: `import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-custom-icon',
+  template: \`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+      stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <!-- Your SVG here -->
+    </svg>
+  \`,
+})
+export class CustomIcon {}
+
+this.toaster.show('Event has been created', { icon: CustomIcon });`,
     loading: `this.toaster.loading('Loading…');`,
     promise: `const myPromise = new Promise<{ message: string }>((resolve) => {
       setTimeout(() => {
@@ -412,7 +428,6 @@ this.toaster.headless(UploadProgressToast, {
   protected showSuccessToast(): void {
     this.toaster.success('Saved successfully', {
       /* durationMs: 'Infinity', */
-      icon: CustomIcon,
       /* style: { background: 'green', color: 'blue' }, */
     });
   }
@@ -434,7 +449,6 @@ this.toaster.headless(UploadProgressToast, {
     this.toaster.description('Backup complete', {
       description:
         '12 files were uploaded to the cloud. You can restore them anytime from Settings.',
-      icon: CustomIcon,
     });
   }
 
@@ -498,6 +512,16 @@ this.toaster.headless(UploadProgressToast, {
 
   protected showCustomToast(): void {
     this.toaster.custom(CustomLinkToastBody);
+  }
+
+  protected showCustomIconToast(): void {
+    this.toaster.show('Event has been created', {
+      icon: CustomIcon,
+    });
+  }
+
+  protected toggleStacked(): void {
+    this.stacked.set(!this.stacked());
   }
 
   protected toggleRichColors(): void {
