@@ -165,6 +165,39 @@
     </div>
 
     <div class="grid gap-4">
+      <div class="flex items-center gap-3">
+        <h2 class="landing-page-h2">Stacked</h2>
+        <button
+          type="button"
+          role="switch"
+          [attr.aria-checked]="helper.stacked()"
+          [attr.aria-label]="helper.stacked() ? 'Stacked on' : 'Stacked off'"
+          (click)="toggleStacked()"
+          class="relative border-2 inline-flex h-6 w-10 shrink-0 cursor-pointer rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 dark:focus-visible:ring-zinc-500 dark:focus-visible:ring-offset-zinc-950 {{
+            helper.stacked()
+              ? 'bg-zinc-600 dark:bg-zinc-600 border-zinc-600 dark:border-zinc-600'
+              : 'bg-zinc-200 dark:bg-zinc-950/50 border-zinc-200 dark:border-zinc-950/50'
+          }}"
+        >
+          <span
+            aria-hidden="true"
+            class="pointer-events-none absolute top-1/2 left-1 -translate-y-1/2 inline-block h-4 w-4 rounded-full bg-white shadow-md ring-0 transition-transform duration-200 ease-out motion-reduce:transition-none"
+            [class.translate-x-3]="helper.stacked()"
+          ></span>
+        </button>
+      </div>
+      <p class="landing-page-paragraph">
+        When set to <code class="p-code-snippet">true</code> (default), extra toasts collapse into a
+        three-layer card stack. Hover, focus, or touch expands the stack to reveal the full list.
+        Set to <code class="p-code-snippet">false</code> to keep all toasts fully visible.
+      </p>
+      <pre class="code-snippet landing-page-pre" aria-label="Code for the stacked demo"><code
+          class="hljs landing-page-code language-xml"
+          [innerHTML]="activeStackedDemoHtml()"
+        ></code></pre>
+    </div>
+
+    <div class="grid gap-4">
       <h2 class="landing-page-h2">Rich colors</h2>
       <p class="landing-page-paragraph">
         When set to

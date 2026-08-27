@@ -44,6 +44,11 @@ export class App {
   richColors: `<better-toaster [richColors]="true" />`,
 };
 
+const STACKED_DEMO_SOURCE = {
+  true: `<better-toaster [stacked]="true" />`,
+  false: `<better-toaster [stacked]="false" />`,
+} as const;
+
 const TOAST_TYPE_SOURCE = {
   default: `this.toaster.show('Default toast. A very super long message that should wrap.');`,
   description: `this.toaster.description('Backup complete', {
@@ -130,7 +135,6 @@ export class Home {
     'info',
     'warning',
   ];
-
   protected readonly toastInstallationSource = computed(() => {
     return hljs.highlight(TOAST_DEMO_SOURCE.installation, { language: 'bash' }).value;
   });
@@ -145,6 +149,15 @@ export class Home {
   protected selectPositionDemo(pos: ToasterPosition): void {
     this.helper.position.set(pos);
   }
+
+  protected toggleStacked(): void {
+    this.helper.stacked.set(!this.helper.stacked());
+  }
+
+  protected readonly activeStackedDemoHtml = computed(() => {
+    const snippet = this.helper.stacked() ? STACKED_DEMO_SOURCE.true : STACKED_DEMO_SOURCE.false;
+    return hljs.highlight(snippet, { language: 'xml' }).value;
+  });
   /** highlight.js HTML for better-toaster position. */
   protected readonly activePositionDemoHtml = computed(() => {
     return hljs.highlight(POSITION_DEMO_SOURCE[this.helper.position()], {

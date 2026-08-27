@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.0
+
+### Changed
+
+- Collapsed card stack is now the default. Extra toasts collapse into a 3-layer stack (latest in front). Hover, focus, or a press on touch expands the full list. Upgrading from 0.1.0 changes the layout without a template change. Set `[stacked]="false"` to keep every toast fully visible.
+
+### Added
+
+- `[stacked]` input on `<better-toaster>` (`true` by default).
+
 ## 0.1.0
 
 ### Added

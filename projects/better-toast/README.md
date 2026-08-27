@@ -38,6 +38,7 @@ Common inputs (all optional except using defaults):
 | ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | `duration`                | Default auto-dismiss in ms for toasts that omit `durationMs` (also supports the literal `duration="Infinity"` for manual dismiss). |
 | `position`                | `top-left` \| `top-center` \| `top-right` \| `bottom-left` \| `bottom-center` \| `bottom-right` (default `bottom-right`).          |
+| `stacked`                 | When `true` (default), extra toasts collapse into a 3-layer card stack; hover, focus, or a press on touch expands the list. Set `false` to keep every toast fully visible. |
 | `richColors`              | When `true`, semantic background/border colors for success/error/info/warning.                                                     |
 | `theme`                   | `light` \| `dark` \| `system` (default).                                                                                           |
 | `closeButton`             | Show per-toast dismiss control (default `true`).                                                                                   |

@@ -9,6 +9,7 @@ hljs.registerLanguage('xml', xml);
 type BetterToasterDocSection =
   | 'customization'
   | 'position'
+  | 'stacked'
   | 'duration'
   | 'offsets'
   | 'theme'
@@ -88,6 +89,7 @@ export class DocBetterToaster {
     return [
       'customization',
       'position',
+      'stacked',
       'duration',
       'offsets',
       'theme',
@@ -122,6 +124,19 @@ export class DocBetterToaster {
       `<!-- Render toasts at the bottom right corner of the viewport -->
 <!-- Available positions: top-left, top-center, top-right, bottom-left, bottom-center, bottom-right -->
 <better-toaster position="bottom-right" />`,
+      {
+        language: 'xml',
+      },
+    ).value;
+  });
+
+  protected readonly stackedSource = computed(() => {
+    return hljs.highlight(
+      `<!-- Extra toasts collapse into a 3-layer card stack (default) -->
+<better-toaster [stacked]="true" />
+
+<!-- Every toast stays fully visible -->
+<better-toaster [stacked]="false" />`,
       {
         language: 'xml',
       },

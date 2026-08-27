@@ -39,6 +39,24 @@
         </div>
       </div>
 
+      <div class="space-y-4 pt-20" id="stacked">
+        <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Stacked
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 text-pretty">
+          When set to <code class="p-code-snippet">true</code>, additional toasts collapse into a
+          three-layer card stack, with the latest toast displayed in front. Hover, focus, or touch
+          expands the stack to reveal the full list. Set to
+          <code class="p-code-snippet">false</code> to keep all toasts fully visible. The library
+          defaults to <code class="p-code-snippet">true</code>.
+        </p>
+        <div>
+          <pre
+            class="landing-page-pre"
+          ><code class="landing-page-code language-typescript dark:text-white!" [innerHTML]="stackedSource()"></code></pre>
+        </div>
+      </div>
+
       <div class="space-y-4 pt-20" id="duration">
         <h2 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
           Duration
@@ -366,6 +384,24 @@
                 <td
                   class="text-left text-zinc-900 dark:text-zinc-300 font-medium text-sm px-6 py-4 align-top"
                 >
+                  <code class="p-code-snippet">stacked</code>
+                </td>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-500 font-medium text-sm px-6 py-4 align-top"
+                >
+                  <code class="p-code-snippet">boolean</code>
+                </td>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-300 font-medium text-sm px-6 py-4 align-top whitespace-nowrap"
+                >
+                  <code class="p-code-snippet">true</code>
+                </td>
+              </tr>
+
+              <tr>
+                <td
+                  class="text-left text-zinc-900 dark:text-zinc-300 font-medium text-sm px-6 py-4 align-top"
+                >
                   <code class="p-code-snippet text-sm!">theme</code>
                 </td>
                 <td
@@ -478,6 +514,15 @@
             [class]="tocLinkClass('position')"
             (click)="activeSection.set('position')"
             >Position</a
+          >
+        </li>
+        <li>
+          <a
+            href="/docs/better-toaster#stacked"
+            [attr.data-active]="activeSection() === 'stacked'"
+            [class]="tocLinkClass('stacked')"
+            (click)="activeSection.set('stacked')"
+            >Stacked</a
           >
         </li>
         <li>
