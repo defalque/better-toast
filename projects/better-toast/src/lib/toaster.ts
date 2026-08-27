@@ -147,12 +147,7 @@ function resolveFrontToastHeightPx(
           } @else {
             @switch (variant()) {
               @case ('success') {
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
+                <svg fill="none" viewBox="0 0 24 24">
                   <circle
                     cx="12"
                     cy="12"
@@ -173,10 +168,8 @@ function resolveFrontToastHeightPx(
               }
               @case ('error') {
                 <svg
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
                   fill="none"
+                  viewBox="0 0 24 24"
                   stroke="currentColor"
                   stroke-width="2"
                   stroke-linecap="round"
@@ -189,10 +182,8 @@ function resolveFrontToastHeightPx(
               }
               @case ('info') {
                 <svg
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
                   fill="none"
+                  viewBox="0 0 24 24"
                   stroke="currentColor"
                   stroke-width="1.75"
                   stroke-linecap="round"
@@ -204,12 +195,7 @@ function resolveFrontToastHeightPx(
                 </svg>
               }
               @case ('warning') {
-                <svg
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
+                <svg fill="none" viewBox="0 0 24 24">
                   <path
                     stroke="currentColor"
                     stroke-linecap="round"
@@ -304,7 +290,7 @@ function resolveFrontToastHeightPx(
         (click)="toaster.dismiss(toast()?.id ?? '')"
         [attr.aria-label]="dismissButtonAriaLabel()"
       >
-        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <svg fill="none" viewBox="0 0 24 24" aria-hidden="true">
           <path
             stroke="currentColor"
             stroke-linecap="round"
