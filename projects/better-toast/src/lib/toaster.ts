@@ -653,14 +653,14 @@ export class BetterToastItem {
     >
       <ol
         class="toast-container"
-        [style.--toast-offset-top]="offsetTop()"
-        [style.--toast-offset-right]="offsetRight()"
-        [style.--toast-offset-bottom]="offsetBottom()"
-        [style.--toast-offset-left]="offsetLeft()"
-        [style.--toast-offset-mobile-top]="mobileOffsetTop()"
-        [style.--toast-offset-mobile-right]="mobileOffsetRight()"
-        [style.--toast-offset-mobile-bottom]="mobileOffsetBottom()"
-        [style.--toast-offset-mobile-left]="mobileOffsetLeft()"
+        [style.--toast-offset-top]="offsetSide(offset(), 'top')"
+        [style.--toast-offset-right]="offsetSide(offset(), 'right')"
+        [style.--toast-offset-bottom]="offsetSide(offset(), 'bottom')"
+        [style.--toast-offset-left]="offsetSide(offset(), 'left')"
+        [style.--toast-offset-mobile-top]="offsetSide(mobileOffset(), 'top')"
+        [style.--toast-offset-mobile-right]="offsetSide(mobileOffset(), 'right')"
+        [style.--toast-offset-mobile-bottom]="offsetSide(mobileOffset(), 'bottom')"
+        [style.--toast-offset-mobile-left]="offsetSide(mobileOffset(), 'left')"
         [style.--toast-gap]="stackGapPx + 'px'"
         [style.--front-toast-height]="frontToastHeightCss()"
         [attr.data-position]="position()"
@@ -813,33 +813,7 @@ export class BetterToaster implements OnInit {
     () => this.accessibilityLabels()?.dismissButton ?? DEFAULT_TOASTER_ARIA_DISMISS_BUTTON,
   );
 
-  /** Vertical offset in px for the toast stack. */
-  protected readonly offsetTop = computed(() => resolveToasterOffsetSide(this.offset(), 'top'));
-  /** Horizontal offset in px for the toast stack. */
-  protected readonly offsetRight = computed(() => resolveToasterOffsetSide(this.offset(), 'right'));
-  /** Vertical offset in px for the toast stack. */
-  protected readonly offsetBottom = computed(() =>
-    resolveToasterOffsetSide(this.offset(), 'bottom'),
-  );
-  /** Horizontal offset in px for the toast stack. */
-  protected readonly offsetLeft = computed(() => resolveToasterOffsetSide(this.offset(), 'left'));
-
-  /** Vertical offset in px for the toast stack on narrow layouts. */
-  protected readonly mobileOffsetTop = computed(() =>
-    resolveToasterOffsetSide(this.mobileOffset(), 'top'),
-  );
-  /** Horizontal offset in px for the toast stack on narrow layouts. */
-  protected readonly mobileOffsetRight = computed(() =>
-    resolveToasterOffsetSide(this.mobileOffset(), 'right'),
-  );
-  /** Vertical offset in px for the toast stack on narrow layouts. */
-  protected readonly mobileOffsetBottom = computed(() =>
-    resolveToasterOffsetSide(this.mobileOffset(), 'bottom'),
-  );
-  /** Horizontal offset in px for the toast stack on narrow layouts. */
-  protected readonly mobileOffsetLeft = computed(() =>
-    resolveToasterOffsetSide(this.mobileOffset(), 'left'),
-  );
+  protected readonly offsetSide = resolveToasterOffsetSide;
 
   /**
    * `--index` is the stack depth: last item is 0 (front), older items count up.
