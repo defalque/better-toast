@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.1 - 2026-08-27
+
+### Changed
+
+- Smaller production bundle: replaced `NgComponentOutlet` with a lightweight outlet so mounting `<better-toaster>` no longer pulls `@angular/common`.
+- Peer dependency is now `@angular/core` only (`^21.0.0 || ^22.0.0`).
+
+### Fixed
+
+- Headless toasts no longer store `description` in chrome metadata.
+
 ## 0.2.0 - 2026-08-27
 
 ### Changed

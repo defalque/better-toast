@@ -1,6 +1,6 @@
 {
   "name": "better-toast",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Elegant toast notifications for Angular 21 and 22 with stacked messages, variants, swipe-to-dismiss, entry and exit animations and a small service API.",
   "keywords": [
     "angular",
