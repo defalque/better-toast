@@ -408,13 +408,6 @@ export class BetterToastItem {
   });
   /** When true, host uses no default toast chrome (border, padding, surface) — only stack + motion. */
   protected readonly isHeadless = computed(() => this.toast()?.component != null);
-  /**
-   * Dismiss control stays on the front toast. Stacked toasts mount it only while the stack is
-   * expanded so `animate.enter` / `animate.leave` can run without moving the front control.
-   */
-  protected readonly showCloseButton = computed(
-    () => this.closeButton() && !this.isHeadless() && (this.stackFront() || this.stackExpanded()),
-  );
   /** `down` when anchored to the bottom (dismiss by swiping down), `up` when anchored to the top. */
   protected readonly swipeDirection = computed(() =>
     swipeDirectionForPosition(this.stackPosition()),
