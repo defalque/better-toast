@@ -75,7 +75,7 @@ export type ToastVariant = (typeof TOAST_VARIANTS)[number];
 /**
  * Per-variant icon overrides for `<app-toaster [icons]>`.
  *
- * Each value is either an **Angular standalone component** class (rendered with `NgComponentOutlet`),
+ * Each value is either an **Angular standalone component** class (rendered dynamically in the icon slot),
  * or **`null`** to show no icon for that variant. Omitted keys keep the library defaults.
  *
  * The **`default`** variant has no built-in icon; set `default` here (or pass {@link ToastOptions.icon}
@@ -174,8 +174,8 @@ export type ToastCancelMethodOptions = Omit<ToastOptions, 'icon' | 'classNames'>
 /**
  * Options for {@link ToasterService.custom}.
  * {@link CustomToastOptions.inputs} is merged into the body component (same pattern as {@link HeadlessToastOptions.inputs});
- * **`toastId`** is always injected after your inputs. The component must declare a matching `input()` / `@Input()` for **`toastId`**
- * so `NgComponentOutlet` can bind it (same requirement as {@link ToasterService.headless}).
+ * **`toastId`** is always injected after your inputs. The component should declare `toastId` with `input()`.
+ * so the outlet can bind it (same requirement as {@link ToasterService.headless}).
  */
 export interface CustomToastOptions extends ToastOptions {
   inputs?: Record<string, unknown>;
@@ -232,7 +232,7 @@ export interface ToastOptions {
 
 /**
  * Options for {@link ToasterService.headless}.
- * The component must be **standalone** (or otherwise valid for `NgComponentOutlet`).
+ * The component must be **standalone** (or otherwise valid for `ViewContainerRef.createComponent`).
  * Headless toasts ignore `<app-toaster [closeButton]>`: no dismiss control is rendered.
  *
  * Per-toast **`icon`** and **`style`** are omitted: the inner component owns visuals; use
@@ -245,8 +245,7 @@ export interface ToastOptions {
  */
 export interface HeadlessToastOptions extends Omit<ToastOptions, 'icon' | 'style'> {
   /**
-   * Values passed to the component’s `input()` / `@Input()` bindings
-   * (same shape as `NgComponentOutlet` `inputs`).
+   * Values passed to the component’s `input()` bindings.
    */
   inputs?: Record<string, unknown>;
 }
@@ -262,13 +261,13 @@ export interface ToasterItem {
    * via {@link ToasterService.custom}.
    */
   readonly contentComponent?: Type<unknown>;
-  /** Bound to {@link ToasterItem.contentComponent} via `NgComponentOutlet` (includes auto **`toastId`**). */
+  /** Bound to {@link ToasterItem.contentComponent} by the toast outlet (includes auto **`toastId`**). */
   readonly contentComponentInputs?: Record<string, unknown>;
   /**
    * When set (without {@link ToasterItem.contentComponent}), the toast body is this standalone component only — same stack and motion as other toasts, without host chrome or a close button.
    */
   readonly component?: Type<unknown>;
-  /** Bound to the headless component via `NgComponentOutlet`. */
+  /** Bound to the headless component by the toast outlet. */
   readonly componentInputs?: Record<string, unknown>;
   /** Per-toast override; see {@link ToastOptions.icon}. */
   readonly icon?: Type<unknown> | null;

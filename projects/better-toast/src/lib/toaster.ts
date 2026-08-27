@@ -1,4 +1,3 @@
-import { NgComponentOutlet } from '@angular/common';
 import {
   afterNextRender,
   ChangeDetectionStrategy,
@@ -8,10 +7,10 @@ import {
   ElementRef,
   inject,
   input,
-  OnInit,
   output,
   signal,
 } from '@angular/core';
+import { BetterToastOutlet } from './toast-outlet';
 import {
   DEFAULT_TOAST_DURATION_MS,
   parseToasterDurationMs,
@@ -113,7 +112,7 @@ function resolveFrontToastHeightPx(
 @Component({
   selector: 'li[betterToastItem]',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgComponentOutlet],
+  imports: [BetterToastOutlet],
   host: {
     role: 'listitem',
     tabindex: '0',
@@ -136,95 +135,50 @@ function resolveFrontToastHeightPx(
   },
   template: `
     @if (toast()?.component) {
-      <ng-container *ngComponentOutlet="toast()!.component!; inputs: componentOutletInputs()" />
+      <ng-container
+        [betterToastOutlet]="toast()!.component!"
+        [betterToastOutletInputs]="toast()?.componentInputs"
+      />
     } @else {
       @if (shouldShowIconColumn()) {
         <span class="toast-icon" aria-hidden="true">
           @if (toast()?.icon) {
-            <ng-container *ngComponentOutlet="toast()!.icon!" />
+            <ng-container [betterToastOutlet]="toast()!.icon!" />
           } @else if (iconComponent(); as IconCmp) {
-            <ng-container *ngComponentOutlet="IconCmp" />
+            <ng-container [betterToastOutlet]="IconCmp" />
+          } @else if (variant() === 'loading') {
+            <div class="toast-icon-loading"></div>
           } @else {
-            @switch (variant()) {
-              @case ('success') {
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <circle
-                    cx="12"
-                    cy="12"
-                    r="9"
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.75"
-                  />
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.75"
-                    d="M8.48 12.22 10.9 14.64 15.74 9.14"
-                  />
-                </svg>
-              }
-              @case ('error') {
-                <svg
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
+            <svg
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              [attr.stroke-width]="variant() === 'error' ? 2 : 1.75"
+            >
+              @switch (variant()) {
+                @case ('success') {
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M8.48 12.22 10.9 14.64 15.74 9.14" />
+                }
+                @case ('error') {
                   <circle cx="12" cy="12" r="10" />
                   <line x1="9" y1="9" x2="15" y2="15" />
                   <line x1="15" y1="9" x2="9" y2="15" />
-                </svg>
-              }
-              @case ('info') {
-                <svg
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
+                }
+                @case ('info') {
                   <circle cx="12" cy="12" r="10" />
                   <line x1="12" y1="16" x2="12" y2="12" />
                   <line x1="12" y1="8" x2="12.01" y2="8" />
-                </svg>
-              }
-              @case ('warning') {
-                <svg
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
+                }
+                @case ('warning') {
                   <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.75"
                     d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
                   />
-                </svg>
+                }
               }
-              @case ('loading') {
-                <div class="toast-icon-loading" aria-hidden="true"></div>
-              }
-              @case ('description') {}
-              @case ('default') {}
-            }
+            </svg>
           }
         </span>
       }
@@ -234,10 +188,8 @@ function resolveFrontToastHeightPx(
           @if (toast()?.contentComponent) {
             <div class="msg" [class]="resolvedClassNames()?.message">
               <ng-container
-                *ngComponentOutlet="
-                  toast()!.contentComponent!;
-                  inputs: contentComponentOutletInputs()
-                "
+                [betterToastOutlet]="toast()!.contentComponent!"
+                [betterToastOutletInputs]="toast()?.contentComponentInputs"
               />
             </div>
           } @else {
@@ -253,10 +205,8 @@ function resolveFrontToastHeightPx(
         @if (toast()?.contentComponent) {
           <div class="msg" [class]="resolvedClassNames()?.message">
             <ng-container
-              *ngComponentOutlet="
-                toast()!.contentComponent!;
-                inputs: contentComponentOutletInputs()
-              "
+              [betterToastOutlet]="toast()!.contentComponent!"
+                [betterToastOutletInputs]="toast()?.contentComponentInputs"
             />
           </div>
         } @else {
@@ -265,53 +215,45 @@ function resolveFrontToastHeightPx(
       }
 
       @if (toast()?.toastAction; as rowAction) {
-        @switch (rowAction.role) {
-          @case ('action') {
-            <button
-              type="button"
-              class="toast-row-btn action-btn"
-              [class]="resolvedClassNames()?.actionButton"
-              [attr.data-row-btn]="rowAction.role"
-              (pointerdown)="onRowButtonPointerDown($event)"
-              (click)="onToastRowClick($event)"
-            >
-              {{ rowAction.label }}
-            </button>
-          }
-          @case ('cancel') {
-            <button
-              type="button"
-              class="toast-row-btn cancel-btn"
-              [class]="resolvedClassNames()?.cancelButton"
-              [attr.data-row-btn]="rowAction.role"
-              (pointerdown)="onRowButtonPointerDown($event)"
-              (click)="onToastRowClick($event)"
-            >
-              {{ rowAction.label }}
-            </button>
-          }
-        }
+        <button
+          type="button"
+          class="toast-row-btn"
+          [class.action-btn]="rowAction.role === 'action'"
+          [class.cancel-btn]="rowAction.role === 'cancel'"
+          [class]="
+            rowAction.role === 'action'
+              ? resolvedClassNames()?.actionButton
+              : resolvedClassNames()?.cancelButton
+          "
+          [attr.data-row-btn]="rowAction.role"
+          (pointerdown)="onRowButtonPointerDown($event)"
+          (click)="onToastRowClick($event)"
+        >
+          {{ rowAction.label }}
+        </button>
       }
     }
 
-    @if (showCloseButton()) {
+    @if (closeButton() && !isHeadless() && (stackFront() || stackExpanded())) {
       <button
         type="button"
         class="close-btn"
         [class]="resolvedClassNames()?.closeButton"
-        [animate.enter]="closeButtonEnterClass()"
-        [animate.leave]="closeButtonLeaveClass()"
+        [animate.enter]="stackFront() ? null : 'close-enter'"
+        [animate.leave]="stackFront() ? null : 'close-leave'"
         (click)="toaster.dismiss(toast()?.id ?? '')"
         [attr.aria-label]="dismissButtonAriaLabel()"
       >
-        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="1.75"
-            d="M6 18 18 6M6 6l12 12"
-          />
+        <svg
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.75"
+          aria-hidden="true"
+        >
+          <path d="M6 18 18 6M6 6l12 12" />
         </svg>
       </button>
     }
@@ -435,31 +377,8 @@ export class BetterToastItem {
 
     return true;
   });
-  /** Bound to {@link ToasterItem.componentInputs} for headless (`NgComponentOutlet`) toasts. */
-  protected readonly componentOutletInputs = computed(
-    (): Record<string, unknown> => this.toast()?.componentInputs ?? {},
-  );
-  /** Bound to {@link ToasterItem.contentComponentInputs} for {@link ToasterService.custom} body components. */
-  protected readonly contentComponentOutletInputs = computed(
-    (): Record<string, unknown> => this.toast()?.contentComponentInputs ?? {},
-  );
   /** When true, host uses no default toast chrome (border, padding, surface) — only stack + motion. */
   protected readonly isHeadless = computed(() => this.toast()?.component != null);
-  /**
-   * Dismiss control stays on the front toast. Stacked toasts mount it only while the stack is
-   * expanded so `animate.enter` / `animate.leave` can run without moving the front control.
-   */
-  protected readonly showCloseButton = computed(
-    () => this.closeButton() && !this.isHeadless() && (this.stackFront() || this.stackExpanded()),
-  );
-  /** Enter class for stacked close buttons; the front control does not animate in. */
-  protected readonly closeButtonEnterClass = computed(() =>
-    this.stackFront() ? null : 'close-enter',
-  );
-  /** Leave class for stacked close buttons; the front control does not animate out. */
-  protected readonly closeButtonLeaveClass = computed(() =>
-    this.stackFront() ? null : 'close-leave',
-  );
   /** `down` when anchored to the bottom (dismiss by swiping down), `up` when anchored to the top. */
   protected readonly swipeDirection = computed(() =>
     swipeDirectionForPosition(this.stackPosition()),
@@ -481,11 +400,10 @@ export class BetterToastItem {
   private tracking = false;
   private startY = 0;
   private pointerId = -1;
-  private readonly dragStartThreshold = 0;
   private readonly swipeCloseThreshold = 30;
 
   /** Transform applied when swipe-dismiss completes (matches leave direction / headless centering). */
-  protected readonly swipeDismissTransform = computed(() => {
+  private swipeDismissTransform(): string {
     const pos = this.stackPosition();
     const down = this.swipeDirection() === 'down';
     const y = down ? '130%' : '-130%';
@@ -493,7 +411,7 @@ export class BetterToastItem {
       return `translateX(-50%) translateY(${y})`;
     }
     return `translateY(${y})`;
-  });
+  }
 
   /** Prevents swipe-to-dismiss from starting when pressing the row action / cancel control. */
   onRowButtonPointerDown(event: PointerEvent): void {
@@ -564,14 +482,7 @@ export class BetterToastItem {
     const dragDy = down ? Math.max(0, rawDy) : Math.min(0, rawDy);
 
     if (!this.isDragging()) {
-      const passed =
-        this.dragStartThreshold > 0
-          ? down
-            ? rawDy >= this.dragStartThreshold
-            : rawDy <= -this.dragStartThreshold
-          : down
-            ? rawDy > 0
-            : rawDy < 0;
+      const passed = down ? rawDy > 0 : rawDy < 0;
       if (passed) {
         this.isDragging.set(true);
         el.setPointerCapture(this.pointerId);
@@ -671,14 +582,14 @@ export class BetterToastItem {
     >
       <ol
         class="toast-container"
-        [style.--toast-offset-top]="offsetTop()"
-        [style.--toast-offset-right]="offsetRight()"
-        [style.--toast-offset-bottom]="offsetBottom()"
-        [style.--toast-offset-left]="offsetLeft()"
-        [style.--toast-offset-mobile-top]="mobileOffsetTop()"
-        [style.--toast-offset-mobile-right]="mobileOffsetRight()"
-        [style.--toast-offset-mobile-bottom]="mobileOffsetBottom()"
-        [style.--toast-offset-mobile-left]="mobileOffsetLeft()"
+        [style.--toast-offset-top]="offsetSide(offset(), 'top')"
+        [style.--toast-offset-right]="offsetSide(offset(), 'right')"
+        [style.--toast-offset-bottom]="offsetSide(offset(), 'bottom')"
+        [style.--toast-offset-left]="offsetSide(offset(), 'left')"
+        [style.--toast-offset-mobile-top]="offsetSide(mobileOffset(), 'top')"
+        [style.--toast-offset-mobile-right]="offsetSide(mobileOffset(), 'right')"
+        [style.--toast-offset-mobile-bottom]="offsetSide(mobileOffset(), 'bottom')"
+        [style.--toast-offset-mobile-left]="offsetSide(mobileOffset(), 'left')"
         [style.--toast-gap]="stackGapPx + 'px'"
         [style.--front-toast-height]="frontToastHeightCss()"
         [attr.data-position]="position()"
@@ -721,7 +632,7 @@ export class BetterToastItem {
   `,
   styleUrl: './toaster.css',
 })
-export class BetterToaster implements OnInit {
+export class BetterToaster {
   protected readonly toaster = inject(ToasterService);
 
   /**
@@ -731,11 +642,7 @@ export class BetterToaster implements OnInit {
    */
   readonly durationMs = input<number, ToasterDuration>(DEFAULT_TOAST_DURATION_MS, {
     alias: 'duration',
-    transform: (value) => {
-      const durationMs = parseToasterDurationMs(value);
-      this.toaster.setDefaultDurationMs(durationMs);
-      return durationMs;
-    },
+    transform: parseToasterDurationMs,
   });
   /** Where the stack is anchored on the viewport. */
   readonly position = input<ToasterPosition>('bottom-right');
@@ -806,6 +713,9 @@ export class BetterToaster implements OnInit {
 
   constructor() {
     effect(() => {
+      this.toaster.setDefaultDurationMs(this.durationMs());
+    });
+    effect(() => {
       if (this.toaster.toasts().length === 0) {
         this.hovering.set(false);
         this.focusWithin.set(false);
@@ -831,33 +741,7 @@ export class BetterToaster implements OnInit {
     () => this.accessibilityLabels()?.dismissButton ?? DEFAULT_TOASTER_ARIA_DISMISS_BUTTON,
   );
 
-  /** Vertical offset in px for the toast stack. */
-  protected readonly offsetTop = computed(() => resolveToasterOffsetSide(this.offset(), 'top'));
-  /** Horizontal offset in px for the toast stack. */
-  protected readonly offsetRight = computed(() => resolveToasterOffsetSide(this.offset(), 'right'));
-  /** Vertical offset in px for the toast stack. */
-  protected readonly offsetBottom = computed(() =>
-    resolveToasterOffsetSide(this.offset(), 'bottom'),
-  );
-  /** Horizontal offset in px for the toast stack. */
-  protected readonly offsetLeft = computed(() => resolveToasterOffsetSide(this.offset(), 'left'));
-
-  /** Vertical offset in px for the toast stack on narrow layouts. */
-  protected readonly mobileOffsetTop = computed(() =>
-    resolveToasterOffsetSide(this.mobileOffset(), 'top'),
-  );
-  /** Horizontal offset in px for the toast stack on narrow layouts. */
-  protected readonly mobileOffsetRight = computed(() =>
-    resolveToasterOffsetSide(this.mobileOffset(), 'right'),
-  );
-  /** Vertical offset in px for the toast stack on narrow layouts. */
-  protected readonly mobileOffsetBottom = computed(() =>
-    resolveToasterOffsetSide(this.mobileOffset(), 'bottom'),
-  );
-  /** Horizontal offset in px for the toast stack on narrow layouts. */
-  protected readonly mobileOffsetLeft = computed(() =>
-    resolveToasterOffsetSide(this.mobileOffset(), 'left'),
-  );
+  protected readonly offsetSide = resolveToasterOffsetSide;
 
   /**
    * `--index` is the stack depth: last item is 0 (front), older items count up.
@@ -964,12 +848,5 @@ export class BetterToaster implements OnInit {
     for (const toast of this.toaster.toasts()) {
       this.toaster.resumeAutoDismiss(toast.id);
     }
-  }
-
-  /**
-   * Initializes the toaster service with the default duration.
-   */
-  ngOnInit(): void {
-    this.toaster.setDefaultDurationMs(this.durationMs());
   }
 }

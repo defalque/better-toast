@@ -64,7 +64,6 @@
   --toast-action-border: light-dark(var(--color-black), var(--color-white));
 
   --toast-cancel-bg: light-dark(oklch(86.9% 0.005 56.366 / 0.3), oklch(26.8% 0.007 34.298 / 0.85));
-  --toast-cancel-text: var(--toast-color);
   --toast-cancel-border: light-dark(
     oklch(86.9% 0.005 56.366 / 0.1),
     oklch(26.8% 0.007 34.298 / 0.5)
@@ -79,15 +78,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* box-shadow is composite, so it can't share light-dark(); override only when dark. */
-.toast-container[data-theme='dark'] {
-  --toast-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-}
-@media (prefers-color-scheme: dark) {
-  .toast-container[data-theme='system'] {
-    --toast-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  }
-}
 .toast-container[data-position^='top'] {
   top: var(--toast-offset-mobile-top);
   left: var(--toast-offset-mobile-left);

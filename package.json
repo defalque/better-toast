@@ -9,6 +9,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:better-toast": "ng test better-toast --no-watch",
+    "measure:bundle": "node scripts/measure-bundle.mjs",
     "serve:ssr:website": "node dist/website/server/server.mjs"
   },
   "prettier": {

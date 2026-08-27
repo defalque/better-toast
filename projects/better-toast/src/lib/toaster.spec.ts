@@ -437,6 +437,67 @@ describe('better-toast', () => {
     expect(toaster.toasts().length).toBe(1);
   });
 
+  it('renders built-in SVG icons and a loading spinner', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    toaster.success('ok', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const success = fixture.nativeElement.querySelector('li.toast') as HTMLElement;
+    expect(success.querySelector('.toast-icon svg circle')).toBeTruthy();
+    expect(success.querySelector('.toast-icon svg path')).toBeTruthy();
+    toaster.clear();
+
+    toaster.error('bad', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const error = fixture.nativeElement.querySelector('li.toast') as HTMLElement;
+    expect(error.querySelectorAll('.toast-icon svg line').length).toBe(2);
+    toaster.clear();
+
+    toaster.loading('wait', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const loading = fixture.nativeElement.querySelector('li.toast') as HTMLElement;
+    expect(loading.querySelector('.toast-icon-loading')).toBeTruthy();
+    expect(loading.querySelector('.toast-icon svg')).toBeNull();
+  });
+
+  it('swipe-dismisses a default toast when dragged past the close threshold', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.componentRef.setInput('duration', TOAST_DURATION_MANUAL_DISMISS);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    toaster.show('Swipe me', { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toastHost = fixture.nativeElement.querySelector('li.toast') as HTMLElement;
+    toastHost.setPointerCapture = () => undefined;
+    toastHost.releasePointerCapture = () => undefined;
+
+    const pid = 7;
+    toastHost.dispatchEvent(
+      new PointerEvent('pointerdown', { bubbles: true, clientY: 100, pointerId: pid }),
+    );
+    toastHost.dispatchEvent(
+      new PointerEvent('pointermove', { bubbles: true, clientY: 110, pointerId: pid }),
+    );
+    toastHost.dispatchEvent(
+      new PointerEvent('pointermove', { bubbles: true, clientY: 180, pointerId: pid }),
+    );
+    toastHost.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: pid }));
+
+    expect(toaster.toasts().length).toBe(0);
+  });
+
   it('sets variant on items from typed helpers', () => {
     TestBed.configureTestingModule({ imports: [Toaster] });
     const toaster = TestBed.inject(ToasterService);
@@ -659,6 +720,40 @@ describe('better-toast', () => {
     expect(host.querySelector('.bt-spec-custom-body')).toBeTruthy();
     expect(host.querySelector('.msg')).toBeTruthy();
     expect(host.querySelector('.close-btn')).toBeTruthy();
+  });
+
+  it('headless() renders the component on a chrome-less host', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    toaster.headless(SpecCustomBody, { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const host = fixture.nativeElement.querySelector('li.toast') as HTMLElement;
+    expect(host.getAttribute('data-headless')).toBe('true');
+    expect(host.querySelector('.bt-spec-custom-body')).toBeTruthy();
+    expect(host.querySelector('.msg')).toBeNull();
+    expect(host.querySelector('.close-btn')).toBeNull();
+  });
+
+  it('headless() omits description, icon, and style from the stored item', () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const toaster = TestBed.inject(ToasterService);
+    toaster.headless(SpecCustomBody, {
+      durationMs: TOAST_DURATION_MANUAL_DISMISS,
+      description: 'should not persist',
+      classNames: { toast: 'headless-host' },
+    });
+    const toast = toaster.toasts()[0];
+    expect(toast.component).toBe(SpecCustomBody);
+    expect(toast.description).toBeUndefined();
+    expect(toast.icon).toBeUndefined();
+    expect(toast.style).toBeUndefined();
+    expect(toast.classNames?.toast).toBe('headless-host');
   });
 
   it('calls onAutoClose when the toast auto-dismisses', async () => {
