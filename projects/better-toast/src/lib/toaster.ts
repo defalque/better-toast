@@ -245,32 +245,22 @@ function resolveFrontToastHeightPx(
       }
 
       @if (toast()?.toastAction; as rowAction) {
-        @switch (rowAction.role) {
-          @case ('action') {
-            <button
-              type="button"
-              class="toast-row-btn action-btn"
-              [class]="resolvedClassNames()?.actionButton"
-              [attr.data-row-btn]="rowAction.role"
-              (pointerdown)="onRowButtonPointerDown($event)"
-              (click)="onToastRowClick($event)"
-            >
-              {{ rowAction.label }}
-            </button>
-          }
-          @case ('cancel') {
-            <button
-              type="button"
-              class="toast-row-btn cancel-btn"
-              [class]="resolvedClassNames()?.cancelButton"
-              [attr.data-row-btn]="rowAction.role"
-              (pointerdown)="onRowButtonPointerDown($event)"
-              (click)="onToastRowClick($event)"
-            >
-              {{ rowAction.label }}
-            </button>
-          }
-        }
+        <button
+          type="button"
+          class="toast-row-btn"
+          [class.action-btn]="rowAction.role === 'action'"
+          [class.cancel-btn]="rowAction.role === 'cancel'"
+          [class]="
+            rowAction.role === 'action'
+              ? resolvedClassNames()?.actionButton
+              : resolvedClassNames()?.cancelButton
+          "
+          [attr.data-row-btn]="rowAction.role"
+          (pointerdown)="onRowButtonPointerDown($event)"
+          (click)="onToastRowClick($event)"
+        >
+          {{ rowAction.label }}
+        </button>
       }
     }
 
