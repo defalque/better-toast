@@ -268,8 +268,8 @@ function resolveFrontToastHeightPx(
         type="button"
         class="close-btn"
         [class]="resolvedClassNames()?.closeButton"
-        [animate.enter]="closeButtonEnterClass()"
-        [animate.leave]="closeButtonLeaveClass()"
+        [animate.enter]="stackFront() ? null : 'close-enter'"
+        [animate.leave]="stackFront() ? null : 'close-leave'"
         (click)="toaster.dismiss(toast()?.id ?? '')"
         [attr.aria-label]="dismissButtonAriaLabel()"
       >
@@ -414,14 +414,6 @@ export class BetterToastItem {
    */
   protected readonly showCloseButton = computed(
     () => this.closeButton() && !this.isHeadless() && (this.stackFront() || this.stackExpanded()),
-  );
-  /** Enter class for stacked close buttons; the front control does not animate in. */
-  protected readonly closeButtonEnterClass = computed(() =>
-    this.stackFront() ? null : 'close-enter',
-  );
-  /** Leave class for stacked close buttons; the front control does not animate out. */
-  protected readonly closeButtonLeaveClass = computed(() =>
-    this.stackFront() ? null : 'close-leave',
   );
   /** `down` when anchored to the bottom (dismiss by swiping down), `up` when anchored to the top. */
   protected readonly swipeDirection = computed(() =>
