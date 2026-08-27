@@ -2,7 +2,7 @@
 
 [Better Toast](https://better-toast.vercel.app) is a toast notification library for **Angular** 21 and 22: stacked messages, variants, swipe-to-dismiss, entry and exit animations, accessibility-friendly live region, and a small `ToasterService` API.
 
-**Requirements:** Angular `^21.0.0 || ^22.0.0` (`@angular/core`, `@angular/common`).
+**Requirements:** Angular `^21.0.0 || ^22.0.0` (`@angular/core`).
 
 **Support policy:** current Angular major plus the previous major. When Angular 23 is current, Angular 21 will be dropped.
 

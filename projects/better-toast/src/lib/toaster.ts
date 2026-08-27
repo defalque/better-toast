@@ -1,4 +1,3 @@
-import { NgComponentOutlet } from '@angular/common';
 import {
   afterNextRender,
   ChangeDetectionStrategy,
@@ -12,6 +11,7 @@ import {
   output,
   signal,
 } from '@angular/core';
+import { BetterToastOutlet } from './toast-outlet';
 import {
   DEFAULT_TOAST_DURATION_MS,
   parseToasterDurationMs,
@@ -113,7 +113,7 @@ function resolveFrontToastHeightPx(
 @Component({
   selector: 'li[betterToastItem]',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgComponentOutlet],
+  imports: [BetterToastOutlet],
   host: {
     role: 'listitem',
     tabindex: '0',
@@ -136,14 +136,17 @@ function resolveFrontToastHeightPx(
   },
   template: `
     @if (toast()?.component) {
-      <ng-container *ngComponentOutlet="toast()!.component!; inputs: componentOutletInputs()" />
+      <ng-container
+        [betterToastOutlet]="toast()!.component!"
+        [betterToastOutletInputs]="componentOutletInputs()"
+      />
     } @else {
       @if (shouldShowIconColumn()) {
         <span class="toast-icon" aria-hidden="true">
           @if (toast()?.icon) {
-            <ng-container *ngComponentOutlet="toast()!.icon!" />
+            <ng-container [betterToastOutlet]="toast()!.icon!" />
           } @else if (iconComponent(); as IconCmp) {
-            <ng-container *ngComponentOutlet="IconCmp" />
+            <ng-container [betterToastOutlet]="IconCmp" />
           } @else {
             @switch (variant()) {
               @case ('success') {
@@ -214,10 +217,8 @@ function resolveFrontToastHeightPx(
           @if (toast()?.contentComponent) {
             <div class="msg" [class]="resolvedClassNames()?.message">
               <ng-container
-                *ngComponentOutlet="
-                  toast()!.contentComponent!;
-                  inputs: contentComponentOutletInputs()
-                "
+                [betterToastOutlet]="toast()!.contentComponent!"
+                [betterToastOutletInputs]="contentComponentOutletInputs()"
               />
             </div>
           } @else {
@@ -233,10 +234,8 @@ function resolveFrontToastHeightPx(
         @if (toast()?.contentComponent) {
           <div class="msg" [class]="resolvedClassNames()?.message">
             <ng-container
-              *ngComponentOutlet="
-                toast()!.contentComponent!;
-                inputs: contentComponentOutletInputs()
-              "
+              [betterToastOutlet]="toast()!.contentComponent!"
+              [betterToastOutletInputs]="contentComponentOutletInputs()"
             />
           </div>
         } @else {
@@ -407,7 +406,7 @@ export class BetterToastItem {
 
     return true;
   });
-  /** Bound to {@link ToasterItem.componentInputs} for headless (`NgComponentOutlet`) toasts. */
+  /** Bound to {@link ToasterItem.componentInputs} for headless toasts. */
   protected readonly componentOutletInputs = computed(
     (): Record<string, unknown> => this.toast()?.componentInputs ?? {},
   );

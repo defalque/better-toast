@@ -234,7 +234,7 @@ export class ToasterService {
    * Pass {@link CustomToastOptions.inputs} for `input()` / `@Input()` on that component.
    * The component also receives **`toastId`** (matches the returned id) for programmatic dismiss.
    *
-   * @param component The component class (must be usable with `NgComponentOutlet`).
+   * @param component The component class (must work with `ViewContainerRef.createComponent`).
    * @param options Optional configuration object {@link CustomToastOptions}.
    * @returns The toast ID, useful for programmatic dismissal.
    */
@@ -254,7 +254,7 @@ export class ToasterService {
    * Pass {@link HeadlessToastOptions.inputs} to feed `input()` on that component.
    * The component also automatically receives **`toastId`** (matches the returned id) for programmatic dismiss inside the component.
    *
-   * @param component The component class (must be usable with `NgComponentOutlet`).
+   * @param component The component class (must work with `ViewContainerRef.createComponent`).
    * @param options Optional configuration object {@link HeadlessToastOptions}.
    * @returns The toast ID, useful for programmatic dismissal.
    */

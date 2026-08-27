@@ -692,6 +692,24 @@ describe('better-toast', () => {
     expect(host.querySelector('.close-btn')).toBeTruthy();
   });
 
+  it('headless() renders the component on a chrome-less host', async () => {
+    TestBed.configureTestingModule({ imports: [Toaster] });
+    const fixture = TestBed.createComponent(Toaster);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const toaster = TestBed.inject(ToasterService);
+    toaster.headless(SpecCustomBody, { durationMs: TOAST_DURATION_MANUAL_DISMISS });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const host = fixture.nativeElement.querySelector('li.toast') as HTMLElement;
+    expect(host.getAttribute('data-headless')).toBe('true');
+    expect(host.querySelector('.bt-spec-custom-body')).toBeTruthy();
+    expect(host.querySelector('.msg')).toBeNull();
+    expect(host.querySelector('.close-btn')).toBeNull();
+  });
+
   it('headless() omits description, icon, and style from the stored item', () => {
     TestBed.configureTestingModule({ imports: [Toaster] });
     const toaster = TestBed.inject(ToasterService);
