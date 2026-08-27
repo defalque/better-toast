@@ -453,7 +453,6 @@ export class BetterToastItem {
   private tracking = false;
   private startY = 0;
   private pointerId = -1;
-  private readonly dragStartThreshold = 0;
   private readonly swipeCloseThreshold = 30;
 
   /** Transform applied when swipe-dismiss completes (matches leave direction / headless centering). */
@@ -536,14 +535,7 @@ export class BetterToastItem {
     const dragDy = down ? Math.max(0, rawDy) : Math.min(0, rawDy);
 
     if (!this.isDragging()) {
-      const passed =
-        this.dragStartThreshold > 0
-          ? down
-            ? rawDy >= this.dragStartThreshold
-            : rawDy <= -this.dragStartThreshold
-          : down
-            ? rawDy > 0
-            : rawDy < 0;
+      const passed = down ? rawDy > 0 : rawDy < 0;
       if (passed) {
         this.isDragging.set(true);
         el.setPointerCapture(this.pointerId);
