@@ -35,13 +35,13 @@
     "@angular/platform-server": "^22.1.4",
     "@angular/router": "^22.1.4",
     "@angular/ssr": "^22.1.6",
-    "@lucide/angular": "^1.8.0",
-    "@tailwindcss/postcss": "^4.2.2",
+    "@lucide/angular": "^1.41.0",
+    "@tailwindcss/postcss": "^4.3.3",
     "@vercel/analytics": "^2.0.1",
     "better-drawer": "^0.0.2",
     "express": "^5.1.0",
-    "highlight.js": "^11.11.1",
-    "postcss": "^8.5.9",
+    "highlight.js": "^11.12.0",
+    "postcss": "^8.5.28",
     "rxjs": "~7.8.0",
     "tailwindcss": "^4.2.2",
     "tslib": "^2.3.0"
@@ -51,10 +51,10 @@
     "@angular/cli": "^22.1.6",
     "@angular/compiler-cli": "^22.1.4",
     "@types/express": "^5.0.1",
-    "@types/node": "^22.20.1",
-    "jsdom": "^28.0.0",
+    "@types/node": "^26.4.1",
+    "jsdom": "^30.0.1",
     "ng-packagr": "^22.1.1",
-    "typescript": "~6.0.3",
-    "vitest": "^4.0.8"
+    "typescript": "~7.0.2",
+    "vitest": "^5.0.0"
   }
 }
